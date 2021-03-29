@@ -1,0 +1,25 @@
+{
+	"parser": "babel-eslint",
+	"extends": ["airbnb", "react-app"],
+	"env": {
+		"browser": true,
+		"node": true
+	},
+	"settings": {
+		"react": { "verion": "detect" }
+	},
+	"rules": {
+    "indent": ["error", 2],
+    "no-console":"off",
+		"comma-dangle": ["error", "never"],
+		"linebreak-style": ["error", "unix"], // support LF linebreak style for linux
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "react/prop-types": 0,
+    "react/destructuring-assignment": 1,
+    "jsx-a11y/label-has-associated-control": [ "error", {
+      "required": {
+        "some": [ "nesting", "id"  ]
+      }
+    }]
+  }
+}

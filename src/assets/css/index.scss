@@ -1,0 +1,419 @@
+@import url('https://fonts.googleapis.com/css?family=Helvetica+Neue:400,600,700');
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-size: 0.9rem;
+  overflow-x: hidden;
+  color: #545255;
+  background-color: #E5E5E5;
+  font-family: 'Helvetica Neue', Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.no-outline { outline: none!important;}
+
+p, textarea {
+  white-space: pre-line;
+}
+
+h1, h2, h3, h4, h5, h6, p,
+div, header, section {
+  margin: 0;
+}
+
+section {
+  width: 100%;
+  margin: 0;
+}
+
+button, input, select, textarea {
+  outline: none;
+  border: none;
+}
+button {
+  cursor: pointer;
+}
+
+a.gray {
+  color: #777;
+}
+a.gray:hover {
+  text-decoration: underline;
+}
+
+.col-1, .col-2, .col-3, .col-4,
+.col-5, .col-6, .col-half, .col-7, .col-8,
+.col-9, .col-10, .col-11, .col-12 {
+  display: inline-block;
+  position: relative;
+  padding-right: 10px;
+  padding-left: 10px;
+  margin-bottom: 20px;
+}
+.col-1 {
+  width: 8.33%;
+}
+.col-2 {
+  width: 16.66%;
+}
+.col-3 {
+  width: 25%;
+}
+.col-4 {
+  width: 33.33%;
+}
+.col-5 {
+  width: 41.65%;
+}
+.col-6, .col-half {
+  width: 50%;
+}
+.col-7 {
+  width: 58.33%;
+}
+.col-8 {
+  width: 66.66%;
+}
+.col-9 {
+  width: 75%;
+}
+.col-10 {
+  width: 83.33%;
+}
+.col-11 {
+  width: 91.63%;
+}
+.col-12, .w-100 {
+  width: 100%!important;
+  position: relative;
+}
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  width: calc(100% + 20px);
+  position: relative;
+  margin-right: -10px;
+  margin-left: -10px;
+}
+
+.p-r {
+  position: relative!important;
+}
+
+.no-padding {
+  padding: 0!important;
+}
+.p-20 {
+  padding: 20px!important;
+}
+.p-40 {
+  padding: 40px!important;
+}
+.p-t-40 {
+  padding-top: 40px!important;
+}
+.p-r-5 {
+  padding-right: 5px!important;
+}
+.p-l-5 {
+  padding-left: 5px!important;
+}
+
+.no-margin {
+  margin: 0!important;
+}
+.margin-center {
+  margin: 0 auto!important;
+}
+.m-l-5 {
+  margin-left: 5px!important;
+}
+.m-l-10 {
+  margin-left: 10px!important;
+}
+.m-l-20 {
+  margin-left: 20px!important;
+}
+.m-r-5 {
+  margin-right: 5px!important;
+}
+.m-r-10 {
+  margin-right: 10px!important;
+}
+.m-t-10 {
+  margin-top: 10px!important;
+}
+.m-t-20 {
+  margin-top: 20px!important;
+}
+.m-t--20 {
+  margin-top: -20px!important;
+}
+.m-t-40 {
+  margin-top: 40px!important;
+}
+.m-t-5 {
+  margin-top: 5px!important;
+}
+.m-b-5 {
+  margin-bottom: 5px!important;
+}
+.m-b-10 {
+  margin-bottom: 10px!important;
+}
+.m-b-20 {
+  margin-bottom: 20px!important;
+}
+.m-b-40 {
+  margin-bottom: 40px!important;
+}
+.m-b-50 {
+  margin-bottom: 50px!important;
+}
+
+.no-border {
+  border: none!important;
+}
+.no-wrap {
+  flex-wrap: nowrap!important;
+}
+.wrap {
+  flex-wrap: wrap!important;
+}
+.flex {
+  display: flex!important;
+}
+.flex-h-center {
+  justify-content: center!important;
+}
+.space-between {
+  justify-content: space-between!important;
+}
+.flex-v-center {
+  align-items: center!important;
+}
+.pointer {
+  cursor: pointer!important;
+}
+.underline {
+  text-decoration: underline!important;
+}
+.max-w-400 {
+  max-width: 400px!important;
+}
+.max-w-600 {
+  max-width: 600px!important;
+}
+.w-600 {
+  width: 600px!important;
+}
+.center-text {
+  text-align: center!important;
+}
+.float-right {
+  float: right!important;
+}
+.inline-block {
+  display: inline-block!important;
+}
+.bold {
+  font-weight: bold!important;
+}
+
+/* COMMON */
+.content {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 20px;
+  flex-wrap: wrap;
+  display: flex;
+}
+
+header {
+  background-color: #FFFFFF;
+  border-bottom: 1px solid #B4B4B4;
+  position: fixed;
+  width: 100%;
+
+  .header-left {
+    .logo {
+      width: 200px;
+      display: flex;
+
+      img {
+        width: 100%;
+        height: auto;
+      }
+    }
+  }
+}
+
+main {
+  padding-top: 100px;
+}
+
+.login-form-container {
+  width: 100%;
+  background-color: #FFFFFF;
+  border: 1px solid #E4E4E4;
+  border-radius: 5px;
+  box-shadow: 0 0 40px #999;
+
+  .login-form {
+    padding: 20px 70px;
+  }
+}
+
+footer {
+  margin-top: 50px;
+  .top {
+    background-color: #000000;
+    color: #ffffff;
+
+    .content {
+      padding: 50px 20px;
+    }
+  }
+
+  .bottom {
+    .footer-left {
+      .logo {
+        width: 200px;
+        display: flex;
+  
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+    }
+  }
+}
+
+/* BUTTON STYLES */
+.btn {
+  background-color: #A01B88;
+  padding: 8px 15px;
+  border-radius: 5px;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+
+  &:hover {
+    background-color: #A01B8888;
+  }
+  svg {
+    font-size: 1rem;
+    color: #A01B88;
+  }
+  svg.right {
+    margin-left: 10px;
+  }
+  svg.left {
+    margin-right: 10px;
+  }
+}
+i.btn {
+  font-style: normal;
+}
+.btn-light {
+  background-color: #A01B881C;
+  border: 1px solid #A01B88;
+  padding: 7px 16px;
+  color: #555;
+}
+.btn-large {
+  padding: 15px;
+}
+.btn-gray {
+  background-color: #838383;
+  color: #E8E8E8;
+}
+.btn-small {
+  padding: 5px;
+  margin: 2px 0;
+}
+
+.btn-group {
+  border-radius: 10px;
+  display: flex;
+}
+.btn-group button {
+  border-radius: 0;
+}
+.btn-group button:first-child {
+  border-top-left-radius: 5px;
+  border-bottom-left-radius: 5px;
+}
+.btn-group button:last-child {
+  border-top-right-radius: 5px;
+  border-bottom-right-radius: 5px;
+}
+.btn-del {
+  background-color: #DE2222;
+}
+.btn-del:hover {
+  background-color: #DE2222AA;
+}
+button:disabled,
+button:disabled:hover {
+  cursor: default;
+  background-color: #999;
+}
+button:focus {
+  outline: none;
+}
+.btn-loader {
+  width: 20px!important;
+  height: auto;
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  margin-left: 20px;
+}
+
+/* FORM INPUTS */
+.form-group {
+  position: relative;
+  
+  label {
+    color: #212121;
+  }
+  
+  input,
+  textarea,
+  select {
+    width: 100%;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #C6C6C6;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: .9rem;
+    height: 50px;
+    color: #777;
+
+    &:focus {
+      outline: none;
+      border-width: 2px;
+    }
+    &:disabled {
+      color: rgb(84, 84, 84);
+      cursor: default;
+      background-color: rgb(235, 235, 228);
+    }
+  }
+  textarea {
+    height: auto;
+    line-height: 1.4rem;
+    padding-top: 17px;
+  }
+}
