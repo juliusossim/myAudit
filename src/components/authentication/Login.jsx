@@ -1,14 +1,11 @@
 import React, { useState } from 'react';
-import { useHistory } from 'react-router';
 import TextInput from '../common/inputs/TextInput';
 
 const LoginPage = () => {
-  const history = useHistory();
-
   const [formData, setFormData] = useState({});
 
   const handleLogin = () => {
-    history.push('/portal');
+    //
   };
 
   const handleChange = (e) => {
