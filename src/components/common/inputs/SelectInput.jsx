@@ -1,16 +1,29 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 
-const SelectInput = (props) => {
-  const error = props.error === 'Required' ? null : props.error;
-  const options = props?.options?.map((option) => (
+const SelectInput = (
+  {
+    label,
+    name,
+    value,
+    className,
+    onChange,
+    onBlur,
+    disabled,
+    validations,
+    error,
+    options,
+    optionIndex
+  }
+) => {
+  const optionsProp = options?.map((option) => (
     typeof option === 'object'
       ? (
         <option
-          value={option?.value?.toString()?.toLowerCase() === 'select item...' ? '' : option.value}
-          key={option.name}
+          value={option[optionIndex]?.toString()?.toLowerCase() === 'select item...' ? '' : option[optionIndex]}
+          key={option[optionIndex]}
         >
-          {option.name}
+          {option[optionIndex]}
         </option>
       ) : (
         <option
@@ -21,22 +34,35 @@ const SelectInput = (props) => {
         </option>
       )));
   return (
-    <div className={`${props.className} form-group`}>
-      <label htmlFor={props.name} className={props?.value?.length ? 'active-field' : ''}>
-        {props.label}
+    <div className={`${error?.length > 0 ? `${className} col-12` : `${className}`} form-group`}>
+      <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
+        {label}
       </label>
       <select
-        className={error && 'error-field'}
-        name={props.name}
-        id={props.name}
-        value={props.value}
-        onChange={props.onChange}
-        onBlur={props.onBlur}
-        disabled={props.disabled}
+        className={error?.length > 0 ? 'error-field' : ''}
+        name={name}
+        id={name}
+        value={value}
+        onChange={onChange}
+        onBlur={((e) => typeof onBlur === 'function'
+          && onBlur(e, validations))}
+        disabled={disabled}
       >
-        {options}
+        {optionsProp}
       </select>
-      {error ? <p className="error-msg">{error}</p> : null}
+      {
+        error?.length > 0
+          ? (
+            <ul className="error-msg">
+              {
+                error.map(
+                  (err) => <li key={err}>{err}</li>
+                )
+              }
+            </ul>
+          )
+          : null
+      }
     </div>
   );
 };

@@ -1,11 +1,13 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import TextInput from '../common/inputs/TextInput';
+import Modal from '../common/modal';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({});
+  const [show, setShow] = useState(false);
 
   const handleLogin = () => {
-    //
+    setShow(true);
   };
 
   const handleChange = (e) => {
@@ -16,6 +18,21 @@ const LoginPage = () => {
       [name]: value
     }));
   };
+  const modalTemplate = (
+    <div className="bg-wema">
+      <div className="center-text p-2 text-white">
+        form submitted successfully
+      </div>
+    </div>
+  );
+  const handleClose = () => {
+    setShow(false);
+    window.location.replace('/home');
+  };
+
+  useEffect(() => {
+    show && setTimeout(handleClose, 4000);
+  }, [show]);
 
   return (
     <div className="content">
@@ -44,6 +61,10 @@ const LoginPage = () => {
           </div>
         </div>
       </div>
+      <Modal
+        className={show ? 'max-w-400 right top' : 'max-w-400 right top off'}
+        content={modalTemplate}
+      />
     </div>
   );
 };

@@ -1,28 +1,55 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 
-const TextareaInput = (props) => {
-  const error = props.error === 'Required' ? null : props.error;
-  return (
-    <div className={`${props?.className} form-group`}>
-      <label htmlFor={props.name} className={props?.value?.length ? 'active-field' : ''}>
-        {props.label}
-      </label>
-      <textarea
-        className={error && 'error-field'}
-        name={props.name}
-        id={props.name}
-        value={props.value}
-        rows={props.rows}
-        onChange={props.onChange}
-        onBlur={props.onBlur}
-        disabled={props.disabled}
-        onKeyPress={props.onKeyPress}
-        onKeyDown={props.onKeyDown}
-      />
-      {error ? <p className="error-msg">{error}</p> : null}
-    </div>
-  );
-};
+const TextareaInput = (
+  {
+    name,
+    value,
+    label,
+    rows,
+    className,
+    error,
+    onChange,
+    onBlur,
+    onKeyDown,
+    onKeyPress,
+    disabled,
+    placeholder,
+    validations
+  }
+) => (
+  <div className={`${error?.length > 0 ? `${className} col-12` : `${className}`} form-group`}>
+    <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
+      {label}
+    </label>
+    <textarea
+      className={error?.length > 0 ? 'error-field' : ''}
+      name={name}
+      id={name}
+      value={value}
+      placeholder={placeholder}
+      rows={rows}
+      onChange={onChange}
+      onBlur={((e) => typeof onBlur === 'function'
+        && onBlur(e, validations))}
+      disabled={disabled}
+      onKeyPress={onKeyPress}
+      onKeyDown={onKeyDown}
+    />
+    {
+      error?.length > 0
+        ? (
+          <ul className="error-msg">
+            {
+              error.map(
+                (err) => <li key={err}>{err}</li>
+              )
+            }
+          </ul>
+        )
+        : null
+    }
+  </div>
+);
 
 export default TextareaInput;
