@@ -4,8 +4,9 @@ import formBuilderProps from './constants/changePassword';
 import { validateField } from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../common/modal';
+import TextInput from '../common/inputs/TextInput';
 
-const ChangePassword = () => {
+const ForgotPassword = () => {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
@@ -55,26 +56,28 @@ const ChangePassword = () => {
   return (
     <div className="content">
       <p>
-        Change Password
+        Forgot Password
       </p>
       <div className="max-w-600 w-600 margin-center m-t-40">
         <div className="login-form-container p-20">
-          <p className="">Change your password below</p>
+          <p className="">Provide your registered email address to reset your password</p>
           <hr />
           <div className="login-form">
-            <FormBuilder
-              formItems={
-                formBuilderProps(
-                  {
-                    formData,
-                    handleBlur,
-                    handleChange,
-                    errors
-                  }
-                )
+            <TextInput
+              label="Email Address"
+              name="email_address"
+              value={formData?.email || ''}
+              validations={
+                {
+                  required: true
+                }
               }
+              error={errors?.email}
+              onChange={handleChange}
+              onBlur={handleBlur}
+              className="w-100 m-b-20"
             />
-            <button className="w-100 btn btn-large" type="button" onClick={handleRegister}>Create Account</button>
+            <button className="w-100 btn btn-large" type="button" onClick={handleRegister}>Reset Password</button>
           </div>
         </div>
       </div>
@@ -86,4 +89,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default ForgotPassword;

@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import FormBuilder from '../common/builders/form';
-import formBuilderProps from './constants/changePassword';
+import formBuilderProps from './constants/newPassword';
 import { validateField } from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../common/modal';
 
-const ChangePassword = () => {
+const NewPassword = () => {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
@@ -28,7 +28,6 @@ const ChangePassword = () => {
   const handleBlur = (e, validations) => {
     const { name, value } = e.target;
     const field = slugToString(name);
-    console.log(field);
     typeof field !== 'undefined'
     && setErrors(
       {
@@ -55,11 +54,11 @@ const ChangePassword = () => {
   return (
     <div className="content">
       <p>
-        Change Password
+        New Password
       </p>
       <div className="max-w-600 w-600 margin-center m-t-40">
         <div className="login-form-container p-20">
-          <p className="">Change your password below</p>
+          <p className="">Enter your new password below</p>
           <hr />
           <div className="login-form">
             <FormBuilder
@@ -86,4 +85,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default NewPassword;

@@ -14,22 +14,6 @@ const formBuilderProps = (
       kind: 'input',
       props: {
         className: 'w-100 m-b-20',
-        name: 'current_password',
-        type: 'password',
-        label: 'Current Password',
-        value: formData?.current_password || '',
-        validations: {
-          required: true
-        },
-        error: errors?.current_password,
-        onBlur: handleBlur,
-        onChange: handleChange
-      }
-    },
-    {
-      kind: 'input',
-      props: {
-        className: 'w-100 m-b-20',
         name: 'new_password',
         type: 'password',
         label: 'New Password',
