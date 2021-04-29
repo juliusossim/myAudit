@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import WemaLogo from '../../../assets/images/wema-footer-logo.png';
+import WemaLogo from '../assets/images/wema-footer-logo.png';
 
 const Footer = () => (
   <footer>

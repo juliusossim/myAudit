@@ -27,7 +27,9 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         error,
         validations,
         options,
-        optionIndex
+        optionIndex,
+        reveal,
+        handleReveal
       } = props;
       switch (kind) {
       case 'select':
@@ -100,6 +102,8 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             min={minDate}
             max={maxDate}
             validations={validations}
+            reveal={reveal}
+            handleReveal={handleReveal}
           />
         );
       }

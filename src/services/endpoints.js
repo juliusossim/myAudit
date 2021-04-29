@@ -1,5 +1,6 @@
 const paths = {
-  login: '/api/login'
+  LOGIN: 'Account/authenticate',
+  REGISTER: 'Account/register/individual'
 };
 
 export default paths;

@@ -12,6 +12,7 @@ const getToken = () => {
 const fetchBackend = async (endpoint, method, auth, body, pQuery, param, multipart) => {
   const headers = {
     'Content-Type': multipart ? 'multipart/form-data' : 'application/json'
+    // 'Content-Type': 'application/json'
   };
   const path = paths[endpoint] || endpoint;
   let url = `${process.env.REACT_APP_BACKEND_URL}${path}`;
@@ -42,13 +43,13 @@ const fetchBackend = async (endpoint, method, auth, body, pQuery, param, multipa
 
   console.log(options);
   return axios(options)
-    .then((res) => res, async (err) => {
+    .then((res) => res?.data, async (err) => {
       if (err && err.response && err.response.status === 401) {
+        // console.log(err.response);
         // log the user out and return
-        await logout(process.env.REACT_APP_JWT_SECRET, true);
+        // await logout(process.env.REACT_APP_JWT_SECRET, true);
       }
-      console.log(err.response);
-      return err.response;
+      return err?.response?.data;
     });
 };
 

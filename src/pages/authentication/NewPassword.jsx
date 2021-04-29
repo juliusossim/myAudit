@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import FormBuilder from '../common/builders/form';
+import FormBuilder from '../../components/form/builders/form';
 import formBuilderProps from './constants/newPassword';
 import { validateField } from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
-import Modal from '../common/modal';
+import Modal from '../../components/microComponents/modal';
 
 const NewPassword = () => {
   const [formData, setFormData] = useState({});
@@ -14,7 +14,10 @@ const NewPassword = () => {
     setShow(true);
   };
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setTimeout(window.location.replace('/home'), 4000);
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,9 +43,12 @@ const NewPassword = () => {
   };
 
   const modalTemplate = (
-    <div className="bg-wema">
-      <div className="center-text p-2 text-white">
-        form submitted successfully
+    <div className="bg-white login-form-container p-5">
+      <div className="center-text p-2">
+        <h4 className="text-wema">Password Reset Link Sent</h4>
+        <p>
+          A password reset link has been sent to your registered email address
+        </p>
       </div>
     </div>
   );
@@ -73,12 +79,12 @@ const NewPassword = () => {
                 )
               }
             />
-            <button className="w-100 btn btn-large" type="button" onClick={handleRegister}>Create Account</button>
+            <button className="w-25 float-right btn btn-small" type="button" onClick={handleRegister}>Change Password</button>
           </div>
         </div>
       </div>
       <Modal
-        className={show ? 'max-w-400 right top' : 'max-w-400 right top off'}
+        className={show ? 'max-w-400 center center' : 'max-w-400 right top off'}
         content={modalTemplate}
       />
     </div>

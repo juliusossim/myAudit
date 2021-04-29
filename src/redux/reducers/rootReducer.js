@@ -1,8 +1,8 @@
 import { combineReducers } from 'redux';
-import loanApplicationReducer from './loanApplicationReducer';
+import authenticationReducer from './authenticationReducer';
 
 const rootReducer = combineReducers({
-  loan: loanApplicationReducer
+  auth: authenticationReducer
 });
 
 export default rootReducer;

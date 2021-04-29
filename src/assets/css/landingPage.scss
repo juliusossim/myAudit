@@ -154,7 +154,7 @@
     //line-height: calc(100% + 8 * ((100vw - 320px) / 680)) !important;
     //margin-top: calc(.5vh + 8 * ((100vw - 320px) / 680)) !important;
   }
-  .small1, .small2, button {
+  .small1, .small2, .butt {
     font-size: calc(3px + 8 * ((100vw - 320px) / 680)) !important;
     line-height: calc(1px + 8 * ((100vw - 320px) / 680)) !important;
   }
@@ -170,7 +170,7 @@
   .small1 {
     font-size: 8px !important;
   }
-.small2, button {
+.small2, .butt {
     font-size: 7px !important;
   }
 
@@ -184,7 +184,7 @@
   .small1 {
     font-size: 8px !important;
   }
-.small2, button {
+.small2, .butt {
     font-size: 7px !important;
   }
 

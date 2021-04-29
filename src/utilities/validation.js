@@ -23,7 +23,7 @@ export const validateField = (validation, field, value) => {
   /*
     validate minimum characters
   */
-  validation?.minLength && (value?.length < validation?.minLength)
+  validation?.minLength && (value?.length < validation?.minLength && value !== '')
   && errors.push(`${field} is too short, it must exceed ${validation.minLength} characters`);
   /*
     validate maximum digits
@@ -34,17 +34,17 @@ export const validateField = (validation, field, value) => {
   /*
     validate minimum digits
   */
-  validation?.min && value?.length < validation?.min
+  validation?.min && value?.length < validation?.min && value !== ''
   && errors.push(`${field} is too short, it must exceed ${validation?.min} digits`);
   /*
   confirm password
   */
-  validation?.confirmPassword && (value !== validation?.original)
+  validation?.confirmPassword && (value !== validation?.original && value !== '')
   && errors.push('passwords do not match!');
   /*
     validate patterns
    */
-  validation?.pattern && !validation?.pattern?.test(value)
+  validation?.pattern && !validation?.pattern?.test(value) && value !== ''
   && errors.push(`${field} is invalid`);
   /*
     return errors
@@ -64,4 +64,31 @@ export const validationPatterns = {
   email: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
   domain: /^[A-Z0-9._%+-]+\.[A-Z]{2,}$/i,
   image: /\.(jpg|jpeg|png|gif)$/
+};
+
+export const test = (obj, dataLength) => (
+  Object.keys(obj).length < dataLength && obj.constructor === Object
+);
+/**
+ * control the submit button
+ * @param obj
+ * : the main payload object
+ * @param error
+ * : the error object.
+ * @param setSubmittable
+ * : the state that disable/enables the submit button
+ * @param dataLength
+ * the expected lenght of the obj| payload object.
+ */
+export const canSubmit = (obj, error, setSubmittable, dataLength) => {
+  for (const [key, val] of Object.entries(obj)) {
+    if (obj.constructor === Object) {
+      if (error[key]?.length > 0 || Object.keys(obj).length < dataLength) {
+        console.log('submittable should be false', error[key]?.length > 0, Object.keys(obj).length < dataLength);
+        setSubmittable(false);
+      } else {
+        setSubmittable(true);
+      }
+    }
+  }
 };

@@ -1,10 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import FormBuilder from '../common/builders/form';
-import formBuilderProps from './constants/changePassword';
 import { validateField } from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
-import Modal from '../common/modal';
-import TextInput from '../common/inputs/TextInput';
+import Modal from '../../components/microComponents/modal';
+import TextInput from '../../components/form/inputs/TextInput';
 
 const ForgotPassword = () => {
   const [formData, setFormData] = useState({});
@@ -77,7 +75,11 @@ const ForgotPassword = () => {
               onBlur={handleBlur}
               className="w-100 m-b-20"
             />
-            <button className="w-100 btn btn-large" type="button" onClick={handleRegister}>Reset Password</button>
+            <a href="/new-password">
+              <button className="w-25 btn btn-sm float-right" type="button" onClick={handleRegister}>
+                Reset Password
+              </button>
+            </a>
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
-import CrowdLogo from '../../../assets/images/crowd-funding-logo.png';
+import CrowdLogo from '../assets/images/crowd-funding-logo.png';
 
 const Header = () => (
   <header>
@@ -12,8 +12,10 @@ const Header = () => (
         </div>
       </div>
       <div className="header-right">
-        <Link to="">Sign In</Link>
-        <button className="btn m-l-20" type="button">Start Project</button>
+        <a href="/">Sign In</a>
+        <a href="/create-project">
+          <button className="btn m-l-20" type="button">Start Project</button>
+        </a>
       </div>
     </div>
   </header>

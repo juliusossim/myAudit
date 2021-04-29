@@ -2,7 +2,7 @@ import React, { Suspense } from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
-import MainPortal from './components/MainPortal';
+import MainPortal from './routes/MainPortal';
 
 function App() {
   const history = createBrowserHistory();

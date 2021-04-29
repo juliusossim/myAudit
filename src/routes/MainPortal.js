@@ -1,10 +1,10 @@
 import React from 'react';
 import { Route } from 'react-router-dom';
 
-import portalRoutes from './routes/portal.routes';
+import portalRoutes from './portal.routes';
 
-import Header from './common/layouts/Header';
-import Footer from './common/layouts/Footer';
+import Header from '../layouts/Header';
+import Footer from '../layouts/Footer';
 
 function MainPortal() {
   return (

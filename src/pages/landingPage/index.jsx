@@ -1,6 +1,6 @@
-import React, { lazy } from 'react';
-import CustomCarousel from '../common/carousel';
-import LazyImage from '../common/lazyImg';
+import React from 'react';
+import CustomCarousel from '../../components/microComponents/carousel';
+import LazyImage from '../../components/microComponents/lazyImg';
 import howItWorks from '../../assets/images/howItWorks.svg';
 import { getOneName } from '../../utilities/stringOperations';
 import { diffDays } from '../../utilities/dateOperations';
@@ -32,7 +32,7 @@ const GeneralPage = () => {
               raise funds with ease and securely. get started now...
             </small>
             <div>
-              <button type="button" className="btn btn-small" onClick={startProject}>
+              <button type="button" className="btn btn-small butt" onClick={startProject}>
                 Start Project Today
               </button>
             </div>
@@ -242,7 +242,7 @@ const GeneralPage = () => {
         {
           raisersCategory.map(
             (category) => (
-              <button type="button" className="categoryButtons">
+              <button type="button" className="categoryButtons butt">
                 <span>
                   {category}
                 </span>

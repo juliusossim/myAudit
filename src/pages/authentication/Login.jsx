@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import TextInput from '../common/inputs/TextInput';
-import Modal from '../common/modal';
+import { useDispatch, useSelector } from 'react-redux';
+import TextInput from '../../components/form/inputs/TextInput';
+import Modal from '../../components/microComponents/modal';
+import { loginUser, loginSelector } from '../../redux/reducers/loginSlice';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({});
   const [show, setShow] = useState(false);
 
+  // redux
+  const dispatch = useDispatch();
+
   const handleLogin = () => {
-    setShow(true);
+    // setShow(true);
+    // e.preventDefault();
+    const payload = { ...formData };
+    dispatch(loginUser(payload));
   };
 
   const handleChange = (e) => {
@@ -25,14 +33,14 @@ const LoginPage = () => {
       </div>
     </div>
   );
-  const handleClose = () => {
-    setShow(false);
-    window.location.replace('/home');
-  };
+  // const handleClose = () => {
+  //   setShow(false);
+  //   window.location.replace('/home');
+  // };
 
-  useEffect(() => {
-    show && setTimeout(handleClose, 4000);
-  }, [show]);
+  // useEffect(() => {
+  //   show && setTimeout(handleClose, 4000);
+  // }, [show]);
 
   return (
     <div className="content">

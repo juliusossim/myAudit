@@ -305,7 +305,18 @@ header {
 main {
   padding-top: 84px;
 }
-
+.end-icon {
+  position: absolute;
+  bottom: 19%;
+  right: 6%;
+  cursor: pointer;
+}
+.terms {
+  @extend .fonts;
+  font-size: 13px;
+  line-height: 19.5px;
+  color: #2E2E2E;
+}
 .login-form-container {
   width: 100%;
   background-color: #FFFFFF;

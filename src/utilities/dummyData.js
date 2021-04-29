@@ -1,4 +1,3 @@
-import React from 'react';
 import program0 from '../assets/images/projects/Rectangle 19.svg';
 import program1 from '../assets/images/projects/Rectangle 19 (1).svg';
 import program2 from '../assets/images/projects/Rectangle 19 (2).svg';
@@ -9,6 +8,7 @@ import program3 from '../assets/images/projects/Rectangle 19 (3).svg';
  */
 
 export const projectType = [
+  'select project type',
   {
     id: 1,
     type: 'ngo',

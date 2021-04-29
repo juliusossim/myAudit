@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import FormBuilder from '../common/builders/form';
-import formBuilderProps from './constants/register';
+import FormBuilder from '../../components/form/builders/form';
+import formBuilderProps from './constants/changePassword';
 import { validateField } from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
-import Modal from '../common/modal';
+import Modal from '../../components/microComponents/modal';
 
-const RegisterPage = () => {
+const ChangePassword = () => {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
@@ -28,7 +28,6 @@ const RegisterPage = () => {
   const handleBlur = (e, validations) => {
     const { name, value } = e.target;
     const field = slugToString(name);
-    // console.log(typeof field !== 'undefined');
     typeof field !== 'undefined'
     && setErrors(
       {
@@ -41,9 +40,12 @@ const RegisterPage = () => {
   };
 
   const modalTemplate = (
-    <div className="bg-wema">
-      <div className="center-text p-2 text-white">
-        form submitted successfully
+    <div className="bg-white login-form-container p-5">
+      <div className="center-text p-2">
+        <h4 className="text-success">Successful!</h4>
+        <p>
+          Password changed successfully
+        </p>
       </div>
     </div>
   );
@@ -54,10 +56,12 @@ const RegisterPage = () => {
 
   return (
     <div className="content">
+      <p>
+        Change Password
+      </p>
       <div className="max-w-600 w-600 margin-center m-t-40">
         <div className="login-form-container p-20">
-          <h3 className="">Create Account</h3>
-          <p className="">To start a project, you need to create an account...</p>
+          <p className="">Change your password below</p>
           <hr />
           <div className="login-form">
             <FormBuilder
@@ -72,7 +76,10 @@ const RegisterPage = () => {
                 )
               }
             />
-            <button className="w-100 btn btn-large" type="button" onClick={handleRegister}>Create Account</button>
+            <button type="button" className="text-wema float-left viewMoreBtn" onClick={() => window.location.history.back()}>
+              &lt; Back
+            </button>
+            <button className="w-25 btn btn-small float-right" type="button" onClick={handleRegister}>Change Password</button>
           </div>
         </div>
       </div>
@@ -84,4 +91,4 @@ const RegisterPage = () => {
   );
 };
 
-export default RegisterPage;
+export default ChangePassword;
