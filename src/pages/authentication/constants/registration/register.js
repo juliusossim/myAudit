@@ -1,5 +1,5 @@
-import { locations, managers, projectType } from '../../../utilities/dummyData';
-import { validationPatterns } from '../../../utilities/validation';
+import { projectType } from '../../../../utilities/dummyData';
+import { validationPatterns } from '../../../../utilities/validation';
 
 const formBuilderProps = (
   {

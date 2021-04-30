@@ -1,5 +1,5 @@
-import { locations, managers, projectType } from '../../../utilities/dummyData';
-import { validationPatterns } from '../../../utilities/validation';
+import { locations, managers } from '../../../../utilities/dummyData';
+import { validationPatterns } from '../../../../utilities/validation';
 
 const formBuilderNgoProps = (
   {
@@ -28,13 +28,13 @@ const formBuilderNgoProps = (
     kind: 'input',
     props: {
       className: 'w-100 m-b-20 col-6',
-      name: 'registration_number',
+      name: 'rc_number',
       label: 'Registration Number',
-      value: formData?.registration_number || '',
+      value: formData?.rc_number || '',
       validations: {
         required: true
       },
-      error: errors?.registration_number,
+      error: errors?.rc_number,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -45,7 +45,7 @@ const formBuilderNgoProps = (
       className: 'w-100 m-b-20 col-6',
       name: 'phone_number',
       label: 'Phone Number',
-      type: 'number',
+      type: 'tel',
       value: formData?.phone_number || '',
       validations: {
         required: true,
@@ -61,15 +61,15 @@ const formBuilderNgoProps = (
     kind: 'text_area',
     props: {
       className: 'w-100 m-b-20',
-      name: 'organisation_description',
+      name: 'description',
       label: 'Organisation Description',
       placeholder: 'Type your description here...',
-      value: formData?.organisation_description || '',
+      value: formData?.description || '',
       validations: {
-        maxLength: 500,
-        required: true
+        maxLength: 500
+        // required: true
       },
-      error: errors?.organisation_description,
+      error: errors?.description,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -78,15 +78,15 @@ const formBuilderNgoProps = (
     kind: 'file_input',
     props: {
       className: 'w-100 m-b-20',
-      name: 'organisation_logo',
+      name: 'logo_id',
       label: 'Upload Organisation Logo',
       text: 'Upload Logo',
-      value: formData?.organisation_logo || '',
+      value: formData?.logo_id || '',
       validations: {
         required: true,
         pattern: validationPatterns.image
       },
-      error: errors?.organisation_logo,
+      error: errors?.logo_id,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -101,7 +101,7 @@ const formBuilderNgoProps = (
       optionIndex: 'fullName',
       value: formData?.manager_name || '',
       validations: {
-        required: true
+        // required: true
       },
       error: errors?.manager_name,
       onBlur: handleBlur,
@@ -112,15 +112,15 @@ const formBuilderNgoProps = (
     kind: 'select',
     props: {
       className: 'w-100 m-b-20',
-      name: 'organisation_location',
+      name: 'location',
       label: 'Organisation Location',
       options: locations,
       optionIndex: 'name',
-      value: formData?.organisation_location || '',
+      value: formData?.location || '',
       validations: {
-        required: true
+        // required: true
       },
-      error: errors?.organisation_location,
+      error: errors?.location,
       onBlur: handleBlur,
       onChange: handleChange
     }

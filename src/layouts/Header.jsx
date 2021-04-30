@@ -1,6 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
 import CrowdLogo from '../assets/images/crowd-funding-logo.png';
 
 const Header = () => (

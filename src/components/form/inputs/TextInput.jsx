@@ -10,6 +10,7 @@ const TextInput = (props) => {
     <div className={`${props.error?.length > 0 ? `${props.className} col-12` : `${props.className}`} form-group`}>
       <label htmlFor={props.name} className={String(props.value).length ? 'active-field' : ''}>
         {props.label}
+        <span className="text-danger font-weight-bold">{props.validations?.required && '*'}</span>
       </label>
       <input
         className={props.error?.length > 0 ? 'error-field' : ''}
@@ -22,6 +23,7 @@ const TextInput = (props) => {
         onBlur={((e) => typeof props.onBlur === 'function'
         && props.onBlur(e, props.validations))}
         disabled={props.disabled}
+        required={props.validations?.required}
         onKeyPress={props.onKeyPress}
         onKeyDown={props.onKeyDown}
         maxLength={props.validations?.max}

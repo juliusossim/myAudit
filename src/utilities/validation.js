@@ -81,14 +81,36 @@ export const test = (obj, dataLength) => (
  * the expected lenght of the obj| payload object.
  */
 export const canSubmit = (obj, error, setSubmittable, dataLength) => {
-  for (const [key, val] of Object.entries(obj)) {
-    if (obj.constructor === Object) {
-      if (error[key]?.length > 0 || Object.keys(obj).length < dataLength) {
-        console.log('submittable should be false', error[key]?.length > 0, Object.keys(obj).length < dataLength);
-        setSubmittable(false);
-      } else {
-        setSubmittable(true);
+  if (obj.constructor === Object) {
+    const err = [];
+    const equ = Object.keys(obj)?.length >= dataLength;
+    if (error.constructor === Object) {
+      // eslint-disable-next-line no-unused-vars
+      for (const [key, val] of Object.entries(error)) {
+        if (val.constructor === Array) {
+          val.length > 0 && err.push(val);
+        }
       }
     }
+    if (err.length === 0) {
+      setSubmittable(equ);
+    } else {
+      setSubmittable(false);
+    }
   }
+};
+
+export const mapBackendErrors = (data) => {
+  const backErrors = [];
+  // eslint-disable-next-line no-unused-vars
+  for (const [key, val] of Object.entries(data)) {
+    if (val.constructor === Array) {
+      val.map(
+        (backErr) => backErrors.push(backErr)
+      );
+    } else {
+      backErrors.push(val);
+    }
+  }
+  return backErrors;
 };

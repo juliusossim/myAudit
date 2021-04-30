@@ -11,16 +11,22 @@ export const projectType = [
   'select project type',
   {
     id: 1,
+    type: 'corporate',
+    desc: 'corporate project'
+  },
+  {
+    id: 2,
     type: 'ngo',
     desc: 'organisational project'
   },
   {
-    id: 2,
+    id: 3,
     type: 'individual',
     desc: 'organisational project'
   }
 ];
 export const managers = [
+  'select a manager',
   {
     id: 1,
     fullName: 'olufemi adebayor',
@@ -33,6 +39,7 @@ export const managers = [
   }
 ];
 export const locations = [
+  'select a location',
   {
     id: 1,
     name: 'lekki',

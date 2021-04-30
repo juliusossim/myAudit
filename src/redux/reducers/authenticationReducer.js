@@ -1,7 +1,11 @@
 import constants from '../constants';
 
 const initialState = {
-  registerIndividual: {
+  register: {
+    data: {},
+    status: 'initial'
+  },
+  login: {
     data: {},
     status: 'initial'
   }

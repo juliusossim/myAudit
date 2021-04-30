@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import FormBuilder from '../../../components/form/builders/form';
-import formBuilderIndividualProps from '../constants/registerIndividual';
-import formBuilderNgoProps from '../constants/registerNgo';
-import formBuilderProps from '../constants/register';
-import { validateField, canSubmit } from '../../../utilities/validation';
-import { slugToString } from '../../../utilities/stringOperations';
-import Modal from '../../../components/microComponents/modal';
-import { register } from '../../../redux/actions/authenticationActions';
+import FormBuilder from '../../components/form/builders/form';
+import formBuilderIndividualProps from './constants/registration/registerIndividual';
+import formBuilderNgoProps from './constants/registration/registerNgo';
+import formBuilderCorporateProps from './constants/registration/registerCorporate';
+import formBuilderProps from './constants/registration/register';
+import { validateField, canSubmit } from '../../utilities/validation';
+import { slugToString } from '../../utilities/stringOperations';
+import Modal from '../../components/microComponents/modal';
+import { register } from '../../redux/actions/authenticationActions';
 
 /**
  *
@@ -17,7 +18,7 @@ import { register } from '../../../redux/actions/authenticationActions';
 const RegisterPage = () => {
   /* redux */
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.register);
+  const store = useSelector((state) => state.auth.register);
   /* state */
   const [formData, setFormData] = useState({ terms: false, project_type: 'select project type' });
   const [errors, setErrors] = useState({});
@@ -26,18 +27,18 @@ const RegisterPage = () => {
 
   const handleRegister = () => {
     setShow(true);
-    const payload = {
-      ...formData,
-      firstName: formData.first_name,
-      lastName: formData.last_name,
-      phoneNumber: formData.phone_number
-    };
-    dispatch(register(payload));
+    // const payload = {
+    //   ...formData,
+    //   firstName: formData.first_name,
+    //   lastName: formData.last_name,
+    //   phoneNumber: formData.phone_number
+    // };
+    dispatch(register(formData, formData?.project_type));
   };
 
   const handleClose = () => {
     setShow(false);
-    // window.location.replace('/create-project');
+    return window.location.replace('/create-project');
   };
 
   const handleChecked = (e) => {
@@ -72,10 +73,87 @@ const RegisterPage = () => {
     );
   };
 
+  const mapBackendErrors = () => {
+    const backErrors = [];
+    // eslint-disable-next-line no-unused-vars
+    for (const [key, val] of Object.entries(store.data)) {
+      if (val.constructor === Array) {
+        val.map(
+          (backErr) => backErrors.push(backErr)
+        );
+      }
+      if (val.constructor === Object) {
+        backErrors.push(val.description);
+      } else {
+        backErrors.push(val);
+      }
+    }
+    return backErrors;
+  };
   const modalTemplate = (
-    <div className="bg-wema">
-      <div className="center-text p-2 text-white">
-        form submitted successfully
+    <div className={
+      // eslint-disable-next-line no-nested-ternary
+      (store?.status === 'failed')
+        ? 'mt-5 p-5'
+        : (
+          store?.status === 'pending'
+            ? 'mt-5 p-5 '
+            : 'mt-5 p-5 bg-wema'
+        )
+    }
+    >
+      <div className="text-white">
+        {
+          store?.status === 'pending'
+          && (
+            <div className="center-text text-success">
+              Loading...
+            </div>
+          )
+        }
+        {
+          store?.status !== 'pending'
+          && (
+            <div className="">
+              <h5 className="center-text text-muted">{store?.status}</h5>
+              <ul>
+                {
+                  store?.status === 'failed'
+                    ? (
+                      <div>
+                        <ul>
+
+                          {
+                            mapBackendErrors(store?.data).map(
+                              (err) => (
+                                typeof err !== 'undefined' && (
+                                  <li key={err} className="text-warning">
+                                    {err}
+                                  </li>
+                                )
+                              )
+                            )
+                          }
+                        </ul>
+                        <button onClick={() => setShow(false)} type="button" className="btn w-25 center btn-small float-right">
+                          Ok
+                        </button>
+                      </div>
+                    )
+                    : (
+                      <p>
+                        your account is created
+                        you will now be redirected to your projects
+                        {
+                          setTimeout(handleClose, 3000)
+                        }
+                      </p>
+                    )
+                }
+              </ul>
+            </div>
+          )
+        }
       </div>
     </div>
   );
@@ -83,22 +161,25 @@ const RegisterPage = () => {
   const goBack = () => {
     setFormData({
       ...formData,
-      project_type: 'select project type'
+      project_type: 'select project type',
+      organisation_logo: ''
     });
   };
 
   useEffect(() => {
-    show && setTimeout(handleClose, 4000);
-  }, [show]);
-  useEffect(() => {
     if (formData.terms) {
-      if (formData?.project_type === 'ngo') {
-        return canSubmit(formData, errors, setSubmittable, 10);
+      if (formData?.project_type === 'corporate') {
+        return canSubmit(formData, errors, setSubmittable, 6);
       }
-      return canSubmit(formData, errors, setSubmittable, 8);
+      if (formData?.project_type === 'ngo') {
+        return canSubmit(formData, errors, setSubmittable, 4);
+      }
+      if (formData.project_type === 'individual') {
+        return canSubmit(formData, errors, setSubmittable, 6);
+      }
     }
     return false;
-  }, [formData]);
+  }, [formData, errors]);
 
   return (
     <div className="content">
@@ -161,6 +242,24 @@ const RegisterPage = () => {
             }
 
             {
+              formData.project_type === 'corporate'
+              && (
+                <FormBuilder
+                  formItems={
+                    formBuilderCorporateProps(
+                      {
+                        formData,
+                        handleBlur,
+                        handleChange,
+                        errors
+                      }
+                    )
+                  }
+                />
+              )
+            }
+
+            {
               formData.project_type !== 'select project type'
               && (
                 <div>
@@ -179,9 +278,6 @@ const RegisterPage = () => {
                   <button type="button" onClick={goBack} className="text-wema w-25 viewMoreBtn">
                     &lt; go back
                   </button>
-                  {
-                    console.log(submittable)
-                  }
                   {
                     formData.terms
                     && (

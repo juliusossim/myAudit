@@ -242,7 +242,7 @@ const GeneralPage = () => {
         {
           raisersCategory.map(
             (category) => (
-              <button type="button" className="categoryButtons butt">
+              <button key={category} type="button" className="categoryButtons butt">
                 <span>
                   {category}
                 </span>

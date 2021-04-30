@@ -54,7 +54,7 @@ const CreateProject = () => {
   );
 
   useEffect(() => {
-    window.location.replace('/register');
+    // window.location.replace('/register');
     show && setTimeout(handleClose, 4000);
   }, [show]);
 
