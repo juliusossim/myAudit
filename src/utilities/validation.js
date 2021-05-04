@@ -100,17 +100,27 @@ export const canSubmit = (obj, error, setSubmittable, dataLength) => {
   }
 };
 
-export const mapBackendErrors = (data) => {
+export const mapBackendErrors = (storeData) => {
   const backErrors = [];
-  // eslint-disable-next-line no-unused-vars
-  for (const [key, val] of Object.entries(data)) {
-    if (val.constructor === Array) {
-      val.map(
-        (backErr) => backErrors.push(backErr)
-      );
-    } else {
-      backErrors.push(val);
+  if (storeData?.constructor === Object) {
+    // eslint-disable-next-line no-unused-vars
+    for (const [key, val] of Object.entries(storeData)) {
+      if (val?.constructor === Array) {
+        val?.map(
+          (backErr) => backErrors.push(backErr.message)
+        );
+      }
+      if (val?.constructor === Object) {
+        console.log('object', val);
+        backErrors.push(val.message);
+      }
     }
   }
+  if (storeData?.constructor === Array) {
+    storeData.map((er) => backErrors.push(er.message));
+  } else {
+    backErrors.push(storeData);
+  }
+
   return backErrors;
 };

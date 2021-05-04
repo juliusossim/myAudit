@@ -5,7 +5,7 @@ import formBuilderIndividualProps from './constants/registration/registerIndivid
 import formBuilderNgoProps from './constants/registration/registerNgo';
 import formBuilderCorporateProps from './constants/registration/registerCorporate';
 import formBuilderProps from './constants/registration/register';
-import { validateField, canSubmit } from '../../utilities/validation';
+import { validateField, canSubmit, mapBackendErrors } from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
 import { register } from '../../redux/actions/authenticationActions';
@@ -38,7 +38,7 @@ const RegisterPage = () => {
 
   const handleClose = () => {
     setShow(false);
-    return window.location.replace('/create-project');
+    window.location.replace('/create-project');
   };
 
   const handleChecked = (e) => {
@@ -73,23 +73,6 @@ const RegisterPage = () => {
     );
   };
 
-  const mapBackendErrors = () => {
-    const backErrors = [];
-    // eslint-disable-next-line no-unused-vars
-    for (const [key, val] of Object.entries(store.data)) {
-      if (val.constructor === Array) {
-        val.map(
-          (backErr) => backErrors.push(backErr)
-        );
-      }
-      if (val.constructor === Object) {
-        backErrors.push(val.description);
-      } else {
-        backErrors.push(val);
-      }
-    }
-    return backErrors;
-  };
   const modalTemplate = (
     <div className={
       // eslint-disable-next-line no-nested-ternary
@@ -122,7 +105,6 @@ const RegisterPage = () => {
                     ? (
                       <div>
                         <ul>
-
                           {
                             mapBackendErrors(store?.data).map(
                               (err) => (
@@ -145,7 +127,8 @@ const RegisterPage = () => {
                         your account is created
                         you will now be redirected to your projects
                         {
-                          setTimeout(handleClose, 3000)
+                          store?.status === 'success'
+                          && setTimeout(handleClose, 3000)
                         }
                       </p>
                     )

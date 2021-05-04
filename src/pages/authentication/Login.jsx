@@ -3,9 +3,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import TextInput from '../../components/form/inputs/TextInput';
 import Modal from '../../components/microComponents/modal';
 import { login } from '../../redux/actions/authenticationActions';
+import { mapBackendErrors } from '../../utilities/validation';
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({ remember_me: false });
   const [show, setShow] = useState(false);
 
   /* redux */
@@ -28,34 +29,27 @@ const LoginPage = () => {
       [name]: value
     }));
   };
-  // const handleClose = () => {
-  //   setShow(false);
-  //   window.location.replace('/home');
-  // };
-
-  const mapBackendErrors = () => {
-    const backErrors = [];
-    // eslint-disable-next-line no-unused-vars
-    for (const [key, val] of Object.entries(store.data)) {
-      if (val.constructor === Array) {
-        val.map(
-          (backErr) => backErrors.push(backErr)
-        );
-      } else {
-        backErrors.push(val);
-      }
-    }
-    return backErrors;
+  const handleChecked = (e) => {
+    const { name } = e.target;
+    setFormData({
+      ...formData,
+      [name]: !formData[name]
+    });
   };
+  const handleClose = () => {
+    setShow(false);
+    window.location.replace('/home');
+  };
+
   const modalTemplate = (
     <div className={
       // eslint-disable-next-line no-nested-ternary
       (store?.status === 'failed')
-        ? 'mt-5 p-5 bg-danger'
+        ? 'mt-5 p-5'
         : (
           store?.status === 'pending'
             ? 'mt-5 p-5 '
-            : 'mt-5 p-5 bg-wema'
+            : 'mt-5 p-5 '
         )
     }
     >
@@ -72,19 +66,22 @@ const LoginPage = () => {
           store?.status !== 'pending'
           && (
             <div className="">
-              <h5 className="center-text">{store?.status}</h5>
+              <h5 className="center-text text-muted">{store?.status}</h5>
               <ul>
                 {
                   store?.status === 'failed'
                     ? (
                       <div>
                         <ul>
+
                           {
-                            mapBackendErrors(store?.data).map(
+                            mapBackendErrors(store?.errors).map(
                               (err) => (
-                                <li key={err}>
-                                  {err}
-                                </li>
+                                typeof err !== 'undefined' && (
+                                  <li key={err} className="text-warning">
+                                    {err}
+                                  </li>
+                                )
                               )
                             )
                           }
@@ -95,11 +92,13 @@ const LoginPage = () => {
                       </div>
                     )
                     : (
-                      <p>
-                        your account is created
-                        you will now be redirected to your projects
+                      <p className="text-wema text-center">
                         {
-                          // setTimeout(handleClose, 3000)
+                          `Welcome back ${store?.data?.data?.user?.first_name}`
+                        }
+                        {
+                          store?.status === 'success'
+                          && setTimeout(handleClose, 3000)
                         }
                       </p>
                     )
@@ -139,14 +138,42 @@ const LoginPage = () => {
               onChange={handleChange}
               className="w-100 m-b-20"
             />
+            <div className="row">
+              <div className="w-50 p-md-2">
+                <input className="text-wema" type="checkbox" name="remember_me" checked={formData.remember_me} onChange={handleChecked} />
+                {' '}
+                <span className="terms mb-3">
+                  remember me
+                </span>
+              </div>
+
+              <div className="w-50">
+                <a href="/forgot-password">
+                  <button type="button" className="text-wema float-right  mb-3 viewMoreBtn">
+                    forgot password?
+                  </button>
+                </a>
+              </div>
+            </div>
             <button className="w-100 btn btn-large" type="button" onClick={handleLogin}>Login</button>
+            <div className="mt-3">
+              <span className="">New to Wemabank Crowdfunding?</span>
+              <a href="/register">
+                <button type="button" className="text-wema  viewMoreBtn">
+                  Sigh Up
+                </button>
+              </a>
+            </div>
           </div>
         </div>
       </div>
-      <Modal
-        className={show ? 'max-w-400 right top' : 'max-w-400 right top off'}
-        content={modalTemplate}
-      />
+      {typeof store !== 'undefined'
+        && (
+          <Modal
+            className={show ? 'max-w-400 right top' : 'max-w-400 right top off'}
+            content={modalTemplate}
+          />
+        )}
     </div>
   );
 };
