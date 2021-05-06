@@ -9,6 +9,7 @@ import { validateField, canSubmit, mapBackendErrors } from '../../utilities/vali
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
 import { register } from '../../redux/actions/authenticationActions';
+import { uploadFile } from '../../services/fetch';
 
 /**
  *
@@ -21,21 +22,19 @@ const RegisterPage = () => {
   const store = useSelector((state) => state.auth.register);
   /* state */
   const [formData, setFormData] = useState({ terms: false, project_type: 'select project type' });
+  const [file, setFile] = useState(null);
+  const [progress, setProgress] = useState(0);
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
   const [submittable, setSubmittable] = useState(false);
 
   const handleRegister = () => {
     setShow(true);
-    // const payload = {
-    //   ...formData,
-    //   firstName: formData.first_name,
-    //   lastName: formData.last_name,
-    //   phoneNumber: formData.phone_number
-    // };
     dispatch(register(formData, formData?.project_type));
   };
-
+  const cancelUpload = () => {
+    setFormData({ ...formData, file: '', logo_id: '' });
+  };
   const handleClose = () => {
     setShow(false);
     window.location.replace('/create-project');
@@ -50,8 +49,11 @@ const RegisterPage = () => {
   };
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
-
+    const { name, value, files } = e.target;
+    if (name === 'logo_id') {
+      setFile(files);
+      uploadFile(files[0], setProgress);
+    }
     setFormData((state) => ({
       ...state,
       [name]: value
@@ -148,7 +150,10 @@ const RegisterPage = () => {
       organisation_logo: ''
     });
   };
-
+  useEffect(() => {
+    progress === 100
+   && setFormData({ ...formData, file: URL.createObjectURL(file[0]) });
+  }, [file, progress]);
   useEffect(() => {
     if (formData.terms) {
       if (formData?.project_type === 'corporate') {
@@ -232,6 +237,8 @@ const RegisterPage = () => {
                     formBuilderCorporateProps(
                       {
                         formData,
+                        setFormData: cancelUpload,
+                        progress,
                         handleBlur,
                         handleChange,
                         errors
@@ -246,6 +253,7 @@ const RegisterPage = () => {
               formData.project_type !== 'select project type'
               && (
                 <div>
+                  { progress }
                   <div>
                     <input className="text-wema" type="checkbox" name="terms" checked={formData.terms} onChange={handleChecked} />
                     {' '}

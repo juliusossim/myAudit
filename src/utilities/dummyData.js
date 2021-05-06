@@ -38,6 +38,30 @@ export const managers = [
     accountNumber: 450940488
   }
 ];
+export const days = [
+  'select a manager',
+  {
+    id: 1,
+    name: '7 days',
+    value: 7
+  },
+  {
+    id: 2,
+    name: '30 days',
+    value: 30
+  }
+];
+export const projectCategories = [
+  'select a category',
+  {
+    id: 1,
+    name: 'education'
+  },
+  {
+    id: 2,
+    name: 'tourism'
+  }
+];
 export const locations = [
   'select a location',
   {

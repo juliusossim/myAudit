@@ -4,6 +4,8 @@ import { validationPatterns } from '../../../../utilities/validation';
 const formBuilderCorporateProps = (
   {
     formData,
+    setFormData,
+    progress,
     handleBlur,
     handleChange,
     errors
@@ -82,6 +84,9 @@ const formBuilderCorporateProps = (
       label: 'Upload Organisation Logo',
       text: 'Upload Logo',
       value: formData?.logo_id || '',
+      file: formData?.file || '',
+      setFormData,
+      progress,
       validations: {
         required: true,
         pattern: validationPatterns.image

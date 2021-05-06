@@ -43,13 +43,35 @@ const fetchBackend = async (endpoint, method, auth, body, pQuery, param, multipa
 
   return axios(options)
     .then((res) => res, async (err) => {
-      if (err && err.response && (err.response.status === 401 || err.response.status === 400)) {
+      if (err?.response?.status === 401 || err?.response?.status === 400) {
         console.log('err: ', err.response);
         // log the user out and return
         // await logout(process.env.REACT_APP_JWT_SECRET, true);
       }
-      return err.response.data.errors;
+      return err?.response?.data?.errors;
     });
+};
+
+export const uploadFile = (file, setProgress) => {
+  console.log('here');
+  // const config = {
+  //   onUploadProgress: (progressEvent) => console.log(progressEvent.loaded)
+  // };
+  // axios.post('http://localhost:3000/upload/', data, config);
+  let progress = 0;
+  axios({
+    baseURL: 'http://localhost:3000',
+    // url: '/file',
+    method: 'post',
+    data: file,
+    onUploadProgress: (uploadEvent) => {
+      console.log('in the on');
+      const { loaded, total } = uploadEvent;
+      progress = Math.floor((loaded / total) * 100);
+      console.log(progress);
+      setProgress(progress);
+    }
+  });
 };
 
 /**

@@ -11,6 +11,11 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         label,
         name,
         value,
+        file,
+        removeItem,
+        multiple,
+        setFormData,
+        progress,
         className,
         type,
         text,
@@ -54,6 +59,11 @@ const FormBuilder = ({ formItems }) => formItems?.map(
           <FileInput
             key={name}
             value={value}
+            file={file}
+            removeItem={removeItem}
+            multiple={multiple}
+            setFormData={setFormData}
+            progress={progress}
             className={className}
             name={name}
             error={error}

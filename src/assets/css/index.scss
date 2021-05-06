@@ -4,6 +4,7 @@
 @import 'carousel';
 @import 'lazyImage';
 @import 'landingPage';
+@import 'progressBar';
 
 @font-face {
   font-family: Poppins;
@@ -241,6 +242,39 @@ a.gray:hover {
 .center-text {
   text-align: center!important;
 }
+.radius50 {
+  border-radius: 50%;
+}
+.border-wema {
+  border: 1px solid purple;
+}
+.faint-border {
+  border: solid 1px #efefef
+;
+}
+.size3 {
+  width: 2vw;
+  height: 4vh;
+}
+.pt-1-25 {
+  padding-top: 1.25vh;
+}
+.size4 {
+  width: 3vw;
+  height: 6vh;
+}
+.accordion-div {
+  border-bottom: solid 1px;
+  padding-bottom: 3vh;
+  &.is-focus {
+    border-bottom: solid 3px #A01B88;
+  }
+}
+.center-items {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
 .text-wema{
   color: #A01B88;
 }
@@ -376,6 +410,29 @@ footer {
   }
   svg.left {
     margin-right: 10px;
+  }
+}
+.btn-plain {
+  background-color: transparent;
+  padding: 8px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.3s ease-out;
+}
+.remove-media {
+  position: absolute;
+  //top: -.3vh;
+  right: 1vw;
+  &:hover {
+    background: rgba(76, 15, 15, 0.84);
+    color: #FFFFFF !important;
+  }
+}
+.hover-wema {
+
+  &:hover {
+    background: #A01B8888;
+    color: #fff;
   }
 }
 i.btn {

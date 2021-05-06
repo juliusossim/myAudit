@@ -39,8 +39,7 @@ export const login = (payload) => {
       if (response?.status === 200) {
         dispatch(success(response?.data));
       } else {
-        console.log(response);
-        dispatch(failure(response.data));
+        dispatch(failure(response?.data));
       }
     });
   };
