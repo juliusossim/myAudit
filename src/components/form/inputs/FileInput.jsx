@@ -95,22 +95,6 @@ const FileInput = (
   const [percennt, setPercent] = useState(0);
   const [clips, setClips] = useState([]);
   const [head, ...tail] = file;
-  const showImage = () => {
-    if (file.length > 0) {
-      const currentFile = file.length > 1 ? tail : head;
-      console.log('currentFile: ', currentFile);
-      uploadFile(currentFile, setPercent);
-      const clip = URL.createObjectURL(currentFile);
-      const clipDisplay = {
-        name: clip,
-        display: <img src={clip} alt="clip" />
-      };
-      setClips([...clips, clipDisplay]);
-    }
-  };
-  // useEffect(() => {
-  //   file.length > 0 && showImage();
-  // }, [file]);
   return (
     <div className={`${error?.length > 0 ? `${className} col-12` : `${className}`} form-group`}>
       {
@@ -126,12 +110,7 @@ const FileInput = (
               ))
             }
             <div className="file-input col-md-4">
-              {/* <p> */}
-              {/*  {label} */}
-              {/* </p> */}
               <button type="button" className="">
-                {/* { file.length === 0 ? text : 'Replace Upload' } */}
-                {/* {' '} */}
                 <div className=""><FaPlus /></div>
                 <small> Add Media</small>
               </button>
