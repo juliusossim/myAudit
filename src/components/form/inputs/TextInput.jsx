@@ -19,6 +19,8 @@ const TextInput = (props) => {
         id={props.name}
         value={props.value}
         onChange={props.onChange}
+        onFocus={props.onFocus}
+        title={props.title}
         readOnly={props.readOnly}
         onBlur={((e) => typeof props.onBlur === 'function'
         && props.onBlur(e, props.validations))}
@@ -26,7 +28,7 @@ const TextInput = (props) => {
         required={props.validations?.required}
         onKeyPress={props.onKeyPress}
         onKeyDown={props.onKeyDown}
-        maxLength={props.validations?.max}
+        maxLength={props.validations?.maxLength}
         min={props.validations?.min}
         max={props.validations?.max}
       />
@@ -41,7 +43,7 @@ const TextInput = (props) => {
               }
             </ul>
           )
-          : props.type === 'password'
+          : props.name === 'password'
         && (
           reveal ? <FaEyeSlash title="hide" role="button" className="end-icon" onClick={handleReveal} />
             : <FaEye title="reveal" role="button" className="end-icon" onClick={handleReveal} />

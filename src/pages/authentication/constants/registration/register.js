@@ -6,7 +6,8 @@ const formBuilderProps = (
     formData,
     handleBlur,
     handleChange,
-    errors
+    errors,
+    selectDisabled
   }
 ) => ([
   {
@@ -72,6 +73,7 @@ const formBuilderProps = (
       validations: {
         required: true
       },
+      disabled: selectDisabled,
       error: errors?.project_type,
       optionIndex: 'type',
       onBlur: handleBlur,

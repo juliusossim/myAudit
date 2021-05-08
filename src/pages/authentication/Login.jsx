@@ -160,7 +160,7 @@ const LoginPage = () => {
               <span className="">New to Wemabank Crowdfunding?</span>
               <a href="/register">
                 <button type="button" className="text-wema  viewMoreBtn">
-                  Sigh Up
+                  Sign Up
                 </button>
               </a>
             </div>

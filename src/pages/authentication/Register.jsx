@@ -1,11 +1,16 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FormBuilder from '../../components/form/builders/form';
 import formBuilderIndividualProps from './constants/registration/registerIndividual';
 import formBuilderNgoProps from './constants/registration/registerNgo';
 import formBuilderCorporateProps from './constants/registration/registerCorporate';
 import formBuilderProps from './constants/registration/register';
-import { validateField, canSubmit, mapBackendErrors } from '../../utilities/validation';
+import {
+  validateField,
+  canSubmit,
+  mapBackendErrors,
+  errorsChecker
+} from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
 import { register } from '../../redux/actions/authenticationActions';
@@ -27,6 +32,8 @@ const RegisterPage = () => {
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
   const [submittable, setSubmittable] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [selectType, setSelectType] = useState(true);
 
   const handleRegister = () => {
     setShow(true);
@@ -54,12 +61,44 @@ const RegisterPage = () => {
       setFile(files);
       uploadFile(files[0], setProgress);
     }
+    if (name === 'project_type') {
+      value === 'corporate'
+        ? setFormData({
+          ...formData,
+          terms: false,
+          first_name: '',
+          last_name: '',
+          phone_number: null,
+          code: '',
+          bvn: ''
+        })
+        : setFormData({
+          ...formData,
+          terms: false,
+          organisation_name: '',
+          rc_number: '',
+          description: '',
+          phone_number: null,
+          location: '',
+          manager: ''
+        });
+    }
     setFormData((state) => ({
       ...state,
       [name]: value
     }));
   };
 
+  const canContinue = (err) => {
+    if (
+      formData?.email?.length > 0
+      && formData?.password?.length > 0
+      && formData?.confirm_password?.length > 0
+    ) {
+      return setSelectType(err);
+    }
+    return setSelectType(true);
+  };
   const handleBlur = (e, validations) => {
     const { name, value } = e.target;
     const field = slugToString(name);
@@ -73,6 +112,8 @@ const RegisterPage = () => {
         )
       }
     );
+    // setIsError(errorsChecker(errors));
+    // canContinue();
   };
 
   const modalTemplate = (
@@ -154,6 +195,9 @@ const RegisterPage = () => {
     progress === 100
    && setFormData({ ...formData, file: URL.createObjectURL(file[0]) });
   }, [file, progress]);
+  // useEffect(() => {
+  //   canContinue(errorsChecker(errors));
+  // }, [canContinue, errors]);
   useEffect(() => {
     if (formData.terms) {
       if (formData?.project_type === 'corporate') {
@@ -166,7 +210,8 @@ const RegisterPage = () => {
         return canSubmit(formData, errors, setSubmittable, 6);
       }
     }
-    return false;
+    // return setIsError(errorsChecker(errors));
+    return canContinue(errorsChecker(errors));
   }, [formData, errors]);
 
   return (
@@ -204,7 +249,8 @@ const RegisterPage = () => {
                         formData,
                         handleBlur,
                         handleChange,
-                        errors
+                        errors,
+                        selectDisabled: selectType
                       }
                     )
                   }
@@ -258,9 +304,9 @@ const RegisterPage = () => {
                     <input className="text-wema" type="checkbox" name="terms" checked={formData.terms} onChange={handleChecked} />
                     {' '}
                     <span className="terms">
-                      <span className="text-wema mr-1">
+                      <a href="" className="text-wema mr-1">
                         I accept
-                      </span>
+                      </a>
                       the terms and conditions
                       of Wemabank Crowdfunding
                     </span>

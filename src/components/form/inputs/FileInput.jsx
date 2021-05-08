@@ -138,6 +138,12 @@ const FileInput = (
                   {' '}
                 </button>
                 <input
+                  style={
+                    {
+                      marginTop: '6vh',
+                      paddingBottom: '5vh'
+                    }
+                  }
                   className={error?.length > 0 ? 'error-field' : ''}
                   type="file"
                   value={value}

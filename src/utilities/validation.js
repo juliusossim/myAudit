@@ -99,7 +99,19 @@ export const canSubmit = (obj, error, setSubmittable, dataLength) => {
     }
   }
 };
-
+export const errorsChecker = (errors) => {
+  const err = [];
+  if (errors.constructor === Object) {
+    // eslint-disable-next-line no-unused-vars
+    for (const [key, val] of Object.entries(errors)) {
+      if (val.constructor === Array) {
+        val.length > 0 && err.push(val);
+      }
+    }
+  }
+  // console.log('err.length', err.length > 0);
+  return err.length > 0;
+};
 export const mapBackendErrors = (storeData) => {
   const backErrors = [];
   if (storeData?.constructor === Object) {

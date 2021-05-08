@@ -14,11 +14,11 @@ export const projectType = [
     type: 'corporate',
     desc: 'corporate project'
   },
-  {
-    id: 2,
-    type: 'ngo',
-    desc: 'organisational project'
-  },
+  // {
+  //   id: 2,
+  //   type: 'ngo',
+  //   desc: 'organisational project'
+  // },
   {
     id: 3,
     type: 'individual',

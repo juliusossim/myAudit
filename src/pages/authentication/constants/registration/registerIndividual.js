@@ -41,14 +41,31 @@ const formBuilderIndividualProps = (
   {
     kind: 'input',
     props: {
-      className: 'w-100 m-b-20 col-6',
+      className: 'w-100 m-b-20 col-3',
+      name: 'country_code',
+      label: 'Code',
+      type: 'number',
+      value: formData?.country_code || 234,
+      validations: {
+        required: false,
+        maxLength: 4
+      },
+      error: errors?.country_code,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'input',
+    props: {
+      className: 'w-100 m-b-20 col-9',
       name: 'phone_number',
       label: 'Phone Number',
       type: 'number',
       value: formData?.phone_number || '',
       validations: {
-        required: false,
-        max: 11
+        required: true,
+        maxLength: 11
       },
       error: errors?.phone_number,
       onBlur: handleBlur,
@@ -58,12 +75,13 @@ const formBuilderIndividualProps = (
   {
     kind: 'input',
     props: {
-      className: 'w-100 m-b-20 col-6',
+      className: 'w-100 m-b-20 col-12',
+      type: 'number',
       name: 'bvn',
       label: 'BVN',
       value: formData?.bvn || '',
       validations: {
-        max: 10
+        max: 11
       },
       error: errors?.bvn,
       onBlur: handleBlur,

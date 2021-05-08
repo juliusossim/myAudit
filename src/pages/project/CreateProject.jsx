@@ -20,7 +20,6 @@ const CreateProject = () => {
   const store = useSelector((state) => state.auth.register);
   /* state */
   const [formData, setFormData] = useState({ file: [], project_type: 'select project type' });
-  const [file, setFile] = useState([]);
   const [progress, setProgress] = useState(0);
   const [accordionTab, setAccordionTab] = useState(1);
   const [errors, setErrors] = useState({});
@@ -146,18 +145,8 @@ const CreateProject = () => {
   };
 
   const goBack = () => {
-    // setFormData({
-    //   ...formData,
-    //   project_type: 'select project type',
-    //   // project_media: ''
-    // });
     setAccordionTab(1);
   };
-  // useEffect(() => {
-  //   console.log(file);
-  //   progress === 100
-  //   && setFormData({ ...formData, file: URL.createObjectURL(file[0]) });
-  // }, [file, progress]);
   useEffect(() => {
     accordionTab === 1
       ? canSubmit(formData, errors, setSubmittable, 4)

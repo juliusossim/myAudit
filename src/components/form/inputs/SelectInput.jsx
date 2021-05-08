@@ -23,7 +23,7 @@ const SelectInput = (
           value={option[optionIndex]?.toString()?.toLowerCase() === 'select item...' ? '' : option[optionIndex]}
           key={option[optionIndex]}
         >
-          {option[optionIndex]}
+          {option[optionIndex].toUpperCase()}
         </option>
       ) : (
         <option
