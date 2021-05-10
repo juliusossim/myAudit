@@ -75,10 +75,10 @@ const ForgotPassword = () => {
           && (
             <div className="">
               <h5 className="center-text text-muted">{store?.status}</h5>
-              <div>
+              <div className="text-warning">
                 {
                   store?.status === 'failed'
-                    ? (
+                    && (
                       <div>
                         We cannot verify this email, try again!
                         <button onClick={() => setShow(false)} type="button" className="btn w-25 center btn-small float-right">
@@ -86,15 +86,18 @@ const ForgotPassword = () => {
                         </button>
                       </div>
                     )
-                    : (
-                      <p>
-                        we have sent the next steps to your email.
-                        {
-                          store?.status === 'success'
-                          && setTimeout(handleClose, 3000)
-                        }
-                      </p>
-                    )
+
+                }
+                {
+                  store.status === 'success'
+                  && (
+                    <p className="text-white">
+                      we have sent the next steps to your email.
+                      {
+                        setTimeout(handleClose, 3000)
+                      }
+                    </p>
+                  )
                 }
               </div>
             </div>

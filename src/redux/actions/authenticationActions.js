@@ -78,7 +78,8 @@ export const forgotPassword = (payload) => {
       if (response?.status === 200) {
         dispatch(success(response?.data));
       } else {
-        dispatch(failure(response?.errors));
+        // console.log(response);
+        dispatch(failure(response));
       }
     });
   };

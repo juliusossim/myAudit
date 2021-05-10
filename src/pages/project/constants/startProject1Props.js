@@ -66,23 +66,23 @@ const formBuilderProjectsStartProps = (
       onChange: handleChange
     }
   },
-  {
-    kind: 'select',
-    props: {
-      className: 'w-100 m-b-20',
-      name: 'project_type',
-      label: 'Project Type',
-      options: projectType,
-      optionIndex: 'type',
-      value: formData?.project_type || '',
-      validations: {
-        required: true
-      },
-      error: errors?.project_type,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
+  // {
+  //   kind: 'select',
+  //   props: {
+  //     className: 'w-100 m-b-20',
+  //     name: 'project_type',
+  //     label: 'Project Type',
+  //     options: projectType,
+  //     optionIndex: 'type',
+  //     value: formData?.project_type || '',
+  //     validations: {
+  //       required: true
+  //     },
+  //     error: errors?.project_type,
+  //     onBlur: handleBlur,
+  //     onChange: handleChange
+  //   }
+  // },
   {
     kind: 'select',
     props: {

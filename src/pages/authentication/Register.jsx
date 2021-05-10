@@ -102,7 +102,7 @@ const RegisterPage = () => {
   const handleBlur = (e, validations) => {
     const { name, value } = e.target;
     const field = slugToString(name);
-    // console.log(typeof field !== 'undefined');
+    // console.log(typeof field !== 'undefined');Q3';'
     typeof field !== 'undefined'
     && setErrors(
       {

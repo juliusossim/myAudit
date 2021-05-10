@@ -10,7 +10,7 @@ import { changePassword } from '../../redux/actions/authenticationActions';
 const ChangePassword = () => {
   /* redux */
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.auth.forgotPassword);
+  const store = useSelector((state) => state.auth.changePassword);
   /* state */
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
@@ -37,17 +37,18 @@ const ChangePassword = () => {
       (store?.status === 'failed')
         ? 'mt-5 p-5'
         : (
-          store?.status === 'pending'
+          store?.status === 'initial' || store?.status === 'pending'
             ? 'mt-5 p-5 '
-            : 'mt-5 p-5 bg-wema'
+            : 'mt-5 p-5 bg-white'
         )
     }
     >
-      <div className="text-white">
+      <div className="text-wema">
         {
+          // (store?.status === 'pending' || store?.status === 'initial')
           store?.status === 'pending'
           && (
-            <div className="center-text text-success">
+            <div className="center-text text-white">
               Loading...
             </div>
           )
@@ -71,10 +72,10 @@ const ChangePassword = () => {
                     : (
                       <p>
                         we have sent the next steps to your email.
-                        {
-                          store?.status === 'success'
-                          && setTimeout(handleClose, 3000)
-                        }
+                        {/* { */}
+                        {/*  store?.status === 'success' */}
+                        {/*  && setTimeout(handleClose, 3000) */}
+                        {/* } */}
                       </p>
                     )
                 }
@@ -121,7 +122,7 @@ const ChangePassword = () => {
                 )
               }
             />
-            <button type="button" className="text-wema float-left viewMoreBtn mt-3" onClick={() => window.location.history.back()}>
+            <button type="button" className="text-wema float-left viewMoreBtn mt-3" onClick={() => window.location.replace('/forgot-password')}>
               &lt; Back
             </button>
             <button className="w-50 btn btn-small float-right" type="button" onClick={handleRegister}>Change Password</button>
