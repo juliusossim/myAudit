@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FormBuilder from '../../components/form/builders/form';
-import formBuilderProps from './constants/changePassword';
-import { validateField } from '../../utilities/validation';
+import formBuilderProps from './constants/resetPassword';
+import { mapBackendErrors, validateField } from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
-import { changePassword } from '../../redux/actions/authenticationActions';
+import { resetPassword } from '../../redux/actions/authenticationActions';
 
-const ChangePassword = () => {
+const ResetPassword = () => {
   /* redux */
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.auth.changePassword);
+  const store = useSelector((state) => state.auth.resetPassword);
   /* state */
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
@@ -20,10 +20,14 @@ const ChangePassword = () => {
 
   const handleRegister = () => {
     setShow(true);
-    dispatch(changePassword(formData, queryParam));
+    formData.code = queryParam;
+    dispatch(resetPassword(formData));
   };
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    window.location.replace('/');
+  };
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -39,18 +43,17 @@ const ChangePassword = () => {
       (store?.status === 'failed')
         ? 'mt-5 p-5'
         : (
-          store?.status === 'initial' || store?.status === 'pending'
+          store?.status === 'pending'
             ? 'mt-5 p-5 '
-            : 'mt-5 p-5 bg-white'
+            : 'mt-5 p-5 bg-wema'
         )
     }
     >
-      <div className="text-wema">
+      <div className="text-white">
         {
-          // (store?.status === 'pending' || store?.status === 'initial')
           store?.status === 'pending'
           && (
-            <div className="center-text text-white">
+            <div className="center-text text-success">
               Loading...
             </div>
           )
@@ -60,26 +63,41 @@ const ChangePassword = () => {
           && (
             <div className="">
               <h5 className="center-text text-muted">{store?.status}</h5>
-              <div>
+              <div className="text-warning">
                 {
                   store?.status === 'failed'
-                    ? (
-                      <div>
-                        We cannot verify this email, try again!
-                        <button onClick={() => setShow(false)} type="button" className="btn w-25 center btn-small float-right">
-                          Ok
-                        </button>
-                      </div>
-                    )
-                    : (
-                      <p>
-                        we have sent the next steps to your email.
-                        {/* { */}
-                        {/*  store?.status === 'success' */}
-                        {/*  && setTimeout(handleClose, 3000) */}
-                        {/* } */}
-                      </p>
-                    )
+                  && (
+                    <div>
+                      <ul>
+                        {
+                          mapBackendErrors(store?.data).map(
+                            (err) => (
+                              typeof err !== 'undefined' && (
+                                <li key={err} className="text-warning">
+                                  {err}
+                                </li>
+                              )
+                            )
+                          )
+                        }
+                      </ul>
+                      <button onClick={() => setShow(false)} type="button" className="btn w-25 center btn-small float-right">
+                        Ok
+                      </button>
+                    </div>
+                  )
+
+                }
+                {
+                  store.status === 'success'
+                  && (
+                    <p className="text-white">
+                      password successfully changed.
+                      {
+                        setTimeout(handleClose, 3000)
+                      }
+                    </p>
+                  )
                 }
               </div>
             </div>
@@ -139,4 +157,4 @@ const ChangePassword = () => {
   );
 };
 
-export default ChangePassword;
+export default ResetPassword;

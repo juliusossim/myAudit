@@ -16,6 +16,10 @@ const initialState = {
   changePassword: {
     data: {},
     status: 'initial'
+  },
+  resetPassword: {
+    data: {},
+    status: 'initial'
   }
 };
 
@@ -133,6 +137,33 @@ const authenticationReducer = (state = initialState, { type, response, error }) 
       }
     };
 
+  case constants.RESET_PASSWORD_PENDING:
+    return {
+      ...state,
+      login: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.RESET_PASSWORD_SUCCESS:
+    return {
+      ...state,
+      resetPassword: {
+        ...state.resetPassword,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.RESET_PASSWORD_FAILURE:
+    return {
+      ...state,
+      resetPassword: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
   default: return { ...state };
   }
 };

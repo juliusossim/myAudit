@@ -22,7 +22,7 @@ const ForgotPassword = () => {
 
   const handleClose = () => {
     setShow(false);
-    window.location.replace('/change-password');
+    window.location.replace(`/reset-password?${store.data.data.token}`);
   };
 
   const handleChange = (e) => {

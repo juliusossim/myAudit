@@ -51,7 +51,9 @@ export const changePassword = (payload) => {
   const failure = (error) => ({ type: constants.CHANGE_PASSWORD_FAILURE, error });
 
   return async (dispatch) => {
-    const res = post({ endpoint: 'CHANGE_PASSWORD', auth: false, body: payload });
+    const res = post({
+      endpoint: 'CHANGE_PASSWORD', auth: true, body: payload
+    });
 
     dispatch(request(res));
 
@@ -79,6 +81,27 @@ export const forgotPassword = (payload) => {
         dispatch(success(response?.data));
       } else {
         // console.log(response);
+        dispatch(failure(response));
+      }
+    });
+  };
+};
+export const resetPassword = (payload) => {
+  const request = (req) => ({ type: constants.RESET_PASSWORD_PENDING, request: req });
+  const success = (response) => ({ type: constants.RESET_PASSWORD_SUCCESS, response });
+  const failure = (error) => ({ type: constants.RESET_PASSWORD_FAILURE, error });
+
+  return async (dispatch) => {
+    const res = post({
+      endpoint: 'RESET_PASSWORD', auth: false, body: payload
+    });
+
+    dispatch(request(res));
+
+    return res.then((response) => {
+      if (response?.status === 200) {
+        dispatch(success(response?.data));
+      } else {
         dispatch(failure(response));
       }
     });

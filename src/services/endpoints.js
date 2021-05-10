@@ -5,6 +5,7 @@ const paths = {
   REGISTER_CORPORATE: authEndpoints.registerCorporateApi,
   REGISTER_INDIVIDUAL: authEndpoints.registerIndividualApi,
   CHANGE_PASSWORD: authEndpoints.changePasswordApi,
+  RESET_PASSWORD: authEndpoints.resetPassword,
   FORGOT_PASSWORD: authEndpoints.forgotPasswordApi
 };
 

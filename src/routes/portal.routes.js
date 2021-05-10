@@ -4,6 +4,7 @@ const Login = lazy(() => import('../pages/authentication/Login'));
 const Register = lazy(() => import('../pages/authentication/Register'));
 const LandingPage = lazy(() => import('../pages/landingPage'));
 const ChangePassword = lazy(() => import('../pages/authentication/ChangePassword'));
+const ResetPassword = lazy(() => import('../pages/authentication/ResetPassword'));
 const ForgotPassword = lazy(() => import('../pages/authentication/ForgotPassword'));
 const NewPassword = lazy(() => import('../pages/authentication/NewPassword'));
 const CreateProject = lazy(() => import('../pages/project/CreateProject'));
@@ -31,6 +32,11 @@ const routes = [
   {
     path: '/change-password',
     component: ChangePassword,
+    exact: true
+  },
+  {
+    path: '/reset-password',
+    component: ResetPassword,
     exact: true
   },
 
