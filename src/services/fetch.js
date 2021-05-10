@@ -12,6 +12,7 @@ const getToken = () => {
 const fetchBackend = async (endpoint, method, auth, body, pQuery, param, multipart) => {
   const headers = {
     'Content-Type': multipart ? 'multipart/form-data' : 'application/json'
+    // 'Content-Type': 'application/json'
   };
   const path = paths[endpoint] || endpoint;
   let url = `${process.env.REACT_APP_BACKEND_URL}${path}`;
@@ -40,16 +41,37 @@ const fetchBackend = async (endpoint, method, auth, body, pQuery, param, multipa
     options.data = body;
   }
 
-  console.log(options);
   return axios(options)
     .then((res) => res, async (err) => {
-      if (err && err.response && err.response.status === 401) {
+      if (err?.response?.status === 401 || err?.response?.status === 400) {
+        // console.log('err: ', err.response);
         // log the user out and return
-        await logout(process.env.REACT_APP_JWT_SECRET, true);
+        // await logout(process.env.REACT_APP_JWT_SECRET, true);
       }
-      console.log(err.response);
-      return err.response;
+      // console.log(err?.response?.data?.errors);
+      return err?.response?.data?.errors;
     });
+};
+
+export const uploadFile = (file, setProgress) => {
+  // console.log('here');
+  // const config = {
+  //   onUploadProgress: (progressEvent) => console.log(progressEvent.loaded)
+  // };
+  // axios.post('http://localhost:3000/upload/', data, config);
+  let progress = 0;
+  axios({
+    baseURL: process.env.REACT_APP_INDEX_URL,
+    // url: '/file',
+    method: 'post',
+    data: file,
+    onUploadProgress: (uploadEvent) => {
+      const { loaded, total } = uploadEvent;
+      progress = Math.floor((loaded / total) * 100);
+      console.log(progress);
+      setProgress(progress);
+    }
+  });
 };
 
 /**

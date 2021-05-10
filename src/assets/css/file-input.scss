@@ -1,0 +1,49 @@
+.file-input {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+  width: 100%!important;
+  input[type=file] {
+    font-size: 100px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    opacity: 0;
+  }
+  p {
+    margin-bottom: 5px;
+
+  }
+  button {
+    border: 1.5px dashed gray;
+    background-color: white;
+    padding: 15px;
+    border-radius: 5px;
+    width: 100%;
+    //color: #A01B88;
+    font-family: Poppins, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 24px;
+    cursor: pointer;
+    transition: all 0.3s ease-out;
+  }
+  &:hover {
+    button{
+      background: #A01B88A1;
+      color: #FFFFFF;
+      border: 1.5px solid #A01B88A1;
+      border-radius: 5px;
+    }
+    p{
+      color: #A01B88A1;
+      width: fit-content;
+      border-bottom: #A01B88 double;
+      transition: border-bottom-color 3s ease-out;
+    }
+  }
+
+}
+
+
