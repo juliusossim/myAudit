@@ -1,3 +1,4 @@
+import localforage from 'localforage';
 import { post } from '../../services/fetch';
 import constants from '../constants';
 
@@ -9,9 +10,9 @@ export const register = (payload, type = 'individual') => {
   return async (dispatch) => {
     const endpoints = {
       individual: 'REGISTER_INDIVIDUAL',
-      corporate: '  REGISTER_CORPORATE'
+      corporate: 'REGISTER_CORPORATE'
     };
-    const endpoint = typeof endpoints[type] !== 'undefined' ? endpoints[type] : false;
+    const endpoint = typeof endpoints[type] !== 'undefined' && endpoints[type];
     const res = post({ endpoint, auth: false, body: payload });
 
     dispatch(request(res));
@@ -38,8 +39,9 @@ export const login = (payload) => {
     return res.then((response) => {
       if (response?.status === 200) {
         dispatch(success(response?.data));
+        localforage.setItem('user', response.data);
       } else {
-        dispatch(failure(response?.data));
+        dispatch(failure(response));
       }
     });
   };

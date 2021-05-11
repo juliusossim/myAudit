@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import localforage from 'localforage';
 import { useDispatch, useSelector } from 'react-redux';
 import FormBuilder from '../../components/form/builders/form';
 import { validateField, canSubmit, mapBackendErrors } from '../../utilities/validation';
@@ -25,6 +26,7 @@ const CreateProject = () => {
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
   const [submittable, setSubmittable] = useState(false);
+  const [user, setUser] = useState(null);
 
   const handleRegister = () => {
     setShow(true);
@@ -148,6 +150,10 @@ const CreateProject = () => {
     setAccordionTab(1);
   };
   useEffect(() => {
+    localforage.getItem('user').then((data) => {
+      setUser(data?.data?.user);
+    });
+    console.log(user);
     accordionTab === 1
       ? canSubmit(formData, errors, setSubmittable, 4)
       : canSubmit(formData, errors, setSubmittable, 3);

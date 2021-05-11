@@ -1,5 +1,6 @@
-import { locations } from '../../../../utilities/dummyData';
+import { locations, managers } from '../../../../utilities/dummyData';
 import { validationPatterns } from '../../../../utilities/validation';
+import formBuilderIndividualProps from './registerIndividual';
 
 const formBuilderCorporateProps = (
   {
@@ -11,17 +12,25 @@ const formBuilderCorporateProps = (
     errors
   }
 ) => ([
+  ...formBuilderIndividualProps(
+    {
+      formData,
+      handleBlur,
+      handleChange,
+      errors
+    }
+  ),
   {
     kind: 'input',
     props: {
-      className: 'w-100 m-b-20',
-      name: 'organisation_name',
+      className: 'w-100 m-b-20 col-6',
+      name: 'organization_name',
       label: 'Organisation Name',
-      value: formData?.organisation_name || '',
+      value: formData?.organization_name || '',
       validations: {
         required: true
       },
-      error: errors?.organisation_name,
+      error: errors?.organization_name,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -37,24 +46,6 @@ const formBuilderCorporateProps = (
         required: true
       },
       error: errors?.rc_number,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
-    kind: 'input',
-    props: {
-      className: 'w-100 m-b-20 col-6',
-      name: 'phone_number',
-      label: 'Phone Number',
-      type: 'tel',
-      value: formData?.phone_number || '',
-      validations: {
-        required: true,
-        max: 11,
-        min: 8
-      },
-      error: errors?.phone_number,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -81,7 +72,7 @@ const formBuilderCorporateProps = (
     props: {
       className: 'w-100 m-b-20',
       name: 'logo_id',
-      label: 'Upload Organisation Logo',
+      label: 'Upload Organization Logo',
       text: 'Upload Logo',
       value: formData?.logo_id || '',
       file: formData?.file || '',
@@ -92,6 +83,23 @@ const formBuilderCorporateProps = (
         pattern: validationPatterns.image
       },
       error: errors?.logo_id,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'select',
+    props: {
+      className: 'w-100 m-b-20',
+      name: 'manager_name',
+      label: 'Manager Name',
+      options: managers,
+      optionIndex: 'fullName',
+      value: formData?.manager_name || '',
+      validations: {
+        // required: true
+      },
+      error: errors?.manager_name,
       onBlur: handleBlur,
       onChange: handleChange
     }

@@ -14,7 +14,7 @@ const formBuilderNgoProps = (
     props: {
       className: 'w-100 m-b-20',
       name: 'organisation_name',
-      label: 'Organisation Name',
+      label: 'Organization Name',
       value: formData?.organisation_name || '',
       validations: {
         required: true

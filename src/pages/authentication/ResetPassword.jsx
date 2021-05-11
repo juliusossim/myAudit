@@ -26,7 +26,7 @@ const ResetPassword = () => {
 
   const handleClose = () => {
     setShow(false);
-    window.location.replace('/');
+    window.location.replace('/login');
   };
 
   const handleChange = (e) => {

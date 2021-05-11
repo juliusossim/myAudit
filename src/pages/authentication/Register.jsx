@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { HiOutlineArrowNarrowLeft, HiOutlineArrowNarrowRight } from 'react-icons/all';
 import FormBuilder from '../../components/form/builders/form';
 import formBuilderIndividualProps from './constants/registration/registerIndividual';
 import formBuilderNgoProps from './constants/registration/registerNgo';
@@ -26,7 +27,7 @@ const RegisterPage = () => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state.auth.register);
   /* state */
-  const [formData, setFormData] = useState({ terms: false, project_type: 'select project type' });
+  const [formData, setFormData] = useState({ terms: false, project_type: 'select project type', page: 0 });
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const [errors, setErrors] = useState({});
@@ -66,6 +67,8 @@ const RegisterPage = () => {
         ? setFormData({
           ...formData,
           terms: false,
+          forwardButton: false,
+          page: 2,
           first_name: '',
           last_name: '',
           phone_number: null,
@@ -75,6 +78,8 @@ const RegisterPage = () => {
         : setFormData({
           ...formData,
           terms: false,
+          forwardButton: false,
+          page: 1,
           organisation_name: '',
           rc_number: '',
           description: '',
@@ -187,9 +192,16 @@ const RegisterPage = () => {
   const goBack = () => {
     setFormData({
       ...formData,
-      project_type: 'select project type',
-      organisation_logo: ''
+      // project_type: 'select project type',
+      page: 0,
+      organisation_logo: '',
+      forwardButton: true
     });
+  };
+  const handleForward = () => {
+    formData.project_type === 'corporate'
+      ? setFormData({ ...formData, page: 2, forwardButton: false })
+      : setFormData({ ...formData, page: 1, forwardButton: false });
   };
   useEffect(() => {
     progress === 100
@@ -223,7 +235,7 @@ const RegisterPage = () => {
           <hr />
           <div className="login-form">
             {
-              formData.project_type === 'individual'
+              formData.page === 1
               && (
                 <FormBuilder
                   formItems={
@@ -240,7 +252,7 @@ const RegisterPage = () => {
               )
             }
             {
-              formData.project_type === 'select project type'
+              formData.page === 0
               && (
                 <FormBuilder
                   formItems={
@@ -257,26 +269,26 @@ const RegisterPage = () => {
                 />
               )
             }
-            {
-              formData.project_type === 'ngo'
-              && (
-                <FormBuilder
-                  formItems={
-                    formBuilderNgoProps(
-                      {
-                        formData,
-                        handleBlur,
-                        handleChange,
-                        errors
-                      }
-                    )
-                  }
-                />
-              )
-            }
+            {/* { */}
+            {/*  formData.project_type === 'ngo' */}
+            {/*  && ( */}
+            {/*    <FormBuilder */}
+            {/*      formItems={ */}
+            {/*        formBuilderNgoProps( */}
+            {/*          { */}
+            {/*            formData, */}
+            {/*            handleBlur, */}
+            {/*            handleChange, */}
+            {/*            errors */}
+            {/*          } */}
+            {/*        ) */}
+            {/*      } */}
+            {/*    /> */}
+            {/*  ) */}
+            {/* } */}
 
             {
-              formData.project_type === 'corporate'
+              formData.page === 2
               && (
                 <FormBuilder
                   formItems={
@@ -296,7 +308,7 @@ const RegisterPage = () => {
             }
 
             {
-              formData.project_type !== 'select project type'
+              formData.page !== 0
               && (
                 <div>
                   { progress }
@@ -312,8 +324,8 @@ const RegisterPage = () => {
                     </span>
                   </div>
 
-                  <button type="button" onClick={goBack} className="text-wema w-25 viewMoreBtn">
-                    &lt; go back
+                  <button title="Go Back" type="button" onClick={goBack} className="text-wema w-25 viewMoreBtn">
+                    <HiOutlineArrowNarrowLeft />
                   </button>
                   {
                     formData.terms
@@ -330,6 +342,14 @@ const RegisterPage = () => {
                   }
 
                 </div>
+              )
+            }
+            {
+              formData.forwardButton
+              && (
+                <button title="Continue" type="button" onClick={handleForward} className="text-wema w-25 viewMoreBtn float-right">
+                  <HiOutlineArrowNarrowRight />
+                </button>
               )
             }
           </div>
