@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import localforage from 'localforage';
 import TextInput from '../../components/form/inputs/TextInput';
 import Modal from '../../components/microComponents/modal';
 import { login } from '../../redux/actions/authenticationActions';
@@ -36,6 +37,7 @@ const LoginPage = () => {
       [name]: !formData[name]
     });
   };
+  console.log(localforage.getItem('user'));
   const handleClose = () => {
     setShow(false);
     window.location.replace('/home');
@@ -75,7 +77,7 @@ const LoginPage = () => {
                         <ul>
 
                           {
-                            mapBackendErrors(store?.errors).map(
+                            mapBackendErrors(store?.data).map(
                               (err) => (
                                 typeof err !== 'undefined' && (
                                   <li key={err} className="text-warning">

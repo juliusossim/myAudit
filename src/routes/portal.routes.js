@@ -13,6 +13,12 @@ const Unathorized = lazy(() => import('../pages/authentication/Unathorized'));
 const routes = [
   {
     path: '/',
+    component: LandingPage,
+    exact: true
+  },
+
+  {
+    path: '/login',
     component: Login,
     exact: true
   },
