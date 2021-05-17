@@ -37,7 +37,7 @@ const formBuilderProps = (
       value: formData?.password || '',
       validations: {
         required: true,
-        minLength: 8
+        pattern: validationPatterns.password
       },
       error: errors?.password,
       onBlur: handleBlur,

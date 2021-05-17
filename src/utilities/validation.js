@@ -62,6 +62,7 @@ export const validateField = (validation, field, value) => {
  */
 export const validationPatterns = {
   email: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+  password: /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])(?=.{8,})/,
   domain: /^[A-Z0-9._%+-]+\.[A-Z]{2,}$/i,
   image: /\.(jpg|jpeg|png|gif)$/
 };
@@ -136,3 +137,11 @@ export const mapBackendErrors = (storeData) => {
 
   return backErrors;
 };
+
+// password validations
+export const validatePassword = (password) => validationPatterns.password.test(password);
+export const containSmallCaps = (str) => /(?=.*[a-z])/.test(str);
+export const containCaps = (str) => /(?=.*[A-Z])/.test(str);
+export const containNums = (str) => /(?=.*[0-9])/.test(str);
+export const containSpecialChars = (str) => /(?=.*[!@#$%^&*])/.test(str);
+export const eightOrLonger = (str) => /(?=.{8,})/.test(str);

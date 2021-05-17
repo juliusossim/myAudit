@@ -2,7 +2,11 @@ import React, { useEffect, useState } from 'react';
 import localforage from 'localforage';
 import { useDispatch, useSelector } from 'react-redux';
 import FormBuilder from '../../components/form/builders/form';
-import { validateField, canSubmit, mapBackendErrors } from '../../utilities/validation';
+import {
+  validateField,
+  canSubmit,
+  mapBackendErrors
+} from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
 import { register } from '../../redux/actions/authenticationActions';

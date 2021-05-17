@@ -1,3 +1,5 @@
+import { validationPatterns } from '../../../utilities/validation';
+
 const formBuilderProps = (
   {
     formData,
@@ -16,7 +18,8 @@ const formBuilderProps = (
         label: 'Current Password',
         value: formData?.current_password || '',
         validations: {
-          required: true
+          required: true,
+          pattern: validationPatterns.password
         },
         error: errors?.current_password,
         onBlur: handleBlur,
