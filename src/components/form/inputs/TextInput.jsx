@@ -51,15 +51,15 @@ const TextInput = (props) => {
               }
             </ul>
           )
-          : props.name === 'password'
-        && (
-          reveal ? <FaEyeSlash title="hide" role="button" className="end-icon" onClick={handleReveal} />
-            : <FaEye title="reveal" role="button" className="end-icon" onClick={handleReveal} />
-        )
+          : props.name === 'password' && props.value !== ''
+        && validatePassword(props.value) && (
+            reveal ? <FaEyeSlash title="hide" role="button" className="end-icon" onClick={handleReveal} />
+              : <FaEye title="reveal" role="button" className="end-icon" onClick={handleReveal} />
+          )
       }
       {
         props.type === 'password' && props.validations?.pattern && props.value !== '' && (
-          <div className={validatePassword(props.value) && 'd-none'}>
+          <div className={validatePassword(props.value) ? 'd-none' : undefined}>
 
             <div className="row">
               Password must contain at least

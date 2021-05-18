@@ -164,6 +164,35 @@ const authenticationReducer = (state = initialState, { type, response, error }) 
         status: 'failed'
       }
     };
+
+  case constants.UPLOAD_LOGO_PENDING:
+    return {
+      ...state,
+      login: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.UPLOAD_LOGO_SUCCESS:
+    return {
+      ...state,
+      resetPassword: {
+        ...state.resetPassword,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.UPLOAD_LOGO_FAILURE:
+    return {
+      ...state,
+      resetPassword: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
   default: return { ...state };
   }
 };

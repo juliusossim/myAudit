@@ -9,8 +9,7 @@ import {
 } from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
-import { register } from '../../redux/actions/authenticationActions';
-import { uploadFile } from '../../services/fetch';
+import { register, uploadLogo } from '../../redux/actions/authenticationActions';
 import formBuilderProjectsStartProps from './constants/startProject1Props';
 import formBuilderProjectsStart2Props from './constants/startProject2Props';
 
@@ -32,7 +31,7 @@ const CreateProject = () => {
   const [submittable, setSubmittable] = useState(false);
   const [user, setUser] = useState(null);
 
-  const handleRegister = () => {
+  const createProject = () => {
     setShow(true);
     dispatch(register(formData, formData?.project_type));
   };
@@ -51,7 +50,7 @@ const CreateProject = () => {
         ...formData,
         file: [...formData.file, files[0]]
       });
-      uploadFile(files[0], setProgress);
+      dispatch(uploadLogo({ payload: files[0], setProgress }));
     } else {
       setFormData((state) => ({
         ...state,
@@ -157,11 +156,11 @@ const CreateProject = () => {
     localforage.getItem('user').then((data) => {
       setUser(data?.data?.user);
     });
-    console.log(user);
+    // console.log(user);
     accordionTab === 1
       ? canSubmit(formData, errors, setSubmittable, 4)
       : canSubmit(formData, errors, setSubmittable, 3);
-  }, [formData, errors, accordionTab]);
+  }, [formData, errors, accordionTab, user]);
 
   return (
     <div className="content">
@@ -227,7 +226,7 @@ const CreateProject = () => {
                     <button
                       className="w-50 btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
                       type="button"
-                      onClick={handleRegister}
+                      onClick={createProject}
                     >
                       Save
                     </button>
@@ -248,7 +247,7 @@ const CreateProject = () => {
                             className="w-75 btn btn-small float-right"
                             type="button"
                             // disabled={!submittable}
-                            onClick={handleRegister}
+                            onClick={createProject}
                           >
                             Start Project
                           </button>

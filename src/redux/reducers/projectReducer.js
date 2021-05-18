@@ -1,87 +1,91 @@
 import constants from '../constants';
 
 const initialState = {
-  register: {
+  newProject: {
     data: {},
     status: 'initial'
   },
-  login: {
+  projects: {
     data: {},
     status: 'initial'
   },
-  forgotPassword: {
+  project: {
     data: {},
     status: 'initial'
   },
-  changePassword: {
+  projectDetails: {
     data: {},
     status: 'initial'
   },
-  resetPassword: {
+  projectSummary: {
+    data: {},
+    status: 'initial'
+  },
+  projectMedia: {
     data: {},
     status: 'initial'
   }
 };
 
-const authenticationReducer = (state = initialState, { type, response, error }) => {
+const projectReducer = (state = initialState, { type, response, error }) => {
   switch (type) {
-  case constants.REGISTER_PENDING:
+  case constants:
     return {
       ...state,
-      register: {
+      project: {
         data: {},
         status: 'pending'
       }
     };
 
-  case constants.REGISTER_SUCCESS:
+  case constants.PROJECT_SUCCESS:
     return {
       ...state,
-      register: {
-        ...state.register,
+      project: {
+        ...state.project,
         data: response,
         status: 'success'
       }
     };
 
-  case constants.REGISTER_FAILURE:
+  case constants.PROJECT_FAILURE:
     return {
       ...state,
-      register: {
+      project: {
         data: error || {},
         status: 'failed'
       }
     };
 
-  case constants.LOGIN_PENDING:
+  case constants.PROJECT_DETAILS_PENDING:
     return {
       ...state,
-      login: {
+      projectDetails: {
         data: {},
         status: 'pending'
       }
     };
 
-  case constants.LOGIN_SUCCESS:
+  case constants.PROJECT_DETAILS_SUCCESS:
     return {
       ...state,
-      login: {
-        ...state.login,
+      projectDetails: {
+        ...state.projectDetails,
         data: response,
         status: 'success'
       }
     };
 
-  case constants.LOGIN_FAILURE:
+  case constants.PROJECT_DETAILS_FAILURE:
     return {
       ...state,
-      login: {
+      projectDetails: {
         data: error || {},
         status: 'failed'
       }
     };
 
-  case constants.FORGOT_PASSWORD_PENDING:
+  case constants.PROJECT_SUMMARY_PENDING:
     return {
       ...state,
       login: {
@@ -90,7 +94,7 @@ const authenticationReducer = (state = initialState, { type, response, error }) 
       }
     };
 
-  case constants.FORGOT_PASSWORD_SUCCESS:
+  case constants.PROJECT_SUMMARY_SUCCESS:
     return {
       ...state,
       forgotPassword: {
@@ -100,7 +104,7 @@ const authenticationReducer = (state = initialState, { type, response, error }) 
       }
     };
 
-  case constants.FORGOT_PASSWORD_FAILURE:
+  case constants.PROJECT_SUMMARY_FAILURE:
     return {
       ...state,
       forgotPassword: {
@@ -168,4 +172,4 @@ const authenticationReducer = (state = initialState, { type, response, error }) 
   }
 };
 
-export default authenticationReducer;
+export default projectReducer;

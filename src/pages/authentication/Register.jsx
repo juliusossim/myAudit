@@ -1,9 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiOutlineArrowNarrowLeft, HiOutlineArrowNarrowRight } from 'react-icons/all';
 import FormBuilder from '../../components/form/builders/form';
 import formBuilderIndividualProps from './constants/registration/registerIndividual';
-import formBuilderNgoProps from './constants/registration/registerNgo';
 import formBuilderCorporateProps from './constants/registration/registerCorporate';
 import formBuilderProps from './constants/registration/register';
 import {
@@ -14,8 +13,7 @@ import {
 } from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
-import { register } from '../../redux/actions/authenticationActions';
-import { uploadFile } from '../../services/fetch';
+import { register, uploadLogo } from '../../redux/actions/authenticationActions';
 
 /**
  *
@@ -33,7 +31,6 @@ const RegisterPage = () => {
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
   const [submittable, setSubmittable] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [selectType, setSelectType] = useState(true);
 
   const handleRegister = () => {
@@ -56,11 +53,18 @@ const RegisterPage = () => {
     });
   };
 
+  // const handleProgress = useMemo((count) => {
+  //   setProgress(count);
+  // }, []);
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'logo_id') {
       setFile(files);
-      uploadFile(files[0], setProgress);
+      dispatch(uploadLogo({
+        file: files[0],
+        setProgress
+      }));
     }
     if (name === 'project_type') {
       value === 'corporate'
@@ -85,7 +89,8 @@ const RegisterPage = () => {
           description: '',
           phone_number: null,
           location: '',
-          manager: ''
+          manager: '',
+          file: ''
         });
     }
     setFormData((state) => ({
@@ -204,9 +209,10 @@ const RegisterPage = () => {
       : setFormData({ ...formData, page: 1, forwardButton: false });
   };
   useEffect(() => {
+    console.log(progress);
     progress === 100
    && setFormData({ ...formData, file: URL.createObjectURL(file[0]) });
-  }, [file, progress]);
+  }, [file, formData, progress]);
   // useEffect(() => {
   //   canContinue(errorsChecker(errors));
   // }, [canContinue, errors]);
@@ -224,6 +230,7 @@ const RegisterPage = () => {
     }
     // return setIsError(errorsChecker(errors));
     return canContinue(errorsChecker(errors));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData, errors]);
 
   return (

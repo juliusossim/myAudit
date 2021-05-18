@@ -42,7 +42,7 @@ const FileInput = (
             <input
               className={error?.length > 0 ? 'error-field' : ''}
               type="file"
-              value={value}
+              value={value || ''}
               name={name}
               multiple
               onBlur={((e) => typeof onBlur === 'function'
@@ -93,7 +93,7 @@ const FileInput = (
                         : file.length > 0 && (
                           (
                             <div>
-                              <img src={file} alt="inserted image" />
+                              <img src={file} alt="inserted library" />
                               <button type="button" className="btn btn-small float-sm-right w-25 text-danger" onClick={setFormData}>Cancel</button>
                             </div>
                           )

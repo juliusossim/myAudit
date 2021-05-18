@@ -8,7 +8,12 @@ function App() {
   const history = createBrowserHistory();
 
   return (
-    <Suspense fallback={<div className="p-40"><center>Loading...</center></div>}>
+    <Suspense fallback={(
+      <div className="loader">
+        <i />
+      </div>
+    )}
+    >
       <Router history={history}>
         <Switch>
 

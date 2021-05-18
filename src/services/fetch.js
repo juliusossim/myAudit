@@ -9,7 +9,12 @@ const getToken = () => {
   return token;
 };
 
-const fetchBackend = async (endpoint, method, auth, body, pQuery, param, multipart) => {
+const fetchBackend = async (
+  endpoint, method, auth, body,
+  pQuery, param, multipart, setProgress
+) => {
+  console.log('here');
+
   const headers = {
     'Content-Type': multipart ? 'multipart/form-data' : 'application/json'
     // 'Content-Type': 'application/json'
@@ -41,6 +46,15 @@ const fetchBackend = async (endpoint, method, auth, body, pQuery, param, multipa
     options.data = body;
   }
 
+  if (setProgress) {
+    let progress = 0;
+    options.onUploadProgress = (uploadEvent) => {
+      const { loaded, total } = uploadEvent;
+      progress = Math.floor((loaded / total) * 100);
+      setProgress(progress);
+    };
+  }
+
   return axios(options)
     .then((res) => res, async (err) => {
       if (err?.response?.status === 401 || err?.response?.status === 400) {
@@ -53,26 +67,27 @@ const fetchBackend = async (endpoint, method, auth, body, pQuery, param, multipa
     });
 };
 
-export const uploadFile = (file, setProgress) => {
-  // console.log('here');
-  // const config = {
-  //   onUploadProgress: (progressEvent) => console.log(progressEvent.loaded)
-  // };
-  // axios.post('http://localhost:3000/upload/', data, config);
-  let progress = 0;
-  axios({
-    baseURL: process.env.REACT_APP_INDEX_URL,
-    // url: '/file',
-    method: 'post',
-    data: file,
-    onUploadProgress: (uploadEvent) => {
-      const { loaded, total } = uploadEvent;
-      progress = Math.floor((loaded / total) * 100);
-      console.log(progress);
-      setProgress(progress);
-    }
-  });
-};
+// export const uploadFile = ({
+//   file, setProgress, method, url
+// }) => {
+//   let progress = 0;
+//   axios({
+//     baseURL: process.env.REACT_APP_INDEX_URL,
+//     url,
+//     method: method || 'post',
+//     data: file,
+//     onUploadProgress: (uploadEvent) => {
+//       const { loaded, total } = uploadEvent;
+//       progress = Math.floor((loaded / total) * 100);
+//       setProgress(progress);
+//     }
+//   })
+//     .then(
+//       (res) => {
+//         console.log(res);
+//       }
+//     );
+// };
 
 /**
  *
@@ -92,10 +107,11 @@ export const get = ({
  * @param {string} param
  * @param {boolean} auth
  * @param {boolean} multipart
+ * @param {function} setProgress
  */
 export const post = ({
-  endpoint, body, auth = true, multipart, param
-}) => fetchBackend(endpoint, 'POST', auth, body, null, param, multipart);
+  endpoint, body, auth = true, multipart, param, setProgress
+}) => fetchBackend(endpoint, 'POST', auth, body, null, param, multipart, setProgress);
 
 /**
  *

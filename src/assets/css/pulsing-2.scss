@@ -1,0 +1,39 @@
+.loader {
+  width:100px;
+  height:100px;
+  position:relative;
+  top: 45ch;
+  left: 45vw;
+  --s:15px;
+}
+.loader::before,
+.loader::after,
+.loader i{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  inset:0;
+  padding:var(--s);
+  background:
+    conic-gradient(var(--c,rgb(234, 9, 241)),transparent 30%),
+    radial-gradient(farthest-side at right,var(--c,rgb(207, 38, 94)) 94%,#0000) calc(50% - var(--s)/4) 0/calc(var(--s)/2) var(--s);
+  background-repeat:no-repeat;
+  -webkit-mask:
+    linear-gradient(rgb(228, 190, 190) 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: destination-out;
+  mask-composite: exclude;
+  animation:m 1s infinite linear;
+}
+.loader::after {
+  --c:rgb(129, 9, 199);
+  animation-timing-function:cubic-bezier(1,0,1,1);
+}
+.loader i {
+  --c:rgb(78, 17, 70);
+  animation-timing-function:cubic-bezier(0,0,0,1);
+}
+
+@keyframes m{
+  to {transform:rotate(-1turn)}
+}

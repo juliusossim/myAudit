@@ -23,7 +23,7 @@ const ChangePassword = () => {
     dispatch(changePassword(formData, queryParam));
   };
 
-  const handleClose = () => setShow(false);
+  // const handleClose = () => setShow(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

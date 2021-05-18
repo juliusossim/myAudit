@@ -109,3 +109,28 @@ export const resetPassword = (payload) => {
     });
   };
 };
+export const uploadLogo = ({ payload, setProgress }) => {
+  const request = (req) => ({ type: constants.UPLOAD_LOGO_PENDING, request: req });
+  const success = (response) => ({ type: constants.UPLOAD_LOGO_SUCCESS, response });
+  const failure = (error) => ({ type: constants.UPLOAD_LOGO_FAILURE, error });
+  console.log('here');
+  return async (dispatch) => {
+    const res = post({
+      endpoint: 'LOGO',
+      auth: true,
+      body: payload,
+      setProgress,
+      multipart: true
+    });
+
+    dispatch(request(res));
+
+    return res.then((response) => {
+      if (response?.status === 200) {
+        dispatch(success(response?.data));
+      } else {
+        dispatch(failure(response));
+      }
+    });
+  };
+};
