@@ -9,9 +9,10 @@ import {
 } from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
-import { register, uploadLogo } from '../../redux/actions/authenticationActions';
+import { uploadFile } from '../../services/fetch';
 import formBuilderProjectsStartProps from './constants/startProject1Props';
 import formBuilderProjectsStart2Props from './constants/startProject2Props';
+import { createProject } from '../../redux/actions/projectActions';
 
 /**
  *
@@ -21,7 +22,7 @@ import formBuilderProjectsStart2Props from './constants/startProject2Props';
 const CreateProject = () => {
   /* redux */
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.auth.register);
+  const store = useSelector((state) => state.project.newProject);
   /* state */
   const [formData, setFormData] = useState({ file: [], project_type: 'select project type' });
   const [progress, setProgress] = useState(0);
@@ -31,9 +32,9 @@ const CreateProject = () => {
   const [submittable, setSubmittable] = useState(false);
   const [user, setUser] = useState(null);
 
-  const createProject = () => {
+  const handleCreateProject = () => {
     setShow(true);
-    dispatch(register(formData, formData?.project_type));
+    dispatch(createProject(formData));
   };
   const cancelUpload = () => {
     setFormData({ ...formData, file: '', logo_id: '' });
@@ -42,15 +43,16 @@ const CreateProject = () => {
     setShow(false);
     window.location.replace('/create-project');
   };
+  const handleProgress = (val) => setProgress(val);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'project_media') {
+    if (name === 'project_media' && formData.file.indexOf(files[0] === -1)) {
       setFormData({
         ...formData,
         file: [...formData.file, files[0]]
       });
-      dispatch(uploadLogo({ payload: files[0], setProgress }));
+      uploadFile({ file: files[0], handleProgress, url: 'Uploads/logo' });
     } else {
       setFormData((state) => ({
         ...state,
@@ -226,7 +228,7 @@ const CreateProject = () => {
                     <button
                       className="w-50 btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
                       type="button"
-                      onClick={createProject}
+                      onClick={handleCreateProject}
                     >
                       Save
                     </button>
@@ -247,7 +249,7 @@ const CreateProject = () => {
                             className="w-75 btn btn-small float-right"
                             type="button"
                             // disabled={!submittable}
-                            onClick={createProject}
+                            onClick={handleCreateProject}
                           >
                             Start Project
                           </button>

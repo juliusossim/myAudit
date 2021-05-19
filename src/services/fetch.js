@@ -75,7 +75,7 @@ export const uploadFile = ({
   const data = new FormData();
   data.append('logo_id', file);
   axios({
-    baseURL: process.env.REACT_APP_BACKEND_URL,
+    baseURL: process.env.REACT_APP_BASE_URL,
     method: method || 'post',
     url,
     data,

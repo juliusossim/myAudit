@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { HiOutlineArrowNarrowLeft, HiOutlineArrowNarrowRight } from 'react-icons/all';
 import FormBuilder from '../../components/form/builders/form';
@@ -162,7 +162,7 @@ const RegisterPage = () => {
                             mapBackendErrors(store?.data).map(
                               (err) => (
                                 typeof err !== 'undefined' && (
-                                  <li key={err} className="text-warning">
+                                  <li key={`${err}`} className="text-warning">
                                     {err}
                                   </li>
                                 )

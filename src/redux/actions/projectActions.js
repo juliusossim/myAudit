@@ -2,13 +2,13 @@
 import { post } from '../../services/fetch';
 import constants from '../constants';
 
-export const creatProject = (payload) => {
+export const createProject = (payload) => {
   const request = (req) => ({ type: constants.PROJECT_PENDING, request: req });
   const success = (response) => ({ type: constants.PROJECT_SUCCESS, response });
   const failure = (error) => ({ type: constants.PROJECT_FAILURE, error });
 
   return async (dispatch) => {
-    const res = post({ endpoint: 'CREATE_PROJECT', auth: true, body: payload });
+    const res = post({ endpoint: 'CREATE_PROJECT', auth: false, body: payload });
 
     dispatch(request(res));
 

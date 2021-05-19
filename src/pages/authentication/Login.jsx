@@ -37,7 +37,6 @@ const LoginPage = () => {
       [name]: !formData[name]
     });
   };
-  console.log(localforage.getItem('user'));
   const handleClose = () => {
     setShow(false);
     window.location.replace('/home');
@@ -80,7 +79,7 @@ const LoginPage = () => {
                             mapBackendErrors(store?.data).map(
                               (err) => (
                                 typeof err !== 'undefined' && (
-                                  <li key={err} className="text-warning">
+                                  <li key={`${err}`} className="text-warning">
                                     {err}
                                   </li>
                                 )

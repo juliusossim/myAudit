@@ -113,57 +113,85 @@ const projectReducer = (state = initialState, { type, response, error }) => {
       }
     };
 
-  case constants.CHANGE_PASSWORD_PENDING:
+  case constants.UPDATE_PROJECT_PENDING:
     return {
       ...state,
-      login: {
+      updateProject: {
         data: {},
         status: 'pending'
       }
     };
 
-  case constants.CHANGE_PASSWORD_SUCCESS:
+  case constants.UPDATE_PROJECT_SUCCESS:
     return {
       ...state,
-      forgotPassword: {
-        ...state.forgotPassword,
+      updateProject: {
+        ...state.updateProject,
         data: response,
         status: 'success'
       }
     };
 
-  case constants.CHANGE_PASSWORD_FAILURE:
+  case constants.UPDATE_PROJECT_FAILURE:
     return {
       ...state,
-      forgotPassword: {
+      updateProject: {
         data: error || {},
         status: 'failed'
       }
     };
 
-  case constants.RESET_PASSWORD_PENDING:
+  case constants.PROJECT_UPDATES_PENDING:
     return {
       ...state,
-      login: {
+      projectUpdates: {
         data: {},
         status: 'pending'
       }
     };
 
-  case constants.RESET_PASSWORD_SUCCESS:
+  case constants.PROJECT_UPDATES_SUCCESS:
     return {
       ...state,
-      resetPassword: {
-        ...state.resetPassword,
+      projectUpdates: {
+        ...state.projectUpdates,
         data: response,
         status: 'success'
       }
     };
 
-  case constants.RESET_PASSWORD_FAILURE:
+  case constants.PROJECT_UPDATES_FAILURE:
     return {
       ...state,
-      resetPassword: {
+      projectUpdates: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.EDIT_PROJECT_UPDATES_PENDING:
+    return {
+      ...state,
+      editProjectUpdates: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.EDIT_PROJECT_UPDATES_SUCCESS:
+    return {
+      ...state,
+      editProjectUpdates: {
+        ...state.editProjectUpdates,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.EDIT_PROJECT_UPDATES_FAILURE:
+    return {
+      ...state,
+      editProjectUpdates: {
         data: error || {},
         status: 'failed'
       }
