@@ -1,5 +1,5 @@
 import localforage from 'localforage';
-import { post } from '../../services/fetch';
+import { post, uploadFile } from '../../services/fetch';
 import constants from '../constants';
 
 export const register = (payload, type = 'individual') => {
@@ -113,7 +113,6 @@ export const uploadLogo = ({ payload, setProgress }) => {
   const request = (req) => ({ type: constants.UPLOAD_LOGO_PENDING, request: req });
   const success = (response) => ({ type: constants.UPLOAD_LOGO_SUCCESS, response });
   const failure = (error) => ({ type: constants.UPLOAD_LOGO_FAILURE, error });
-  console.log('here');
   return async (dispatch) => {
     const res = post({
       endpoint: 'LOGO',

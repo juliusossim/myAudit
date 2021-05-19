@@ -1,5 +1,6 @@
 import axios from 'axios';
 import paths from './endpoints';
+import constants from '../redux/constants';
 
 import { decodeToken, logout } from '../utilities/auth';
 
@@ -46,14 +47,14 @@ const fetchBackend = async (
     options.data = body;
   }
 
-  if (setProgress) {
-    let progress = 0;
-    options.onUploadProgress = (uploadEvent) => {
-      const { loaded, total } = uploadEvent;
-      progress = Math.floor((loaded / total) * 100);
-      setProgress(progress);
-    };
-  }
+  // if (setProgress) {
+  //   let progress = 0;
+  //   options.onUploadProgress = (uploadEvent) => {
+  //     const { loaded, total } = uploadEvent;
+  //     progress = Math.floor((loaded / total) * 100);
+  //     setProgress(progress);
+  //   };
+  // }
 
   return axios(options)
     .then((res) => res, async (err) => {
@@ -67,27 +68,29 @@ const fetchBackend = async (
     });
 };
 
-// export const uploadFile = ({
-//   file, setProgress, method, url
-// }) => {
-//   let progress = 0;
-//   axios({
-//     baseURL: process.env.REACT_APP_INDEX_URL,
-//     url,
-//     method: method || 'post',
-//     data: file,
-//     onUploadProgress: (uploadEvent) => {
-//       const { loaded, total } = uploadEvent;
-//       progress = Math.floor((loaded / total) * 100);
-//       setProgress(progress);
-//     }
-//   })
-//     .then(
-//       (res) => {
-//         console.log(res);
-//       }
-//     );
-// };
+export const uploadFile = ({
+  file, method, url, handleProgress
+}) => {
+  let progress = 0;
+  const data = new FormData();
+  data.append('logo_id', file);
+  axios({
+    baseURL: process.env.REACT_APP_BACKEND_URL,
+    method: method || 'post',
+    url,
+    data,
+    onUploadProgress: (uploadEvent) => {
+      const { loaded, total } = uploadEvent;
+      progress = Math.floor((loaded / total) * 100);
+      handleProgress(progress);
+    }
+  })
+    .then(
+      (res) => {
+        console.log(res);
+      }
+    );
+};
 
 /**
  *

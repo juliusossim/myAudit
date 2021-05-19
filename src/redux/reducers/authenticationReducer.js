@@ -168,16 +168,25 @@ const authenticationReducer = (state = initialState, { type, response, error }) 
   case constants.UPLOAD_LOGO_PENDING:
     return {
       ...state,
-      login: {
+      logo: {
         data: {},
         status: 'pending'
+      }
+    };
+
+  case constants.UPLOAD_LOGO_PROGRESS:
+    return {
+      ...state,
+      logProgress: {
+        data: error || {},
+        status: 'failed'
       }
     };
 
   case constants.UPLOAD_LOGO_SUCCESS:
     return {
       ...state,
-      resetPassword: {
+      logo: {
         ...state.resetPassword,
         data: response,
         status: 'success'
@@ -187,7 +196,7 @@ const authenticationReducer = (state = initialState, { type, response, error }) 
   case constants.UPLOAD_LOGO_FAILURE:
     return {
       ...state,
-      resetPassword: {
+      logo: {
         data: error || {},
         status: 'failed'
       }

@@ -13,7 +13,8 @@ import {
 } from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
-import { register, uploadLogo } from '../../redux/actions/authenticationActions';
+import { register } from '../../redux/actions/authenticationActions';
+import { uploadFile } from '../../services/fetch';
 
 /**
  *
@@ -53,18 +54,17 @@ const RegisterPage = () => {
     });
   };
 
-  // const handleProgress = useMemo((count) => {
-  //   setProgress(count);
-  // }, []);
+  const handleProgress = (val) => setProgress(val);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'logo_id') {
       setFile(files);
-      dispatch(uploadLogo({
-        file: files[0],
-        setProgress
-      }));
+      uploadFile({ file: files[0], handleProgress, url: 'Uploads/logo' });
+      // dispatch(uploadLogo({
+      //   file: files[0],
+      //   setProgress
+      // }));
     }
     if (name === 'project_type') {
       value === 'corporate'
@@ -212,7 +212,7 @@ const RegisterPage = () => {
     console.log(progress);
     progress === 100
    && setFormData({ ...formData, file: URL.createObjectURL(file[0]) });
-  }, [file, formData, progress]);
+  }, [file, progress]);
   // useEffect(() => {
   //   canContinue(errorsChecker(errors));
   // }, [canContinue, errors]);
@@ -318,7 +318,6 @@ const RegisterPage = () => {
               formData.page !== 0
               && (
                 <div>
-                  { progress }
                   <div>
                     <input className="text-wema" type="checkbox" name="terms" checked={formData.terms} onChange={handleChecked} />
                     {' '}
