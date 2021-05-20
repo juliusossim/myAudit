@@ -6,6 +6,7 @@
 @import 'landingPage';
 @import 'progressBar';
 @import 'pulsing-2';
+@import 'animations';
 
 @font-face {
   font-family: Poppins;
@@ -126,6 +127,11 @@ a.gray:hover {
 .p-r {
   position: relative!important;
 }
+.fit-max {
+  width: max-content !important;
+  position: relative;
+  top: 1.6vh;
+}
 
 .no-padding {
   padding: 0!important;
@@ -234,6 +240,12 @@ a.gray:hover {
 .max-w-400 {
   max-width: 400px!important;
 }
+.max-w-100{
+  max-width: 100px !important;
+}
+.max-w-200{
+  max-width: 200px !important;
+}
 .max-w-600 {
   max-width: 600px!important;
 }
@@ -256,6 +268,9 @@ a.gray:hover {
 .size3 {
   width: 2vw;
   height: 4vh;
+}
+.width-100 {
+  width: 100%;
 }
 .pt-1-25 {
   padding-top: 1.25vh;

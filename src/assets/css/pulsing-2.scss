@@ -2,7 +2,7 @@
   width:100px;
   height:100px;
   position:relative;
-  top: 45ch;
+  top: 20vh;
   left: 45vw;
   --s:15px;
 }
@@ -32,6 +32,12 @@
 .loader i {
   --c:rgb(78, 17, 70);
   animation-timing-function:cubic-bezier(0,0,0,1);
+}
+
+.loader-container {
+  position: relative;
+  height: 50vh;
+  width: 100vh;
 }
 
 @keyframes m{

@@ -3,26 +3,39 @@ import { Router, Switch, Route } from 'react-router-dom';
 import { createBrowserHistory } from 'history';
 
 import MainPortal from './routes/MainPortal';
+import HomePortal from './routes/HomePortal';
+import Header from './layouts/Header';
+import Footer from './layouts/Footer';
 
 function App() {
   const history = createBrowserHistory();
 
   return (
+
     <Suspense fallback={(
-      <div className="loader">
-        <i />
+      <div className="loader-container">
+        <div className="loader">
+          <i />
+        </div>
       </div>
     )}
     >
-      <Router history={history}>
+
+      {/* <Router history={history}> */}
+      <div className="w-full">
+        <Header />
         <Switch>
 
+          {/* <Route path="/" component={HomePortal} /> */}
           <Route path="/" component={MainPortal} />
 
           <Route render={() => <h1>Error 404. Page not found.</h1>} />
         </Switch>
-      </Router>
+        <Footer />
+      </div>
+      {/* </Router> */}
     </Suspense>
+
   );
 }
 
