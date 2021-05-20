@@ -2,9 +2,10 @@ import React from 'react';
 
 const Modal = ({
   content,
-  className
+  className,
+  transition
 }) => (
-  <div className={`${className} custom-modal`}>
+  <div className={`${className} ${transition || 'custom-modal custom-path'} c-modal`}>
     {content}
   </div>
 );
