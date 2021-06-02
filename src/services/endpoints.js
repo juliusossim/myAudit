@@ -5,7 +5,10 @@ import * as projectEndpoints from './projectService';
 const paths = {
   // auth
   LOGIN: authEndpoints.loginApi,
+  REGISTER: authEndpoints.registerApi,
   REGISTER_CORPORATE: authEndpoints.registerCorporateApi,
+  VERIFY_INDIVIDUAL: authEndpoints.verifyIndividualApi,
+  VERIFY_CORPORATE: authEndpoints.verifyCorporateApi,
   REGISTER_INDIVIDUAL: authEndpoints.registerIndividualApi,
   CHANGE_PASSWORD: authEndpoints.changePasswordApi,
   RESET_PASSWORD: authEndpoints.resetPassword,

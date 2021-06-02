@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { HiOutlineChevronDown, HiOutlineChevronUp } from 'react-icons/all';
 import CrowdLogo from '../assets/images/crowd-funding-logo.png';
 import Modal from '../components/microComponents/modal';
+import SearchInput from '../components/form/inputs/search';
 
 const Header = () => {
   const [show, setShow] = useState(false);
@@ -19,23 +20,30 @@ const Header = () => {
             <img src={CrowdLogo} alt="crowd funding logo" />
           </Link>
         </div>
+        <div>
+          <SearchInput label="Search" name="search" placeholder="Search" />
+        </div>
         <div className="header-right">
           <div className="d-flex">
-            <Link to="/login"><div className="fit-max mt-md-2">Sign In</div></Link>
-            <Link to="/create-project">
-              <button className="btn m-l-20 mt-md-2" type="button">Start Project</button>
+            <Link to="/login"><div className="fit-max text-wema sign-in">Sign In</div></Link>
+            <Link to="/register">
+              <button className="btn m-l-20" type="button">Sign Up</button>
             </Link>
-            <div className="ml-md-3 ">
-              <div className={`${show ? 'border-wema' : 'border'} radius50 size4 center-items`}>
-                <img src={CrowdLogo} alt="profile picture" className="radius50 width-100 text-center text-white  " />
-              </div>
-            </div>
-            <div className="ml-md-3 mt-md-4">
-              <button type="button" className={`${show ? 'text-wema' : ''} d-flex no-border bg-transparent`} onClick={handleMe}>
-                <div className="bold"> Julius Ossim</div>
-                {show ? <HiOutlineChevronUp className="mt-md-1" /> : <HiOutlineChevronDown className="mt-md-1" />}
-              </button>
-            </div>
+            {/* <div className="ml-md-3 "> */}
+            {/*  <div className={`${show ? 'border-wema' : 'border'} radius50 size4
+            center-items`}> */}
+            {/*    <img src={CrowdLogo} alt="profile picture"
+            className="radius50 width-100 text-center text-white  " /> */}
+            {/*  </div> */}
+            {/* </div> */}
+            {/* <div className="ml-md-3 mt-md-4"> */}
+            {/*  <button type="button" className={`${show ? 'text-wema' : ''}
+             d-flex no-border bg-transparent`} onClick={handleMe}> */}
+            {/*    <div className="bold"> Julius Ossim</div> */}
+            {/*    {show ? <HiOutlineChevronUp className="mt-md-1" /> :
+             <HiOutlineChevronDown className="mt-md-1" />} */}
+            {/*  </button> */}
+            {/* </div> */}
 
           </div>
         </div>

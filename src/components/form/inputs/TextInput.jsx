@@ -19,27 +19,55 @@ const TextInput = (props) => {
       <label htmlFor={props.name} className={String(props.value).length ? 'active-field' : ''}>
         {props.label}
         <span className="text-danger font-weight-bold">{props.validations?.required && '*'}</span>
+        {
+          props.btn?.constructor === Object && props.loading === 'failed'
+          && (
+            <button className={props.btn?.class} type="button" onClick={props.btnMethod}>
+              {props.btn?.text}
+            </button>
+          )
+
+        }
       </label>
-      <input
-        className={props.error?.length > 0 ? 'error-field' : ''}
-        type={reveal ? 'text' : props.type || 'text'}
-        name={props.name}
-        id={props.name}
-        value={props.value}
-        onChange={props.onChange}
-        onFocus={props.onFocus}
-        title={props.title}
-        readOnly={props.readOnly}
-        onBlur={((e) => typeof props.onBlur === 'function'
-        && props.onBlur(e, props.validations))}
-        disabled={props.disabled}
-        required={props.validations?.required}
-        onKeyPress={props.onKeyPress}
-        onKeyDown={props.onKeyDown}
-        maxLength={props.validations?.maxLength}
-        min={props.validations?.min}
-        max={props.validations?.max}
-      />
+      {
+        props.loading === 'pending'
+          ? (
+            <div className="dots_loader d-flex">
+              <p className="mr-md-1 pb-md-1"> fetching your details</p>
+              <div className="mt-md-1">
+                <span />
+                <span />
+                <span />
+                <span />
+                <span />
+                <span />
+                <span />
+              </div>
+            </div>
+          )
+          : (
+            <input
+              className={props.error?.length > 0 ? 'error-field' : ''}
+              type={reveal ? 'text' : props.type || 'text'}
+              name={props.name}
+              id={props.name}
+              value={props.value}
+              onChange={props.onChange}
+              onFocus={props.onFocus}
+              title={props.title}
+              readOnly={props.readOnly}
+              onBlur={((e) => typeof props.onBlur === 'function'
+                && props.onBlur(e, props.validations))}
+              disabled={props.disabled}
+              required={props.validations?.required}
+              onKeyPress={props.onKeyPress}
+              onKeyDown={props.onKeyDown}
+              maxLength={props.validations?.maxLength}
+              min={props.validations?.min}
+              max={props.validations?.max}
+            />
+          )
+      }
       {
         props.error?.length > 0
           ? (

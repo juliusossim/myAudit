@@ -14,38 +14,38 @@ const GeneralPage = () => {
     window.location.replace('/register');
   };
 
-  const carouselSlides = [
-    {
-      content: (
-        <div className="slide1">
-          {/* <LazyImage src={firstImage} alt="make a difference" /> */}
-          <div className="content1">
-            <p className="small1">
-              Wemabank Crowdfunding
-            </p>
-            <div className="hero">
-              Fundraising for projects and causes that
-              matter to humanity.
-            </div>
-
-            <small className="small2">
-              raise funds with ease and securely. get started now...
-            </small>
-            <div>
-              <button type="button" className="btn btn-small butt" onClick={startProject}>
-                Start Project Today
-              </button>
-            </div>
-          </div>
-        </div>
-      ),
-      id: 1
-    },
-    {
-      content: <div>hello</div>,
-      id: 2
-    }
-  ];
+  // const carouselSlides = [
+  //   {
+  //     content: (
+  //       <div className="slide1">
+  //         {/* <LazyImage src={firstImage} alt="make a difference" /> */}
+  //         <div className="content1">
+  //           <p className="small1">
+  //             Wemabank Crowdfunding
+  //           </p>
+  //           <div className="hero">
+  //             Fundraising for projects and causes that
+  //             matter to humanity.
+  //           </div>
+  //
+  //           <small className="small2">
+  //             raise funds with ease and securely. get started now...
+  //           </small>
+  //           <div>
+  //             <button type="button" className="btn btn-small butt" onClick={startProject}>
+  //               Start Project Today
+  //             </button>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     ),
+  //     id: 1
+  //   },
+  //   {
+  //     content: <div>hello</div>,
+  //     id: 2
+  //   }
+  // ];
   // const firstImg = import('../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg')
   //   .then((makeChange) => <LazyImage src={makeChange} alt="make a difference" />);
 
@@ -62,7 +62,28 @@ const GeneralPage = () => {
 
   return (
     <div>
-      <CustomCarousel className="mh-25" content={carouselSlides} />
+      {/* <CustomCarousel className="mh-25" content={carouselSlides} /> */}
+      <div className="slide1">
+        {/* <LazyImage src={firstImage} alt="make a difference" /> */}
+        <div className="content1">
+          <p className="small1">
+            Wemabank Crowdfunding
+          </p>
+          <div className="hero">
+            Fundraising for projects and causes that
+            matter to humanity.
+          </div>
+
+          <small className="small2">
+            Raise funds with ease and securely. get started now...
+          </small>
+          <div>
+            <button type="button" className="btn btn-small butt" onClick={startProject}>
+              Start a Project Today
+            </button>
+          </div>
+        </div>
+      </div>
       <div className="center-text page">
         <h3 className="howItWorks text-center">
           How It works with Wemabank Crowdfunding

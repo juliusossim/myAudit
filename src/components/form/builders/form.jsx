@@ -34,7 +34,10 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         options,
         optionIndex,
         reveal,
-        handleReveal
+        handleReveal,
+        btn,
+        btnMethod,
+        loading
       } = props;
       switch (kind) {
       case 'select':
@@ -52,6 +55,8 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             options={options}
             optionIndex={optionIndex}
             validations={validations}
+            btn={btn}
+            btnMethod={btnMethod}
           />
         );
       case 'file_input':
@@ -71,6 +76,8 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             onChange={onChange}
             text={text}
             validations={validations}
+            btn={btn}
+            btnMethod={btnMethod}
           />
         );
       case 'text_area':
@@ -90,6 +97,8 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             placeholder={placeholder}
             rows={rows}
             validations={validations}
+            btn={btn}
+            btnMethod={btnMethod}
           />
         );
       default:
@@ -114,6 +123,9 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             validations={validations}
             reveal={reveal}
             handleReveal={handleReveal}
+            btn={btn}
+            btnMethod={btnMethod}
+            loading={loading}
           />
         );
       }

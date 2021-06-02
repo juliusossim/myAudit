@@ -28,22 +28,28 @@ const Profile = () => {
 
   return (
     <div className="content">
-      <div className="max-w-600 w-600 margin-center m-t-40">
+      <div className="max-w-750 max-w-750 w-750 margin-center m-t-40 ">
         <div className="login-form-container p-20">
           <h3 className="bold text-dark">Profile</h3>
-          <div className="row">
-            <div className={`col-md-6 accordion-div  ${accordionTab === 1 && 'is-focus'}`}>
-              <div className={`radius50 size4 center-items ${accordionTab === 1 ? 'border-wema' : 'faint-border'}`}>
-                <button type="button" className={`radius50 size3 text-center  ${accordionTab === 1 ? 'bg-wema text-white' : 'text-muted'}`} onClick={() => setAccordionTab(1)}>1</button>
-              </div>
+          <div className="d-flex border">
+            <div className={`p-md-2 accordion-div-2  ${accordionTab === 1 && 'is-focus'}`}>
+              <button type="button" className={` no-border bg-transparent  ${accordionTab === 1 ? ' text-wema' : 'text-muted'}`} onClick={() => setAccordionTab(1)}>My Projects</button>
             </div>
-            <div className={`col-md-6 accordion-div  ${accordionTab === 2 && 'is-focus'}`}>
-              <div className={`radius50 size4 center-items ${accordionTab === 2 ? 'border-wema' : 'faint-border'}`}>
-                <button type="button" className={`radius50 size3 text-center text-white  ${accordionTab === 2 ? 'bg-wema text-white' : 'text-muted'}`} onClick={() => setAccordionTab(2)}>2</button>
-              </div>
+            <div className={`p-md-2 accordion-div-2  ${accordionTab === 2 && 'is-focus'}`}>
+              <button type="button" className={` no-border bg-transparent  ${accordionTab === 2 ? ' text-wema' : 'text-muted'}`} onClick={() => setAccordionTab(2)}>My Projects</button>
             </div>
+            <div className={`p-md-2 accordion-div-2  ${accordionTab === 3 && 'is-focus'}`}>
+              <button type="button" className={` no-border bg-transparent  ${accordionTab === 3 ? ' text-wema' : 'text-muted'}`} onClick={() => setAccordionTab(3)}>My Projects</button>
+            </div>
+            <div className={`p-md-2 accordion-div-2  ${accordionTab === 4 && 'is-focus'}`}>
+              <button type="button" className={` no-border bg-transparent  ${accordionTab === 4 ? ' text-wema' : 'text-muted'}`} onClick={() => setAccordionTab(4)}>My Projects</button>
+            </div>
+            <div className={`p-md-2 accordion-div-2  ${accordionTab === 5 && 'is-focus'}`}>
+              <button type="button" className={` no-border bg-transparent  ${accordionTab === 5 ? ' text-wema' : 'text-muted'}`} onClick={() => setAccordionTab(5)}>My Projects</button>
+            </div>
+
           </div>
-          <div className="login-form">
+          <div className="login-form ">
             my profile
           </div>
         </div>

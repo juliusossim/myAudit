@@ -7,7 +7,7 @@
 @import 'progressBar';
 @import 'pulsing-2';
 @import 'animations';
-
+@import "loaders";
 @font-face {
   font-family: Poppins;
   src: url('./poppins/Poppins-Regular.ttf');
@@ -249,8 +249,15 @@ a.gray:hover {
 .max-w-600 {
   max-width: 600px!important;
 }
+.max-w-750 {
+  max-width: 750px!important;
+}
+
 .w-600 {
   width: 600px!important;
+}
+.w-750 {
+  width: 750px!important;
 }
 .center-text {
   text-align: center!important;
@@ -285,6 +292,18 @@ a.gray:hover {
   &.is-focus {
     border-bottom: solid 3px #A01B88;
   }
+}
+.accordion-div-2 {
+  padding-bottom: 3vh;
+  &.is-focus {
+    border-bottom: solid 3px #A01B88;
+  }
+}
+.pb-5h{
+  padding-bottom: 5vh !important;
+}
+.ml-18w {
+  margin-left: 18vw
 }
 .center-items {
   align-items: center;
@@ -331,7 +350,39 @@ a.gray:hover {
     color: #f50606;
   }
 }
+.search-input {
+  width: 26rem;
+  margin-right: 1rem;
+}
+.searchBtn {
+  font-size: 1.8rem;
+  position: absolute;
+  top: 1.4px;
+  right: 1px;
+  background: white;
+  width: 2rem;
+  margin-left: 3px;
+  padding: 2.5px 45px 2.5px 2.5px;
+  &:hover {
+    background: #A01B88;
+    color: white;
 
+  }
+}
+.sign-in {
+  padding: .3vw;
+  &:hover {
+    background: #A01B88;
+    color: white;
+    border-radius: 5px;
+    transition: background-color 3s linear;
+  }
+}
+
+a {
+    text-decoration: none !important;
+
+}
 header {
   background-color: #FFFFFF;
   border-bottom: 1px solid #B4B4B4;
@@ -513,11 +564,11 @@ button:focus {
 /* FORM INPUTS */
 .form-group {
   position: relative;
-  
+
   label {
     color: #212121;
   }
-  
+
   input,
   textarea,
   select {

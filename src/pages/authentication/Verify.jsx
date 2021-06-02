@@ -1,6 +1,6 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-// import { HiOutlineArrowNarrowLeft, HiOutlineArrowNarrowRight } from 'react-icons/all';
+import { HiOutlineArrowNarrowLeft, HiOutlineArrowNarrowRight } from 'react-icons/all';
 import { Link } from 'react-router-dom';
 import localforage from 'localforage';
 import FormBuilder from '../../components/form/builders/form';
@@ -15,7 +15,7 @@ import {
 } from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
-import { register, verifyCorporate, verifyIndividual } from '../../redux/actions/authenticationActions';
+import { register, verifyIndividual } from '../../redux/actions/authenticationActions';
 import { uploadFile } from '../../services/fetch';
 
 /**
@@ -26,30 +26,19 @@ import { uploadFile } from '../../services/fetch';
 const RegisterPage = () => {
   /* redux */
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.auth);
+  const store = useSelector((state) => state.auth.register);
   /* state */
-  const [formData, setFormData] = useState({ terms: false, profile_type: 'select project type', page: 0 });
+  const [formData, setFormData] = useState({ terms: false, project_type: 'select project type', page: 0 });
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
   const [submittable, setSubmittable] = useState(false);
   const [selectType, setSelectType] = useState(true);
-  const [disableOtp, setDisableOtp] = useState(true);
-  const [user, setUser] = useState({ registered: false });
-  // constants
-  const currentUser = localforage.getItem('user', (err, value) => value);
 
-  const verifyAccount = () => {
-    if (user.details?.profile_type === 1) {
-      return dispatch(
-        verifyCorporate({ accountNumber: formData.account_number })
-      );
-    }
-    return dispatch(
-      verifyIndividual({ account_number: formData.account_number })
-    );
-  };
+  const verifyAccount = () => dispatch(
+    verifyIndividual({ accountNumber: formData.account_number })
+  );
 
   const handleRegister = () => {
     setShow(true);
@@ -80,14 +69,37 @@ const RegisterPage = () => {
       setFile(files);
       uploadFile({ file: files[0], handleProgress, url: 'Uploads/logo' });
     }
+    // if (name === 'project_type') {
+    //   value === 'corporate'
+    //     ? setFormData({
+    //       ...formData,
+    //       terms: false,
+    //       forwardButton: false,
+    //       // page: 2,
+    //       first_name: '',
+    //       last_name: '',
+    //       phone_number: null,
+    //       code: '',
+    //       bvn: ''
+    //     })
+    //     : setFormData({
+    //       ...formData,
+    //       terms: false,
+    //       forwardButton: false,
+    //       // page: 1,
+    //       organisation_name: '',
+    //       rc_number: '',
+    //       description: '',
+    //       phone_number: null,
+    //       location: '',
+    //       manager: '',
+    //       file: ''
+    //     });
+    // }
     setFormData((state) => ({
       ...state,
       [name]: value
     }));
-    if (name === 'account_number' && value.length === 10) {
-      console.log(value);
-      verifyAccount();
-    }
   };
 
   const canContinue = (err) => {
@@ -100,17 +112,6 @@ const RegisterPage = () => {
     }
     return setSelectType(true);
   };
-  const canSendOTP = () => {
-    if (
-      formData?.account_number?.length > 0
-      && formData?.account_name?.length > 0
-      && formData?.phone_number?.length > 0
-    ) {
-      return setDisableOtp(false);
-    }
-    return setDisableOtp(true);
-  };
-
   const handleBlur = (e, validations) => {
     const { name, value } = e.target;
     const field = slugToString(name);
@@ -131,10 +132,10 @@ const RegisterPage = () => {
   const modalTemplate = (
     <div className={
       // eslint-disable-next-line no-nested-ternary
-      (store?.register.status === 'failed')
+      (store?.status === 'failed')
         ? 'mt-5 p-5'
         : (
-          store?.register.status === 'pending'
+          store?.status === 'pending'
             ? 'mt-5 p-5 '
             : 'mt-5 p-5 bg-wema'
         )
@@ -142,7 +143,7 @@ const RegisterPage = () => {
     >
       <div className="text-white">
         {
-          store?.register.status === 'pending'
+          store?.status === 'pending'
           && (
             <div className="center-text text-success">
               Loading...
@@ -150,18 +151,18 @@ const RegisterPage = () => {
           )
         }
         {
-          store?.register.status !== 'pending'
+          store?.status !== 'pending'
           && (
             <div className="">
-              <h5 className="center-text text-muted">{store?.register.status}</h5>
+              <h5 className="center-text text-muted">{store?.status}</h5>
               <ul>
                 {
-                  store?.register.status === 'failed'
+                  store?.status === 'failed'
                     ? (
                       <div>
                         <ul>
                           {
-                            mapBackendErrors(store?.register.data).map(
+                            mapBackendErrors(store?.data).map(
                               (err) => (
                                 typeof err !== 'undefined' && (
                                   <li key={`${err}`} className="text-warning">
@@ -182,7 +183,7 @@ const RegisterPage = () => {
                         your account is created
                         you will now be redirected to your projects
                         {
-                          store?.register.status === 'success'
+                          store?.status === 'success'
                           && setTimeout(handleClose, 3000)
                         }
                       </p>
@@ -210,39 +211,37 @@ const RegisterPage = () => {
   //     ? setFormData({ ...formData, page: 2, forwardButton: false })
   //     : setFormData({ ...formData, page: 1, forwardButton: false });
   // };
-
   useEffect(() => {
     progress === 100
    && setFormData({ ...formData, file: URL.createObjectURL(file[0]) });
   }, [file, progress]);
-  useEffect(() => {
-    user.registered
-    && canSubmit(formData, errors, setSubmittable, 6);
-  },
-  [user, formData]);
 
   useEffect(() => {
-    currentUser.then((result) => result.status === 1
-    && setUser({ registered: true, details: result.data.user }));
-    canSendOTP();
+    if (formData.terms) {
+      if (formData?.project_type === 'corporate') {
+        return canSubmit(formData, errors, setSubmittable, 6);
+      }
+      if (formData?.project_type === 'ngo') {
+        return canSubmit(formData, errors, setSubmittable, 4);
+      }
+      if (formData.project_type === 'individual') {
+        return canSubmit(formData, errors, setSubmittable, 6);
+      }
+    }
     return canContinue(errorsChecker(errors));
   },
-  [errors, store]);
+  [formData, errors, store]);
 
   return (
     <div className="content">
       <div className="max-w-600 w-600 margin-center m-t-40">
         <div className="login-form-container p-20">
-          <h3 className="">
-            {
-              user.registered ? 'Verify Account' : 'Create Account'
-            }
-          </h3>
-          <p className="">{`To Start A Project, You Need To ${user.registered ? 'Verify Your Account' : 'Create An Account'}...`}</p>
+          <h3 className="">Create Account</h3>
+          <p className="">To start a project, you need to create an account...</p>
           <hr />
           <div className="login-form pb-5h">
             {
-              user.registered && user.details?.profile_type === 0
+              formData.page === 1 && user !== null
               && (
                 <FormBuilder
                   formItems={
@@ -252,8 +251,7 @@ const RegisterPage = () => {
                         handleBlur,
                         handleChange,
                         errors,
-                        btnMethod: verifyAccount,
-                        loading: store.verifyIndividual.status
+                        btnMethod: verifyAccount
                       }
                     )
                   }
@@ -261,7 +259,7 @@ const RegisterPage = () => {
               )
             }
             {
-              !user.registered
+              formData.page === 0 && user === null
               && (
                 <FormBuilder
                   formItems={
@@ -297,19 +295,18 @@ const RegisterPage = () => {
             {/* } */}
 
             {
-              user.registered && user.details?.profile_type === 1
+              formData.page === 2
               && (
                 <FormBuilder
                   formItems={
                     formBuilderCorporateProps(
                       {
                         formData,
+                        setFormData: cancelUpload,
+                        progress,
                         handleBlur,
                         handleChange,
-                        btnMethod: verifyAccount,
-                        errors,
-                        selectDisabled: disableOtp,
-                        loading: store.verifyCorporate.status
+                        errors
                       }
                     )
                   }
@@ -318,7 +315,7 @@ const RegisterPage = () => {
             }
 
             {
-              !user.registered
+              formData.page === 0
               && (
                 <div>
                   <div>
@@ -333,7 +330,7 @@ const RegisterPage = () => {
                     </span>
                   </div>
                   {
-                    formData.terms
+                    (formData.terms || formData.phone_number)
                     && (
                       <button
                         className="w-100 btn btn-small float-right"
@@ -341,40 +338,25 @@ const RegisterPage = () => {
                         disabled={!submittable}
                         onClick={handleRegister}
                       >
-                        Create Account
+                        {
+                          formData.page === 0
+                            ? 'Create Account'
+                            : 'Send OTP'
+                        }
                       </button>
                     )
                   }
-
-                  <p className="text-center">
-                    <small>
-                      Already have an account?
-                    </small>
-                    <Link className="text-wema" to="/login"> Sign In</Link>
-                  </p>
-
-                </div>
-              )
-            }
-            {
-              user.registered
-              && (
-                <div>
-
-                  <button
-                    className="w-100 btn btn-small float-right"
-                    type="button"
-                    disabled={!submittable}
-                    onClick={handleRegister}
-                  >
-                    Send OTP
-                  </button>
-                  <div className="text-center w-100 ">
-                    <Link to="/" className="text-wema">
-                      Proceed home
-                    </Link>
-                  </div>
-
+                  {
+                    formData.page === 0
+                    && (
+                      <p className="text-center">
+                        <small>
+                          Already have an account?
+                        </small>
+                        <Link className="text-wema" to="/login"> Sign In</Link>
+                      </p>
+                    )
+                  }
                 </div>
               )
             }

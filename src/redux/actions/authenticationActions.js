@@ -2,30 +2,67 @@ import localforage from 'localforage';
 import { post, uploadFile } from '../../services/fetch';
 import constants from '../constants';
 
-export const register = (payload, type = 'individual') => {
+const dispatchConnection = (connection, pending, action) => async (dispatch) => {
+  dispatch(pending(connection));
+  return connection.then((response) => action({ response, dispatch }));
+};
+
+export const register = (payload) => {
   const request = (req) => ({ type: constants.REGISTER_PENDING, request: req });
   const success = (response) => ({ type: constants.REGISTER_SUCCESS, response });
   const failure = (error) => ({ type: constants.REGISTER_FAILURE, error });
 
   return async (dispatch) => {
-    const endpoints = {
-      individual: 'REGISTER_INDIVIDUAL',
-      corporate: 'REGISTER_CORPORATE'
-    };
-    const endpoint = typeof endpoints[type] !== 'undefined' && endpoints[type];
-    const res = post({ endpoint, auth: false, body: payload });
+    // const endpoints = {
+    //   individual: 'REGISTER_INDIVIDUAL',
+    //   corporate: 'REGISTER_CORPORATE'
+    // };
+    // const endpoint = typeof endpoints[type] !== 'undefined' && endpoints[type];
+    const res = post({ endpoint: 'REGISTER', auth: false, body: payload });
 
     dispatch(request(res));
 
     return res.then((response) => {
       if (response?.status === 200 || response?.status === 201) {
+        localforage.setItem('user', response.data);
         dispatch(success(response?.data));
       } else {
-        dispatch(failure(response?.errors ? response.errors : response));
+        dispatch(failure(response?.errors || response));
       }
     });
   };
 };
+
+export const verifyIndividual = (payload) => {
+  const request = (req) => ({ type: constants.VERIFY_INDIVIDUAL_PENDING, request: req });
+  const success = (response) => ({ type: constants.VERIFY_INDIVIDUAL_SUCCESS, response });
+  const failure = (error) => ({ type: constants.VERIFY_INDIVIDUAL_FAILURE, error });
+  const connection = post({ endpoint: 'VERIFY_INDIVIDUAL', auth: false, body: payload });
+  const dispatchActions = ({ response, dispatch }) => {
+    if (response?.status === 200) {
+      dispatch(success(response?.data));
+    } else {
+      dispatch(failure(response));
+    }
+  };
+  return dispatchConnection(connection, request, dispatchActions);
+};
+
+export const verifyCorporate = (payload) => {
+  const request = (req) => ({ type: constants.VERIFY_CORPORATE_PENDING, request: req });
+  const success = (response) => ({ type: constants.VERIFY_CORPORATE_SUCCESS, response });
+  const failure = (error) => ({ type: constants.VERIFY_CORPORATE_FAILURE, error });
+  const connection = post({ endpoint: 'VERIFY_CORPORATE', auth: false, body: payload });
+  const dispatchActions = ({ response, dispatch }) => {
+    if (response?.status === 200) {
+      dispatch(success(response?.data));
+    } else {
+      dispatch(failure(response));
+    }
+  };
+  return dispatchConnection(connection, request, dispatchActions);
+};
+
 export const login = (payload) => {
   const request = (req) => ({ type: constants.LOGIN_PENDING, request: req });
   const success = (response) => ({ type: constants.LOGIN_SUCCESS, response });

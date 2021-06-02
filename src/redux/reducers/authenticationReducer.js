@@ -5,6 +5,14 @@ const initialState = {
     data: {},
     status: 'initial'
   },
+  verifyIndividual: {
+    data: {},
+    status: 'initial'
+  },
+  verifyCorporate: {
+    data: {},
+    status: 'initial'
+  },
   login: {
     data: {},
     status: 'initial'
@@ -48,6 +56,62 @@ const authenticationReducer = (state = initialState, { type, response, error }) 
     return {
       ...state,
       register: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.VERIFY_INDIVIDUAL_PENDING:
+    return {
+      ...state,
+      verifyIndividual: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.VERIFY_INDIVIDUAL_SUCCESS:
+    return {
+      ...state,
+      verifyIndividual: {
+        ...state.verifyIndividual,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.VERIFY_INDIVIDUAL_FAILURE:
+    return {
+      ...state,
+      verifyIndividual: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.VERIFY_CORPORATE_PENDING:
+    return {
+      ...state,
+      verifyCorporate: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.VERIFY_CORPORATE_SUCCESS:
+    return {
+      ...state,
+      verifyCorporate: {
+        ...state.verifyCorporate,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.VERIFY_CORPORATE_FAILURE:
+    return {
+      ...state,
+      verifyCorporate: {
         data: error || {},
         status: 'failed'
       }

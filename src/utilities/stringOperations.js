@@ -14,6 +14,17 @@ export const slugToString = (slug, dash = '_') => {
   return result.join(' ');
 };
 /**
+ *converts camelCase to strings
+ * @param camelCase
+ * @returns {string}
+ */
+
+export const camelToString = (camelCase) => camelCase
+  .replace(/\W+/g, ' ')
+  .replace(/([a-z\d])([A-Z])/g, '$1 $2')
+  .toLowerCase();
+
+/**
  * this converts normal strings to a slug
  *
  * N.B: the string must be blank separated i.e a normal string!
