@@ -354,7 +354,7 @@ const RegisterPage = () => {
             details: {
               ...result.data?.user,
               // otp: true,
-              otpVerified: store.verifyAccountOtp.data?.data
+              otpVerified: true
             }
           };
         }
@@ -383,10 +383,10 @@ const RegisterPage = () => {
         <div className="login-form-container p-20">
           <h3 className="">
             {
-              user.registered ? 'Verify Account' : 'Create Account'
+              user.registered ? 'Verify Profile' : 'Create Profile'
             }
           </h3>
-          <p className="">{`To Start A Project, You Need To ${user.registered ? 'Verify Your Account' : 'Create An Account'}...`}</p>
+          <p className="">{`To Start A Project, You Need To ${user.registered ? 'Verify Your Profile' : 'Create An Profile'}...`}</p>
           <hr />
           <div className="login-form pb-5h">
             {

@@ -31,13 +31,13 @@ export const profileType = [
     id: 1,
     type: 'corporate',
     desc: 'corporate project',
-    value: 1
+    value: 2
   },
   {
     id: 3,
     type: 'individual',
     desc: 'individual project',
-    value: 0
+    value: 1
   }
 ];
 export const managers = [
