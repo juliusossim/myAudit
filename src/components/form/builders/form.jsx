@@ -33,6 +33,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         validations,
         options,
         optionIndex,
+        valueIndex,
         reveal,
         handleReveal,
         btn,
@@ -54,6 +55,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             label={label}
             options={options}
             optionIndex={optionIndex}
+            valueIndex={valueIndex}
             validations={validations}
             btn={btn}
             btnMethod={btnMethod}

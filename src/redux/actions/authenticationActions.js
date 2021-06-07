@@ -1,5 +1,5 @@
 import localforage from 'localforage';
-import { post, uploadFile } from '../../services/fetch';
+import { post, get } from '../../services/fetch';
 import constants from '../constants';
 
 const dispatchConnection = (connection, pending, action) => async (dispatch) => {
@@ -37,7 +37,7 @@ export const verifyIndividual = (payload) => {
   const request = (req) => ({ type: constants.VERIFY_INDIVIDUAL_PENDING, request: req });
   const success = (response) => ({ type: constants.VERIFY_INDIVIDUAL_SUCCESS, response });
   const failure = (error) => ({ type: constants.VERIFY_INDIVIDUAL_FAILURE, error });
-  const connection = post({ endpoint: 'VERIFY_INDIVIDUAL', auth: false, body: payload });
+  const connection = get({ endpoint: 'VERIFY_INDIVIDUAL', auth: false, pQuery: payload });
   const dispatchActions = ({ response, dispatch }) => {
     if (response?.status === 200) {
       dispatch(success(response?.data));
@@ -52,7 +52,38 @@ export const verifyCorporate = (payload) => {
   const request = (req) => ({ type: constants.VERIFY_CORPORATE_PENDING, request: req });
   const success = (response) => ({ type: constants.VERIFY_CORPORATE_SUCCESS, response });
   const failure = (error) => ({ type: constants.VERIFY_CORPORATE_FAILURE, error });
-  const connection = post({ endpoint: 'VERIFY_CORPORATE', auth: false, body: payload });
+  const connection = get({
+    endpoint: 'VERIFY_CORPORATE', auth: false, pQuery: payload
+  });
+  const dispatchActions = ({ response, dispatch }) => {
+    if (response?.status === 200) {
+      dispatch(success(response?.data));
+    } else {
+      dispatch(failure(response));
+    }
+  };
+  return dispatchConnection(connection, request, dispatchActions);
+};
+
+export const verifyAccountOtp = (payload) => {
+  const request = (req) => ({ type: constants.VERIFY_ACCOUNT_OTP_PENDING, request: req });
+  const success = (response) => ({ type: constants.VERIFY_ACCOUNT_OTP_SUCCESS, response });
+  const failure = (error) => ({ type: constants.VERIFY_ACCOUNT_OTP_FAILURE, error });
+  const connection = post({ endpoint: 'VERIFY_ACCOUNT_OTP', auth: false, body: payload });
+  const dispatchActions = ({ response, dispatch }) => {
+    if (response?.status === 200) {
+      dispatch(success(response?.data));
+    } else {
+      dispatch(failure(response));
+    }
+  };
+  return dispatchConnection(connection, request, dispatchActions);
+};
+export const sendAccountOtp = (payload) => {
+  const request = (req) => ({ type: constants.SEND_ACCOUNT_OTP_PENDING, request: req });
+  const success = (response) => ({ type: constants.SEND_ACCOUNT_OTP_SUCCESS, response });
+  const failure = (error) => ({ type: constants.SEND_ACCOUNT_OTP_FAILURE, error });
+  const connection = get({ endpoint: 'SEND_ACCOUNT_OTP', auth: false, pQuery: payload });
   const dispatchActions = ({ response, dispatch }) => {
     if (response?.status === 200) {
       dispatch(success(response?.data));

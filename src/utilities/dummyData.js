@@ -25,6 +25,21 @@ export const projectType = [
     desc: 'organisational project'
   }
 ];
+export const profileType = [
+  'select item...',
+  {
+    id: 1,
+    type: 'corporate',
+    desc: 'corporate project',
+    value: 1
+  },
+  {
+    id: 3,
+    type: 'individual',
+    desc: 'individual project',
+    value: 0
+  }
+];
 export const managers = [
   'select a manager',
   {

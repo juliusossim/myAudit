@@ -8,7 +8,8 @@ const formBuilderCorporateProps = (
     errors,
     btnMethod,
     selectDisabled,
-    loading
+    loading,
+    options
   }
 ) => ([
   {
@@ -26,7 +27,7 @@ const formBuilderCorporateProps = (
       loading,
       btn: {
         class: 'ml-18w bg-transparent text-wema',
-        text: 'Verify'
+        text: 'Try Again'
       },
       btnMethod,
       error: errors?.account_number,
@@ -38,16 +39,17 @@ const formBuilderCorporateProps = (
     kind: 'select',
     props: {
       className: 'w-100 m-b-20',
-      name: 'account_name',
+      name: 'manager',
       label: 'Select Manager',
-      value: formData?.profile_type || '',
-      options: projectType,
+      value: formData?.manager || '',
+      options,
       validations: {
         required: true
       },
       disabled: selectDisabled,
-      error: errors?.project_type,
-      optionIndex: 'type',
+      error: errors?.manager,
+      optionIndex: 'account_name',
+      valueIndex: 'value',
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -58,7 +60,7 @@ const formBuilderCorporateProps = (
       className: 'w-100 m-b-20',
       name: 'phone_number',
       label: 'Phone Number',
-      type: 'number',
+      type: 'tel',
       value: formData?.phone_number || '',
       disabled: true,
       error: errors?.phone_number,

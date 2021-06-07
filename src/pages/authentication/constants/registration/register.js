@@ -1,4 +1,4 @@
-import { projectType } from '../../../../utilities/dummyData';
+import { profileType } from '../../../../utilities/dummyData';
 import { validationPatterns } from '../../../../utilities/validation';
 
 const formBuilderProps = (
@@ -66,16 +66,17 @@ const formBuilderProps = (
     kind: 'select',
     props: {
       className: 'w-100 m-b-20',
-      name: 'project_type',
-      label: 'Select Project Type',
-      value: formData?.project_type || '',
-      options: projectType,
+      name: 'profile_type',
+      label: 'Select Profile Type',
+      value: formData?.profile_type || '',
+      options: profileType,
       validations: {
         required: true
       },
       disabled: selectDisabled,
-      error: errors?.project_type,
+      error: errors?.profile_type,
       optionIndex: 'type',
+      valueIndex: 'value',
       onBlur: handleBlur,
       onChange: handleChange
     }

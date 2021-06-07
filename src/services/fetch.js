@@ -59,7 +59,6 @@ const fetchBackend = async (
   return axios(options)
     .then((res) => res, async (err) => {
       if (err?.response?.status === 401 || err?.response?.status === 400) {
-        // console.log('err: ', err.response);
         // log the user out and return
         // await logout(process.env.REACT_APP_JWT_SECRET, true);
       }

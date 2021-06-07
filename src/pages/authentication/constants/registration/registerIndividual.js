@@ -23,7 +23,7 @@ const formBuilderIndividualProps = (
       loading,
       btn: {
         class: 'ml-18w bg-transparent text-wema',
-        text: 'Verify'
+        text: 'Try Again'
       },
       btnMethod,
       error: errors?.account_number,
@@ -68,7 +68,7 @@ const formBuilderIndividualProps = (
       className: 'w-100 m-b-20',
       name: 'phone_number',
       label: 'Phone Number',
-      type: 'number',
+      type: 'tel',
       value: formData?.phone_number || '',
       disabled: true,
       error: errors?.phone_number,

@@ -9,6 +9,8 @@ const paths = {
   REGISTER_CORPORATE: authEndpoints.registerCorporateApi,
   VERIFY_INDIVIDUAL: authEndpoints.verifyIndividualApi,
   VERIFY_CORPORATE: authEndpoints.verifyCorporateApi,
+  VERIFY_ACCOUNT_OTP: authEndpoints.verifyAccountOtpApi,
+  SEND_ACCOUNT_OTP: authEndpoints.sendAccountOtpApi,
   REGISTER_INDIVIDUAL: authEndpoints.registerIndividualApi,
   CHANGE_PASSWORD: authEndpoints.changePasswordApi,
   RESET_PASSWORD: authEndpoints.resetPassword,

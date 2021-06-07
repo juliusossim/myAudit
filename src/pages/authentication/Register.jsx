@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 // import { HiOutlineArrowNarrowLeft, HiOutlineArrowNarrowRight } from 'react-icons/all';
 import { Link } from 'react-router-dom';
@@ -7,15 +7,19 @@ import FormBuilder from '../../components/form/builders/form';
 import formBuilderIndividualProps from './constants/registration/registerIndividual';
 import formBuilderCorporateProps from './constants/registration/registerCorporate';
 import formBuilderProps from './constants/registration/register';
+import formBuilderOtp from './constants/registration/otp';
 import {
   validateField,
   canSubmit,
   mapBackendErrors,
   errorsChecker
 } from '../../utilities/validation';
+// import { currentUser, getUser } from '../../utilities/auth';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
-import { register, verifyCorporate, verifyIndividual } from '../../redux/actions/authenticationActions';
+import {
+  register, verifyCorporate, verifyIndividual, verifyAccountOtp, sendAccountOtp
+} from '../../redux/actions/authenticationActions';
 import { uploadFile } from '../../services/fetch';
 
 /**
@@ -28,7 +32,7 @@ const RegisterPage = () => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state.auth);
   /* state */
-  const [formData, setFormData] = useState({ terms: false, profile_type: 'select project type', page: 0 });
+  const [formData, setFormData] = useState({ terms: false, profile_type: 10, page: 0 });
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const [errors, setErrors] = useState({});
@@ -36,14 +40,14 @@ const RegisterPage = () => {
   const [submittable, setSubmittable] = useState(false);
   const [selectType, setSelectType] = useState(true);
   const [disableOtp, setDisableOtp] = useState(true);
-  const [user, setUser] = useState({ registered: false });
+  const [user, setUser] = useState({
+    registered: false
+  });
   // constants
-  const currentUser = localforage.getItem('user', (err, value) => value);
-
   const verifyAccount = () => {
-    if (user.details?.profile_type === 1) {
+    if (user.details?.role === 'Manager') {
       return dispatch(
-        verifyCorporate({ accountNumber: formData.account_number })
+        verifyCorporate({ account_number: formData.account_number })
       );
     }
     return dispatch(
@@ -55,12 +59,32 @@ const RegisterPage = () => {
     setShow(true);
     dispatch(register(formData));
   };
+  const sendOtp = () => {
+    // setShow(true);
+    dispatch(sendAccountOtp({
+      customer_id: formData.customer_id
+    }));
+  };
+  const verifyOtp = () => {
+    // setShow(true);
+    dispatch(verifyAccountOtp({
+      user_id: user.details?.id,
+      token: formData.otp,
+      customer_id: formData.customer_id
+      // phone_number: formData.phone_number
+    }));
+  };
+  const handleOtp = () => {
+    user.details?.otp
+      ? verifyOtp()
+      : sendOtp();
+  };
   const cancelUpload = () => {
     setFormData({ ...formData, file: '', logo_id: '' });
   };
   const handleClose = () => {
     setShow(false);
-    setFormData({ ...formData, page: 1 });
+    // setFormData({ ...formData, page: 1 });
     // window.location.replace('/create-project');
   };
 
@@ -76,16 +100,30 @@ const RegisterPage = () => {
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+    let val = value;
     if (name === 'logo_id') {
       setFile(files);
       uploadFile({ file: files[0], handleProgress, url: 'Uploads/logo' });
     }
+    if (name === 'profile_type' || name === 'manager') {
+      val = Number(value);
+      if (name === 'manager') {
+        const manager = typeof user.details.signatories !== 'undefined' && formData.manager !== 'select manager'
+          ? user.details.signatories[val]
+          : null;
+        setFormData({
+          ...formData,
+          account_name: manager?.account_name,
+          phone_number: manager?.phone_number,
+          customer_id: manager?.customer_id
+        });
+      }
+    }
     setFormData((state) => ({
       ...state,
-      [name]: value
+      [name]: val
     }));
-    if (name === 'account_number' && value.length === 10) {
-      console.log(value);
+    if (name === 'account_number' && val.length === 10) {
       verifyAccount();
     }
   };
@@ -195,7 +233,7 @@ const RegisterPage = () => {
       </div>
     </div>
   );
-
+  // 0249299632
   // const goBack = () => {
   //   setFormData({
   //     ...formData,
@@ -216,18 +254,128 @@ const RegisterPage = () => {
    && setFormData({ ...formData, file: URL.createObjectURL(file[0]) });
   }, [file, progress]);
   useEffect(() => {
-    user.registered
-    && canSubmit(formData, errors, setSubmittable, 6);
-  },
-  [user, formData]);
+    localforage.getItem('user', (err, value) => value).then((result) => {
+      let item = {
+        registered: false
+      };
+      if (result?.status === 1) {
+        item = {
+          registered: true,
+          details: result.data?.user
+        };
+      }
+      return setUser(item);
+    });
+  }, [store.register]);
 
   useEffect(() => {
-    currentUser.then((result) => result.status === 1
-    && setUser({ registered: true, details: result.data.user }));
+    localforage.getItem('user', (err, value) => value).then((result) => {
+      let item = {
+        registered: false
+      };
+      if (result?.status === 1) {
+        item = {
+          registered: true,
+          details: {
+            ...result.data?.user,
+            ...store.verifyIndividual.data?.data
+          }
+        };
+      }
+
+      // setDisableOtp(!item.registered);
+      return setUser(item);
+    });
+
+    setFormData({ ...formData, ...store.verifyIndividual.data?.data });
+  }, [store.verifyIndividual]);
+  useEffect(() => {
+    localforage.getItem('user', (err, value) => value).then((result) => {
+      let item = {
+        registered: false
+      };
+      if (result?.status === 1) {
+        let signatories = [
+          'select signatories'
+        ];
+        store.verifyCorporate?.data?.data?.signatories.map((datum, key) => {
+          const manager = {
+            ...datum,
+            value: key + 1
+          };
+          signatories = [...signatories, manager];
+        });
+        item = {
+          registered: true,
+          details: {
+            ...result.data?.user,
+            ...store.verifyCorporate.data?.data,
+            signatories
+          }
+        };
+      }
+
+      // setDisableOtp(!item.registered);
+      return setUser(item);
+    });
+
+    setFormData({ ...formData, ...store.verifyCorporate.data?.data, account_name: '' });
+  }, [store.verifyCorporate]);
+  useEffect(() => {
+    if (store.sendAccountOtp.status === 'success') {
+      localforage.getItem('user', (err, value) => value).then((result) => {
+        let item = {
+          registered: false
+        };
+        if (result?.status === 1) {
+          item = {
+            registered: true,
+            details: {
+              ...result.data?.user,
+              token: result.data?.token,
+              otp: true
+            }
+          };
+        }
+        // setDisableOtp(!item.registered);
+        return setUser(item);
+      });
+    }
+  }, [store.sendAccountOtp]);
+  useEffect(() => {
+    if (store.sendAccountOtp.status === 'success') {
+      localforage.getItem('user', (err, value) => value).then((result) => {
+        let item = {
+          registered: false
+        };
+        if (result?.status === 1) {
+          item = {
+            registered: true,
+            details: {
+              ...result.data?.user,
+              // otp: true,
+              otpVerified: store.verifyAccountOtp.data?.data
+            }
+          };
+        }
+        // setDisableOtp(!item.registered);
+        return setUser({
+          registered: true,
+          details: {
+            ...user.details,
+            ...item.details
+          }
+        });
+      });
+    }
+  }, [store.verifyAccountOtp]);
+  useEffect(() => {
     canSendOTP();
+    user.registered
+      && canSubmit(formData, errors, setSubmittable, 6);
     return canContinue(errorsChecker(errors));
   },
-  [errors, store]);
+  [user, formData, errors, store]);
 
   return (
     <div className="content">
@@ -242,22 +390,34 @@ const RegisterPage = () => {
           <hr />
           <div className="login-form pb-5h">
             {
-              user.registered && user.details?.profile_type === 0
+              user.registered && user.details?.role === 'User' && typeof user.details?.otp === 'undefined'
               && (
-                <FormBuilder
-                  formItems={
-                    formBuilderIndividualProps(
-                      {
-                        formData,
-                        handleBlur,
-                        handleChange,
-                        errors,
-                        btnMethod: verifyAccount,
-                        loading: store.verifyIndividual.status
-                      }
-                    )
-                  }
-                />
+                <div>
+                  <FormBuilder
+                    formItems={
+                      formBuilderIndividualProps(
+                        {
+                          formData,
+                          handleBlur,
+                          handleChange,
+                          errors,
+                          btnMethod: verifyAccount,
+                          loading: store.verifyIndividual.status
+                        }
+                      )
+                    }
+                  />
+                  <div>
+                    {
+                      store.sendAccountOtp?.status === 'pending'
+                      && (<div className="dial-loader text-wema left-5"><p className="ping">Loading</p></div>)
+                    }
+                    {
+                      store.sendAccountOtp?.status === 'failed'
+                      && (<div className="text-danger"><p className="ping">Failed</p></div>)
+                    }
+                  </div>
+                </div>
               )
             }
             {
@@ -278,42 +438,89 @@ const RegisterPage = () => {
                 />
               )
             }
-            {/* { */}
-            {/*  formData.project_type === 'ngo' */}
-            {/*  && ( */}
-            {/*    <FormBuilder */}
-            {/*      formItems={ */}
-            {/*        formBuilderNgoProps( */}
-            {/*          { */}
-            {/*            formData, */}
-            {/*            handleBlur, */}
-            {/*            handleChange, */}
-            {/*            errors */}
-            {/*          } */}
-            {/*        ) */}
-            {/*      } */}
-            {/*    /> */}
-            {/*  ) */}
-            {/* } */}
+            {
+              user.details?.otp && typeof user.details?.otpVerified === 'undefined'
+              && (
+                <div>
+                  <FormBuilder
+                    formItems={
+                      formBuilderOtp(
+                        {
+                          formData,
+                          handleBlur,
+                          handleChange,
+                          btnMethod: verifyAccount,
+                          errors,
+                          selectDisabled: disableOtp,
+                          loading: store.verifyAccountOtp.status
+                        }
+                      )
+                    }
+                  />
+                  <div>
+                    {
+                      store.verifyAccountOtp?.status === 'pending'
+                      && (<div className="to-fro-lines left-5" />)
+                    }
+                    {
+                      store.verifyAccountOtp?.status === 'failed'
+                      && (<div className="text-danger"><p className="text-center">Failed</p></div>)
+                    }
+                  </div>
+                </div>
+              )
+            }
 
             {
-              user.registered && user.details?.profile_type === 1
+              user.details?.otpVerified
               && (
-                <FormBuilder
-                  formItems={
-                    formBuilderCorporateProps(
-                      {
-                        formData,
-                        handleBlur,
-                        handleChange,
-                        btnMethod: verifyAccount,
-                        errors,
-                        selectDisabled: disableOtp,
-                        loading: store.verifyCorporate.status
-                      }
-                    )
-                  }
-                />
+                <div>
+                  <h1>You Are already Registered</h1>
+                  <div className="text-center w-100 ">
+                    <Link to="/project" className="text-wema">
+                      Start A Project
+                    </Link>
+                  </div>
+                  <div className="text-center w-100 ">
+                    <Link to="/" className="text-wema">
+                      Proceed home
+                    </Link>
+                  </div>
+                </div>
+              )
+            }
+
+            {
+              user.registered && user.details?.role === 'Manager' && typeof user.details?.otp === 'undefined'
+              && (
+                <div>
+                  <FormBuilder
+                    formItems={
+                      formBuilderCorporateProps(
+                        {
+                          formData,
+                          handleBlur,
+                          handleChange,
+                          options: user.details.signatories || formData.signatories,
+                          btnMethod: verifyAccount,
+                          errors,
+                          selectDisabled: user.details.signatories?.length < 1,
+                          loading: store.verifyCorporate.status
+                        }
+                      )
+                    }
+                  />
+                  <div>
+                    {
+                      store.sendAccountOtp?.status === 'pending'
+                     && (<div className="dial-loader text-wema left-5"><p className="ping">Loading</p></div>)
+                    }
+                    {
+                      store.sendAccountOtp?.status === 'failed'
+                     && (<div className="text-danger"><p className="ping">Failed</p></div>)
+                    }
+                  </div>
+                </div>
               )
             }
 
@@ -322,7 +529,7 @@ const RegisterPage = () => {
               && (
                 <div>
                   <div>
-                    <input className="text-wema" type="checkbox" disabled={formData.project_type === 'select project type'} name="terms" checked={formData.terms} onChange={handleChecked} />
+                    <input className="text-wema" type="checkbox" disabled={formData.profile_type === 10} name="terms" checked={formData.terms} onChange={handleChecked} />
                     {' '}
                     <span className="terms">
                       <a href="" className="text-wema mr-1">
@@ -338,7 +545,6 @@ const RegisterPage = () => {
                       <button
                         className="w-100 btn btn-small float-right"
                         type="button"
-                        disabled={!submittable}
                         onClick={handleRegister}
                       >
                         Create Account
@@ -360,14 +566,17 @@ const RegisterPage = () => {
               user.registered
               && (
                 <div>
-
                   <button
-                    className="w-100 btn btn-small float-right"
+                    className="w-100 btn btn-small"
                     type="button"
-                    disabled={!submittable}
-                    onClick={handleRegister}
+                    disabled={disableOtp}
+                    onClick={handleOtp}
                   >
-                    Send OTP
+                    {
+                      typeof user.details?.otp === 'undefined'
+                        ? 'Send OTP'
+                        : 'Confirm OTP'
+                    }
                   </button>
                   <div className="text-center w-100 ">
                     <Link to="/" className="text-wema">

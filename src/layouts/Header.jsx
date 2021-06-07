@@ -1,17 +1,24 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { HiOutlineChevronDown, HiOutlineChevronUp } from 'react-icons/all';
+import Avatar from '@material-ui/core/Avatar';
 import CrowdLogo from '../assets/images/crowd-funding-logo.png';
 import Modal from '../components/microComponents/modal';
 import SearchInput from '../components/form/inputs/search';
+import { currentUser, logout } from '../utilities/auth';
 
 const Header = () => {
   const [show, setShow] = useState(false);
   const [me, setMe] = useState(false);
+  const [user, setUser] = useState({ loggedIn: false });
   const handleMe = () => {
     setShow(!show);
     setMe(true);
   };
+  useEffect(() => {
+    currentUser.then((result) => result?.status === 1
+      && setUser({ loggedIn: true, details: result?.data?.user }));
+  }, [currentUser]);
   return (
     <header>
       <div className="content space-between flex-v-center">
@@ -24,28 +31,40 @@ const Header = () => {
           <SearchInput label="Search" name="search" placeholder="Search" />
         </div>
         <div className="header-right">
-          <div className="d-flex">
-            <Link to="/login"><div className="fit-max text-wema sign-in">Sign In</div></Link>
-            <Link to="/register">
-              <button className="btn m-l-20" type="button">Sign Up</button>
-            </Link>
-            {/* <div className="ml-md-3 "> */}
-            {/*  <div className={`${show ? 'border-wema' : 'border'} radius50 size4
-            center-items`}> */}
-            {/*    <img src={CrowdLogo} alt="profile picture"
-            className="radius50 width-100 text-center text-white  " /> */}
-            {/*  </div> */}
-            {/* </div> */}
-            {/* <div className="ml-md-3 mt-md-4"> */}
-            {/*  <button type="button" className={`${show ? 'text-wema' : ''}
-             d-flex no-border bg-transparent`} onClick={handleMe}> */}
-            {/*    <div className="bold"> Julius Ossim</div> */}
-            {/*    {show ? <HiOutlineChevronUp className="mt-md-1" /> :
-             <HiOutlineChevronDown className="mt-md-1" />} */}
-            {/*  </button> */}
-            {/* </div> */}
-
-          </div>
+          {
+            user.loggedIn
+              ? (
+                <div className="d-flex">
+                  <Link to="/">
+                    <button type="button" className="btn bg-transparent text-wema center-center sign-in" onClick={() => logout('/', true)}><div>Sign Out</div></button>
+                  </Link>
+                  <Link to="/register">
+                    <button className="btn " type="button">Start Project</button>
+                  </Link>
+                  <Link to="/me" className="size4 ml-md-1 radius50 bg-light flex-h-center border-wema p-1">
+                    <img className="radius50 center " src={CrowdLogo} alt="profile logo" />
+                  </Link>
+                  <Link to="#">
+                    <button type="button" className={`${show ? 'text-wema' : ''} ml-md-1 d-flex no-border bg-transparent`} onClick={handleMe}>
+                      <div className="bold mt-md-2">
+                        {' '}
+                        {user.details?.user_name}
+                      </div>
+                      {show ? <HiOutlineChevronUp className="mt-md-3" />
+                        : <HiOutlineChevronDown className="mt-md-3" />}
+                    </button>
+                  </Link>
+                </div>
+              )
+              : (
+                <div className="d-flex">
+                  <Link to="/login"><div className="fit-max text-wema sign-in">Sign In</div></Link>
+                  <Link to="/register">
+                    <button className="btn m-l-20" type="button">Sign Up</button>
+                  </Link>
+                </div>
+              )
+          }
         </div>
       </div>
       {
@@ -58,7 +77,7 @@ const Header = () => {
                   My Account
                 </Link>
                 <div>
-                  <button type="button" className="no-border bg-transparent">
+                  <button type="button" className="no-border bg-transparent" onClick={() => logout('/', true)}>
                     Logout
                   </button>
                 </div>

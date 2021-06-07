@@ -93,3 +93,100 @@ transform: rotate3d(2, 1, -1, 90deg);
     opacity: 1;
   }
 }
+
+$dial-loader-color: #530606;
+$dial-loader-size: 14.6rem;
+$dial-loader-offset: 1.7rem;
+$dial-loader-timing: ease-in-out;
+
+.dial-loader {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: $dial-loader-size;
+  margin-top: $dial-loader-size/2;
+  margin-bottom: $dial-loader-size/2;
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    animation-duration: 1.8s;
+    animation-iteration-count: infinite;
+    animation-timing-function: $dial-loader-timing;
+    filter: drop-shadow(0 0 $dial-loader-offset/2.25 rgba($dial-loader-color, 0.75));
+  }
+  &:before {
+    width: 100%;
+    padding-bottom: 100%;
+    box-shadow: inset 0 0 0 $dial-loader-offset $dial-loader-color;
+    animation-name: pulsA;
+  }
+  &:after {
+    width: calc(100% - #{$dial-loader-offset}*2);
+    padding-bottom: calc(100% - #{$dial-loader-offset}*2);
+    box-shadow: 0 0 0 0 $dial-loader-color;
+    animation-name: pulsB;
+  }
+}
+
+@keyframes pulsA {
+  0% { box-shadow: inset 0 0 0 $dial-loader-offset $dial-loader-color; opacity: 1; }
+  50%, 100% { box-shadow: inset 0 0 0 0 $dial-loader-color; opacity: 0; }
+}
+
+@keyframes pulsB {
+  0%, 50% { box-shadow: 0 0 0 0 $dial-loader-color; opacity: 0; }
+  100% { box-shadow: 0 0 0 $dial-loader-offset $dial-loader-color; opacity: 1; }
+}
+
+
+
+$animation-duration: 1.8s;
+
+.to-fro-lines {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50px;
+  height: 10px;
+  background: #3498DB;
+  border-radius: 5px;
+  animation: load $animation-duration ease-in-out infinite;
+  &:before, &:after {
+    position: absolute;
+    display: block;
+    content: "";
+    animation: load $animation-duration ease-in-out infinite;
+    height: 10px;
+    border-radius: 5px;
+  }
+  &:before {
+    top: -20px;
+    left: 10px;
+    width: 40px;
+    background: #EF4836;
+  }
+  &:after {
+    bottom: -20px;
+    width: 35px;
+    background: #F5AB35;
+  }
+}
+
+@keyframes load {
+  0% {
+    transform: translateX(40px);
+  }
+
+  50% {
+    transform: translateX(-30px);
+  }
+  100% {
+    transform: translateX(40px);
+  }
+}
+

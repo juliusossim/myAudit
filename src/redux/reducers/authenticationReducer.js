@@ -13,6 +13,14 @@ const initialState = {
     data: {},
     status: 'initial'
   },
+  verifyAccountOtp: {
+    data: {},
+    status: 'initial'
+  },
+  sendAccountOtp: {
+    data: {},
+    status: 'initial'
+  },
   login: {
     data: {},
     status: 'initial'
@@ -117,6 +125,61 @@ const authenticationReducer = (state = initialState, { type, response, error }) 
       }
     };
 
+  case constants.VERIFY_ACCOUNT_OTP_PENDING:
+    return {
+      ...state,
+      verifyAccountOtp: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.VERIFY_ACCOUNT_OTP_SUCCESS:
+    return {
+      ...state,
+      verifyAccountOtp: {
+        ...state.verifyAccountOtp,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.VERIFY_ACCOUNT_OTP_FAILURE:
+    return {
+      ...state,
+      verifyAccountOtp: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.SEND_ACCOUNT_OTP_PENDING:
+    return {
+      ...state,
+      sendAccountOtp: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.SEND_ACCOUNT_OTP_SUCCESS:
+    return {
+      ...state,
+      sendAccountOtp: {
+        ...state.sendAccountOtp,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.SEND_ACCOUNT_OTP_FAILURE:
+    return {
+      ...state,
+      sendAccountOtp: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
   case constants.LOGIN_PENDING:
     return {
       ...state,

@@ -39,8 +39,7 @@ const LoginPage = () => {
   };
   const handleClose = () => {
     setShow(false);
-    return <Redirect to="/home" />;
-    // window.location.replace('/home');
+    return window.location.replace('/home');
   };
 
   const modalTemplate = (
