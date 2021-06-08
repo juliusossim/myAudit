@@ -95,12 +95,14 @@ const LoginPage = () => {
                     : (
                       <p className="text-wema text-center">
                         {
-                          `Welcome back ${store?.data?.data?.user?.first_name}`
+                          `Welcome back ${store?.data?.data?.user?.email}`
                         }
-                        {
-                          store?.status === 'success'
-                          && setTimeout(handleClose, 3000)
-                        }
+                        <span className="d-none">
+                          {
+                            store?.status === 'success'
+                            && setTimeout(handleClose, 3000)
+                          }
+                        </span>
                       </p>
                     )
                 }

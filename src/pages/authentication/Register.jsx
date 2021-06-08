@@ -216,14 +216,18 @@ const RegisterPage = () => {
                       </div>
                     )
                     : (
-                      <p>
-                        your account is created
-                        you will now be redirected to your projects
-                        {
-                          store?.register.status === 'success'
-                          && setTimeout(handleClose, 3000)
-                        }
-                      </p>
+                      <div>
+                        <p>
+                          Your Profile is Created Successfully!
+                          you are now redirected to Verify Your Profile
+                        </p>
+                        <div className="d-none">
+                          {
+                            store?.register.status === 'success'
+                            && setTimeout(handleClose, 3000)
+                          }
+                        </div>
+                      </div>
                     )
                 }
               </ul>
@@ -357,6 +361,9 @@ const RegisterPage = () => {
               otpVerified: true
             }
           };
+          const storageUser = result;
+          storageUser.data.user.otpVerified = true;
+          localforage.setItem('user', storageUser);
         }
         // setDisableOtp(!item.registered);
         return setUser({
@@ -381,16 +388,16 @@ const RegisterPage = () => {
     <div className="content">
       <div className="max-w-600 w-600 margin-center m-t-40">
         <div className="login-form-container p-20">
-          <h3 className="">
+          <h3 className={user?.details?.otpVerified ? 'd-none' : ''}>
             {
-              user.registered ? 'Verify Profile' : 'Create Profile'
+              user.registered ? `Verify ${user.details.otp ? 'OTP' : 'Profile'}` : 'Create Profile'
             }
           </h3>
-          <p className="">{`To Start A Project, You Need To ${user.registered ? 'Verify Your Profile' : 'Create An Profile'}...`}</p>
+          <p className={user?.details?.otpVerified ? 'd-none' : ''}>{`To Start A Project, You Need To ${user.registered ? `Verify ${user.details.otp ? 'OTP...' : 'Profile...'}` : 'Create A Profile'}...`}</p>
           <hr />
           <div className="login-form pb-5h">
             {
-              user.registered && user.details?.role === 'User' && typeof user.details?.otp === 'undefined'
+              user.registered && user.details?.role === 'User' && typeof user.details?.otp === 'undefined' && !user.details.otpVerified
               && (
                 <div>
                   <FormBuilder
@@ -410,11 +417,24 @@ const RegisterPage = () => {
                   <div>
                     {
                       store.sendAccountOtp?.status === 'pending'
-                      && (<div className="dial-loader text-wema left-5"><p className="ping">Loading</p></div>)
+                      && (
+                        <div className="dots_loader d-flex">
+                          <p className="mr-md-1 pb-md-1"> Sending OTP</p>
+                          <div className="mt-md-1">
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                          </div>
+                        </div>
+                      )
                     }
                     {
                       store.sendAccountOtp?.status === 'failed'
-                      && (<div className="text-danger"><p className="ping">Failed</p></div>)
+                      && (<div className="text-danger"><p className="ping">OTP Could Failed To Send. Please Try Again</p></div>)
                     }
                   </div>
                 </div>
@@ -460,11 +480,24 @@ const RegisterPage = () => {
                   <div>
                     {
                       store.verifyAccountOtp?.status === 'pending'
-                      && (<div className="to-fro-lines left-5" />)
+                      && (
+                        <div className="dots_loader d-flex">
+                          <p className="mr-md-1 pb-md-1"> verifying token</p>
+                          <div className="mt-md-1">
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                          </div>
+                        </div>
+                      )
                     }
                     {
                       store.verifyAccountOtp?.status === 'failed'
-                      && (<div className="text-danger"><p className="text-center">Failed</p></div>)
+                      && (<div className="text-danger"><p className="text-center">OTP Verification Failed</p></div>)
                     }
                   </div>
                 </div>
@@ -475,15 +508,15 @@ const RegisterPage = () => {
               user.details?.otpVerified
               && (
                 <div>
-                  <h1>You Are already Registered</h1>
-                  <div className="text-center w-100 ">
-                    <Link to="/project" className="text-wema">
+                  <h1>Your Profile is Ready</h1>
+                  <div className="text-center w-50 btn mr-md-3">
+                    <Link to="/project" className="text-white btn-small">
                       Start A Project
                     </Link>
                   </div>
-                  <div className="text-center w-100 ">
-                    <Link to="/" className="text-wema">
-                      Proceed home
+                  <div className="text-center w-25 btn-small btn">
+                    <Link to="/" className="text-white">
+                      Home
                     </Link>
                   </div>
                 </div>
@@ -563,7 +596,7 @@ const RegisterPage = () => {
               )
             }
             {
-              user.registered
+              user.registered && !user.details.otpVerified
               && (
                 <div>
                   <button
