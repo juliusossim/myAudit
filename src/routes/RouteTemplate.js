@@ -3,11 +3,6 @@ import {
   Route, Switch, Redirect
 } from 'react-router-dom';
 
-import portalRoutes from './portal.routes';
-
-import Header from '../layouts/Header';
-import Footer from '../layouts/Footer';
-
 const RouteTemplate = ({ redirect, routes }) => {
   const theRoutes = routes.map((route) => (route.component ? (
     <Route

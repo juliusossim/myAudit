@@ -103,6 +103,27 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             btnMethod={btnMethod}
           />
         );
+      case 'date':
+        return (
+          <TextareaInput
+            key={name}
+            onChange={onChange}
+            onBlur={onBlur}
+            disabled={disabled}
+            onKeyPress={onKeyPress}
+            onKeyDown={onKeyDown}
+            name={name}
+            value={value}
+            className={className}
+            error={error}
+            label={label}
+            placeholder={placeholder}
+            rows={rows}
+            validations={validations}
+            btn={btn}
+            btnMethod={btnMethod}
+          />
+        );
       default:
         return (
           <TextInput

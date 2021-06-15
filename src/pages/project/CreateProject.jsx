@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import localforage from 'localforage';
 import { useDispatch, useSelector } from 'react-redux';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import FormBuilder from '../../components/form/builders/form';
 import {
   validateField,
@@ -171,14 +174,32 @@ const CreateProject = () => {
           <h3 className="bold text-dark">Start Project</h3>
           <div className="row">
             <div className={`col-md-6 accordion-div  ${accordionTab === 1 && 'is-focus'}`}>
-              <div className={`radius50 size4 center-items ${accordionTab === 1 ? 'border-wema' : 'faint-border'}`}>
-                <button type="button" className={`radius50 size3 text-center  ${accordionTab === 1 ? 'bg-wema text-white' : 'text-muted'}`} onClick={() => setAccordionTab(1)}>1</button>
-              </div>
+              <IconButton type="button" onClick={() => setAccordionTab(1)}>
+                <div className={`radius50 w-2e h-2e center-items ${accordionTab === 1 ? 'border-wema' : 'faint-border'}`}>
+
+                  <Avatar
+                    className={
+                      accordionTab === 1 ? 'styled-mui' : 'text-muted'
+                    }
+                  >
+                    1
+                  </Avatar>
+                </div>
+              </IconButton>
             </div>
             <div className={`col-md-6 accordion-div  ${accordionTab === 2 && 'is-focus'}`}>
-              <div className={`radius50 size4 center-items ${accordionTab === 2 ? 'border-wema' : 'faint-border'}`}>
-                <button type="button" className={`radius50 size3 text-center text-white  ${accordionTab === 2 ? 'bg-wema text-white' : 'text-muted'}`} onClick={() => setAccordionTab(2)}>2</button>
-              </div>
+              <IconButton type="button" onClick={() => setAccordionTab(2)}>
+                <div className={`radius50 w-2e h-2e center-items ${accordionTab === 2 ? 'border-wema' : 'faint-border'}`}>
+
+                  <Avatar
+                    className={
+                      accordionTab === 2 ? 'styled-mui' : 'text-muted'
+                    }
+                  >
+                    2
+                  </Avatar>
+                </div>
+              </IconButton>
             </div>
           </div>
           <div className="login-form pb-5h">
@@ -251,7 +272,7 @@ const CreateProject = () => {
                             // disabled={!submittable}
                             onClick={handleCreateProject}
                           >
-                            Start Project
+                            Submit
                           </button>
                         )
                     }

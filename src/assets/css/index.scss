@@ -8,6 +8,7 @@
 @import 'pulsing-2';
 @import 'animations';
 @import "loaders";
+@import "mui";
 @font-face {
   font-family: Poppins;
   src: url('./poppins/Poppins-Regular.ttf');
@@ -290,6 +291,18 @@ a.gray:hover {
 }
 .size4 {
   width: 3vw;
+}
+.width-3-3e {
+  width: 3.3em;
+}
+.h-3-3e {
+  height: 3.3em;
+}
+.w-2e {
+  width: 2em;
+}
+.h-2e {
+  height: 2em;
 }
 .accordion-div {
   border-bottom: solid 1px;

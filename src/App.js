@@ -1,15 +1,11 @@
 import React, { Suspense } from 'react';
-import { Router, Switch, Route } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
+import { Switch, Route } from 'react-router-dom';
 
 import MainPortal from './routes/MainPortal';
-import HomePortal from './routes/HomePortal';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 
 function App() {
-  const history = createBrowserHistory();
-
   return (
 
     <Suspense fallback={(
