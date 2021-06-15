@@ -8,12 +8,19 @@ const ResetPassword = lazy(() => import('../pages/authentication/ResetPassword')
 const ForgotPassword = lazy(() => import('../pages/authentication/ForgotPassword'));
 const NewPassword = lazy(() => import('../pages/authentication/NewPassword'));
 const CreateProject = lazy(() => import('../pages/project/CreateProject'));
-const Unathorized = lazy(() => import('../pages/authentication/Unathorized'));
+const Unauthorized = lazy(() => import('../pages/authentication/Unauthorized'));
+const Profile = lazy(() => import('../pages/profile/Index'));
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     component: LandingPage,
+    exact: true
+  },
+
+  {
+    path: '/me',
+    component: Profile,
     exact: true
   },
 
@@ -64,7 +71,7 @@ const routes = [
   },
   {
     path: '/unauthorized',
-    component: Unathorized,
+    component: Unauthorized,
     exact: true
   }
 ];

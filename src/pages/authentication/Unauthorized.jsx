@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Unathorized = () => (
+const Unauthorized = () => (
   <div className="content">
     <div className="max-w-600 w-600 margin-center m-t-40">
       <div className="login-form-container p-20">
@@ -19,4 +19,4 @@ const Unathorized = () => (
   </div>
 );
 
-export default Unathorized;
+export default Unauthorized;

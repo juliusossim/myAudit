@@ -1,20 +1,25 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { HiOutlineArrowNarrowLeft, HiOutlineArrowNarrowRight } from 'react-icons/all';
+// import { HiOutlineArrowNarrowLeft, HiOutlineArrowNarrowRight } from 'react-icons/all';
+import { Link } from 'react-router-dom';
+import localforage from 'localforage';
 import FormBuilder from '../../components/form/builders/form';
 import formBuilderIndividualProps from './constants/registration/registerIndividual';
-import formBuilderNgoProps from './constants/registration/registerNgo';
 import formBuilderCorporateProps from './constants/registration/registerCorporate';
 import formBuilderProps from './constants/registration/register';
+import formBuilderOtp from './constants/registration/otp';
 import {
   validateField,
   canSubmit,
   mapBackendErrors,
   errorsChecker
 } from '../../utilities/validation';
+// import { currentUser, getUser } from '../../utilities/auth';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
-import { register } from '../../redux/actions/authenticationActions';
+import {
+  register, verifyCorporate, verifyIndividual, verifyAccountOtp, sendAccountOtp
+} from '../../redux/actions/authenticationActions';
 import { uploadFile } from '../../services/fetch';
 
 /**
@@ -25,27 +30,62 @@ import { uploadFile } from '../../services/fetch';
 const RegisterPage = () => {
   /* redux */
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.auth.register);
+  const store = useSelector((state) => state.auth);
   /* state */
-  const [formData, setFormData] = useState({ terms: false, project_type: 'select project type', page: 0 });
+  const [formData, setFormData] = useState({ terms: false, profile_type: 10, page: 0 });
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
   const [submittable, setSubmittable] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [selectType, setSelectType] = useState(true);
+  const [disableOtp, setDisableOtp] = useState(true);
+  const [user, setUser] = useState({
+    registered: false
+  });
+  // constants
+  const verifyAccount = () => {
+    if (user.details?.role === 'Manager') {
+      return dispatch(
+        verifyCorporate({ account_number: formData.account_number })
+      );
+    }
+    return dispatch(
+      verifyIndividual({ account_number: formData.account_number })
+    );
+  };
 
   const handleRegister = () => {
     setShow(true);
-    dispatch(register(formData, formData?.project_type));
+    dispatch(register(formData));
+  };
+  const sendOtp = () => {
+    // setShow(true);
+    dispatch(sendAccountOtp({
+      customer_id: formData.customer_id
+    }));
+  };
+  const verifyOtp = () => {
+    // setShow(true);
+    dispatch(verifyAccountOtp({
+      user_id: user.details?.id,
+      token: formData.otp,
+      customer_id: formData.customer_id
+      // phone_number: formData.phone_number
+    }));
+  };
+  const handleOtp = () => {
+    user.details?.otp
+      ? verifyOtp()
+      : sendOtp();
   };
   const cancelUpload = () => {
     setFormData({ ...formData, file: '', logo_id: '' });
   };
   const handleClose = () => {
     setShow(false);
-    window.location.replace('/create-project');
+    // setFormData({ ...formData, page: 1 });
+    // window.location.replace('/create-project');
   };
 
   const handleChecked = (e) => {
@@ -56,42 +96,36 @@ const RegisterPage = () => {
     });
   };
 
+  const handleProgress = (val) => setProgress(val);
+
   const handleChange = (e) => {
     const { name, value, files } = e.target;
+    let val = value;
     if (name === 'logo_id') {
       setFile(files);
-      uploadFile(files[0], setProgress);
+      uploadFile({ file: files[0], handleProgress, url: 'Uploads/logo' });
     }
-    if (name === 'project_type') {
-      value === 'corporate'
-        ? setFormData({
+    if (name === 'profile_type' || name === 'manager') {
+      val = Number(value);
+      if (name === 'manager') {
+        const manager = typeof user.details.signatories !== 'undefined' && formData.manager !== 'select manager'
+          ? user.details.signatories[val]
+          : null;
+        setFormData({
           ...formData,
-          terms: false,
-          forwardButton: false,
-          page: 2,
-          first_name: '',
-          last_name: '',
-          phone_number: null,
-          code: '',
-          bvn: ''
-        })
-        : setFormData({
-          ...formData,
-          terms: false,
-          forwardButton: false,
-          page: 1,
-          organisation_name: '',
-          rc_number: '',
-          description: '',
-          phone_number: null,
-          location: '',
-          manager: ''
+          account_name: manager?.account_name,
+          phone_number: manager?.phone_number,
+          customer_id: manager?.customer_id
         });
+      }
     }
     setFormData((state) => ({
       ...state,
-      [name]: value
+      [name]: val
     }));
+    if (name === 'account_number' && val.length === 10) {
+      verifyAccount();
+    }
   };
 
   const canContinue = (err) => {
@@ -104,6 +138,17 @@ const RegisterPage = () => {
     }
     return setSelectType(true);
   };
+  const canSendOTP = () => {
+    if (
+      formData?.account_number?.length > 0
+      && formData?.account_name?.length > 0
+      && formData?.phone_number?.length > 0
+    ) {
+      return setDisableOtp(false);
+    }
+    return setDisableOtp(true);
+  };
+
   const handleBlur = (e, validations) => {
     const { name, value } = e.target;
     const field = slugToString(name);
@@ -124,10 +169,10 @@ const RegisterPage = () => {
   const modalTemplate = (
     <div className={
       // eslint-disable-next-line no-nested-ternary
-      (store?.status === 'failed')
+      (store?.register.status === 'failed')
         ? 'mt-5 p-5'
         : (
-          store?.status === 'pending'
+          store?.register.status === 'pending'
             ? 'mt-5 p-5 '
             : 'mt-5 p-5 bg-wema'
         )
@@ -135,7 +180,7 @@ const RegisterPage = () => {
     >
       <div className="text-white">
         {
-          store?.status === 'pending'
+          store?.register.status === 'pending'
           && (
             <div className="center-text text-success">
               Loading...
@@ -143,21 +188,21 @@ const RegisterPage = () => {
           )
         }
         {
-          store?.status !== 'pending'
+          store?.register.status !== 'pending'
           && (
             <div className="">
-              <h5 className="center-text text-muted">{store?.status}</h5>
+              <h5 className="center-text text-muted">{store?.register.status}</h5>
               <ul>
                 {
-                  store?.status === 'failed'
+                  store?.register.status === 'failed'
                     ? (
                       <div>
                         <ul>
                           {
-                            mapBackendErrors(store?.data).map(
+                            mapBackendErrors(store?.register.data).map(
                               (err) => (
                                 typeof err !== 'undefined' && (
-                                  <li key={err} className="text-warning">
+                                  <li key={`${err}`} className="text-warning">
                                     {err}
                                   </li>
                                 )
@@ -171,14 +216,18 @@ const RegisterPage = () => {
                       </div>
                     )
                     : (
-                      <p>
-                        your account is created
-                        you will now be redirected to your projects
-                        {
-                          store?.status === 'success'
-                          && setTimeout(handleClose, 3000)
-                        }
-                      </p>
+                      <div>
+                        <p>
+                          Your Profile is Created Successfully!
+                          you are now redirected to Verify Your Profile
+                        </p>
+                        <div className="d-none">
+                          {
+                            store?.register.status === 'success'
+                            && setTimeout(handleClose, 3000)
+                          }
+                        </div>
+                      </div>
                     )
                 }
               </ul>
@@ -188,71 +237,211 @@ const RegisterPage = () => {
       </div>
     </div>
   );
+  // 0249299632
+  // const goBack = () => {
+  //   setFormData({
+  //     ...formData,
+  //     // project_type: 'select project type',
+  //     page: 0,
+  //     organisation_logo: '',
+  //     forwardButton: true
+  //   });
+  // };
+  // const handleForward = () => {
+  //   formData.project_type === 'corporate'
+  //     ? setFormData({ ...formData, page: 2, forwardButton: false })
+  //     : setFormData({ ...formData, page: 1, forwardButton: false });
+  // };
 
-  const goBack = () => {
-    setFormData({
-      ...formData,
-      // project_type: 'select project type',
-      page: 0,
-      organisation_logo: '',
-      forwardButton: true
-    });
-  };
-  const handleForward = () => {
-    formData.project_type === 'corporate'
-      ? setFormData({ ...formData, page: 2, forwardButton: false })
-      : setFormData({ ...formData, page: 1, forwardButton: false });
-  };
   useEffect(() => {
     progress === 100
    && setFormData({ ...formData, file: URL.createObjectURL(file[0]) });
   }, [file, progress]);
-  // useEffect(() => {
-  //   canContinue(errorsChecker(errors));
-  // }, [canContinue, errors]);
   useEffect(() => {
-    if (formData.terms) {
-      if (formData?.project_type === 'corporate') {
-        return canSubmit(formData, errors, setSubmittable, 6);
+    localforage.getItem('user', (err, value) => value).then((result) => {
+      let item = {
+        registered: false
+      };
+      if (result?.status === 1) {
+        item = {
+          registered: true,
+          details: result.data?.user
+        };
       }
-      if (formData?.project_type === 'ngo') {
-        return canSubmit(formData, errors, setSubmittable, 4);
+      return setUser(item);
+    });
+  }, [store.register]);
+
+  useEffect(() => {
+    localforage.getItem('user', (err, value) => value).then((result) => {
+      let item = {
+        registered: false
+      };
+      if (result?.status === 1) {
+        item = {
+          registered: true,
+          details: {
+            ...result.data?.user,
+            ...store.verifyIndividual.data?.data
+          }
+        };
       }
-      if (formData.project_type === 'individual') {
-        return canSubmit(formData, errors, setSubmittable, 6);
+
+      // setDisableOtp(!item.registered);
+      return setUser(item);
+    });
+
+    setFormData({ ...formData, ...store.verifyIndividual.data?.data });
+  }, [store.verifyIndividual]);
+  useEffect(() => {
+    localforage.getItem('user', (err, value) => value).then((result) => {
+      let item = {
+        registered: false
+      };
+      if (result?.status === 1) {
+        let signatories = [
+          'select signatories'
+        ];
+        store.verifyCorporate?.data?.data?.signatories.map((datum, key) => {
+          const manager = {
+            ...datum,
+            value: key + 1
+          };
+          signatories = [...signatories, manager];
+        });
+        item = {
+          registered: true,
+          details: {
+            ...result.data?.user,
+            ...store.verifyCorporate.data?.data,
+            signatories
+          }
+        };
       }
+
+      // setDisableOtp(!item.registered);
+      return setUser(item);
+    });
+
+    setFormData({ ...formData, ...store.verifyCorporate.data?.data, account_name: '' });
+  }, [store.verifyCorporate]);
+  useEffect(() => {
+    if (store.sendAccountOtp.status === 'success') {
+      localforage.getItem('user', (err, value) => value).then((result) => {
+        let item = {
+          registered: false
+        };
+        if (result?.status === 1) {
+          item = {
+            registered: true,
+            details: {
+              ...result.data?.user,
+              token: result.data?.token,
+              otp: true
+            }
+          };
+        }
+        // setDisableOtp(!item.registered);
+        return setUser(item);
+      });
     }
-    // return setIsError(errorsChecker(errors));
+  }, [store.sendAccountOtp]);
+  useEffect(() => {
+    if (store.sendAccountOtp.status === 'success') {
+      localforage.getItem('user', (err, value) => value).then((result) => {
+        let item = {
+          registered: false
+        };
+        if (result?.status === 1) {
+          item = {
+            registered: true,
+            details: {
+              ...result.data?.user,
+              // otp: true,
+              otpVerified: true
+            }
+          };
+          const storageUser = result;
+          storageUser.data.user.otpVerified = true;
+          localforage.setItem('user', storageUser);
+        }
+        // setDisableOtp(!item.registered);
+        return setUser({
+          registered: true,
+          details: {
+            ...user.details,
+            ...item.details
+          }
+        });
+      });
+    }
+  }, [store.verifyAccountOtp]);
+  useEffect(() => {
+    canSendOTP();
+    user.registered
+      && canSubmit(formData, errors, setSubmittable, 6);
     return canContinue(errorsChecker(errors));
-  }, [formData, errors]);
+  },
+  [user, formData, errors, store]);
 
   return (
     <div className="content">
       <div className="max-w-600 w-600 margin-center m-t-40">
         <div className="login-form-container p-20">
-          <h3 className="">Create Account</h3>
-          <p className="">To start a project, you need to create an account...</p>
-          <hr />
-          <div className="login-form">
+          <h3 className={user?.details?.otpVerified ? 'd-none' : ''}>
             {
-              formData.page === 1
+              user.registered ? `Verify ${user.details.otp ? 'OTP' : 'Profile'}` : 'Create Profile'
+            }
+          </h3>
+          <p className={user?.details?.otpVerified ? 'd-none' : ''}>{`To Start A Project, You Need To ${user.registered ? `Verify ${user.details.otp ? 'OTP...' : 'Profile...'}` : 'Create A Profile'}...`}</p>
+          <hr />
+          <div className="login-form pb-5h">
+            {
+              user.registered && user.details?.role === 'User' && typeof user.details?.otp === 'undefined' && !user.details.otpVerified
               && (
-                <FormBuilder
-                  formItems={
-                    formBuilderIndividualProps(
-                      {
-                        formData,
-                        handleBlur,
-                        handleChange,
-                        errors
-                      }
-                    )
-                  }
-                />
+                <div>
+                  <FormBuilder
+                    formItems={
+                      formBuilderIndividualProps(
+                        {
+                          formData,
+                          handleBlur,
+                          handleChange,
+                          errors,
+                          btnMethod: verifyAccount,
+                          loading: store.verifyIndividual.status
+                        }
+                      )
+                    }
+                  />
+                  <div>
+                    {
+                      store.sendAccountOtp?.status === 'pending'
+                      && (
+                        <div className="dots_loader d-flex">
+                          <p className="mr-md-1 pb-md-1"> Sending OTP</p>
+                          <div className="mt-md-1">
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                          </div>
+                        </div>
+                      )
+                    }
+                    {
+                      store.sendAccountOtp?.status === 'failed'
+                      && (<div className="text-danger"><p className="ping">OTP Could Failed To Send. Please Try Again</p></div>)
+                    }
+                  </div>
+                </div>
               )
             }
             {
-              formData.page === 0
+              !user.registered
               && (
                 <FormBuilder
                   formItems={
@@ -269,51 +458,111 @@ const RegisterPage = () => {
                 />
               )
             }
-            {/* { */}
-            {/*  formData.project_type === 'ngo' */}
-            {/*  && ( */}
-            {/*    <FormBuilder */}
-            {/*      formItems={ */}
-            {/*        formBuilderNgoProps( */}
-            {/*          { */}
-            {/*            formData, */}
-            {/*            handleBlur, */}
-            {/*            handleChange, */}
-            {/*            errors */}
-            {/*          } */}
-            {/*        ) */}
-            {/*      } */}
-            {/*    /> */}
-            {/*  ) */}
-            {/* } */}
-
             {
-              formData.page === 2
+              user.details?.otp && typeof user.details?.otpVerified === 'undefined'
               && (
-                <FormBuilder
-                  formItems={
-                    formBuilderCorporateProps(
-                      {
-                        formData,
-                        setFormData: cancelUpload,
-                        progress,
-                        handleBlur,
-                        handleChange,
-                        errors
-                      }
-                    )
-                  }
-                />
+                <div>
+                  <FormBuilder
+                    formItems={
+                      formBuilderOtp(
+                        {
+                          formData,
+                          handleBlur,
+                          handleChange,
+                          btnMethod: verifyAccount,
+                          errors,
+                          selectDisabled: disableOtp,
+                          loading: store.verifyAccountOtp.status
+                        }
+                      )
+                    }
+                  />
+                  <div>
+                    {
+                      store.verifyAccountOtp?.status === 'pending'
+                      && (
+                        <div className="dots_loader d-flex">
+                          <p className="mr-md-1 pb-md-1"> verifying token</p>
+                          <div className="mt-md-1">
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                            <span />
+                          </div>
+                        </div>
+                      )
+                    }
+                    {
+                      store.verifyAccountOtp?.status === 'failed'
+                      && (<div className="text-danger"><p className="text-center">OTP Verification Failed</p></div>)
+                    }
+                  </div>
+                </div>
               )
             }
 
             {
-              formData.page !== 0
+              user.details?.otpVerified
               && (
                 <div>
-                  { progress }
+                  <h1>Your Profile is Ready</h1>
+                  <div className="text-center w-50 btn mr-md-3">
+                    <Link to="/project" className="text-white btn-small">
+                      Start A Project
+                    </Link>
+                  </div>
+                  <div className="text-center w-25 btn-small btn">
+                    <Link to="/" className="text-white">
+                      Home
+                    </Link>
+                  </div>
+                </div>
+              )
+            }
+
+            {
+              user.registered && user.details?.role === 'Manager' && typeof user.details?.otp === 'undefined'
+              && (
+                <div>
+                  <FormBuilder
+                    formItems={
+                      formBuilderCorporateProps(
+                        {
+                          formData,
+                          handleBlur,
+                          handleChange,
+                          options: user.details.signatories || formData.signatories,
+                          btnMethod: verifyAccount,
+                          errors,
+                          selectDisabled: user.details.signatories?.length < 1,
+                          loading: store.verifyCorporate.status
+                        }
+                      )
+                    }
+                  />
                   <div>
-                    <input className="text-wema" type="checkbox" name="terms" checked={formData.terms} onChange={handleChecked} />
+                    {
+                      store.sendAccountOtp?.status === 'pending'
+                     && (<div className="dial-loader text-wema left-5"><p className="ping">Loading</p></div>)
+                    }
+                    {
+                      store.sendAccountOtp?.status === 'failed'
+                     && (<div className="text-danger"><p className="ping">Failed</p></div>)
+                    }
+                  </div>
+                </div>
+              )
+            }
+
+            {
+              !user.registered
+              && (
+                <div>
+                  <div>
+                    <input className="text-wema" type="checkbox" disabled={formData.profile_type === 10} name="terms" checked={formData.terms} onChange={handleChecked} />
                     {' '}
                     <span className="terms">
                       <a href="" className="text-wema mr-1">
@@ -323,17 +572,12 @@ const RegisterPage = () => {
                       of Wemabank Crowdfunding
                     </span>
                   </div>
-
-                  <button title="Go Back" type="button" onClick={goBack} className="text-wema w-25 viewMoreBtn">
-                    <HiOutlineArrowNarrowLeft />
-                  </button>
                   {
                     formData.terms
                     && (
                       <button
-                        className="w-50 btn btn-small float-right"
+                        className="w-100 btn btn-small float-right"
                         type="button"
-                        disabled={!submittable}
                         onClick={handleRegister}
                       >
                         Create Account
@@ -341,17 +585,60 @@ const RegisterPage = () => {
                     )
                   }
 
+                  <p className="text-center">
+                    <small>
+                      Already have an account?
+                    </small>
+                    <Link className="text-wema" to="/login"> Sign In</Link>
+                  </p>
+
                 </div>
               )
             }
             {
-              formData.forwardButton
+              user.registered && !user.details.otpVerified
               && (
-                <button title="Continue" type="button" onClick={handleForward} className="text-wema w-25 viewMoreBtn float-right">
-                  <HiOutlineArrowNarrowRight />
-                </button>
+                <div>
+                  <button
+                    className="w-100 btn btn-small"
+                    type="button"
+                    disabled={disableOtp}
+                    onClick={handleOtp}
+                  >
+                    {
+                      typeof user.details?.otp === 'undefined'
+                        ? 'Send OTP'
+                        : 'Confirm OTP'
+                    }
+                  </button>
+                  <div className="text-center w-100 ">
+                    <Link to="/" className="text-wema">
+                      Proceed home
+                    </Link>
+                  </div>
+
+                </div>
               )
             }
+            {/* { */}
+            {/*  formData.page !== 0 */}
+            {/*  && ( */}
+            {/*    <button title="Go Back" type="button" onClick={goBack}
+             className="text-wema w-25 viewMoreBtn"> */}
+            {/*      <HiOutlineArrowNarrowLeft /> */}
+            {/*    </button> */}
+            {/*  ) */}
+            {/* } */}
+            {/* { */}
+            {/*  formData.forwardButton */}
+            {/*  && ( */}
+            {/*    <button title="Continue" type="button"
+             onClick={handleForward} className="text-wema w-25 viewMoreBtn float-right"> */}
+            {/*      <HiOutlineArrowNarrowRight /> */}
+            {/*    </button> */}
+            {/*  ) */}
+            {/* } */}
+
           </div>
         </div>
       </div>

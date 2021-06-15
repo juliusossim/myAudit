@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import localforage from 'localforage';
+import { Link, Redirect } from 'react-router-dom';
 import TextInput from '../../components/form/inputs/TextInput';
 import Modal from '../../components/microComponents/modal';
 import { login } from '../../redux/actions/authenticationActions';
@@ -37,10 +37,9 @@ const LoginPage = () => {
       [name]: !formData[name]
     });
   };
-  console.log(localforage.getItem('user'));
   const handleClose = () => {
     setShow(false);
-    window.location.replace('/home');
+    return window.location.replace('/home');
   };
 
   const modalTemplate = (
@@ -80,7 +79,7 @@ const LoginPage = () => {
                             mapBackendErrors(store?.data).map(
                               (err) => (
                                 typeof err !== 'undefined' && (
-                                  <li key={err} className="text-warning">
+                                  <li key={`${err}`} className="text-warning">
                                     {err}
                                   </li>
                                 )
@@ -96,12 +95,14 @@ const LoginPage = () => {
                     : (
                       <p className="text-wema text-center">
                         {
-                          `Welcome back ${store?.data?.data?.user?.first_name}`
+                          `Welcome back ${store?.data?.data?.user?.email}`
                         }
-                        {
-                          store?.status === 'success'
-                          && setTimeout(handleClose, 3000)
-                        }
+                        <span className="d-none">
+                          {
+                            store?.status === 'success'
+                            && setTimeout(handleClose, 3000)
+                          }
+                        </span>
                       </p>
                     )
                 }
@@ -150,21 +151,21 @@ const LoginPage = () => {
               </div>
 
               <div className="w-50">
-                <a href="/forgot-password">
+                <Link to="/forgot-password">
                   <button type="button" className="text-wema float-right  mb-3 viewMoreBtn">
                     forgot password?
                   </button>
-                </a>
+                </Link>
               </div>
             </div>
             <button className="w-100 btn btn-large" type="button" onClick={handleLogin}>Login</button>
             <div className="mt-3">
               <span className="">New to Wemabank Crowdfunding?</span>
-              <a href="/register">
+              <Link to="/register">
                 <button type="button" className="text-wema  viewMoreBtn">
                   Sign Up
                 </button>
-              </a>
+              </Link>
             </div>
           </div>
         </div>

@@ -66,23 +66,23 @@ const formBuilderProjectsStartProps = (
       onChange: handleChange
     }
   },
-  // {
-  //   kind: 'select',
-  //   props: {
-  //     className: 'w-100 m-b-20',
-  //     name: 'project_type',
-  //     label: 'Project Type',
-  //     options: projectType,
-  //     optionIndex: 'type',
-  //     value: formData?.project_type || '',
-  //     validations: {
-  //       required: true
-  //     },
-  //     error: errors?.project_type,
-  //     onBlur: handleBlur,
-  //     onChange: handleChange
-  //   }
-  // },
+  {
+    kind: 'select',
+    props: {
+      className: 'w-100 m-b-20',
+      name: 'project_type',
+      label: 'Project Type',
+      options: projectType,
+      optionIndex: 'type',
+      value: formData?.project_type || '',
+      validations: {
+        required: true
+      },
+      error: errors?.project_type,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
   {
     kind: 'select',
     props: {
@@ -96,6 +96,22 @@ const formBuilderProjectsStartProps = (
         required: true
       },
       error: errors?.project_category,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'input',
+    props: {
+      className: 'w-100 m-b-20',
+      name: 'target_amount',
+      label: 'Target Amount',
+      type: 'number',
+      value: formData?.target_amount || '',
+      validations: {
+        required: true
+      },
+      error: errors?.target_amount,
       onBlur: handleBlur,
       onChange: handleChange
     }

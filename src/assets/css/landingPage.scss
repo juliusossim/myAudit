@@ -9,42 +9,45 @@
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center center;
-  height:26vh;
-  width: 30vw;
+  height:85vh;
   max-width: 100vw;
-  max-height: 35vh;
 
 
   .content1 {
     position: absolute;
-    left: 2vh;
-    top: 5vh;
+    left: 14vw !important;
+    top: 35vh;
+    width: 60vw;
+    height: 8.7vh;
   }
 
 
   .small1{
     font-weight: 600;
-    font-size: 8px;
-    line-height: 10px;
+    font-size: 18px;
+    line-height: 27px;
 
   }
   .hero{
     margin-top: 2vh;
     font-weight: bold;
-    font-size: 10px;
-    line-height: 130.5%;
+    font-size: 3.125vw;
+    line-height: 140.5%;
     /* or 67px */
   }
   .small2{
-    font-weight: 500;
-    font-size: 7px;
-    line-height: 8px;
+    margin: 2vh 0;
+    font-weight: 500 !important;
+    font-size: 16px !important;
+    line-height: 24px !important;
   }
   button{
     font-weight: 500;
-    font-size: 7px;
-    line-height: 7px;
+    font-size: 16px !important;
+    line-height: 16px !important;
     text-align: center;
+    padding: 1rem;
+    margin-top: 3vh;
 
   }
 
@@ -148,45 +151,45 @@
     color: #212121;
   }
 }
-@media screen and (min-width: 320px) {
-  .hero {
-    font-size: calc(8px + 8 * ((100vw - 320px) / 680)) !important;
-    //line-height: calc(100% + 8 * ((100vw - 320px) / 680)) !important;
-    //margin-top: calc(.5vh + 8 * ((100vw - 320px) / 680)) !important;
-  }
-  .small1, .small2, .butt {
-    font-size: calc(3px + 8 * ((100vw - 320px) / 680)) !important;
-    line-height: calc(1px + 8 * ((100vw - 320px) / 680)) !important;
-  }
-  .content1 {
-    left: calc(0.5vw + 8 * ((100vw - 320px) / 680)) !important;
-  }
-
-}
-@media screen and (min-width: 1000px) {
-  .hero {
-    font-size: 14px !important;
-  }
-  .small1 {
-    font-size: 8px !important;
-  }
-.small2, .butt {
-    font-size: 7px !important;
-  }
-
-}
-@media screen and (min-width: 1300px) {
-  .hero {
-    font-size: 20px !important;
-    //width: 30vw;
-    padding-right: 5vw;
-  }
-  .small1 {
-    font-size: 8px !important;
-  }
-.small2, .butt {
-    font-size: 7px !important;
-  }
-
-}
+//@media screen and (min-width: 320px) {
+//  .hero {
+//    font-size: calc(8px + 8 * ((100vw - 320px) / 680)) !important;
+//    //line-height: calc(100% + 8 * ((100vw - 320px) / 680)) !important;
+//    //margin-top: calc(.5vh + 8 * ((100vw - 320px) / 680)) !important;
+//  }
+//  .small1, .small2, .butt {
+//    font-size: calc(3px + 8 * ((100vw - 320px) / 680)) !important;
+//    line-height: calc(1px + 8 * ((100vw - 320px) / 680)) !important;
+//  }
+//  .content1 {
+//    left: calc(0.5vw + 8 * ((100vw - 320px) / 680)) !important;
+//  }
+//
+//}
+//@media screen and (min-width: 1000px) {
+//  .hero {
+//    font-size: 14px !important;
+//  }
+//  .small1 {
+//    font-size: 8px !important;
+//  }
+//.small2, .butt {
+//    font-size: 7px !important;
+//  }
+//
+//}
+//@media screen and (min-width: 1300px) {
+//  .hero {
+//    font-size: 20px !important;
+//    //width: 30vw;
+//    padding-right: 5vw;
+//  }
+//  .small1 {
+//    font-size: 8px !important;
+//  }
+//.small2, .butt {
+//    font-size: 7px !important;
+//  }
+//
+//}
 

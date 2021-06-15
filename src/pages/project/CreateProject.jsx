@@ -1,14 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import localforage from 'localforage';
 import { useDispatch, useSelector } from 'react-redux';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import IconButton from '@material-ui/core/IconButton';
 import FormBuilder from '../../components/form/builders/form';
-import { validateField, canSubmit, mapBackendErrors } from '../../utilities/validation';
+import {
+  validateField,
+  canSubmit,
+  mapBackendErrors
+} from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
-import { register } from '../../redux/actions/authenticationActions';
 import { uploadFile } from '../../services/fetch';
 import formBuilderProjectsStartProps from './constants/startProject1Props';
 import formBuilderProjectsStart2Props from './constants/startProject2Props';
+import { createProject } from '../../redux/actions/projectActions';
 
 /**
  *
@@ -18,7 +25,7 @@ import formBuilderProjectsStart2Props from './constants/startProject2Props';
 const CreateProject = () => {
   /* redux */
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.auth.register);
+  const store = useSelector((state) => state.project.newProject);
   /* state */
   const [formData, setFormData] = useState({ file: [], project_type: 'select project type' });
   const [progress, setProgress] = useState(0);
@@ -28,9 +35,9 @@ const CreateProject = () => {
   const [submittable, setSubmittable] = useState(false);
   const [user, setUser] = useState(null);
 
-  const handleRegister = () => {
+  const handleCreateProject = () => {
     setShow(true);
-    dispatch(register(formData, formData?.project_type));
+    dispatch(createProject(formData));
   };
   const cancelUpload = () => {
     setFormData({ ...formData, file: '', logo_id: '' });
@@ -39,15 +46,16 @@ const CreateProject = () => {
     setShow(false);
     window.location.replace('/create-project');
   };
+  const handleProgress = (val) => setProgress(val);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'project_media') {
+    if (name === 'project_media' && formData.file.indexOf(files[0] === -1)) {
       setFormData({
         ...formData,
         file: [...formData.file, files[0]]
       });
-      uploadFile(files[0], setProgress);
+      uploadFile({ file: files[0], handleProgress, url: 'Uploads/logo' });
     } else {
       setFormData((state) => ({
         ...state,
@@ -153,11 +161,11 @@ const CreateProject = () => {
     localforage.getItem('user').then((data) => {
       setUser(data?.data?.user);
     });
-    console.log(user);
+    // console.log(user);
     accordionTab === 1
       ? canSubmit(formData, errors, setSubmittable, 4)
       : canSubmit(formData, errors, setSubmittable, 3);
-  }, [formData, errors, accordionTab]);
+  }, [formData, errors, accordionTab, user]);
 
   return (
     <div className="content">
@@ -166,17 +174,35 @@ const CreateProject = () => {
           <h3 className="bold text-dark">Start Project</h3>
           <div className="row">
             <div className={`col-md-6 accordion-div  ${accordionTab === 1 && 'is-focus'}`}>
-              <div className={`radius50 size4 center-items ${accordionTab === 1 ? 'border-wema' : 'faint-border'}`}>
-                <button type="button" className={`radius50 size3 text-center  ${accordionTab === 1 ? 'bg-wema text-white' : 'text-muted'}`} onClick={() => setAccordionTab(1)}>1</button>
-              </div>
+              <IconButton type="button" onClick={() => setAccordionTab(1)}>
+                <div className={`radius50 w-2e h-2e center-items ${accordionTab === 1 ? 'border-wema' : 'faint-border'}`}>
+
+                  <Avatar
+                    className={
+                      accordionTab === 1 ? 'styled-mui' : 'text-muted'
+                    }
+                  >
+                    1
+                  </Avatar>
+                </div>
+              </IconButton>
             </div>
             <div className={`col-md-6 accordion-div  ${accordionTab === 2 && 'is-focus'}`}>
-              <div className={`radius50 size4 center-items ${accordionTab === 2 ? 'border-wema' : 'faint-border'}`}>
-                <button type="button" className={`radius50 size3 text-center text-white  ${accordionTab === 2 ? 'bg-wema text-white' : 'text-muted'}`} onClick={() => setAccordionTab(2)}>2</button>
-              </div>
+              <IconButton type="button" onClick={() => setAccordionTab(2)}>
+                <div className={`radius50 w-2e h-2e center-items ${accordionTab === 2 ? 'border-wema' : 'faint-border'}`}>
+
+                  <Avatar
+                    className={
+                      accordionTab === 2 ? 'styled-mui' : 'text-muted'
+                    }
+                  >
+                    2
+                  </Avatar>
+                </div>
+              </IconButton>
             </div>
           </div>
-          <div className="login-form">
+          <div className="login-form pb-5h">
 
             {
               (
@@ -223,7 +249,7 @@ const CreateProject = () => {
                     <button
                       className="w-50 btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
                       type="button"
-                      onClick={handleRegister}
+                      onClick={handleCreateProject}
                     >
                       Save
                     </button>
@@ -244,9 +270,9 @@ const CreateProject = () => {
                             className="w-75 btn btn-small float-right"
                             type="button"
                             // disabled={!submittable}
-                            onClick={handleRegister}
+                            onClick={handleCreateProject}
                           >
-                            Start Project
+                            Submit
                           </button>
                         )
                     }

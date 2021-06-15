@@ -13,21 +13,22 @@ const SelectInput = (
     validations,
     error,
     options,
-    optionIndex
+    optionIndex,
+    valueIndex
   }
 ) => {
   const optionsProp = options?.map((option) => (
     typeof option === 'object'
       ? (
         <option
-          value={option[optionIndex]?.toString()?.toLowerCase() === 'select item...' ? '' : option[optionIndex]}
+          value={Number(option[valueIndex])}
           key={option[optionIndex]}
         >
           {option[optionIndex].toUpperCase()}
         </option>
       ) : (
         <option
-          value={option?.toString()?.toLowerCase() === 'select item...' ? '' : option}
+          value={option}
           key={option}
         >
           {option}

@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import localforage from 'localforage';
 
 /**
  * This function encodes its payload into a token
@@ -57,7 +58,14 @@ export const checkUnauthorized = (res, index = process.env.REACT_APP_INDEX_URL) 
 
 export const logout = async (landingPath = process.env.REACT_APP_INDEX_URL,
   isExpiredSession = false) => {
-  localStorage.clear();
+  await localforage.clear();
   isExpiredSession && localStorage.setItem('se', true);
   window.location.assign(landingPath);
 };
+
+export const currentUser = localforage.getItem('user', (err, value) => {
+  if (value?.status === 1) {
+    return value.data?.user;
+  }
+  return false;
+});

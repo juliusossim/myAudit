@@ -12,13 +12,28 @@ const formBuilderProjectsStart2Props = (
     kind: 'input',
     props: {
       className: 'w-100 m-b-20',
-      name: 'target',
-      label: 'Target Amount',
-      value: formData?.target || '',
+      name: 'address',
+      label: 'Project Address',
+      value: formData?.address || '',
       validations: {
-        required: true
+        required: false
       },
-      error: errors?.target,
+      error: errors?.address,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'input',
+    props: {
+      className: 'w-100 m-b-20 col-6',
+      name: 'city',
+      label: 'City',
+      value: formData?.city || '',
+      validations: {
+        required: false
+      },
+      error: errors?.city,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -26,33 +41,48 @@ const formBuilderProjectsStart2Props = (
   {
     kind: 'select',
     props: {
-      className: 'w-100 m-b-20',
-      name: 'days',
-      label: 'Project Duration',
-      options: days,
-      optionIndex: 'name',
-      value: formData?.days || '',
-      validations: {
-        required: true
-      },
-      error: errors?.days,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
-    kind: 'select',
-    props: {
-      className: 'w-100 m-b-20',
-      name: 'location',
-      label: 'Project Location',
+      className: 'w-100 m-b-20 col-6',
+      name: 'state',
+      label: 'State',
       options: locations,
       optionIndex: 'name',
-      value: formData?.location || '',
+      value: formData?.state || '',
+      validations: {
+        required: false
+      },
+      error: errors?.state,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'input',
+    props: {
+      className: 'w-100 m-b-20 col-6',
+      name: 'start_date',
+      label: 'Start Date',
+      type: 'date',
+      value: formData?.start_date || '',
       validations: {
         required: true
       },
-      error: errors?.location,
+      error: errors?.start_date,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'input',
+    props: {
+      className: 'w-100 m-b-20 col-6',
+      name: 'end_date',
+      label: 'End Date',
+      type: 'date',
+      value: formData?.end_date || '',
+      validations: {
+        required: true
+      },
+      error: errors?.end_date,
       onBlur: handleBlur,
       onChange: handleChange
     }

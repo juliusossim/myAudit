@@ -1,23 +1,37 @@
 import React, { Suspense } from 'react';
-import { Router, Switch, Route } from 'react-router-dom';
-import { createBrowserHistory } from 'history';
+import { Switch, Route } from 'react-router-dom';
 
 import MainPortal from './routes/MainPortal';
+import Header from './layouts/Header';
+import Footer from './layouts/Footer';
 
 function App() {
-  const history = createBrowserHistory();
-
   return (
-    <Suspense fallback={<div className="p-40"><center>Loading...</center></div>}>
-      <Router history={history}>
+
+    <Suspense fallback={(
+      <div className="loader-container">
+        <div className="loader">
+          <i />
+        </div>
+      </div>
+    )}
+    >
+
+      {/* <Router history={history}> */}
+      <div className="w-full">
+        <Header />
         <Switch>
 
+          {/* <Route path="/" component={HomePortal} /> */}
           <Route path="/" component={MainPortal} />
 
           <Route render={() => <h1>Error 404. Page not found.</h1>} />
         </Switch>
-      </Router>
+        <Footer />
+      </div>
+      {/* </Router> */}
     </Suspense>
+
   );
 }
 

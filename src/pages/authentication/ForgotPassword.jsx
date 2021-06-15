@@ -1,7 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { mapBackendErrors, validateField } from '../../utilities/validation';
-import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
 import TextInput from '../../components/form/inputs/TextInput';
 import { forgotPassword } from '../../redux/actions/authenticationActions';
@@ -12,7 +10,6 @@ const ForgotPassword = () => {
   const store = useSelector((state) => state.auth.forgotPassword);
   /* state */
   const [formData, setFormData] = useState({});
-  const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
 
   const handleResetPassword = () => {
