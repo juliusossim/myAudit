@@ -1,4 +1,4 @@
-import { projectType, projectCategories } from '../../../utilities/dummyData';
+import { projectType, projectCategories, profileType } from '../../../utilities/dummyData';
 import { validationPatterns } from '../../../utilities/validation';
 
 const formBuilderProjectsStartProps = (
@@ -17,13 +17,13 @@ const formBuilderProjectsStartProps = (
     kind: 'input',
     props: {
       className: 'w-100 m-b-20',
-      name: 'project_name',
+      name: 'title',
       label: 'Project Name',
-      value: formData?.project_name || '',
+      value: formData?.title || '',
       validations: {
         required: true
       },
-      error: errors?.project_name,
+      error: errors?.title,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -32,7 +32,7 @@ const formBuilderProjectsStartProps = (
     kind: 'file_input',
     props: {
       className: 'w-100 m-b-20',
-      name: 'project_media',
+      name: 'media',
       label: 'Project Media (images and videos)',
       text: 'Add Media',
       value: formData?.project_media || '',
@@ -54,14 +54,14 @@ const formBuilderProjectsStartProps = (
     kind: 'text_area',
     props: {
       className: 'w-100 m-b-20',
-      name: 'short_description',
+      name: 'summary',
       placeholder: 'type your description here...',
       label: 'Short Description',
-      value: formData?.short_description || '',
+      value: formData?.summary || '',
       validations: {
         maxLength: 200
       },
-      error: errors?.short_description,
+      error: errors?.summary,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -70,15 +70,16 @@ const formBuilderProjectsStartProps = (
     kind: 'select',
     props: {
       className: 'w-100 m-b-20',
-      name: 'project_type',
+      name: 'projectType',
       label: 'Project Type',
-      options: projectType,
       optionIndex: 'type',
-      value: formData?.project_type || '',
+      valueIndex: 'value',
+      value: formData?.projectType || '',
+      options: profileType,
       validations: {
         required: true
       },
-      error: errors?.project_type,
+      error: errors?.projectType,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -87,15 +88,16 @@ const formBuilderProjectsStartProps = (
     kind: 'select',
     props: {
       className: 'w-100 m-b-20',
-      name: 'project_category',
+      name: 'categoryId',
       label: 'Project Category',
       options: projectCategories,
       optionIndex: 'name',
-      value: formData?.project_category || '',
+      valueIndex: 'id',
+      value: formData?.categoryId || '',
       validations: {
         required: true
       },
-      error: errors?.project_category,
+      error: errors?.categoryId,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -104,14 +106,14 @@ const formBuilderProjectsStartProps = (
     kind: 'input',
     props: {
       className: 'w-100 m-b-20',
-      name: 'target_amount',
+      name: 'donationTarget',
       label: 'Target Amount',
       type: 'number',
-      value: formData?.target_amount || '',
+      value: formData?.donationTarget || '',
       validations: {
         required: true
       },
-      error: errors?.target_amount,
+      error: errors?.donationTarget,
       onBlur: handleBlur,
       onChange: handleChange
     }

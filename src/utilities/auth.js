@@ -62,7 +62,7 @@ export const logout = async (landingPath = process.env.REACT_APP_INDEX_URL,
   isExpiredSession && localStorage.setItem('se', true);
   window.location.assign(landingPath);
 };
-
+export const getToken = () => localStorage.getItem('access_token');
 export const currentUser = localforage.getItem('user', (err, value) => {
   if (value?.status === 1) {
     return value.data?.user;
