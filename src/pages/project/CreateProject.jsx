@@ -4,18 +4,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
 import IconButton from '@material-ui/core/IconButton';
+import _ from 'lodash';
 import FormBuilder from '../../components/form/builders/form';
 import {
   validateField,
   canSubmit,
   mapBackendErrors
 } from '../../utilities/validation';
-import { slugToString } from '../../utilities/stringOperations';
+import { camelToString, slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
 import { uploadFile } from '../../services/fetch';
 import formBuilderProjectsStartProps from './constants/startProject1Props';
 import formBuilderProjectsStart2Props from './constants/startProject2Props';
-import { createProject } from '../../redux/actions/projectActions';
+import { createProject, editProject } from '../../redux/actions/projectActions';
 
 /**
  *
@@ -25,49 +26,69 @@ import { createProject } from '../../redux/actions/projectActions';
 const CreateProject = () => {
   /* redux */
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.project.newProject);
+  const store = useSelector((state) => state.project.project);
   /* state */
-  const [formData, setFormData] = useState({ file: [], project_type: 'select project type' });
+  const [formData, setFormData] = useState({
+    file: [], projectType: 10, categoryId: 10, startDate: new Date(), endDate: new Date()
+  });
   const [progress, setProgress] = useState(0);
   const [accordionTab, setAccordionTab] = useState(1);
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
   const [submittable, setSubmittable] = useState(false);
   const [user, setUser] = useState(null);
+  // const category = _.findLast()
+
+  const defaultDescription = `
+  Hi my name is ${user?.name || 'anonymous'}, I work at ${user?.company?.name}
+  I am appealing to the general public to join in raising funds to support our 
+  `;
 
   const handleCreateProject = () => {
     setShow(true);
     dispatch(createProject(formData));
+  };
+  const handleSave = () => {
+    setShow(true);
+    dispatch(editProject({ ...store.data.data, ...formData }));
   };
   const cancelUpload = () => {
     setFormData({ ...formData, file: '', logo_id: '' });
   };
   const handleClose = () => {
     setShow(false);
-    window.location.replace('/create-project');
+    // window.location.replace('/create-project');
   };
   const handleProgress = (val) => setProgress(val);
 
   const handleChange = (e) => {
     const { name, value, files } = e.target;
-    if (name === 'project_media' && formData.file.indexOf(files[0] === -1)) {
+    if (name === 'media' && formData.file.indexOf(files[0] === -1)) {
       setFormData({
         ...formData,
         file: [...formData.file, files[0]]
       });
       uploadFile({ file: files[0], handleProgress, url: 'Uploads/logo' });
     } else {
+      let val = value;
+      if (name === 'projectType' || name === 'categoryId') {
+        val = Number(val);
+      }
       setFormData((state) => ({
         ...state,
-        [name]: value
+        [name]: val
       }));
     }
   };
+  const handleDateChange = ({ date, name }) => setFormData({ ...formData, [name]: date });
 
   const handleBlur = (e, validations) => {
     const { name, value } = e.target;
-    const field = slugToString(name);
-    // console.log(typeof field !== 'undefined');
+    const field = camelToString(name);
+    if (name === 'title') {
+      dispatch(createProject({ [field]: value }));
+    }
+
     typeof field !== 'undefined'
     && setErrors(
       {
@@ -217,6 +238,7 @@ const CreateProject = () => {
                         progress,
                         handleBlur,
                         handleChange,
+                        handleDateChange,
                         errors
                       }
                     )
@@ -225,6 +247,7 @@ const CreateProject = () => {
                           formData,
                           handleBlur,
                           handleChange,
+                          handleDateChange,
                           errors
                         }
                       )
@@ -249,7 +272,7 @@ const CreateProject = () => {
                     <button
                       className="w-50 btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
                       type="button"
-                      onClick={handleCreateProject}
+                      onClick={handleSave}
                     >
                       Save
                     </button>

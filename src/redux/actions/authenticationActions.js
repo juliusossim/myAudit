@@ -108,6 +108,7 @@ export const login = (payload) => {
       if (response?.status === 200) {
         dispatch(success(response?.data));
         localforage.setItem('user', response.data);
+        localStorage.setItem('token', response.data.data.user.token);
       } else {
         dispatch(failure(response));
       }

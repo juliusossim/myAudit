@@ -1,21 +1,22 @@
 import axios from 'axios';
+import localforage from 'localforage';
 import paths from './endpoints';
 import constants from '../redux/constants';
 
-import { decodeToken, logout } from '../utilities/auth';
+import {
+  currentUser, decodeToken, getToken, logout
+} from '../utilities/auth';
 
-const getToken = () => {
-  const t = decodeToken('t');
-  const token = t && t.t;
-  return token;
-};
+// const getToken = () => {
+//   const t = decodeToken('t');
+//   const token = t && t.t;
+//   return token;
+// };
 
 const fetchBackend = async (
   endpoint, method, auth, body,
   pQuery, param, multipart, setProgress
 ) => {
-  console.log('here');
-
   const headers = {
     'Content-Type': multipart ? 'multipart/form-data' : 'application/json'
     // 'Content-Type': 'application/json'
@@ -34,10 +35,8 @@ const fetchBackend = async (
   }
 
   if (auth) {
-    const token = getToken();
-    if (token) {
-      headers.Authorization = `Bearer ${token}`;
-    }
+    const token = localStorage.getItem('token');
+    headers.Authorization = `Bearer ${token}`;
   }
   const options = {
     url, method, headers

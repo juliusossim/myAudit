@@ -3,6 +3,7 @@ import TextInput from '../inputs/TextInput';
 import SelectInput from '../inputs/SelectInput';
 import TextareaInput from '../inputs/TextareaInput';
 import FileInput from '../inputs/FileInput';
+import DateInput from '../inputs/DateInput';
 
 const FormBuilder = ({ formItems }) => formItems?.map(
   ({ kind, props }, key) => {
@@ -105,7 +106,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         );
       case 'date':
         return (
-          <TextareaInput
+          <DateInput
             key={name}
             onChange={onChange}
             onBlur={onBlur}

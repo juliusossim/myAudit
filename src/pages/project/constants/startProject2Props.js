@@ -5,6 +5,7 @@ const formBuilderProjectsStart2Props = (
     formData,
     handleBlur,
     handleChange,
+    handleDateChange,
     errors
   }
 ) => ([
@@ -12,13 +13,13 @@ const formBuilderProjectsStart2Props = (
     kind: 'input',
     props: {
       className: 'w-100 m-b-20',
-      name: 'address',
+      name: 'projectAddress',
       label: 'Project Address',
-      value: formData?.address || '',
+      value: formData?.projectAddress || '',
       validations: {
         required: false
       },
-      error: errors?.address,
+      error: errors?.projectAddress,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -56,35 +57,42 @@ const formBuilderProjectsStart2Props = (
     }
   },
   {
-    kind: 'input',
+    kind: 'date',
     props: {
       className: 'w-100 m-b-20 col-6',
-      name: 'start_date',
+      variant: 'static',
+      // orientation: 'landscape',
+      disablePast: true,
+      name: 'startDate',
       label: 'Start Date',
       type: 'date',
-      value: formData?.start_date || '',
+      value: formData?.startDate || '',
       validations: {
         required: true
       },
-      error: errors?.start_date,
+      error: errors?.startDate,
       onBlur: handleBlur,
-      onChange: handleChange
+      onChange: handleDateChange
     }
   },
   {
-    kind: 'input',
+    kind: 'date',
     props: {
       className: 'w-100 m-b-20 col-6',
-      name: 'end_date',
+      variant: 'static',
+      minDate: new Date(),
+      // orientation: 'landscape',
+      disablePast: true,
+      name: 'endDate',
       label: 'End Date',
       type: 'date',
-      value: formData?.end_date || '',
+      value: formData?.endDate || '',
       validations: {
         required: true
       },
-      error: errors?.end_date,
+      error: errors?.endDate,
       onBlur: handleBlur,
-      onChange: handleChange
+      onChange: handleDateChange
     }
   },
 

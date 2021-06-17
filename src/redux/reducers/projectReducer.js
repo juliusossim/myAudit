@@ -1,15 +1,19 @@
 import constants from '../constants';
 
 const initialState = {
-  newProject: {
-    data: {},
-    status: 'initial'
-  },
   projects: {
     data: {},
     status: 'initial'
   },
   project: {
+    data: {},
+    status: 'initial'
+  },
+  submitProject: {
+    data: {},
+    status: 'initial'
+  },
+  incompleteProjects: {
     data: {},
     status: 'initial'
   },
@@ -29,7 +33,7 @@ const initialState = {
 
 const projectReducer = (state = initialState, { type, response, error }) => {
   switch (type) {
-  case constants:
+  case constants.PROJECT_PENDING:
     return {
       ...state,
       project: {
@@ -37,7 +41,6 @@ const projectReducer = (state = initialState, { type, response, error }) => {
         status: 'pending'
       }
     };
-
   case constants.PROJECT_SUCCESS:
     return {
       ...state,
@@ -47,8 +50,61 @@ const projectReducer = (state = initialState, { type, response, error }) => {
         status: 'success'
       }
     };
-
   case constants.PROJECT_FAILURE:
+    return {
+      ...state,
+      project: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.SUBMIT_PROJECT_PENDING:
+    return {
+      ...state,
+      submit_project: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.SUBMIT_PROJECT_SUCCESS:
+    return {
+      ...state,
+      submit_project: {
+        ...state.submit_project,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.SUBMIT_PROJECT_FAILURE:
+    return {
+      ...state,
+      submit_project: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.EDIT_PROJECT_PENDING:
+    return {
+      ...state,
+      project: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.EDIT_PROJECT_SUCCESS:
+    return {
+      ...state,
+      project: {
+        ...state.project,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.EDIT_PROJECT_FAILURE:
     return {
       ...state,
       project: {
