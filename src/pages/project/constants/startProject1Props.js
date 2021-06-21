@@ -10,6 +10,8 @@ const formBuilderProjectsStartProps = (
     progress,
     handleBlur,
     handleChange,
+    btnMethod,
+    loading,
     errors
   }
 ) => ([
@@ -23,6 +25,12 @@ const formBuilderProjectsStartProps = (
       validations: {
         required: true
       },
+      loading,
+      btn: {
+        class: 'ml-18w bg-transparent text-wema',
+        text: 'Try Again'
+      },
+      btnMethod,
       error: errors?.title,
       onBlur: handleBlur,
       onChange: handleChange

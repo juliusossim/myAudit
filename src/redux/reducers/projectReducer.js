@@ -9,6 +9,10 @@ const initialState = {
     data: {},
     status: 'initial'
   },
+  projectByStatus: {
+    data: {},
+    status: 'initial'
+  },
   submitProject: {
     data: {},
     status: 'initial'
@@ -54,6 +58,32 @@ const projectReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       project: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.PROJECT_BY_STATUS_PENDING:
+    return {
+      ...state,
+      projectByStatus: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.PROJECT_BY_STATUS_SUCCESS:
+    return {
+      ...state,
+      projectByStatus: {
+        ...state.projectByStatus,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.PROJECT_BY_STATUS_FAILURE:
+    return {
+      ...state,
+      projectByStatus: {
         data: error || {},
         status: 'failed'
       }

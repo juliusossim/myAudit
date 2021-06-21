@@ -26,6 +26,7 @@ const paths = {
   DELETE_PROJECT_MEDIA: fileUploads.deleteProjectMedia,
   LOGO: fileUploads.logo,
   // projects
+  CREATE_PROJECT_NAME: `${servers.project}${projectEndpoints.createProjectName}`,
   CREATE_PROJECT: `${servers.project}${projectEndpoints.createProject}`,
   VIEW_PROJECTS: `${servers.project}${projectEndpoints.viewProjects}`,
   VIEW_PROJECT: `${servers.project}${projectEndpoints.viewProject}`,
@@ -35,8 +36,9 @@ const paths = {
   PROJECT_UPDATES: `${servers.project}${projectEndpoints.showProjectUpdate}`,
   UPDATE_PROJECT: `${servers.project}${projectEndpoints.updateProject}`,
   PROJECT_DETAILS: `${servers.project}${projectEndpoints.projectDetails}`,
-  PROJECT_SUMMARY: `${servers.project}${projectEndpoints.projectSummary}`
-
+  PROJECT_SUMMARY: `${servers.project}${projectEndpoints.projectSummary}`,
+  PROJECT_BY_STATUS: `${servers.project}${projectEndpoints.projectByStatus()}`,
+  SUBMIT_PROJECT: `${servers.project}${projectEndpoints.submitProject}`
 };
 
 export default paths;

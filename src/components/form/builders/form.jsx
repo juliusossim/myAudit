@@ -36,6 +36,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         optionIndex,
         valueIndex,
         reveal,
+        helperText,
         handleReveal,
         btn,
         btnMethod,
@@ -122,6 +123,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             rows={rows}
             validations={validations}
             btn={btn}
+            helperText={helperText}
             btnMethod={btnMethod}
           />
         );
