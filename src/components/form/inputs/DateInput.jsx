@@ -43,6 +43,7 @@ const DateInput = (props) => {
           name={props.name}
           format={props.format}
           value={props.value}
+          helperText={props.helperText}
           onChange={handleChange}
           minDate={new Date()}
           KeyboardButtonProps={{

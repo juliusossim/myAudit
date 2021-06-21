@@ -66,6 +66,7 @@ const formBuilderProjectsStart2Props = (
       name: 'startDate',
       label: 'Start Date',
       type: 'date',
+      helperText: 'it may take about 5 working days to get your project approved',
       value: formData?.startDate || '',
       validations: {
         required: true
@@ -85,6 +86,7 @@ const formBuilderProjectsStart2Props = (
       disablePast: true,
       name: 'endDate',
       label: 'End Date',
+      helperText: 'consider padding for approval delays.',
       type: 'date',
       value: formData?.endDate || '',
       validations: {

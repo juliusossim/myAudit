@@ -15,7 +15,7 @@ import {
 
 const fetchBackend = async (
   endpoint, method, auth, body,
-  pQuery, param, multipart, setProgress
+  pQuery, param, multipart, afterParam, setProgress
 ) => {
   const headers = {
     'Content-Type': multipart ? 'multipart/form-data' : 'application/json'
@@ -26,6 +26,9 @@ const fetchBackend = async (
 
   if (param) {
     url += `/${param}`;
+  }
+  if (afterParam) {
+    url += `/${afterParam}`;
   }
 
   if (pQuery) {
@@ -57,9 +60,9 @@ const fetchBackend = async (
 
   return axios(options)
     .then((res) => res, async (err) => {
-      if (err?.response?.status === 401 || err?.response?.status === 400) {
+      if (err?.response?.status === 401) {
         // log the user out and return
-        // await logout(process.env.REACT_APP_JWT_SECRET, true);
+        await logout(process.env.REACT_APP_JWT_SECRET, true);
       }
       // console.log(err?.response?.data?.errors);
       return err?.response?.data?.errors;
@@ -104,6 +107,7 @@ export const get = ({
 /**
  *
  * @param {string} endpoint
+ * @param {string} afterParam
  * @param {object} body
  * @param {string} param
  * @param {boolean} auth
@@ -111,8 +115,8 @@ export const get = ({
  * @param {function} setProgress
  */
 export const post = ({
-  endpoint, body, auth = true, multipart, param, setProgress
-}) => fetchBackend(endpoint, 'POST', auth, body, null, param, multipart, setProgress);
+  endpoint, body, auth = true, multipart, param, afterParam, setProgress
+}) => fetchBackend(endpoint, 'POST', auth, body, null, param, multipart, afterParam, setProgress);
 
 /**
  *

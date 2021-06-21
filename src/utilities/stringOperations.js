@@ -46,3 +46,5 @@ export const getOneName = (fullName, first = true) => {
   const names = fullName.split(' ');
   return first ? names[0] : names[1];
 };
+
+export const stringDoesNotExist = (str) => (!str || str.length === 0 || /^\s*$/.test(str) || !str.trim());
