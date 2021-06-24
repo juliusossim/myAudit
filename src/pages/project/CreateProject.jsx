@@ -1,9 +1,12 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, {
+  useEffect, useCallback, useState, useMemo
+} from 'react';
 import localforage from 'localforage';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
+import NaijaStates from 'naija-state-local-government';
 import FormBuilder from '../../components/form/builders/form';
 import { canSubmit, mapBackendErrors, validateField } from '../../utilities/validation';
 import { camelToString, stringDoesNotExist } from '../../utilities/stringOperations';
@@ -13,11 +16,11 @@ import formBuilderProjectsStartProps from './constants/startProject1Props';
 import formBuilderProjectsStart2Props from './constants/startProject2Props';
 import formBuilderProjectsPreviewProps from './constants/startProject3Props';
 import {
-  createProject, editProject, projectByStatus, submitProject, createProjectName
+  projectCategories, editProject, projectByStatus, submitProject, createProjectName, uploadLogo
 } from '../../redux/actions/projectActions';
 import { findItem } from '../../utilities/arrayOperations';
-import { projectCategories } from '../../utilities/dummyData';
 import Creatable from '../../components/form/inputs/Creatable';
+import ModalTemplate from '../../components/temps/modalTemps/temp';
 
 /**
  *
@@ -30,39 +33,42 @@ const CreateProject = () => {
   const store = useSelector((state) => state.project);
   /* state */
   const [formData, setFormData] = useState({
-    file: [], projectType: 10, categoryId: 10, startDate: new Date(), endDate: new Date()
+    file: [], projectType: 10, categoryId: 10, state: 'lagos', startDate: new Date(), endDate: new Date()
   });
   const [progress, setProgress] = useState(0);
   const [accordionTab, setAccordionTab] = useState(1);
+  // const [categories, setCategories] = useState([]);
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
   const [submittable, setSubmittable] = useState(false);
   const [user, setUser] = useState(null);
   const [created, setCreated] = useState(false);
+  const [nameEdit, setNameEdit] = useState(false);
+  const [lgas, setLgas] = useState([]);
+  // const [lga, setLga] = useState(lgas);
 
   const handleCreateProject = () => {
-    setShow(true);
     setCreated(true);
-    dispatch(createProject(formData));
+    handleSave();
+
+    // dispatch(createProject(formData));
   };
   const handleSubmitProject = () => {
-    setShow(true);
     dispatch(submitProject(formData));
   };
   const handleSave = () => {
-    setShow(true);
-    const tem = { ...formData };
-    delete tem.endDate;
-    const payload = { ...store.project.data.data, ...tem };
-    if (stringDoesNotExist(payload.description)) {
-      const category = findItem(projectCategories, 'id', formData.categoryId);
-      const authUser = JSON.parse(localStorage.getItem('loginData'));
-      payload.description = `
+    const tem = { id: store?.project?.data?.data?.id, ...formData };
+    // delete tem.endDate;
+    const category = findItem(store.projectCategories.data.data, 'id', formData.categoryId);
+    const authUser = JSON.parse(localStorage.getItem('loginData'));
+    if (stringDoesNotExist(tem.description)) {
+      tem.description = `
   Hi my name is ${authUser?.name || 'anonymous'}, I work at ${authUser?.company?.name}
   I am appealing to the general public to join in raising funds to support our ${category?.name || formData.title}
   `;
     }
-    dispatch(editProject(payload));
+    setFormData(tem);
+    dispatch(editProject(tem));
   };
   const cancelUpload = () => {
     setFormData({ ...formData, file: '', logo_id: '' });
@@ -70,17 +76,42 @@ const CreateProject = () => {
   const handleClose = () => {
     setShow(false);
     created && setAccordionTab(3);
+    // store.project.data.status === 'success' && setFormData({ .
+    // ..formData, ...store.project.data.data });
   };
   const handleProgress = (val) => setProgress(val);
 
   const handleChange = (e) => {
-    const { name, value, files } = e.target;
+    // if (typeof e.target == 'undefined') {
+    //   return console.log('this input is invalid');
+    // }
+    const { name, value, files } = e?.target;
+    handleNameEdit(name);
+    // if (name === 'state') {
+    //   handleLgaOptions(value);
+    // }
     if (name === 'media' && formData.file.indexOf(files[0] === -1)) {
       setFormData({
         ...formData,
         file: [...formData.file, files[0]]
       });
-      uploadFile({ file: files[0], handleProgress, url: 'Uploads/logo' });
+      const fileSize = (files[0].size / 1024 / 1024).toFixed(3);
+      if (fileSize > 1) {
+        // setModalProps({
+        //   text: 'success',
+        //   status: 'failed',
+        //   data: `the media size of ${fileSize}mb is too large, size must not be larger than 1mb`
+        // });
+        // return setShow(true);
+      }
+      dispatch(
+        uploadLogo(
+          {
+            payload: { file: files[0], id: store.project.data.data.id }, setProgress
+          }
+        )
+      );
+      // uploadFile({ file: files[0], handleProgress, url: 'Uploads/logo' });
     } else {
       let val = value;
       if (name === 'projectType' || name === 'categoryId') {
@@ -91,13 +122,15 @@ const CreateProject = () => {
         [name]: val
       }));
     }
+    return true;
   };
   const handleDateChange = ({ date, name }) => setFormData({ ...formData, [name]: date });
-
   const handleBlur = (e, validations) => {
     const { name, value } = e.target;
     const field = camelToString(name);
     if (name === 'title' && !stringDoesNotExist(value)) {
+      setCreated(false);
+      setNameEdit(true);
       dispatch(createProjectName({ [field]: value }));
     }
 
@@ -111,80 +144,25 @@ const CreateProject = () => {
       }
     );
   };
+  const handleNameEdit = useCallback((name) => {
+    if (name !== 'title') {
+      setNameEdit(false);
+    }
+  }, [nameEdit]);
+  // const handleLgaOptions = (val) => {
+  //   setLga(NaijaStates.lgas(val)?.lgas);
+  // };
+  // useEffect(() => setLgas(lga), [lga]);
+
   const handleDisabled = () => {
     if (accordionTab === 1) {
-      return setSubmittable((store.project.data.data.status === 'success' && formData.categoryId !== 10 && formData.donationTarget > 0));
+      if ((formData.donationTarget > 0)) {
+        setSubmittable(true);
+      }
     }
-    return setSubmittable(!(store.project.data.data.status === 'success' && !stringDoesNotExist(formData.endDate) && !stringDoesNotExist(formData.projectAddress)));
+    return setSubmittable(!(created && !stringDoesNotExist(formData.endDate)
+      && !stringDoesNotExist(formData.projectAddress)));
   };
-
-  const modalTemplate = (
-    <div className={
-      // eslint-disable-next-line no-nested-ternary
-      (store.project?.status === 'failed')
-        ? 'mt-5 p-5'
-        : (
-          store.project?.status === 'pending'
-            ? 'mt-5 p-5 '
-            : 'mt-5 p-5 bg-wema'
-        )
-    }
-    >
-      <div className="text-white">
-        {
-          store.project?.status === 'pending'
-          && (
-            <div className="center-text text-success">
-              Loading...
-            </div>
-          )
-        }
-        {
-          store.project?.status !== 'pending'
-          && (
-            <div className="">
-              <h5 className="center-text text-muted">{store.project?.status}</h5>
-              <ul>
-                {
-                  store.project?.status === 'failed'
-                    ? (
-                      <div>
-                        {/* <ul> */}
-                        {/*  { */}
-                        {/*    mapBackendErrors(store?.data).map( */}
-                        {/*      (err) => ( */}
-                        {/*        typeof err !== 'undefined' && ( */}
-                        {/*          <li key={`${new Date()}`} className="text-warning"> */}
-                        {/*            {err} */}
-                        {/*          </li> */}
-                        {/*        ) */}
-                        {/*      ) */}
-                        {/*    ) */}
-                        {/*  } */}
-                        {/* </ul> */}
-                        <button onClick={() => setShow(false)} type="button" className="btn w-25 center btn-small float-right">
-                          Ok
-                        </button>
-                      </div>
-                    )
-                    : (
-                      <p>
-                        your account is created
-                        you will now be redirected to your projects
-                        {
-                          store.project?.status === 'success'
-                          && setTimeout(handleClose, 3000)
-                        }
-                      </p>
-                    )
-                }
-              </ul>
-            </div>
-          )
-        }
-      </div>
-    </div>
-  );
 
   const removeAtIndex = (item) => {
     const fileCopy = [...formData.file];
@@ -192,6 +170,9 @@ const CreateProject = () => {
     fileCopy.splice(index, 1);
     setFormData({ ...formData, file: [...fileCopy] });
   };
+  const canContinue = () => (formData.summary?.length > 0
+      && formData.donationTarget
+      && store?.project?.data?.data?.id?.length > 0);
 
   const goBack = () => {
     setAccordionTab(1);
@@ -199,16 +180,36 @@ const CreateProject = () => {
   const fetchMyAPI = useCallback(async () => {
     dispatch(projectByStatus());
   }, []);
+
+  const text = () => {
+    let strings = 'your project has been submitted for approval. You will be notified by email in due time';
+
+    if (accordionTab !== 3) {
+      strings = `Your project ${formData.title} has been saved`;
+    }
+    return strings;
+  };
+
   useEffect(() => {
-    localforage.getItem('user').then((data) => {
-      setUser(data?.data?.user);
-    });
+    setLgas(NaijaStates.lgas(formData.state)?.lgas);
     // handleDisabled();
     // fetchMyAPI();
     // accordionTab === 1
     //   ?  canSubmit(formData, errors, setSubmittable, 4)
     //   : canSubmit(formData, errors, setSubmittable, 3);
-  }, [formData, errors, accordionTab, user]);
+  }, [formData]);
+
+  useEffect(() => {
+    localforage.getItem('user').then((data) => {
+      setUser(data?.data?.user);
+    });
+    dispatch(projectCategories());
+  }, []);
+  useEffect(() => {
+    if (store.project?.status === 'failed' || store.project?.status === 'success') {
+      setShow(true);
+    }
+  }, [store.project.status]);
 
   // const projectStat = {
   //   storeIndex: 'email_templates',
@@ -275,11 +276,18 @@ const CreateProject = () => {
             </div>
           </div>
           <div className="login-form pb-5h">
-            <div className="text-wema">
-              <h4>Preview</h4>
-              <p>Make all changes you consider necessary before submitting for approval</p>
-            </div>
-            <hr />
+            {
+              accordionTab === 3
+              && (
+                <div>
+                  <div className="text-wema">
+                    <h4>Preview</h4>
+                    <p>Make all changes you consider necessary before submitting for approval</p>
+                  </div>
+                  <hr />
+                </div>
+              )
+            }
             {/* <Creatable */}
             {/*  prop={{ */}
             {/*    name: projectStat.labelProp, */}
@@ -299,14 +307,17 @@ const CreateProject = () => {
                   formBuilderProjectsStartProps(
                     {
                       formData,
+                      categories: store.projectCategories.data.data,
                       multiple: true,
                       removeItem: removeAtIndex,
                       setFormData: cancelUpload,
                       progress,
+                      skeleton: typeof formData.title != 'undefined',
                       handleBlur,
                       handleChange,
                       handleDateChange,
-                      loading: store.project.status,
+                      btnMethod: () => setFormData({ ...formData, title: '' }),
+                      loading: { status: nameEdit && store.project.status, text: 'initializing your project' },
                       errors
                     }
                   )
@@ -321,6 +332,8 @@ const CreateProject = () => {
                    formBuilderProjectsStart2Props(
                      {
                        formData,
+                       states: NaijaStates.states(),
+                       lgas,
                        handleBlur,
                        handleChange,
                        handleDateChange,
@@ -336,6 +349,7 @@ const CreateProject = () => {
                   formItems={
                     formBuilderProjectsPreviewProps({
                       formData,
+                      categories: store.projectCategories.data.data,
                       multiple: true,
                       removeItem: removeAtIndex,
                       setFormData: cancelUpload,
@@ -343,6 +357,8 @@ const CreateProject = () => {
                       handleBlur,
                       handleChange,
                       handleDateChange,
+                      btnMethod: () => setFormData({ ...formData, title: '' }),
+                      loading: { status: nameEdit && store.project.status, text: 'initializing your project' },
                       errors
                     })
                   }
@@ -370,7 +386,7 @@ const CreateProject = () => {
                             title="save and continue later"
                             className="w-50 btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
                             type="button"
-                            // disabled={submittable}
+                            disabled={!store?.project?.data?.data?.id?.length > 0}
                             onClick={handleSave}
                           >
                             Save
@@ -381,7 +397,9 @@ const CreateProject = () => {
                                 <button
                                   className="w-75 btn btn-small float-right"
                                   type="button"
-                                  // disabled={!submittable}
+                                  disabled={!(formData.summary?.length > 0
+                                    && formData.donationTarget
+                                    && store?.project?.data?.data?.id?.length > 0)}
                                   onClick={() => setAccordionTab(2)}
                                 >
                                   Continue
@@ -406,6 +424,32 @@ const CreateProject = () => {
                       accordionTab === 3
                       && <Button onClick={handleSubmitProject}>Submit</Button>
                     }
+                    {
+                      store.project.status === 'pending' && !nameEdit
+                    && (
+                      <div className="dots_loader d-flex">
+
+                        {
+                          accordionTab !== 3
+                          && <p className="mr-md-1 pb-md-1"> saving your progress </p>
+                        }
+                        {
+                          accordionTab === 3
+                          && <p className="mr-md-1 pb-md-1"> submitting...</p>
+                        }
+
+                        <div className="mt-md-1">
+                          <span />
+                          <span />
+                          <span />
+                          <span />
+                          <span />
+                          <span />
+                          <span />
+                        </div>
+                      </div>
+                    )
+                    }
                   </div>
                 </div>
               )
@@ -415,7 +459,15 @@ const CreateProject = () => {
       </div>
       <Modal
         className={show ? 'max-w-400 right top' : 'max-w-400 right top off'}
-        content={modalTemplate}
+        content={(
+          <ModalTemplate
+            status={store.project?.status}
+            data={store.project?.data?.data}
+            handleClose={handleClose}
+            setShow={setShow}
+            text={text()}
+          />
+        )}
       />
     </div>
   );

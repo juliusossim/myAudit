@@ -41,7 +41,7 @@ const DateInput = (props) => {
           id="date-picker-dialog"
           label={props.label}
           name={props.name}
-          format={props.format}
+          format={props.format || 'dd-mm-yyyy'}
           value={props.value}
           helperText={props.helperText}
           onChange={handleChange}

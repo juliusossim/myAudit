@@ -1,5 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
+import Skeleton from '@material-ui/lab/Skeleton';
 
 const SelectInput = (
   {
@@ -14,7 +15,9 @@ const SelectInput = (
     error,
     options,
     optionIndex,
-    valueIndex
+    valueIndex,
+    titleIndex,
+    skeleton
   }
 ) => {
   const optionsProp = options?.map((option) => (
@@ -23,6 +26,7 @@ const SelectInput = (
         <option
           value={Number(option[valueIndex])}
           key={option[optionIndex]}
+          title={option[titleIndex]}
         >
           {option[optionIndex].toUpperCase()}
         </option>
@@ -30,39 +34,48 @@ const SelectInput = (
         <option
           value={option}
           key={option}
+          title={option[titleIndex]}
         >
           {option}
         </option>
       )));
   return (
     <div className={`${error?.length > 0 ? `${className} col-12` : `${className}`} form-group`}>
-      <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
-        {label}
-      </label>
-      <select
-        className={error?.length > 0 ? 'error-field' : ''}
-        name={name}
-        id={name}
-        value={value}
-        onChange={onChange}
-        onBlur={((e) => typeof onBlur === 'function'
-          && onBlur(e, validations))}
-        disabled={disabled}
-      >
-        {optionsProp}
-      </select>
       {
-        error?.length > 0
-          ? (
-            <ul className="error-msg">
+        skeleton
+          ? <Skeleton animation="wave" />
+          : (
+            <>
+              <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
+                {label}
+              </label>
+              <select
+                className={error?.length > 0 ? 'error-field' : ''}
+                name={name}
+                id={name}
+                value={value}
+                onChange={onChange}
+                onBlur={((e) => typeof onBlur === 'function'
+                && onBlur(e, validations))}
+                disabled={disabled}
+              >
+                {optionsProp}
+              </select>
               {
-                error.map(
-                  (err) => <li key={err}>{err}</li>
-                )
+                error?.length > 0
+                  ? (
+                    <ul className="error-msg">
+                      {
+                        error.map(
+                          (err) => <li key={err}>{err}</li>
+                        )
+                      }
+                    </ul>
+                  )
+                  : null
               }
-            </ul>
+            </>
           )
-          : null
       }
     </div>
   );

@@ -19,8 +19,12 @@ const fetchBackend = async (
 ) => {
   const headers = {
     'Content-Type': multipart ? 'multipart/form-data' : 'application/json'
+    // Accept: 'multipart/form-data',
+    // 'Access-Control-Allow-Origin': 'http://localhost:3000/'
     // 'Content-Type': 'application/json'
   };
+  // console.log(headers);
+
   const path = paths[endpoint] || endpoint;
   let url = `${process.env.REACT_APP_BACKEND_URL}${path}`;
 
@@ -49,14 +53,14 @@ const fetchBackend = async (
     options.data = body;
   }
 
-  // if (setProgress) {
-  //   let progress = 0;
-  //   options.onUploadProgress = (uploadEvent) => {
-  //     const { loaded, total } = uploadEvent;
-  //     progress = Math.floor((loaded / total) * 100);
-  //     setProgress(progress);
-  //   };
-  // }
+  if (setProgress) {
+    let progress = 0;
+    options.onUploadProgress = (uploadEvent) => {
+      const { loaded, total } = uploadEvent;
+      progress = Math.floor((loaded / total) * 100);
+      setProgress(progress);
+    };
+  }
 
   return axios(options)
     .then((res) => res, async (err) => {
@@ -69,12 +73,36 @@ const fetchBackend = async (
     });
 };
 
+// export const uploadFile = (file, setProgress, handleSuccess) => {
+//   const imageFormData = new FormData();
+//   imageFormData.append('file', file);
+//   let access_token = getStorageData("access_token", true);
+//
+//   let progress = 0;
+//   axios({
+//     baseURL: process.env.REACT_APP_BACKEND_URL,
+//     url: "cfcore/Uploads/project/",
+//     method: "post",
+//     headers: {
+//       authorization: `Bearer ${localforage.getItem('token')}`,
+//       Accept: "application/json",
+//       "Content-Type": "multipart/form-data",
+//     },
+//     data: imageFormData,
+//     onUploadProgress: (uploadEvent) => {
+//       const { loaded, total } = uploadEvent;
+//       progress = Math.floor((loaded / total) * 100);
+//       setProgress(progress);
+//     },
+//   }).then((response) => handleSuccess(response));
+// };
+
 export const uploadFile = ({
   file, method, url, handleProgress
 }) => {
   let progress = 0;
   const data = new FormData();
-  data.append('logo_id', file);
+  data.append('file', file);
   axios({
     baseURL: process.env.REACT_APP_BASE_URL,
     method: method || 'post',
