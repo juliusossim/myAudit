@@ -4,6 +4,8 @@ import SelectInput from '../inputs/SelectInput';
 import TextareaInput from '../inputs/TextareaInput';
 import FileInput from '../inputs/FileInput';
 import DateInput from '../inputs/DateInput';
+import CurrencyInput from '../inputs/CurrencyInput';
+import Select2 from '../inputs/select2';
 
 const FormBuilder = ({ formItems }) => formItems?.map(
   ({ kind, props }, key) => {
@@ -35,12 +37,16 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         options,
         optionIndex,
         valueIndex,
+        titleIndex,
         reveal,
         helperText,
         handleReveal,
         btn,
         btnMethod,
-        loading
+        loading,
+        states,
+        lgas,
+        skeleton
       } = props;
       switch (kind) {
       case 'select':
@@ -58,51 +64,63 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             options={options}
             optionIndex={optionIndex}
             valueIndex={valueIndex}
+            titleIndex={titleIndex}
             validations={validations}
             btn={btn}
+            skeleton={skeleton}
             btnMethod={btnMethod}
           />
         );
-      case 'file_input':
+      case 'select2':
         return (
-          <FileInput
+          <Select2
             key={name}
             value={value}
-            file={file}
-            removeItem={removeItem}
-            multiple={multiple}
-            setFormData={setFormData}
-            progress={progress}
-            className={className}
+            onChange={onChange}
+            onBlur={onBlur}
             name={name}
+            className={className}
+            disabled={disabled}
             error={error}
             label={label}
-            onChange={onChange}
-            text={text}
+            options={options}
+            optionIndex={optionIndex}
+            valueIndex={valueIndex}
+            titleIndex={titleIndex}
             validations={validations}
             btn={btn}
+            skeleton={skeleton}
             btnMethod={btnMethod}
+            states={states}
+            lgas={lgas}
           />
         );
-      case 'text_area':
+      case 'currency':
         return (
-          <TextareaInput
+          <CurrencyInput
             key={name}
+            label={label}
+            name={name}
+            value={value}
+            className={className}
             onChange={onChange}
+            type={type}
+            id={name}
+            error={error}
+            readOnly={readOnly}
             onBlur={onBlur}
             disabled={disabled}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
-            name={name}
-            value={value}
-            className={className}
-            error={error}
-            label={label}
-            placeholder={placeholder}
-            rows={rows}
+            min={minDate}
+            max={maxDate}
             validations={validations}
+            reveal={reveal}
+            handleReveal={handleReveal}
             btn={btn}
             btnMethod={btnMethod}
+            loading={loading}
+            skeleton={skeleton}
           />
         );
       case 'date':
@@ -125,6 +143,51 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             btn={btn}
             helperText={helperText}
             btnMethod={btnMethod}
+            skeleton={skeleton}
+          />
+        );
+      case 'file_input':
+        return (
+          <FileInput
+            key={name}
+            value={value}
+            file={file}
+            removeItem={removeItem}
+            multiple={multiple}
+            setFormData={setFormData}
+            progress={progress}
+            className={className}
+            name={name}
+            error={error}
+            label={label}
+            onChange={onChange}
+            text={text}
+            validations={validations}
+            btn={btn}
+            btnMethod={btnMethod}
+            skeleton={skeleton}
+          />
+        );
+      case 'text_area':
+        return (
+          <TextareaInput
+            key={name}
+            onChange={onChange}
+            onBlur={onBlur}
+            disabled={disabled}
+            onKeyPress={onKeyPress}
+            onKeyDown={onKeyDown}
+            name={name}
+            value={value}
+            className={className}
+            error={error}
+            label={label}
+            placeholder={placeholder}
+            rows={rows}
+            validations={validations}
+            btn={btn}
+            btnMethod={btnMethod}
+            skeleton={skeleton}
           />
         );
       default:
@@ -152,6 +215,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             btn={btn}
             btnMethod={btnMethod}
             loading={loading}
+            skeleton={skeleton}
           />
         );
       }

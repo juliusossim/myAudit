@@ -77,20 +77,6 @@ export const projectCategories = [
     name: 'tourism'
   }
 ];
-export const locations = [
-  'select a location',
-  {
-    id: 1,
-    name: 'lekki',
-    state: 'lagos'
-  },
-  {
-    id: 2,
-    name: 'calabar',
-    state: 'cross-river'
-  }
-];
-
 export const popularProjects = [
   {
     id: 1,

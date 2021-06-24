@@ -21,10 +21,10 @@ const paths = {
   RESET_PASSWORD: `${servers.auth}${authEndpoints.resetPassword}`,
   FORGOT_PASSWORD: `${servers.auth}${authEndpoints.forgotPasswordApi}`,
   // uploads
-  PROFILE_PICTURE: fileUploads.profilePic,
-  PROJECT_MEDIA: fileUploads.project,
-  DELETE_PROJECT_MEDIA: fileUploads.deleteProjectMedia,
-  LOGO: fileUploads.logo,
+  PROFILE_PICTURE: `${servers.project}${fileUploads.profilePic}`,
+  PROJECT_MEDIA: `${servers.project}${fileUploads.project}`,
+  DELETE_PROJECT_MEDIA: `${servers.project}${fileUploads.deleteProjectMedia}`,
+  LOGO: `${servers.project}${fileUploads.logo}`,
   // projects
   CREATE_PROJECT_NAME: `${servers.project}${projectEndpoints.createProjectName}`,
   CREATE_PROJECT: `${servers.project}${projectEndpoints.createProject}`,
@@ -38,7 +38,8 @@ const paths = {
   PROJECT_DETAILS: `${servers.project}${projectEndpoints.projectDetails}`,
   PROJECT_SUMMARY: `${servers.project}${projectEndpoints.projectSummary}`,
   PROJECT_BY_STATUS: `${servers.project}${projectEndpoints.projectByStatus()}`,
-  SUBMIT_PROJECT: `${servers.project}${projectEndpoints.submitProject}`
+  SUBMIT_PROJECT: `${servers.project}${projectEndpoints.submitProject}`,
+  PROJECT_CATEGORIES: `${servers.project}${projectEndpoints.projectCategories}`
 };
 
 export default paths;

@@ -1,5 +1,6 @@
 /* eslint-disable react/destructuring-assignment */
 import React, { useState } from 'react';
+import CurrencyFormat from 'react-currency-format';
 import { FaEyeSlash, FaEye, FaCheck } from 'react-icons/all';
 import Skeleton from '@material-ui/lab/Skeleton';
 import {
@@ -12,7 +13,7 @@ import {
 } from '../../../utilities/validation';
 import { stringDoesNotExist } from '../../../utilities/stringOperations';
 
-const TextInput = (props) => {
+const CurrencyInput = (props) => {
   const [reveal, setReveal] = useState(false);
   const handleReveal = () => setReveal(!reveal);
   const loading = typeof props.loading === 'string'
@@ -69,12 +70,12 @@ const TextInput = (props) => {
                     </div>
                   )
                   : (
-                    <input
+                    <CurrencyFormat
                       className={props.error?.length > 0 ? 'error-field' : ''}
                       type={reveal ? 'text' : props.type || 'text'}
                       name={props.name}
                       id={props.name}
-                      value={props.type === 'number' ? props.value.toLocaleString() : props.value}
+                      value={props.value}
                       onChange={props.onChange}
                       onFocus={props.onFocus}
                       title={props.title}
@@ -88,6 +89,8 @@ const TextInput = (props) => {
                       maxLength={props.validations?.maxLength}
                       min={props.validations?.min}
                       max={props.validations?.max}
+                      thousandSeparator
+                      isNumericString
                     />
                   )
               }
@@ -155,4 +158,4 @@ const TextInput = (props) => {
   );
 };
 
-export default TextInput;
+export default CurrencyInput;

@@ -1,8 +1,10 @@
-import { days, locations } from '../../../utilities/dummyData';
+import NaijaStates from 'naija-state-local-government';
 
 const formBuilderProjectsStart2Props = (
   {
     formData,
+    states,
+    lgas,
     handleBlur,
     handleChange,
     handleDateChange,
@@ -25,33 +27,37 @@ const formBuilderProjectsStart2Props = (
     }
   },
   {
-    kind: 'input',
-    props: {
-      className: 'w-100 m-b-20 col-6',
-      name: 'city',
-      label: 'City',
-      value: formData?.city || '',
-      validations: {
-        required: false
-      },
-      error: errors?.city,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
-    kind: 'select',
+    kind: 'select2',
     props: {
       className: 'w-100 m-b-20 col-6',
       name: 'state',
       label: 'State',
-      options: locations,
+      options: states,
       optionIndex: 'name',
       value: formData?.state || '',
       validations: {
         required: false
       },
       error: errors?.state,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'select2',
+    props: {
+      className: 'w-100 m-b-20 col-6',
+      name: 'city',
+      label: 'LGA',
+      options: lgas,
+      optionIndex: 'name',
+      valueIndex: 'id',
+      titleIndex: 'description',
+      value: formData.city || '',
+      validations: {
+        required: true
+      },
+      error: errors?.categoryId,
       onBlur: handleBlur,
       onChange: handleChange
     }

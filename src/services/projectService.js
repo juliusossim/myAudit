@@ -2,7 +2,7 @@ export const createProjectName = 'Projects/createbyname';
 export const createProject = 'Projects';
 export const viewProjects = 'Projects';
 export const viewProject = (id) => `Projects/${id}`;
-export const projectCategories = (id) => 'categories';
+export const projectCategories = 'categories';
 export const deleteProject = (id) => `Projects/${id}`;
 export const editProject = 'Projects'; // param = id
 export const submitProject = 'Projects'; // param = ${id} afterParam = submit

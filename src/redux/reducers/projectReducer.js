@@ -32,6 +32,10 @@ const initialState = {
   projectMedia: {
     data: {},
     status: 'initial'
+  },
+  projectCategories: {
+    data: {},
+    status: 'initial'
   }
 };
 
@@ -282,6 +286,35 @@ const projectReducer = (state = initialState, { type, response, error }) => {
         status: 'failed'
       }
     };
+
+  case constants.PROJECT_CATEGORIES_PENDING:
+    return {
+      ...state,
+      projectCategories: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.PROJECT_CATEGORIES_SUCCESS:
+    return {
+      ...state,
+      projectCategories: {
+        ...state.projectCategories,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.PROJECT_CATEGORIES_FAILURE:
+    return {
+      ...state,
+      projectCategories: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
   default: return { ...state };
   }
 };
