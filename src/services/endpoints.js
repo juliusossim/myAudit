@@ -1,6 +1,7 @@
 import * as authEndpoints from './authService';
 import * as fileUploads from './fileUploadService';
 import * as projectEndpoints from './projectService';
+import * as profileEndpoints from './profileService';
 
 const servers = {
   auth: process.env.REACT_APP_AUTH_SERVER,
@@ -39,7 +40,11 @@ const paths = {
   PROJECT_SUMMARY: `${servers.project}${projectEndpoints.projectSummary}`,
   PROJECT_BY_STATUS: `${servers.project}${projectEndpoints.projectByStatus()}`,
   SUBMIT_PROJECT: `${servers.project}${projectEndpoints.submitProject}`,
-  PROJECT_CATEGORIES: `${servers.project}${projectEndpoints.projectCategories}`
+  PROJECT_CATEGORIES: `${servers.project}${projectEndpoints.projectCategories}`,
+
+  // profile
+  ME: `${servers.auth}${profileEndpoints.me}`
+
 };
 
 export default paths;

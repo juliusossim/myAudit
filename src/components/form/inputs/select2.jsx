@@ -27,7 +27,8 @@ const Select2 = (
     optionIndex,
     valueIndex,
     titleIndex,
-    skeleton
+    skeleton,
+    excuseSkeleton
   }
 ) => {
   const [searchTerm, setSearchterm] = React.useState('');
@@ -63,6 +64,7 @@ const Select2 = (
           value={option[valueIndex]}
           key={option[optionIndex]}
           title={option[titleIndex]}
+          style={{ width: 'max-content' }}
         >
           <Button onClick={() => handleSelect(option[optionIndex])}>
             {
@@ -103,7 +105,7 @@ const Select2 = (
     <div className={`${error?.length > 0 ? `${className} col-12 ` : `${className}`} form-group`}>
       <div className="container-fluid">
         {
-          skeleton
+          skeleton !== undefined && !skeleton && excuseSkeleton !== name
             ? <Skeleton animation="wave" />
             : (
               <div

@@ -449,8 +449,8 @@ const formBuilderProjectsPreviewProps = (
       }
     }
   ];
-  const authUser = JSON.parse(localStorage.getItem('loginData'));
-  if (authUser.role_id === 1) {
+  const authUser = JSON.parse(localStorage.getItem('user'));
+  if (authUser.role === 'User') {
     return propsIndividual;
   }
   return propsCorporate;

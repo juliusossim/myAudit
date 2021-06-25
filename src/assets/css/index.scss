@@ -45,6 +45,7 @@ img {
 .ontop{
   z-index: 10000;
   top: 10vh;
+  left: 0;
   position: absolute !important;
 }
 .no-outline { outline: none!important;}
