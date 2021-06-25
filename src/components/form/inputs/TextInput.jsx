@@ -20,10 +20,13 @@ const TextInput = (props) => {
 
   return (
     <div className={`${props.error?.length > 0 ? `${props.className} col-12` : `${props.className}`} form-group`}>
+      {console.log(props.skeleton)}
       {
-        props.skeleton
+        props.skeleton !== undefined && !props.skeleton && props.excuseSkeleton !== props.name
           ? (
-            <Skeleton animation="wave" />
+            <div>
+              <Skeleton animation="wave" />
+            </div>
           )
           : (
             <>

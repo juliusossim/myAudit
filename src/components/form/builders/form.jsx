@@ -44,9 +44,8 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         btn,
         btnMethod,
         loading,
-        states,
-        lgas,
-        skeleton
+        skeleton,
+        excuseSkeleton
       } = props;
       switch (kind) {
       case 'select':
@@ -68,6 +67,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             validations={validations}
             btn={btn}
             skeleton={skeleton}
+            excuseSkeleton={excuseSkeleton}
             btnMethod={btnMethod}
           />
         );
@@ -90,9 +90,8 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             validations={validations}
             btn={btn}
             skeleton={skeleton}
+            excuseSkeleton={excuseSkeleton}
             btnMethod={btnMethod}
-            states={states}
-            lgas={lgas}
           />
         );
       case 'currency':
@@ -121,6 +120,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             btnMethod={btnMethod}
             loading={loading}
             skeleton={skeleton}
+            excuseSkeleton={excuseSkeleton}
           />
         );
       case 'date':
@@ -144,6 +144,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             helperText={helperText}
             btnMethod={btnMethod}
             skeleton={skeleton}
+            excuseSkeleton={excuseSkeleton}
           />
         );
       case 'file_input':
@@ -166,6 +167,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             btn={btn}
             btnMethod={btnMethod}
             skeleton={skeleton}
+            excuseSkeleton={excuseSkeleton}
           />
         );
       case 'text_area':
@@ -188,6 +190,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             btn={btn}
             btnMethod={btnMethod}
             skeleton={skeleton}
+            excuseSkeleton={excuseSkeleton}
           />
         );
       default:
@@ -216,6 +219,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             btnMethod={btnMethod}
             loading={loading}
             skeleton={skeleton}
+            excuseSkeleton={excuseSkeleton}
           />
         );
       }

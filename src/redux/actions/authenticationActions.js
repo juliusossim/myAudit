@@ -25,6 +25,7 @@ export const register = (payload) => {
     return res.then((response) => {
       if (response?.status === 200 || response?.status === 201) {
         localforage.setItem('user', response.data);
+        localStorage.setItem('user', JSON.stringify(response.data.data.data.user));
         dispatch(success(response?.data));
       } else {
         dispatch(failure(response?.errors || response));
@@ -34,6 +35,7 @@ export const register = (payload) => {
 };
 
 export const verifyIndividual = (payload) => {
+  console.log(payload);
   const request = (req) => ({ type: constants.VERIFY_INDIVIDUAL_PENDING, request: req });
   const success = (response) => ({ type: constants.VERIFY_INDIVIDUAL_SUCCESS, response });
   const failure = (error) => ({ type: constants.VERIFY_INDIVIDUAL_FAILURE, error });
@@ -109,6 +111,7 @@ export const login = (payload) => {
         dispatch(success(response?.data));
         localforage.setItem('user', response.data);
         localStorage.setItem('token', response.data.data.user.token);
+        localStorage.setItem('user', JSON.stringify(response.data.data.user));
       } else {
         dispatch(failure(response));
       }

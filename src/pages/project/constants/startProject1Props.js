@@ -9,6 +9,7 @@ const formBuilderProjectsStartProps = (
     removeItem,
     setFormData,
     skeleton,
+    excuseSkeleton,
     progress,
     handleBlur,
     handleChange,
@@ -25,6 +26,8 @@ const formBuilderProjectsStartProps = (
         name: 'title',
         type: 'text',
         label: 'Project Name',
+        skeleton,
+        excuseSkeleton,
         value: formData?.title || '',
         validations: {
           required: true
@@ -53,6 +56,7 @@ const formBuilderProjectsStartProps = (
         multiple,
         removeItem,
         skeleton,
+        excuseSkeleton,
         setFormData,
         progress,
         validations: {
@@ -72,6 +76,7 @@ const formBuilderProjectsStartProps = (
         placeholder: 'type your description here...',
         label: 'Short Description',
         skeleton,
+        excuseSkeleton,
         value: formData?.summary || '',
         validations: {
           maxLength: 200
@@ -90,6 +95,7 @@ const formBuilderProjectsStartProps = (
         optionIndex: 'type',
         valueIndex: 'value',
         skeleton,
+        excuseSkeleton,
         value: formData?.projectType || '',
         options: profileType,
         validations: {
@@ -110,6 +116,7 @@ const formBuilderProjectsStartProps = (
         optionIndex: 'name',
         valueIndex: 'id',
         skeleton,
+        excuseSkeleton,
         titleIndex: 'description',
         value: formData?.categoryId || '',
         validations: {
@@ -128,6 +135,7 @@ const formBuilderProjectsStartProps = (
         label: 'Target Amount',
         type: 'text',
         skeleton,
+        excuseSkeleton,
         value: formData?.donationTarget || '',
         validations: {
           required: true
@@ -145,6 +153,8 @@ const formBuilderProjectsStartProps = (
         className: 'w-100 m-b-20',
         name: 'title',
         type: 'text',
+        skeleton,
+        excuseSkeleton,
         label: 'Project Name',
         value: formData?.title || '',
         validations: {
@@ -169,6 +179,8 @@ const formBuilderProjectsStartProps = (
         name: 'media',
         label: 'Project Media (images and videos)',
         text: 'Add Media',
+        skeleton,
+        excuseSkeleton,
         value: formData?.project_media || '',
         file: formData?.file || '',
         multiple,
@@ -190,6 +202,8 @@ const formBuilderProjectsStartProps = (
         className: 'w-100 m-b-20',
         name: 'summary',
         placeholder: 'type your description here...',
+        skeleton,
+        excuseSkeleton,
         label: 'Short Description',
         value: formData?.summary || '',
         validations: {
@@ -210,6 +224,8 @@ const formBuilderProjectsStartProps = (
         optionIndex: 'name',
         valueIndex: 'id',
         titleIndex: 'description',
+        skeleton,
+        excuseSkeleton,
         value: formData?.categoryId || '',
         validations: {
           required: true
@@ -225,6 +241,8 @@ const formBuilderProjectsStartProps = (
         className: 'w-100 m-b-20',
         name: 'donationTarget',
         label: 'Target Amount',
+        skeleton,
+        excuseSkeleton,
         type: 'text',
         value: formData?.donationTarget || '',
         validations: {
@@ -236,8 +254,8 @@ const formBuilderProjectsStartProps = (
       }
     }
   ];
-  const authUser = JSON.parse(localStorage.getItem('loginData'));
-  if (authUser.role_id === 1) {
+  const authUser = JSON.parse(localStorage.getItem('user'));
+  if (authUser.role === 'User') {
     return propsIndividual;
   }
   return propsCorporate;

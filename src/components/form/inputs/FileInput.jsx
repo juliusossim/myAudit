@@ -20,14 +20,15 @@ const FileInput = (
     onBlur,
     validations,
     error,
-    skeleton
+    skeleton,
+    excuseSkeleton
   }
 ) => {
   const data = [...new Set(file)];
 
   return (
     <div className={`${error?.length > 0 ? `${className} col-12` : `${className}`} form-group`}>
-      { skeleton
+      { skeleton !== undefined && !skeleton && excuseSkeleton !== name
         ? <Skeleton animation="wave" />
         : (
           <>

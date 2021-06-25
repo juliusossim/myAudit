@@ -36,7 +36,7 @@ const Header = () => {
               ? (
                 <div className="d-flex">
                   <Link to="/">
-                    <button type="button" className="btn bg-transparent text-wema center-center sign-in" onClick={() => logout('/', true)}><div>Sign Out</div></button>
+                    <button type="button" className="btn bg-transparent text-wema center-center sign-in" onClick={() => logout('/', false)}><div>Sign Out</div></button>
                   </Link>
                   <Link to="/create-project">
                     <button className="btn " type="button">Start Project</button>

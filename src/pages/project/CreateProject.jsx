@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useCallback, useState, useMemo
+  useEffect, useCallback, useState
 } from 'react';
 import localforage from 'localforage';
 import { useDispatch, useSelector } from 'react-redux';
@@ -8,10 +8,9 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import NaijaStates from 'naija-state-local-government';
 import FormBuilder from '../../components/form/builders/form';
-import { canSubmit, mapBackendErrors, validateField } from '../../utilities/validation';
+import { validateField } from '../../utilities/validation';
 import { camelToString, stringDoesNotExist } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
-import { uploadFile } from '../../services/fetch';
 import formBuilderProjectsStartProps from './constants/startProject1Props';
 import formBuilderProjectsStart2Props from './constants/startProject2Props';
 import formBuilderProjectsPreviewProps from './constants/startProject3Props';
@@ -19,7 +18,6 @@ import {
   projectCategories, editProject, projectByStatus, submitProject, createProjectName, uploadLogo
 } from '../../redux/actions/projectActions';
 import { findItem } from '../../utilities/arrayOperations';
-import Creatable from '../../components/form/inputs/Creatable';
 import ModalTemplate from '../../components/temps/modalTemps/temp';
 
 /**
@@ -45,7 +43,7 @@ const CreateProject = () => {
   const [created, setCreated] = useState(false);
   const [nameEdit, setNameEdit] = useState(false);
   const [lgas, setLgas] = useState([]);
-  // const [lga, setLga] = useState(lgas);
+  const [skeleton, setSkeleton] = useState(false);
 
   const handleCreateProject = () => {
     setCreated(true);
@@ -58,12 +56,11 @@ const CreateProject = () => {
   };
   const handleSave = () => {
     const tem = { id: store?.project?.data?.data?.id, ...formData };
-    // delete tem.endDate;
-    const category = findItem(store.projectCategories.data.data, 'id', formData.categoryId);
-    const authUser = JSON.parse(localStorage.getItem('loginData'));
+    const category = store?.projectCategories?.data?.data !== undefined && findItem(store?.projectCategories?.data?.data, 'id', formData.categoryId);
+    // const authUser = JSON.parse(localStorage.getItem('loginData'));
     if (stringDoesNotExist(tem.description)) {
       tem.description = `
-  Hi my name is ${authUser?.name || 'anonymous'}, I work at ${authUser?.company?.name}
+  Hi my name is ${user?.name || 'anonymous'}, I work at ${user?.company?.name}
   I am appealing to the general public to join in raising funds to support our ${category?.name || formData.title}
   `;
     }
@@ -76,20 +73,12 @@ const CreateProject = () => {
   const handleClose = () => {
     setShow(false);
     created && setAccordionTab(3);
-    // store.project.data.status === 'success' && setFormData({ .
-    // ..formData, ...store.project.data.data });
   };
   const handleProgress = (val) => setProgress(val);
 
   const handleChange = (e) => {
-    // if (typeof e.target == 'undefined') {
-    //   return console.log('this input is invalid');
-    // }
     const { name, value, files } = e?.target;
     handleNameEdit(name);
-    // if (name === 'state') {
-    //   handleLgaOptions(value);
-    // }
     if (name === 'media' && formData.file.indexOf(files[0] === -1)) {
       setFormData({
         ...formData,
@@ -129,9 +118,13 @@ const CreateProject = () => {
     const { name, value } = e.target;
     const field = camelToString(name);
     if (name === 'title' && !stringDoesNotExist(value)) {
-      setCreated(false);
       setNameEdit(true);
-      dispatch(createProjectName({ [field]: value }));
+      if (store?.project?.data?.data?.id === undefined) {
+        setCreated(false);
+        dispatch(createProjectName({ [field]: value }));
+      } else {
+        handleSave();
+      }
     }
 
     typeof field !== 'undefined'
@@ -149,10 +142,6 @@ const CreateProject = () => {
       setNameEdit(false);
     }
   }, [nameEdit]);
-  // const handleLgaOptions = (val) => {
-  //   setLga(NaijaStates.lgas(val)?.lgas);
-  // };
-  // useEffect(() => setLgas(lga), [lga]);
 
   const handleDisabled = () => {
     if (accordionTab === 1) {
@@ -185,18 +174,17 @@ const CreateProject = () => {
     let strings = 'your project has been submitted for approval. You will be notified by email in due time';
 
     if (accordionTab !== 3) {
-      strings = `Your project ${formData.title} has been saved`;
+      if (store?.project?.data?.data?.id !== undefined) {
+        strings = `Your project ${formData.title} has been saved`;
+      } else {
+        strings = `Your project ${formData.title} has been initialized`;
+      }
     }
     return strings;
   };
 
   useEffect(() => {
     setLgas(NaijaStates.lgas(formData.state)?.lgas);
-    // handleDisabled();
-    // fetchMyAPI();
-    // accordionTab === 1
-    //   ?  canSubmit(formData, errors, setSubmittable, 4)
-    //   : canSubmit(formData, errors, setSubmittable, 3);
   }, [formData]);
 
   useEffect(() => {
@@ -209,17 +197,12 @@ const CreateProject = () => {
     if (store.project?.status === 'failed' || store.project?.status === 'success') {
       setShow(true);
     }
+    if (store.project?.status === 'success' && store.project?.data?.data?.id !== undefined) {
+      setSkeleton(true);
+    } else {
+      setSkeleton(false);
+    }
   }, [store.project.status]);
-
-  // const projectStat = {
-  //   storeIndex: 'email_templates',
-  //   readApi: '/api/all-template',
-  //   placeholder: 'Email Template',
-  //   labelProp: 'name',
-  //   value: 'id',
-  //   helperText: 'select an email template for this cadence'
-  // };
-  const selectedOption = (item) => setFormData({ ...formData, ...item.data.data });
   return (
     <div className="content">
       <div className="max-w-600 w-600 margin-center m-t-40">
@@ -288,18 +271,6 @@ const CreateProject = () => {
                 </div>
               )
             }
-            {/* <Creatable */}
-            {/*  prop={{ */}
-            {/*    name: projectStat.labelProp, */}
-            {/*    label: projectStat.placeholder, */}
-            {/*    variant: 'standard', */}
-            {/*    value: '' */}
-            {/*  }} */}
-            {/*  data={projectStat.template} */}
-            {/*  selected={selectedOption} */}
-            {/*  creatable */}
-            {/*  api={fetchMyAPI} */}
-            {/* /> */}
             {accordionTab === 1
             && (
               <FormBuilder
@@ -307,17 +278,18 @@ const CreateProject = () => {
                   formBuilderProjectsStartProps(
                     {
                       formData,
-                      categories: store.projectCategories.data.data,
+                      categories: store?.projectCategories?.data?.data,
                       multiple: true,
                       removeItem: removeAtIndex,
                       setFormData: cancelUpload,
                       progress,
-                      skeleton: typeof formData.title != 'undefined',
+                      skeleton,
+                      excuseSkeleton: 'title',
                       handleBlur,
                       handleChange,
                       handleDateChange,
                       btnMethod: () => setFormData({ ...formData, title: '' }),
-                      loading: { status: nameEdit && store.project.status, text: 'initializing your project' },
+                      loading: { status: nameEdit && store?.project?.status, text: 'initializing your project' },
                       errors
                     }
                   )
@@ -334,6 +306,8 @@ const CreateProject = () => {
                        formData,
                        states: NaijaStates.states(),
                        lgas,
+                       skeleton: store?.project?.data?.data?.id,
+                       excuseSkeleton: 'title',
                        handleBlur,
                        handleChange,
                        handleDateChange,
@@ -352,6 +326,8 @@ const CreateProject = () => {
                       categories: store.projectCategories.data.data,
                       multiple: true,
                       removeItem: removeAtIndex,
+                      skeleton: store?.project?.data?.data?.id,
+                      excuseSkeleton: 'title',
                       setFormData: cancelUpload,
                       progress,
                       handleBlur,

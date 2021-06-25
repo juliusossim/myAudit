@@ -5,11 +5,11 @@ import Skeleton from '@material-ui/lab/Skeleton';
 const SearchInput = ({
   btn, btnMethod, className, disabled, error, label, placeholder,
   name, onBlur, onChange, onFocus, onKeyDown, onKeyPress,
-  readOnly, title, validations, value, skeleton
+  readOnly, title, validations, value, skeleton, excuseSkeleton
 }) => (
   <div className={`${error?.length > 0 ? `${className} col-12` : `${className}`} form-group search-input`}>
     {
-      skeleton
+      skeleton !== undefined && !skeleton && excuseSkeleton !== name
         ? (
           <Skeleton animation="wave" />
         )
