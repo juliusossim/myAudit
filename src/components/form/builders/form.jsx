@@ -220,6 +220,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             loading={loading}
             skeleton={skeleton}
             excuseSkeleton={excuseSkeleton}
+            helperText={helperText}
           />
         );
       }

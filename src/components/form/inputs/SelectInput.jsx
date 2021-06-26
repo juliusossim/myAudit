@@ -44,7 +44,40 @@ const SelectInput = (
     <div className={`${error?.length > 0 ? `${className} col-12` : `${className}`} form-group`}>
       {
         skeleton !== undefined && !skeleton && excuseSkeleton !== name
-          ? <Skeleton animation="wave" />
+          ? (
+            <Skeleton animation="wave">
+              <>
+                <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
+                  {label}
+                </label>
+                <select
+                  className={error?.length > 0 ? 'error-field' : ''}
+                  name={name}
+                  id={name}
+                  value={value}
+                  onChange={onChange}
+                  onBlur={((e) => typeof onBlur === 'function'
+                  && onBlur(e, validations))}
+                  disabled={disabled}
+                >
+                  {optionsProp}
+                </select>
+                {
+                  error?.length > 0
+                    ? (
+                      <ul className="error-msg">
+                        {
+                          error.map(
+                            (err) => <li key={err}>{err}</li>
+                          )
+                        }
+                      </ul>
+                    )
+                    : null
+                }
+              </>
+            </Skeleton>
+          )
           : (
             <>
               <label htmlFor={name} className={value?.length ? 'active-field' : ''}>

@@ -14,18 +14,49 @@ import { stringDoesNotExist } from '../../../utilities/stringOperations';
 
 const TextInput = (props) => {
   const [reveal, setReveal] = useState(false);
+  const [helper, setHelper] = useState(false);
   const handleReveal = () => setReveal(!reveal);
   const loading = typeof props.loading === 'string'
     ? props.loading : props.loading?.status;
+  const handleHelperText = () => {
+    setHelper(true);
+  };
+  const mouseOut = () => {
+    setHelper(false);
+  };
 
   return (
     <div className={`${props.error?.length > 0 ? `${props.className} col-12` : `${props.className}`} form-group`}>
-      {console.log(props.skeleton)}
       {
         props.skeleton !== undefined && !props.skeleton && props.excuseSkeleton !== props.name
           ? (
             <div>
-              <Skeleton animation="wave" />
+              (
+              <Skeleton animation="wave">
+                <input
+                  className={props.error?.length > 0 ? 'error-field' : ''}
+                  type={reveal ? 'text' : props.type || 'text'}
+                  name={props.name}
+                  id={props.name}
+                  value={props.type === 'number' ? props.value.toLocaleString() : props.value}
+                  onChange={props.onChange}
+                  onFocus={props.onFocus}
+                  title={props.title}
+                  readOnly={props.readOnly}
+                  onMouseEnter={handleHelperText}
+                  onMouseLeave={mouseOut}
+                  onBlur={((e) => typeof props.onBlur === 'function'
+                  && props.onBlur(e, props.validations))}
+                  disabled={props.disabled}
+                  required={props.validations?.required}
+                  onKeyPress={props.onKeyPress}
+                  onKeyDown={props.onKeyDown}
+                  maxLength={props.validations?.maxLength}
+                  min={props.validations?.min}
+                  max={props.validations?.max}
+                />
+              </Skeleton>
+              )
             </div>
           )
           : (
@@ -82,6 +113,8 @@ const TextInput = (props) => {
                       onFocus={props.onFocus}
                       title={props.title}
                       readOnly={props.readOnly}
+                      onMouseEnter={handleHelperText}
+                      onMouseLeave={mouseOut}
                       onBlur={((e) => typeof props.onBlur === 'function'
                       && props.onBlur(e, props.validations))}
                       disabled={props.disabled}
@@ -93,6 +126,9 @@ const TextInput = (props) => {
                       max={props.validations?.max}
                     />
                   )
+              }
+              {
+                helper && props.value && <div className="text-wema">{ props.helperText}</div>
               }
               {
                 props.error?.length > 0

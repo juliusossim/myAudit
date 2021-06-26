@@ -24,6 +24,7 @@ const formBuilderProjectsStartProps = (
       props: {
         className: 'w-100 m-b-20',
         name: 'title',
+        helperText: 'click outside this box to save',
         type: 'text',
         label: 'Project Name',
         skeleton,
@@ -157,6 +158,7 @@ const formBuilderProjectsStartProps = (
         excuseSkeleton,
         label: 'Project Name',
         value: formData?.title || '',
+        helperText: 'click outside this box to save',
         validations: {
           required: true
         },
