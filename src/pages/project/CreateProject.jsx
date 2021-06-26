@@ -159,9 +159,9 @@ const CreateProject = () => {
     fileCopy.splice(index, 1);
     setFormData({ ...formData, file: [...fileCopy] });
   };
-  const canContinue = () => (formData.summary?.length > 0
-      && formData.donationTarget
-      && store?.project?.data?.data?.id?.length > 0);
+  const canContinue = () => !(formData.summary?.length > 0
+    && formData.donationTarget
+    && store?.project?.data?.data?.id?.length > 0);
 
   const goBack = () => {
     setAccordionTab(1);
@@ -230,7 +230,7 @@ const CreateProject = () => {
               </IconButton>
             </div>
             <div className={`col-md-4 accordion-div  ${accordionTab === 2 && 'is-focus'}`}>
-              <IconButton type="button" onClick={() => setAccordionTab(2)}>
+              <IconButton disabled={canContinue} type="button" onClick={() => setAccordionTab(2)}>
                 <div className={`radius50 w-2e h-2e center-items ${accordionTab === 2 ? 'border-wema' : 'faint-border'}`}>
 
                   <Avatar

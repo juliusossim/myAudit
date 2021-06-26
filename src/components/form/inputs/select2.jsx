@@ -106,7 +106,53 @@ const Select2 = (
       <div className="container-fluid">
         {
           skeleton !== undefined && !skeleton && excuseSkeleton !== name
-            ? <Skeleton animation="wave" />
+            ? (
+              <Skeleton animation="wave">
+                <div>
+                  <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
+                    {label}
+                  </label>
+                  <TextInput
+                    name={name}
+                    value={selectedOption}
+                  />
+                  <Card className={show ? 'ontop' : 'd-none'}>
+                    <CardContent>
+                      <ul
+                        className={error?.length > 0 ? 'error-field' : ''}
+                        id={name}
+                        onChange={onChange}
+                        onBlur={((e) => typeof onBlur === 'function'
+                        && onBlur(e, validations))}
+                      >
+                        <li>
+                          <input type="search" value={searchTerm} onChange={handleChange} />
+                        </li>
+                        <li className="select-2 ">
+                          <ul>
+                            {optionsProp}
+                          </ul>
+                        </li>
+                      </ul>
+                    </CardContent>
+
+                  </Card>
+                  {
+                    error?.length > 0
+                      ? (
+                        <ul className="error-msg">
+                          {
+                            error.map(
+                              (err) => <li key={err}>{err}</li>
+                            )
+                          }
+                        </ul>
+                      )
+                      : null
+                  }
+                </div>
+              </Skeleton>
+            )
             : (
               <div
                 onMouseEnter={() => {
