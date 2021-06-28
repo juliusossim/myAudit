@@ -271,6 +271,19 @@ const CreateProject = () => {
                 </div>
               )
             }
+            {
+              accordionTab === 1 && store.project?.data?.data?.id !== undefined
+              && (
+                <div>
+                  <div className="text-wema">
+                    <h4>Initiate A new Project</h4>
+                    <p>Enter the project name to unlock the form</p>
+                  </div>
+                  <hr />
+                </div>
+              )
+            }
+
             {accordionTab === 1
             && (
               <FormBuilder
