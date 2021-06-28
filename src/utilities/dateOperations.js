@@ -1,3 +1,5 @@
+import addDays from 'date-fns/addDays';
+
 const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
 
 export const diffDays = (
@@ -7,4 +9,4 @@ export const diffDays = (
  * todo: addDays implementation
  * @type {number}
  */
-export const addDays = Math.round(Math.abs((1 + 2) / oneDay));
+export const addDaysToDate = console.log('here');

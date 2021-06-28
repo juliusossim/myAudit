@@ -9,13 +9,6 @@ import {
 } from '@material-ui/pickers';
 import { FaCheck, FaEye, FaEyeSlash } from 'react-icons/all';
 import Skeleton from '@material-ui/lab/Skeleton';
-import {
-  containCaps,
-  containNums,
-  containSmallCaps,
-  containSpecialChars, eightOrLonger,
-  validatePassword
-} from '../../../utilities/validation';
 
 const DateInput = (props) => {
   const handleChange = (date) => props.onChange({ date, name: props.name });
@@ -69,7 +62,7 @@ const DateInput = (props) => {
                   value={props.value}
                   helperText={props.helperText}
                   onChange={handleChange}
-                  minDate={new Date()}
+                  minDate={new Date(props.value)}
                   KeyboardButtonProps={{
                     'aria-label': 'change date'
                   }}

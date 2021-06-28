@@ -123,7 +123,7 @@ const formBuilderProjectsStart2Props = (
       name: 'description',
       placeholder: 'type your description here...',
       label: 'Description',
-      rows: 60,
+      rows: 10,
       skeleton,
       excuseSkeleton,
       value: formData?.description || '',

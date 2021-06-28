@@ -207,6 +207,7 @@ const formBuilderProjectsStartProps = (
         skeleton,
         excuseSkeleton,
         label: 'Short Description',
+        rows: 5,
         value: formData?.summary || '',
         validations: {
           maxLength: 200

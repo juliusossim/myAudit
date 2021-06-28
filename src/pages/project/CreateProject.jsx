@@ -2,6 +2,7 @@ import React, {
   useEffect, useCallback, useState
 } from 'react';
 import localforage from 'localforage';
+import addDays from 'date-fns/addDays';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
@@ -113,7 +114,9 @@ const CreateProject = () => {
     }
     return true;
   };
-  const handleDateChange = ({ date, name }) => setFormData({ ...formData, [name]: date });
+  const handleDateChange = ({ date, name }) => {
+    setFormData({ ...formData, [name]: date });
+  };
   const handleBlur = (e, validations) => {
     const { name, value } = e.target;
     const field = camelToString(name);
@@ -186,6 +189,10 @@ const CreateProject = () => {
   useEffect(() => {
     setLgas(NaijaStates.lgas(formData.state)?.lgas);
   }, [formData]);
+
+  useEffect(() => {
+    setFormData({ ...formData, endDate: addDays(new Date(formData.startDate), 7) });
+  }, [formData.startDate]);
 
   useEffect(() => {
     localforage.getItem('user').then((data) => {
