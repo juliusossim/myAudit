@@ -74,7 +74,7 @@ const formBuilderProjectsStart2Props = (
     kind: 'date',
     props: {
       className: 'w-100 m-b-20 col-6',
-      variant: 'static',
+      variant: 'standard',
       // orientation: 'landscape',
       disablePast: true,
       name: 'startDate',
@@ -82,7 +82,7 @@ const formBuilderProjectsStart2Props = (
       type: 'date',
       skeleton,
       excuseSkeleton,
-      helperText: 'it may take about 5 working days to get your project approved',
+      helperText: 'if approved, your project starts next week by default',
       value: formData?.startDate || '',
       validations: {
         required: true
@@ -96,7 +96,7 @@ const formBuilderProjectsStart2Props = (
     kind: 'date',
     props: {
       className: 'w-100 m-b-20 col-6',
-      variant: 'static',
+      variant: 'standard',
       minDate: new Date(),
       // orientation: 'landscape',
       disablePast: true,
@@ -104,7 +104,7 @@ const formBuilderProjectsStart2Props = (
       label: 'End Date',
       skeleton,
       excuseSkeleton,
-      helperText: 'consider padding for approval delays.',
+      helperText: 'The default end date is two weeks away.',
       type: 'date',
       value: formData?.endDate || '',
       validations: {
@@ -123,6 +123,7 @@ const formBuilderProjectsStart2Props = (
       name: 'description',
       placeholder: 'type your description here...',
       label: 'Description',
+      rows: 10,
       skeleton,
       excuseSkeleton,
       value: formData?.description || '',

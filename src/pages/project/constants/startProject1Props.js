@@ -1,7 +1,7 @@
 import { projectType, profileType } from '../../../utilities/dummyData';
 import { validationPatterns } from '../../../utilities/validation';
 
-const formBuilderProjectsStartProps = (
+export const formBuilderProjectsStartProps = (
   {
     formData,
     categories,
@@ -19,32 +19,6 @@ const formBuilderProjectsStartProps = (
   }
 ) => {
   const propsCorporate = [
-    {
-      kind: 'input',
-      props: {
-        className: 'w-100 m-b-20',
-        name: 'title',
-        helperText: 'click outside this box to save',
-        type: 'text',
-        label: 'Project Name',
-        skeleton,
-        excuseSkeleton,
-        value: formData?.title || '',
-        validations: {
-          required: true
-        },
-        loading,
-        btn: {
-          class: 'ml-18w bg-transparent text-wema',
-          text: 'Try Again',
-          success: 'Project initialized'
-        },
-        btnMethod,
-        error: errors?.title,
-        onBlur: handleBlur,
-        onChange: handleChange
-      }
-    },
     {
       kind: 'file_input',
       props: {
@@ -149,32 +123,6 @@ const formBuilderProjectsStartProps = (
   ];
   const propsIndividual = [
     {
-      kind: 'input',
-      props: {
-        className: 'w-100 m-b-20',
-        name: 'title',
-        type: 'text',
-        skeleton,
-        excuseSkeleton,
-        label: 'Project Name',
-        value: formData?.title || '',
-        helperText: 'click outside this box to save',
-        validations: {
-          required: true
-        },
-        loading,
-        btn: {
-          class: 'ml-18w bg-transparent text-wema',
-          text: 'Try Again',
-          success: 'Project initialized'
-        },
-        btnMethod,
-        error: errors?.title,
-        onBlur: handleBlur,
-        onChange: handleChange
-      }
-    },
-    {
       kind: 'file_input',
       props: {
         className: 'w-100 m-b-20',
@@ -207,9 +155,10 @@ const formBuilderProjectsStartProps = (
         skeleton,
         excuseSkeleton,
         label: 'Short Description',
+        rows: 5,
         value: formData?.summary || '',
         validations: {
-          maxLength: 200
+          maxLength: 100
         },
         error: errors?.summary,
         onBlur: handleBlur,
@@ -250,6 +199,12 @@ const formBuilderProjectsStartProps = (
         validations: {
           required: true
         },
+        loading,
+        btn: {
+          class: 'ml-18w bg-transparent text-wema',
+          text: 'retrieve categories'
+        },
+        btnMethod,
         error: errors?.donationTarget,
         onBlur: handleBlur,
         onChange: handleChange
@@ -262,4 +217,47 @@ const formBuilderProjectsStartProps = (
   }
   return propsCorporate;
 };
-export default formBuilderProjectsStartProps;
+export const title = (
+  {
+    formData,
+    categories,
+    multiple,
+    removeItem,
+    setFormData,
+    skeleton,
+    excuseSkeleton,
+    progress,
+    handleBlur,
+    handleChange,
+    btnMethod,
+    loading,
+    errors
+  }
+) => ([
+  {
+    kind: 'input',
+    props: {
+      className: 'w-100 m-b-20',
+      name: 'title',
+      helperText: 'A super title commands super response!',
+      type: 'text',
+      label: 'Project Name',
+      skeleton,
+      excuseSkeleton,
+      value: formData?.title || '',
+      validations: {
+        required: true
+      },
+      loading,
+      btn: {
+        class: 'ml-18w bg-transparent text-wema',
+        text: 'Try Again',
+        success: 'Project initialized'
+      },
+      btnMethod,
+      error: errors?.title,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  }
+]);

@@ -6,6 +6,7 @@ import FileInput from '../inputs/FileInput';
 import DateInput from '../inputs/DateInput';
 import CurrencyInput from '../inputs/CurrencyInput';
 import Select2 from '../inputs/select2';
+import MatDatetimPickers from '../inputs/DateTimePicker';
 
 const FormBuilder = ({ formItems }) => formItems?.map(
   ({ kind, props }, key) => {
@@ -45,7 +46,8 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         btnMethod,
         loading,
         skeleton,
-        excuseSkeleton
+        excuseSkeleton,
+        variant
       } = props;
       switch (kind) {
       case 'select':
@@ -65,6 +67,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             valueIndex={valueIndex}
             titleIndex={titleIndex}
             validations={validations}
+            loading={loading}
             btn={btn}
             skeleton={skeleton}
             excuseSkeleton={excuseSkeleton}
@@ -89,9 +92,10 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             titleIndex={titleIndex}
             validations={validations}
             btn={btn}
+            btnMethod={btnMethod}
+            loading={loading}
             skeleton={skeleton}
             excuseSkeleton={excuseSkeleton}
-            btnMethod={btnMethod}
           />
         );
       case 'currency':
@@ -132,6 +136,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             disabled={disabled}
             onKeyPress={onKeyPress}
             onKeyDown={onKeyDown}
+            variant={variant}
             name={name}
             value={value}
             className={className}

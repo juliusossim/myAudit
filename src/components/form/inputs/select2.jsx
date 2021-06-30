@@ -4,12 +4,6 @@ import Button from '@material-ui/core/Button';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
 import { IoCheckmark } from 'react-icons/io5';
-import Popper from '@material-ui/core/Popper';
-import { bindPopper } from 'material-ui-popup-state';
-import Fade from '@material-ui/core/Fade';
-import Paper from '@material-ui/core/Paper';
-import Typography from '@material-ui/core/Typography';
-import Popup from '../../microComponents/popup';
 import TextInput from './TextInput';
 
 const Select2 = (
@@ -64,9 +58,8 @@ const Select2 = (
           value={option[valueIndex]}
           key={option[optionIndex]}
           title={option[titleIndex]}
-          style={{ width: 'max-content' }}
         >
-          <Button onClick={() => handleSelect(option[optionIndex])}>
+          <Button className="font-09 text-wema" onClick={() => handleSelect(option[optionIndex])}>
             {
               selectedOption === option[optionIndex]
               && <IoCheckmark />
@@ -76,12 +69,11 @@ const Select2 = (
         </li>
       ) : (
         <li
-          type="button"
           value={option}
           key={option}
           title={option}
         >
-          <Button name={name} className="text-center" onClick={() => handleSelect(option)}>
+          <Button name={name} className="font-09 text-wema" onClick={() => handleSelect(option)}>
             {
               selectedOption === option
               && <IoCheckmark />
@@ -103,12 +95,12 @@ const Select2 = (
 
   return (
     <div className={`${error?.length > 0 ? `${className} col-12 ` : `${className}`} form-group`}>
-      <div className="container-fluid">
+      <div className="content">
         {
           skeleton !== undefined && !skeleton && excuseSkeleton !== name
             ? (
               <Skeleton animation="wave">
-                <div>
+                <div className={`${className} col-12 form-group`}>
                   <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
                     {label}
                   </label>
@@ -126,7 +118,7 @@ const Select2 = (
                         && onBlur(e, validations))}
                       >
                         <li>
-                          <input type="search" value={searchTerm} onChange={handleChange} />
+                          <input className="col-12" type="search" value={searchTerm} onChange={handleChange} />
                         </li>
                         <li className="select-2 ">
                           <ul>
@@ -160,7 +152,6 @@ const Select2 = (
                   setEdit(true);
                 }}
                 onMouseLeave={() => setShow(false)}
-                className="row"
               >
                 <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
                   {label}
@@ -171,22 +162,22 @@ const Select2 = (
                 />
                 <Card className={show ? 'ontop' : 'd-none'}>
                   <CardContent>
-                    <ul
-                      className={error?.length > 0 ? 'error-field' : ''}
+                    <div
+                      className={error?.length > 0 ? 'error-field' : 'center-center'}
                       id={name}
                       onChange={onChange}
                       onBlur={((e) => typeof onBlur === 'function'
                        && onBlur(e, validations))}
                     >
-                      <li>
-                        <input type="search" value={searchTerm} onChange={handleChange} />
-                      </li>
-                      <li className="select-2 ">
-                        <ul>
-                          {optionsProp}
-                        </ul>
-                      </li>
-                    </ul>
+                      <div className="mb-3">
+                        <input type="search" placeholder={`search ${label} here...`} value={searchTerm} onChange={handleChange} />
+                      </div>
+                      <div className="select-2 text-left col-12">
+
+                        {optionsProp}
+
+                      </div>
+                    </div>
                   </CardContent>
 
                 </Card>

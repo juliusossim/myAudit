@@ -2,6 +2,8 @@ import React, {
   useEffect, useCallback, useState
 } from 'react';
 import localforage from 'localforage';
+import addDays from 'date-fns/addDays';
+import Moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
@@ -9,9 +11,9 @@ import Button from '@material-ui/core/Button';
 import NaijaStates from 'naija-state-local-government';
 import FormBuilder from '../../components/form/builders/form';
 import { validateField } from '../../utilities/validation';
-import { camelToString, stringDoesNotExist } from '../../utilities/stringOperations';
+import { camelToString, notifier, stringDoesNotExist } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
-import formBuilderProjectsStartProps from './constants/startProject1Props';
+import { formBuilderProjectsStartProps, title } from './constants/startProject1Props';
 import formBuilderProjectsStart2Props from './constants/startProject2Props';
 import formBuilderProjectsPreviewProps from './constants/startProject3Props';
 import {
@@ -31,7 +33,7 @@ const CreateProject = () => {
   const store = useSelector((state) => state.project);
   /* state */
   const [formData, setFormData] = useState({
-    file: [], projectType: 10, categoryId: 10, state: 'lagos', startDate: new Date(), endDate: new Date()
+    file: [], projectType: 10, categoryId: 10, state: 'lagos', startDate: addDays(Moment.now(), 5), endDate: new Date()
   });
   const [progress, setProgress] = useState(0);
   const [accordionTab, setAccordionTab] = useState(1);
@@ -75,24 +77,35 @@ const CreateProject = () => {
     created && setAccordionTab(3);
   };
   const handleProgress = (val) => setProgress(val);
+  const handleSaveProgress = () => {
+    if (!stringDoesNotExist(formData.title)) {
+      setNameEdit(true);
+      if (store?.project?.data?.data?.id === undefined) {
+        setCreated(false);
+        dispatch(createProjectName(formData));
+        setFormData({ ...formData, summary: `${formData.title} is a project requesting public funding to...` });
+      } else {
+        handleSave();
+      }
+    }
+  };
 
   const handleChange = (e) => {
     const { name, value, files } = e?.target;
     handleNameEdit(name);
     if (name === 'media' && formData.file.indexOf(files[0] === -1)) {
+      const fileSize = (files[0].size / 1024 / 1024).toFixed(3);
+      if (fileSize > 1) {
+        return notifier({
+          type: 'error',
+          title: 'error',
+          text: `the media size of ${fileSize}MB is too large, size must not be larger than 1MB`
+        });
+      }
       setFormData({
         ...formData,
         file: [...formData.file, files[0]]
       });
-      const fileSize = (files[0].size / 1024 / 1024).toFixed(3);
-      if (fileSize > 1) {
-        // setModalProps({
-        //   text: 'success',
-        //   status: 'failed',
-        //   data: `the media size of ${fileSize}mb is too large, size must not be larger than 1mb`
-        // });
-        // return setShow(true);
-      }
       dispatch(
         uploadLogo(
           {
@@ -113,19 +126,12 @@ const CreateProject = () => {
     }
     return true;
   };
-  const handleDateChange = ({ date, name }) => setFormData({ ...formData, [name]: date });
+  const handleDateChange = ({ date, name }) => {
+    setFormData({ ...formData, [name]: date });
+  };
   const handleBlur = (e, validations) => {
     const { name, value } = e.target;
     const field = camelToString(name);
-    if (name === 'title' && !stringDoesNotExist(value)) {
-      setNameEdit(true);
-      if (store?.project?.data?.data?.id === undefined) {
-        setCreated(false);
-        dispatch(createProjectName({ [field]: value }));
-      } else {
-        handleSave();
-      }
-    }
 
     typeof field !== 'undefined'
     && setErrors(
@@ -188,6 +194,10 @@ const CreateProject = () => {
   }, [formData]);
 
   useEffect(() => {
+    setFormData({ ...formData, endDate: addDays(new Date(formData.startDate), 7) });
+  }, [formData.startDate]);
+
+  useEffect(() => {
     localforage.getItem('user').then((data) => {
       setUser(data?.data?.user);
     });
@@ -230,7 +240,13 @@ const CreateProject = () => {
               </IconButton>
             </div>
             <div className={`col-md-4 accordion-div  ${accordionTab === 2 && 'is-focus'}`}>
-              <IconButton disabled={canContinue} type="button" onClick={() => setAccordionTab(2)}>
+              <IconButton
+                disabled={!(formData.summary?.length > 0
+                && formData.donationTarget
+                && store?.project?.data?.data?.id?.length > 0)}
+                type="button"
+                onClick={() => setAccordionTab(2)}
+              >
                 <div className={`radius50 w-2e h-2e center-items ${accordionTab === 2 ? 'border-wema' : 'faint-border'}`}>
 
                   <Avatar
@@ -277,7 +293,7 @@ const CreateProject = () => {
                 <div>
                   <div className="text-wema">
                     <h4>Initiate A New Project</h4>
-                    <p>Enter the project name to unlock the rest of the form</p>
+                    <p>Give your project a befitting headline</p>
                   </div>
                   <hr />
                 </div>
@@ -286,28 +302,59 @@ const CreateProject = () => {
 
             {accordionTab === 1
             && (
-              <FormBuilder
-                formItems={
-                  formBuilderProjectsStartProps(
-                    {
-                      formData,
-                      categories: store?.projectCategories?.data?.data,
-                      multiple: true,
-                      removeItem: removeAtIndex,
-                      setFormData: cancelUpload,
-                      progress,
-                      skeleton,
-                      excuseSkeleton: 'title',
-                      handleBlur,
-                      handleChange,
-                      handleDateChange,
-                      btnMethod: () => setFormData({ ...formData, title: '' }),
-                      loading: { status: nameEdit && store?.project?.status, text: 'initializing your project' },
-                      errors
-                    }
-                  )
+              <div>
+                {
+                  store.project?.data?.data?.id === undefined
+                    ? (
+                      <FormBuilder
+                        formItems={
+                          title(
+                            {
+                              formData,
+                              categories: store?.projectCategories?.data?.data,
+                              multiple: true,
+                              removeItem: removeAtIndex,
+                              setFormData: cancelUpload,
+                              progress,
+                              skeleton,
+                              excuseSkeleton: 'title',
+                              handleBlur,
+                              handleChange,
+                              handleDateChange,
+                              btnMethod: () => setFormData({ ...formData, title: '' }),
+                              loading: { status: nameEdit && store?.project?.status, text: 'initializing your project' },
+                              errors
+                            }
+                          )
+                        }
+                      />
+                    )
+                    : (
+                      <FormBuilder
+                        formItems={
+                          formBuilderProjectsStartProps(
+                            {
+                              formData,
+                              categories: store?.projectCategories?.data?.data,
+                              multiple: true,
+                              removeItem: removeAtIndex,
+                              setFormData: cancelUpload,
+                              progress,
+                              skeleton,
+                              excuseSkeleton: 'title',
+                              handleBlur,
+                              handleChange,
+                              handleDateChange,
+                              btnMethod: () => setFormData({ ...formData, title: '' }),
+                              loading: { status: nameEdit && store?.project?.status, text: 'initializing your project' },
+                              errors
+                            }
+                          )
+                        }
+                      />
+                    )
                 }
-              />
+              </div>
             )}
 
             {accordionTab === 2
@@ -375,8 +422,8 @@ const CreateProject = () => {
                             title="save and continue later"
                             className="w-50 btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
                             type="button"
-                            disabled={!store?.project?.data?.data?.id?.length > 0}
-                            onClick={handleSave}
+                            // disabled={!store?.project?.data?.data?.id?.length > 0}
+                            onClick={handleSaveProgress}
                           >
                             Save
                           </button>

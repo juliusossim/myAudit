@@ -52,7 +52,7 @@ const CalendarInput = (props) => {
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <DatePicker
                       autoOk
-                      minDate={new Date()}
+                      minDate={props.value}
                       variant="static"
                       openTo="date"
                       name={props.name}

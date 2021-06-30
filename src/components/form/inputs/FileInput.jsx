@@ -31,7 +31,7 @@ const FileInput = (
       <>
         {
           multiple ? (
-            <div className="row border p-3">
+            <div className="row light-border p-3">
 
               {
                 data.map((upload) => (

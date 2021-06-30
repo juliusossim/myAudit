@@ -5,20 +5,17 @@ import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
   KeyboardTimePicker,
-  KeyboardDatePicker
+  KeyboardDatePicker, DatePicker
 } from '@material-ui/pickers';
 import { FaCheck, FaEye, FaEyeSlash } from 'react-icons/all';
 import Skeleton from '@material-ui/lab/Skeleton';
-import {
-  containCaps,
-  containNums,
-  containSmallCaps,
-  containSpecialChars, eightOrLonger,
-  validatePassword
-} from '../../../utilities/validation';
 
 const DateInput = (props) => {
-  const handleChange = (date) => props.onChange({ date, name: props.name });
+  const [show, setShow] = React.useState(true);
+  const handleChange = (date) => {
+    props.onChange({ date, name: props.name });
+    setShow(false);
+  };
   return (
     <div className={props.error?.length > 0 ? `${props.className} col-12` : props.className}>
       {
@@ -27,16 +24,19 @@ const DateInput = (props) => {
             <Skeleton animation="wave">
               <>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                  <KeyboardDatePicker
-                    margin="normal"
+                  <DatePicker
+                    autoOk
+                    // minDate={props.value}
+                    // variant="inline"
+                    // openTo="date"
+                    // margin="normal"
                     id="date-picker-dialog"
                     label={props.label}
                     name={props.name}
-                    format={props.format || 'dd-mm-yyyy'}
+                    format="MM/dd/yyyy"
                     value={props.value}
                     helperText={props.helperText}
                     onChange={handleChange}
-                    minDate={new Date()}
                     KeyboardButtonProps={{
                       'aria-label': 'change date'
                     }}
@@ -61,15 +61,17 @@ const DateInput = (props) => {
             <>
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
+                  autoOk
                   margin="normal"
+                  variant={props.variant}
                   id="date-picker-dialog"
                   label={props.label}
                   name={props.name}
-                  format={props.format || 'dd-mm-yyyy'}
+                  format={props.format || 'dd/MM/yyyy'}
                   value={props.value}
-                  helperText={props.helperText}
+                  helperText={show && props.helperText}
                   onChange={handleChange}
-                  minDate={new Date()}
+                  minDate={new Date(props.value)}
                   KeyboardButtonProps={{
                     'aria-label': 'change date'
                   }}
