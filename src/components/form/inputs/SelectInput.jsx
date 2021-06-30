@@ -1,6 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { stringDoesNotExist } from '../../../utilities/stringOperations';
 
 const SelectInput = (
   {
@@ -18,7 +19,10 @@ const SelectInput = (
     valueIndex,
     titleIndex,
     skeleton,
-    excuseSkeleton
+    excuseSkeleton,
+    loading,
+    btnMethod,
+    btn
   }
 ) => {
   const optionsProp = options?.map((option) => (
@@ -82,19 +86,57 @@ const SelectInput = (
             <>
               <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
                 {label}
+                <>
+                  {
+                    loading === 'failed'
+                    && (
+                      <button className={btn?.class} type="button" onClick={btnMethod}>
+                        {!stringDoesNotExist(value) && btn?.text}
+                      </button>
+                    )
+                  }
+                </>
+                <>
+                  {
+                    loading === 'success' && (
+                      <button style={{ marginLeft: '16vw' }} className={btn?.class} type="button" onClick={btnMethod}>
+                        {btn?.success}
+                      </button>
+                    )
+                  }
+                </>
               </label>
-              <select
-                className={error?.length > 0 ? 'error-field' : ''}
-                name={name}
-                id={name}
-                value={value}
-                onChange={onChange}
-                onBlur={((e) => typeof onBlur === 'function'
-                && onBlur(e, validations))}
-                disabled={disabled}
-              >
-                {optionsProp}
-              </select>
+              {
+                (loading === 'pending')
+                  ? (
+                    <div className="dots_loader d-flex">
+                      <p className="mr-md-1 pb-md-1">{loading?.text || 'fetching your details'}</p>
+                      <div className="mt-md-1">
+                        <span />
+                        <span />
+                        <span />
+                        <span />
+                        <span />
+                        <span />
+                        <span />
+                      </div>
+                    </div>
+                  )
+                  : (
+                    <select
+                      className={error?.length > 0 ? 'error-field' : ''}
+                      name={name}
+                      id={name}
+                      value={value}
+                      onChange={onChange}
+                      onBlur={((e) => typeof onBlur === 'function'
+                        && onBlur(e, validations))}
+                      disabled={disabled}
+                    >
+                      {optionsProp}
+                    </select>
+                  )
+              }
               {
                 error?.length > 0
                   ? (

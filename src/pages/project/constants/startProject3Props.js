@@ -318,6 +318,12 @@ const formBuilderProjectsPreviewProps = (
         validations: {
           required: true
         },
+        loading,
+        btn: {
+          class: 'ml-18w bg-transparent text-wema',
+          text: 'retrieve categories'
+        },
+        btnMethod,
         error: errors?.categoryId,
         onBlur: handleBlur,
         onChange: handleChange
@@ -393,7 +399,7 @@ const formBuilderProjectsPreviewProps = (
     {
       kind: 'date',
       props: {
-        className: 'w-100 m-b-20 col-6',
+        className: 'w-100 m-b-20',
         variant: 'static',
         // orientation: 'landscape',
         disablePast: true,
@@ -413,7 +419,7 @@ const formBuilderProjectsPreviewProps = (
     {
       kind: 'date',
       props: {
-        className: 'w-100 m-b-20 col-6',
+        className: 'w-100 m-b-20',
         variant: 'static',
         minDate: new Date(),
         // orientation: 'landscape',

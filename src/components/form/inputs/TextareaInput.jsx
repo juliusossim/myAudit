@@ -1,6 +1,7 @@
 /* eslint-disable react/destructuring-assignment */
 import React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
+import TextField from '@material-ui/core/TextField';
 
 const TextareaInput = (
   {
@@ -18,10 +19,12 @@ const TextareaInput = (
     placeholder,
     validations,
     skeleton,
-    excuseSkeleton
+    excuseSkeleton,
+    helperText,
+    max
   }
 ) => (
-  <div className={`${error?.length > 0 ? `${className} col-12` : `${className}`} form-group`}>
+  <div className={`${error?.length > 0 ? `${className} col-12` : `${className}`}`}>
     {
       skeleton !== undefined && !skeleton && excuseSkeleton !== name
         ? (
@@ -62,23 +65,33 @@ const TextareaInput = (
         )
         : (
           <>
-            <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
-              {label}
-            </label>
-            <textarea
+            <TextField
+              style={{ width: 'inherit' }}
+              label={label}
+              multiline
               className={error?.length > 0 ? 'error-field' : ''}
               name={name}
               id={name}
               value={value}
               placeholder={placeholder}
               rows={rows}
+              cols={20}
+              variant="outlined"
               onChange={onChange}
               onBlur={((e) => typeof onBlur === 'function'
                 && onBlur(e, validations))}
               disabled={disabled}
               onKeyPress={onKeyPress}
               onKeyDown={onKeyDown}
+              inputProps={{
+                maxLength: validations.maxLength
+              }}
             />
+            <div className="float-right text-wema pr-1">
+              {
+                validations.maxLength - value.length
+              }
+            </div>
             {
               error?.length > 0
                 ? (

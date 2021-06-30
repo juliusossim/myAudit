@@ -38,14 +38,17 @@ img {
 .no-scroll {
   overflow: hidden;
 }
+.light-border {
+  border: 1px solid #C6C6C6;
+}
 .select-2{
   max-height: 25vh;
   overflow-y: auto;
 }
 .ontop{
   z-index: 10000;
-  top: 10vh;
-  left: 0;
+  top: 9vh;
+  left: 1rem;
   position: absolute !important;
 }
 .no-outline { outline: none!important;}
@@ -78,7 +81,10 @@ a.gray {
 a.gray:hover {
   text-decoration: underline;
 }
-
+.ui-pnotify_text, .ui-pnotify_container {
+  z-index: 10000000 !important;
+  background: #0c5460;
+}
 .col-1, .col-2, .col-3, .col-4,
 .col-5, .col-6, .col-half, .col-7, .col-8,
 .col-9, .col-10, .col-11, .col-12 {
@@ -398,6 +404,9 @@ a.gray:hover {
     color: white !important;
 
   }
+}
+.font-09 {
+  font-size: 0.6rem !important;
 }
 .sign-in {
   padding: .3vw;

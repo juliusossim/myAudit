@@ -1,3 +1,4 @@
+import PNotify from 'pnotify/dist/es/PNotify';
 /**
  *
  * @param slug the slug to convert to normal string
@@ -11,7 +12,8 @@ export const slugToString = (slug, dash = '_') => {
     result[i] = word.charAt(0).toUpperCase() + word.slice(1);
     i += 1;
   }
-  return result.join(' ');
+  const text = result.join(' ');
+  return text.replace('id', '');
 };
 /**
  *converts camelCase to strings
@@ -22,7 +24,7 @@ export const slugToString = (slug, dash = '_') => {
 export const camelToString = (camelCase) => camelCase
   .replace(/\W+/g, ' ')
   .replace(/([a-z\d])([A-Z])/g, '$1 $2')
-  .toLowerCase();
+  .toLowerCase().replace('id', '');
 
 /**
  * this converts normal strings to a slug
@@ -48,3 +50,12 @@ export const getOneName = (fullName, first = true) => {
 };
 
 export const stringDoesNotExist = (str) => (!str || str.length === 0 || /^\s*$/.test(str) || !str.trim());
+export const notifier = ({
+  type, title, text, stack
+}) => {
+  PNotify[type]({
+    title,
+    text,
+    color: 'red'
+  });
+};
