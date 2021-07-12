@@ -70,8 +70,9 @@ export const doLogout = () => {
 };
 export const getToken = () => localStorage.getItem('access_token');
 export const currentUser = localforage.getItem('user', (err, value) => {
+  let data = {};
   if (value?.status === 1) {
-    return value.data?.user;
+    data = value.data?.user;
   }
-  return false;
+  return data;
 });

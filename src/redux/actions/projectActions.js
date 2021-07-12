@@ -20,9 +20,9 @@ export const createProjectName = (payload) => {
     return res.then((response) => {
       if (response?.status === 200 || response?.status === 201) {
         dispatch(success(response?.data));
-      } else {
-        dispatch(failure(response?.errors ? response.errors : response));
-      }
+      } else if (response) {
+        dispatch(failure(response?.errors || response));
+      } else dispatch(failure('You are currently not connected to the internet!'));
     });
   };
 };
@@ -39,9 +39,9 @@ export const createProject = (payload) => {
     return res.then((response) => {
       if (response?.status === 200 || response?.status === 201) {
         dispatch(success(response?.data));
-      } else {
-        dispatch(failure(response?.errors ? response.errors : response));
-      }
+      } else if (response) {
+        dispatch(failure(response?.errors || response));
+      } else dispatch(failure('You are currently not connected to the internet!'));
     });
   };
 };
@@ -56,9 +56,9 @@ export const editProject = (payload) => {
   const dispatchActions = ({ response, dispatch }) => {
     if (response?.status === 200) {
       dispatch(success(response?.data));
-    } else {
-      dispatch(failure(response));
-    }
+    } else if (response) {
+      dispatch(failure(response?.errors || response));
+    } else dispatch(failure('You are currently not connected to the internet!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -73,9 +73,9 @@ export const submitProject = (payload) => {
   const dispatchActions = ({ response, dispatch }) => {
     if (response?.status === 200) {
       dispatch(success(response?.data));
-    } else {
-      dispatch(failure(response));
-    }
+    } else if (response) {
+      dispatch(failure(response?.errors || response));
+    } else dispatch(failure('You are currently not connected to the internet!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -90,9 +90,9 @@ export const projectByStatus = () => {
   const dispatchActions = ({ response, dispatch }) => {
     if (response?.status === 200) {
       dispatch(success(response?.data));
-    } else {
-      dispatch(failure(response));
-    }
+    } else if (response) {
+      dispatch(failure(response?.errors || response));
+    } else dispatch(failure('You are currently not connected to the internet!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -110,9 +110,9 @@ export const projectCategories = () => {
     return res.then((response) => {
       if (response?.status === 200 || response?.status === 201) {
         dispatch(success(response?.data));
-      } else {
-        dispatch(failure(response?.errors ? response.errors : response));
-      }
+      } else if (response) {
+        dispatch(failure(response?.errors || response));
+      } else dispatch(failure('You are currently not connected to the internet!'));
     });
   };
 };
@@ -138,9 +138,9 @@ export const uploadLogo = ({ payload, setProgress }) => {
     return res.then((response) => {
       if (response?.status === 200) {
         dispatch(success(response?.data));
-      } else {
-        dispatch(failure(response));
-      }
+      } else if (response) {
+        dispatch(failure(response?.errors || response));
+      } else dispatch(failure('You are currently not connected to the internet!'));
     });
   };
 };

@@ -16,8 +16,10 @@ const Header = () => {
     setMe(true);
   };
   useEffect(() => {
-    currentUser.then((result) => result?.status === 1
-      && setUser({ loggedIn: true, details: result?.data?.user }));
+    currentUser.then((result) => {
+      result?.id?.length
+      > 0 && setUser({ loggedIn: true, details: result });
+    });
   }, [currentUser]);
   return (
     <header>

@@ -262,10 +262,10 @@ const RegisterPage = () => {
       let item = {
         registered: false
       };
-      if (result?.status === 1) {
+      if (result?.status === 'Inactive') {
         item = {
           registered: true,
-          details: result.data?.user
+          details: result
         };
       }
       return setUser(item);
@@ -277,11 +277,11 @@ const RegisterPage = () => {
       let item = {
         registered: false
       };
-      if (result?.status === 1) {
+      if (result?.status === 'Inactive') {
         item = {
           registered: true,
           details: {
-            ...result.data?.user,
+            ...result,
             ...store.verifyIndividual.data?.data
           }
         };
@@ -298,7 +298,7 @@ const RegisterPage = () => {
       let item = {
         registered: false
       };
-      if (result?.status === 1) {
+      if (result?.status === 'Inactive') {
         let signatories = [
           'select signatories'
         ];
@@ -312,7 +312,7 @@ const RegisterPage = () => {
         item = {
           registered: true,
           details: {
-            ...result.data?.user,
+            ...result,
             ...store.verifyCorporate.data?.data,
             signatories
           }
@@ -331,12 +331,12 @@ const RegisterPage = () => {
         let item = {
           registered: false
         };
-        if (result?.status === 1) {
+        if (result?.status === 'Inactive') {
           item = {
             registered: true,
             details: {
-              ...result.data?.user,
-              token: result.data?.token,
+              ...result,
+              token: result.email_confirmation_token,
               otp: true
             }
           };
@@ -352,16 +352,17 @@ const RegisterPage = () => {
         let item = {
           registered: false
         };
-        if (result?.status === 1) {
+        if (result?.status === 'Inactive') {
           item = {
             registered: true,
             details: {
-              ...result.data?.user,
+              ...result,
               // otp: true,
               otpVerified: true
             }
           };
           const storageUser = result;
+          console.log(result);
           storageUser.data.user.otpVerified = true;
           localforage.setItem('user', storageUser);
         }
@@ -383,6 +384,13 @@ const RegisterPage = () => {
     return canContinue(errorsChecker(errors));
   },
   [user, formData, errors, store]);
+  useEffect(() => {
+    localforage.getItem('user', (err, value) => value).then((result) => {
+      if (result.status === 'Active' || result?.status === 1) {
+        window.location.assign('/');
+      }
+    });
+  }, []);
 
   return (
     <div className="content">
@@ -390,14 +398,14 @@ const RegisterPage = () => {
         <div className="login-form-container p-20">
           <h3 className={user?.details?.otpVerified ? 'd-none' : ''}>
             {
-              user.registered ? `Verify ${user.details.otp ? 'OTP' : 'Profile'}` : 'Create Profile'
+              user.registered ? `Verify ${user?.details?.otp ? 'OTP' : 'Profile'}` : 'Create Profile'
             }
           </h3>
-          <p className={user?.details?.otpVerified ? 'd-none' : ''}>{`To Start A Project, You Need To ${user.registered ? `Verify ${user.details.otp ? 'OTP...' : 'Profile...'}` : 'Create A Profile'}...`}</p>
+          <p className={user?.details?.otpVerified ? 'd-none' : ''}>{`To Start A Project, You Need To ${user.registered ? `Verify ${user?.details?.otp ? 'OTP...' : 'Profile...'}` : 'Create A Profile'}...`}</p>
           <hr />
           <div className="login-form pb-5h">
             {
-              user.registered && user.details?.role === 'User' && typeof user.details?.otp === 'undefined' && !user.details.otpVerified
+              user.registered && user?.details?.role === 'User' && typeof user?.details?.otp === 'undefined' && !user?.details?.otpVerified
               && (
                 <div>
                   <FormBuilder
@@ -596,7 +604,7 @@ const RegisterPage = () => {
               )
             }
             {
-              user.registered && !user.details.otpVerified
+              user.registered && !user?.details?.otpVerified
               && (
                 <div>
                   <button
