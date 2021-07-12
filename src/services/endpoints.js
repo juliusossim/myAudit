@@ -43,7 +43,13 @@ const paths = {
   PROJECT_CATEGORIES: `${servers.project}${projectEndpoints.projectCategories}`,
 
   // profile
-  ME: `${servers.auth}${profileEndpoints.me}`
+  ME: `${servers.auth}${profileEndpoints.me}`,
+  PERSONAL_ACCOUNTS: `${servers.auth}${profileEndpoints.personalAccounts}`,
+  CORPORATE_MANAGERS: `${servers.auth}${profileEndpoints.corporateManagers}`,
+  EDIT_PERSONAL_ACCOUNT: `${servers.auth}${profileEndpoints.editPersonalAccount}`,
+  CHANGE_MANAGER: `${servers.auth}${profileEndpoints.changeManager}`,
+  MY_PROJECTS: `${servers.project}${projectEndpoints.myProjects}`,
+  PROFILES: `${servers.auth}${profileEndpoints.getProfile}`
 
 };
 

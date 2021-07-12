@@ -457,6 +457,52 @@ main {
   line-height: 19.5px;
   color: #2E2E2E;
 }
+.w-96 {
+  width: 6vw !important;
+}
+.h-144 {
+  height: 9vh !important;
+}
+.h-250 {
+  height: 15.6rem;
+}
+.font-14 {
+  font-size:  0.9rem;
+}
+.line-height-21 {
+  line-height: 1.31rem;
+}
+.text-pale {
+  color: #777777;
+}
+.edit-picture-btn {
+  border: 1px solid #D2D2D2;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+.btn-edit {
+  background: rgba(235, 172, 11, 0.05);
+  border: 1px solid #EBAC0B;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(235, 172, 11, 0.02);
+  border-radius: 3px;
+}
+.btn-delete {
+  background: rgba(203, 26, 15, 0.05);
+  border: 1px solid #CB1A0F;
+  box-sizing: border-box;
+  box-shadow: 0px 2px 4px rgba(203, 26, 15, 0.02);
+  border-radius: 3px;
+}
+.text-edit {
+  color: #EBAC0B;
+}
+.text-delete {
+  color: #CB1A0F;
+}
+.no-bg {
+  background: transparent !important;
+}
 .login-form-container {
   width: 100%;
   background-color: #FFFFFF;
@@ -468,7 +514,9 @@ main {
     padding: 20px 70px;
   }
 }
-
+.border-radius-5 {
+  border-radius: 5px;
+}
 footer {
   margin-top: 50px;
   .top {

@@ -1,6 +1,7 @@
 export const createProjectName = 'Projects/createbyname';
 export const createProject = 'Projects';
 export const viewProjects = 'Projects';
+export const myProjects = 'Projects/me';
 export const viewProject = (id) => `Projects/${id}`;
 export const projectCategories = 'categories';
 export const deleteProject = (id) => `Projects/${id}`;

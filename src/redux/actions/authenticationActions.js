@@ -24,28 +24,29 @@ export const register = (payload) => {
 
     return res.then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        localforage.setItem('user', response.data);
-        localStorage.setItem('user', JSON.stringify(response.data.data.data.user));
+        localforage.setItem('user', response?.data?.data?.user);
+        localStorage.setItem('token', response?.data?.data?.user?.token);
+        localStorage.setItem('emailToken', response?.data?.data?.token);
+        localStorage.setItem('user', JSON.stringify(response?.data?.data?.user));
         dispatch(success(response?.data));
-      } else {
+      } else if (response) {
         dispatch(failure(response?.errors || response));
-      }
+      } else dispatch(failure('You are currently not connected to the internet!'));
     });
   };
 };
 
 export const verifyIndividual = (payload) => {
-  console.log(payload);
   const request = (req) => ({ type: constants.VERIFY_INDIVIDUAL_PENDING, request: req });
   const success = (response) => ({ type: constants.VERIFY_INDIVIDUAL_SUCCESS, response });
   const failure = (error) => ({ type: constants.VERIFY_INDIVIDUAL_FAILURE, error });
-  const connection = get({ endpoint: 'VERIFY_INDIVIDUAL', auth: false, pQuery: payload });
+  const connection = get({ endpoint: 'VERIFY_INDIVIDUAL', auth: true, pQuery: payload });
   const dispatchActions = ({ response, dispatch }) => {
     if (response?.status === 200) {
       dispatch(success(response?.data));
-    } else {
-      dispatch(failure(response));
-    }
+    } else if (response) {
+      dispatch(failure(response?.errors || response));
+    } else dispatch(failure('You are currently not connected to the internet!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -55,14 +56,14 @@ export const verifyCorporate = (payload) => {
   const success = (response) => ({ type: constants.VERIFY_CORPORATE_SUCCESS, response });
   const failure = (error) => ({ type: constants.VERIFY_CORPORATE_FAILURE, error });
   const connection = get({
-    endpoint: 'VERIFY_CORPORATE', auth: false, pQuery: payload
+    endpoint: 'VERIFY_CORPORATE', auth: true, pQuery: payload
   });
   const dispatchActions = ({ response, dispatch }) => {
     if (response?.status === 200) {
       dispatch(success(response?.data));
-    } else {
-      dispatch(failure(response));
-    }
+    } else if (response) {
+      dispatch(failure(response?.errors || response));
+    } else dispatch(failure('You are currently not connected to the internet!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -71,13 +72,15 @@ export const verifyAccountOtp = (payload) => {
   const request = (req) => ({ type: constants.VERIFY_ACCOUNT_OTP_PENDING, request: req });
   const success = (response) => ({ type: constants.VERIFY_ACCOUNT_OTP_SUCCESS, response });
   const failure = (error) => ({ type: constants.VERIFY_ACCOUNT_OTP_FAILURE, error });
-  const connection = post({ endpoint: 'VERIFY_ACCOUNT_OTP', auth: false, body: payload });
+  const connection = post({ endpoint: 'VERIFY_ACCOUNT_OTP', auth: true, body: payload });
   const dispatchActions = ({ response, dispatch }) => {
     if (response?.status === 200) {
+      localforage.setItem('user', response?.data?.data?.user);
+      localStorage.setItem('user', JSON.stringify(response?.data?.data?.user));
       dispatch(success(response?.data));
-    } else {
-      dispatch(failure(response));
-    }
+    } else if (response) {
+      dispatch(failure(response?.errors || response));
+    } else dispatch(failure('You are currently not connected to the internet!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -85,13 +88,13 @@ export const sendAccountOtp = (payload) => {
   const request = (req) => ({ type: constants.SEND_ACCOUNT_OTP_PENDING, request: req });
   const success = (response) => ({ type: constants.SEND_ACCOUNT_OTP_SUCCESS, response });
   const failure = (error) => ({ type: constants.SEND_ACCOUNT_OTP_FAILURE, error });
-  const connection = get({ endpoint: 'SEND_ACCOUNT_OTP', auth: false, pQuery: payload });
+  const connection = get({ endpoint: 'SEND_ACCOUNT_OTP', auth: true, pQuery: payload });
   const dispatchActions = ({ response, dispatch }) => {
     if (response?.status === 200) {
       dispatch(success(response?.data));
-    } else {
-      dispatch(failure(response));
-    }
+    } else if (response) {
+      dispatch(failure(response?.errors || response));
+    } else dispatch(failure('You are currently not connected to the internet!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -102,19 +105,19 @@ export const login = (payload) => {
   const failure = (error) => ({ type: constants.LOGIN_FAILURE, error });
 
   return async (dispatch) => {
-    const res = post({ endpoint: 'LOGIN', auth: false, body: payload });
+    const res = post({ endpoint: 'LOGIN', auth: true, body: payload });
 
     dispatch(request(res));
 
     return res.then((response) => {
       if (response?.status === 200) {
         dispatch(success(response?.data));
-        localforage.setItem('user', response.data);
-        localStorage.setItem('token', response.data.data.user.token);
-        localStorage.setItem('user', JSON.stringify(response.data.data.user));
-      } else {
-        dispatch(failure(response));
-      }
+        localforage.setItem('user', response?.data?.data?.user);
+        localStorage.setItem('token', response?.data?.data?.user?.token);
+        localStorage.setItem('user', JSON.stringify(response?.data?.data?.user));
+      } else if (response) {
+        dispatch(failure(response?.errors || response));
+      } else dispatch(failure('You are currently not connected to the internet!'));
     });
   };
 };
@@ -134,9 +137,9 @@ export const changePassword = (payload) => {
     return res.then((response) => {
       if (response?.status === 200) {
         dispatch(success(response?.data));
-      } else {
-        dispatch(failure(response?.errors));
-      }
+      } else if (response) {
+        dispatch(failure(response?.errors || response));
+      } else dispatch(failure('You are currently not connected to the internet!'));
     });
   };
 };
@@ -153,10 +156,9 @@ export const forgotPassword = (payload) => {
     return res.then((response) => {
       if (response?.status === 200) {
         dispatch(success(response?.data));
-      } else {
-        // console.log(response);
-        dispatch(failure(response));
-      }
+      } else if (response) {
+        dispatch(failure(response?.errors || response));
+      } else dispatch(failure('You are currently not connected to the internet!'));
     });
   };
 };
@@ -175,9 +177,9 @@ export const resetPassword = (payload) => {
     return res.then((response) => {
       if (response?.status === 200) {
         dispatch(success(response?.data));
-      } else {
-        dispatch(failure(response));
-      }
+      } else if (response) {
+        dispatch(failure(response?.errors || response));
+      } else dispatch(failure('You are currently not connected to the internet!'));
     });
   };
 };
@@ -199,9 +201,9 @@ export const uploadLogo = ({ payload, setProgress }) => {
     return res.then((response) => {
       if (response?.status === 200) {
         dispatch(success(response?.data));
-      } else {
-        dispatch(failure(response));
-      }
+      } else if (response) {
+        dispatch(failure(response?.errors || response));
+      } else dispatch(failure('You are currently not connected to the internet!'));
     });
   };
 };
