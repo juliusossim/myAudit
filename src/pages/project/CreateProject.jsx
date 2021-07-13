@@ -57,11 +57,11 @@ const CreateProject = () => {
     dispatch(submitProject(formData));
   };
   const handleSave = () => {
-    const targetAmount = formData.donationTarget.replace(/[^\d.]/g, '');
+    const targetAmount = () => formData.donationTarget.replace(/[^\d.]/g, '');
     const tem = {
       id: store?.project?.data?.data?.id,
       ...formData,
-      donationTarget: Number(targetAmount)
+      donationTarget: Number(targetAmount())
     };
     const category = store?.projectCategories?.data?.data !== undefined && findItem(store?.projectCategories?.data?.data, 'id', formData.categoryId);
     // const authUser = JSON.parse(localStorage.getItem('loginData'));
