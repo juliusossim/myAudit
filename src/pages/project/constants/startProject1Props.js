@@ -1,4 +1,4 @@
-import { projectType, profileType } from '../../../utilities/dummyData';
+import { projectType } from '../../../utilities/dummyData';
 import { validationPatterns } from '../../../utilities/validation';
 
 export const formBuilderProjectsStartProps = (
@@ -72,7 +72,7 @@ export const formBuilderProjectsStartProps = (
         skeleton,
         excuseSkeleton,
         value: formData?.projectType || '',
-        options: profileType,
+        options: projectType,
         validations: {
           required: true
         },

@@ -107,6 +107,8 @@ const Select2 = (
                   <TextInput
                     name={name}
                     value={selectedOption}
+                    readOnly
+                    onChange={() => console.log(value)}
                   />
                   <Card className={show ? 'ontop' : 'd-none'}>
                     <CardContent>
@@ -159,6 +161,8 @@ const Select2 = (
                 <TextInput
                   name={name}
                   value={selectedOption}
+                  readOnly
+                  onChange={() => console.log(value)}
                 />
                 <Card className={show ? 'ontop' : 'd-none'}>
                   <CardContent>

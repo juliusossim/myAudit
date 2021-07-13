@@ -45,6 +45,7 @@ const CreateProject = () => {
   const [created, setCreated] = useState(false);
   const [nameEdit, setNameEdit] = useState(false);
   const [lgas, setLgas] = useState([]);
+  const [init, setInit] = useState(true);
   const [skeleton, setSkeleton] = useState(false);
 
   const handleCreateProject = () => {
@@ -57,12 +58,13 @@ const CreateProject = () => {
     dispatch(submitProject(formData));
   };
   const handleSave = () => {
-    const targetAmount = () => formData.donationTarget.replace(/[^\d.]/g, '');
     const tem = {
-      id: store?.project?.data?.data?.id,
-      ...formData,
-      donationTarget: Number(targetAmount())
+      ...formData
     };
+    if (formData.donationTarget !== undefined) {
+      const targetAmount = () => formData.donationTarget.replace(/[^\d.]/g, '');
+      tem.donationTarget = Number(targetAmount());
+    }
     const category = store?.projectCategories?.data?.data !== undefined && findItem(store?.projectCategories?.data?.data, 'id', formData.categoryId);
     // const authUser = JSON.parse(localStorage.getItem('loginData'));
     if (stringDoesNotExist(tem.description)) {
@@ -79,7 +81,10 @@ const CreateProject = () => {
   };
   const handleClose = () => {
     setShow(false);
-    created && setAccordionTab(3);
+    // accordionTab === 3 && window.location.replace('/me');
+    if (created && accordionTab === 2) {
+      setAccordionTab(3);
+    }
   };
 
   const handleProgress = (val) => setProgress(val);
@@ -196,6 +201,11 @@ const CreateProject = () => {
   };
 
   useEffect(() => {
+    if (formData?.id === undefined && store.data?.data?.id === undefined) {
+      setInit(true);
+    } else if (formData?.id !== undefined || store.data?.data?.id !== undefined) {
+      setInit(false);
+    }
     setLgas(NaijaStates.lgas(formData.state)?.lgas);
   }, [formData]);
 
@@ -214,6 +224,11 @@ const CreateProject = () => {
       setShow(true);
     }
     if (store.project?.status === 'success' && store.project?.data?.data?.id !== undefined) {
+      setFormData({
+        ...store?.project?.data?.data,
+        id: store?.project?.data?.data?.id,
+        ...formData
+      });
       setSkeleton(true);
     } else {
       setSkeleton(false);
@@ -310,7 +325,7 @@ const CreateProject = () => {
             && (
               <div>
                 {
-                  store.project?.data?.data?.id === undefined
+                  init
                     ? (
                       <FormBuilder
                         formItems={
@@ -322,8 +337,6 @@ const CreateProject = () => {
                               removeItem: removeAtIndex,
                               setFormData: cancelUpload,
                               progress,
-                              skeleton,
-                              excuseSkeleton: 'title',
                               handleBlur,
                               handleChange,
                               handleDateChange,
@@ -346,8 +359,6 @@ const CreateProject = () => {
                               removeItem: removeAtIndex,
                               setFormData: cancelUpload,
                               progress,
-                              skeleton,
-                              excuseSkeleton: 'title',
                               handleBlur,
                               handleChange,
                               handleDateChange,

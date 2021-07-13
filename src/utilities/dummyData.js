@@ -11,18 +11,21 @@ export const projectType = [
   'select project type',
   {
     id: 1,
-    type: 'corporate',
-    desc: 'corporate project'
+    type: 'business',
+    desc: 'corporate project',
+    value: 1
   },
-  // {
-  //   id: 2,
-  //   type: 'ngo',
-  //   desc: 'organisational project'
-  // },
+  {
+    id: 2,
+    type: 'ngo',
+    desc: 'organisational project',
+    value: 2
+  },
   {
     id: 3,
-    type: 'individual',
-    desc: 'organisational project'
+    type: 'religious organisation',
+    desc: 'organisational project',
+    value: 3
   }
 ];
 export const profileType = [
