@@ -57,7 +57,12 @@ const CreateProject = () => {
     dispatch(submitProject(formData));
   };
   const handleSave = () => {
-    const tem = { id: store?.project?.data?.data?.id, ...formData };
+    const targetAmount = formData.donationTarget.replace(/[^\d.]/g, '');
+    const tem = {
+      id: store?.project?.data?.data?.id,
+      ...formData,
+      donationTarget: Number(targetAmount)
+    };
     const category = store?.projectCategories?.data?.data !== undefined && findItem(store?.projectCategories?.data?.data, 'id', formData.categoryId);
     // const authUser = JSON.parse(localStorage.getItem('loginData'));
     if (stringDoesNotExist(tem.description)) {
@@ -76,6 +81,7 @@ const CreateProject = () => {
     setShow(false);
     created && setAccordionTab(3);
   };
+
   const handleProgress = (val) => setProgress(val);
   const handleSaveProgress = () => {
     if (!stringDoesNotExist(formData.title)) {

@@ -19,9 +19,6 @@ const fetchBackend = async (
 ) => {
   const headers = {
     'Content-Type': multipart ? 'multipart/form-data' : 'application/json'
-    // Accept: 'multipart/form-data',
-    // 'Access-Control-Allow-Origin': 'http://localhost:3000/'
-    // 'Content-Type': 'application/json'
   };
   // console.log(headers);
 
