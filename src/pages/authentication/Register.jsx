@@ -386,7 +386,7 @@ const RegisterPage = () => {
   [user, formData, errors, store]);
   useEffect(() => {
     localforage.getItem('user', (err, value) => value).then((result) => {
-      if (result.status === 'Active' || result?.status === 1) {
+      if (result?.status === 'Active' || result?.status === 1) {
         window.location.assign('/');
       }
     });

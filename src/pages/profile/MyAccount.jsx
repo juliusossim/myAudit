@@ -62,63 +62,88 @@ const MyAccount = () => {
   }, [store.status]);
   return (
     <div>
-      {
-        store.status === 'pending'
-          ? <div>store.status</div>
-          : (
-            <div className="w-600 margin-center m-t-40 ">
-              <div className="login-form-container p-20">
-                <div className="login-form pb-5h">
-                  <h3 className="bold text-dark">
-                    My Profile
-                  </h3>
-                  <p>
-                    Click Edit Profile below to edit your profile
-                  </p>
-                  <div className="d-flex">
-                    <div className="">
-                      <Avatar
-                        className="w-96 h-144"
-                      >
-                        <img src={formData?.profile_pic_url || User} alt="user Thumbnail" />
-                      </Avatar>
+
+      <div className="w-600 margin-center m-t-40 ">
+        <div className="login-form-container p-20">
+          {
+            store.status === 'pending'
+                  && (
+                    <div className="dial-loader text-wema left-5">
+                      <p className="ping">Pulling profile info...</p>
                     </div>
-                    <div className="col-md-4 center-center mt-5">
-                      <button type="button" className="no-bg edit-picture-btn bg-gray font-14 line-height-21 text-pale">
-                        Change Profile
-                      </button>
+                  )
+          }
+          {
+            store.status === 'success'
+                  && (
+                    (
+                      <div className="login-form pb-5h">
+                        <h3 className="bold text-dark">
+                          My Profile
+                        </h3>
+                        <p>
+                          Click Edit Profile below to edit your profile
+                        </p>
+                        <div className="d-flex">
+                          <div className="">
+                            <Avatar
+                              className="w-96 h-144"
+                            >
+                              <img src={formData?.profile_pic_url || User} alt="user Thumbnail" />
+                            </Avatar>
+                          </div>
+                          <div className="col-md-4 center-center mt-5">
+                            <button type="button" className="no-bg edit-picture-btn bg-gray font-14 line-height-21 text-pale">
+                              Change Profile
+                            </button>
+                          </div>
+                        </div>
+                        <FormBuilder
+                          formItems={
+                            formBuilderProps(
+                              {
+                                formData,
+                                // handleBlur,
+                                handleChange,
+                                errors
+                                // btnMethod: verifyAccount,
+                                // loading: store.verifyIndividual.status
+                              }
+                            )
+                          }
+                        />
+                        <div className="float-right">
+                          <button
+                            className="w-100 btn  border-wema hover-wema mr-md-1 btn-small"
+                            type="button"
+                            // disabled={!store?.project?.data?.data?.id?.length > 0}
+                            // onClick={handleSaveProgress}
+                          >
+                            Edit Profile
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  )
+          }
+          {
+            store.status === 'failed'
+            && (
+              (
+                <div className="w-600 margin-center m-t-40 ">
+                  <div className="login-form-container p-20">
+                    <div className="login-form pb-5h">
+                      <h3 className="bold text-dark">
+                        we could not load your data
+                      </h3>
                     </div>
-                  </div>
-                  <FormBuilder
-                    formItems={
-                      formBuilderProps(
-                        {
-                          formData,
-                          // handleBlur,
-                          handleChange,
-                          errors
-                        // btnMethod: verifyAccount,
-                        // loading: store.verifyIndividual.status
-                        }
-                      )
-                    }
-                  />
-                  <div className="float-right">
-                    <button
-                      className="w-100 btn  border-wema hover-wema mr-md-1 btn-small"
-                      type="button"
-                    // disabled={!store?.project?.data?.data?.id?.length > 0}
-                    // onClick={handleSaveProgress}
-                    >
-                      Edit Profile
-                    </button>
                   </div>
                 </div>
-              </div>
-            </div>
-          )
-
-      }
+              )
+            )
+          }
+        </div>
+      </div>
     </div>
   );
 };

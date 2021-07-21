@@ -367,6 +367,11 @@ a.gray:hover {
   position: relative;
   left: 5vw;
 }
+.left-25{
+  position: relative;
+  left: 25vw;
+}
+
 /* COMMON */
 .content {
   max-width: 1300px;
@@ -407,6 +412,9 @@ a.gray:hover {
 }
 .font-09 {
   font-size: 0.6rem !important;
+}
+.font-1-5 {
+  font-size: 1.5rem !important;
 }
 .sign-in {
   padding: .3vw;

@@ -8,6 +8,26 @@ const initialState = {
   profile: {
     data: {},
     status: 'initial'
+  },
+  corporateManagers: {
+    data: {},
+    status: 'initial'
+  },
+  personalAccounts: {
+    data: {},
+    status: 'initial'
+  },
+  editPersonalAccount: {
+    data: {},
+    status: 'initial'
+  },
+  changeManager: {
+    data: {},
+    status: 'initial'
+  },
+  notification: {
+    data: {},
+    status: 'initial'
   }
 };
 
@@ -190,6 +210,32 @@ const profileReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       projects: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.NOTIFICATIONS_PENDING:
+    return {
+      ...state,
+      notifications: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.NOTIFICATIONS_SUCCESS:
+    return {
+      ...state,
+      notifications: {
+        ...state.notifications,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.NOTIFICATIONS_FAILURE:
+    return {
+      ...state,
+      notifications: {
         data: error || {},
         status: 'failed'
       }

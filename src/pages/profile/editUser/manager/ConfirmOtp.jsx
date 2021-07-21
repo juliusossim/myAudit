@@ -2,11 +2,11 @@ import React, { useState } from 'react';
 import localforage from 'localforage';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
-import { myProfile } from '../../redux/actions/profileActions';
-import FormBuilder from '../../components/form/builders/form';
-import formBuilderProps from './constants/withdrawalDetails';
-import TextInput from '../../components/form/inputs/TextInput';
-import Modal from '../../components/microComponents/modal';
+import { myProfile } from '../../../../redux/actions/profileActions';
+import FormBuilder from '../../../../components/form/builders/form';
+import formBuilderProps from '../../constants/withdrawalDetails';
+import TextInput from '../../../../components/form/inputs/TextInput';
+import Modal from '../../../../components/microComponents/modal';
 
 const user = { ...JSON.parse(localStorage.getItem('user')) };
 

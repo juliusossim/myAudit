@@ -47,7 +47,8 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         loading,
         skeleton,
         excuseSkeleton,
-        variant
+        variant,
+        stringValue
       } = props;
       switch (kind) {
       case 'select':
@@ -72,6 +73,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             skeleton={skeleton}
             excuseSkeleton={excuseSkeleton}
             btnMethod={btnMethod}
+            stringValue={stringValue}
           />
         );
       case 'select2':

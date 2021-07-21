@@ -46,13 +46,13 @@ export const personalAccounts = () => {
   };
 };
 
-export const corporateManagers = (payload) => {
+export const corporateManagers = () => {
   const request = (req) => ({ type: constants.CORPORATE_MANAGERS_PENDING, request: req });
   const success = (response) => ({ type: constants.CORPORATE_MANAGERS_SUCCESS, response });
   const failure = (error) => ({ type: constants.CORPORATE_MANAGERS_FAILURE, error });
 
   return async (dispatch) => {
-    const res = post({ endpoint: 'CORPORATE_MANAGERS', auth: true });
+    const res = get({ endpoint: 'CORPORATE_MANAGERS', auth: true });
 
     dispatch(request(res));
 
@@ -122,6 +122,26 @@ export const profiles = () => {
 
   return async (dispatch) => {
     const res = get({ endpoint: 'PROFILES' });
+
+    dispatch(request(res));
+
+    return res.then((response) => {
+      if (response?.status === 200 || response?.status === 201) {
+        dispatch(success(response?.data));
+      } else if (response) {
+        dispatch(failure(response?.errors || response));
+      } else dispatch(failure('You are currently not connected to the internet!'));
+    });
+  };
+};
+
+export const notifications = () => {
+  const request = (req) => ({ type: constants.NOTIFICATIONS_PENDING, request: req });
+  const success = (response) => ({ type: constants.NOTIFICATIONS_SUCCESS, response });
+  const failure = (error) => ({ type: constants.NOTIFICATIONS_FAILURE, error });
+
+  return async (dispatch) => {
+    const res = get({ endpoint: 'NOTIFICATIONS', auth: true });
 
     dispatch(request(res));
 

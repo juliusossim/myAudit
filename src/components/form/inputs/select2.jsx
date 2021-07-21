@@ -36,13 +36,15 @@ const Select2 = (
     setSearchterm(e.target.value);
   };
   const handleSelect = (opt) => {
-    setSelectedOption(opt);
+    setSelectedOption(opt[optionIndex]);
     setSearchterm('');
     setEdit(false);
+    console.log(opt);
     onChange({
       target: {
         name,
-        value: opt
+        value: opt[optionIndex],
+        apiValue: opt[valueIndex]
       }
     });
   };
@@ -59,7 +61,7 @@ const Select2 = (
           key={option[optionIndex]}
           title={option[titleIndex]}
         >
-          <Button className="font-09 text-wema" onClick={() => handleSelect(option[optionIndex])}>
+          <Button className="font-09 text-wema" onClick={() => handleSelect(option)}>
             {
               selectedOption === option[optionIndex]
               && <IoCheckmark />

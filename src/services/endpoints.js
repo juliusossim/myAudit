@@ -48,6 +48,7 @@ const paths = {
   CORPORATE_MANAGERS: `${servers.auth}${profileEndpoints.corporateManagers}`,
   EDIT_PERSONAL_ACCOUNT: `${servers.auth}${profileEndpoints.editPersonalAccount}`,
   CHANGE_MANAGER: `${servers.auth}${profileEndpoints.changeManager}`,
+  NOTIFICATIONS: `${servers.project}${profileEndpoints.notifications}`,
   MY_PROJECTS: `${servers.project}${projectEndpoints.myProjects}`,
   PROFILES: `${servers.auth}${profileEndpoints.getProfile}`
 

@@ -33,7 +33,7 @@ const CreateProject = () => {
   const store = useSelector((state) => state.project);
   /* state */
   const [formData, setFormData] = useState({
-    file: [], projectType: 10, categoryId: 10, state: 'lagos', startDate: addDays(Moment.now(), 5), endDate: new Date()
+    file: [], projectType: 10, categoryId: 10, location: 'lagos', startDate: addDays(Moment.now(), 5), endDate: new Date()
   });
   const [progress, setProgress] = useState(0);
   const [accordionTab, setAccordionTab] = useState(1);
@@ -45,6 +45,7 @@ const CreateProject = () => {
   const [created, setCreated] = useState(false);
   const [nameEdit, setNameEdit] = useState(false);
   const [lgas, setLgas] = useState([]);
+  const [states, setStates] = useState([]);
   const [init, setInit] = useState(true);
   const [skeleton, setSkeleton] = useState(false);
 
@@ -55,13 +56,20 @@ const CreateProject = () => {
     // dispatch(createProject(formData));
   };
   const handleSubmitProject = () => {
-    dispatch(submitProject(formData));
+    const tem = {
+      ...formData
+    };
+    if (formData.donationTarget !== undefined && typeof formData.donationTarget === 'string') {
+      const targetAmount = () => formData.donationTarget.replace(/[^\d.]/g, '');
+      tem.donationTarget = Number(targetAmount());
+    }
+    dispatch(submitProject(tem));
   };
   const handleSave = () => {
     const tem = {
       ...formData
     };
-    if (formData.donationTarget !== undefined) {
+    if (formData.donationTarget !== undefined && typeof formData.donationTarget === 'string') {
       const targetAmount = () => formData.donationTarget.replace(/[^\d.]/g, '');
       tem.donationTarget = Number(targetAmount());
     }
@@ -73,6 +81,7 @@ const CreateProject = () => {
   I am appealing to the general public to join in raising funds to support our ${category?.name || formData.title}
   `;
     }
+    console.log(tem);
     setFormData(tem);
     dispatch(editProject(tem));
   };
@@ -91,7 +100,7 @@ const CreateProject = () => {
   const handleSaveProgress = () => {
     if (!stringDoesNotExist(formData.title)) {
       setNameEdit(true);
-      if (store?.project?.data?.data?.id === undefined) {
+      if (init) {
         setCreated(false);
         dispatch(createProjectName(formData));
         setFormData({ ...formData, summary: `${formData.title} is a project requesting public funding to...` });
@@ -100,9 +109,21 @@ const CreateProject = () => {
       }
     }
   };
-
+  const replacedName = (name, apiValue) => {
+    if (apiValue) {
+      if (name === 'city') {
+        return ({ lga: apiValue });
+      }
+      if (name === 'location') {
+        return ({ state: apiValue });
+      }
+    }
+    return {};
+  };
   const handleChange = (e) => {
-    const { name, value, files } = e?.target;
+    const {
+      name, value, files, apiValue
+    } = e?.target;
     handleNameEdit(name);
     if (name === 'media' && formData.file.indexOf(files[0] === -1)) {
       const fileSize = (files[0].size / 1024 / 1024).toFixed(3);
@@ -132,6 +153,7 @@ const CreateProject = () => {
       }
       setFormData((state) => ({
         ...state,
+        ...replacedName(name, apiValue),
         [name]: val
       }));
     }
@@ -200,13 +222,24 @@ const CreateProject = () => {
     return strings;
   };
 
+  const mapIndex = (arr) => arr.map((ar, index) => ({
+    value: index + 1,
+    name: ar
+  }));
+
+  const mapAllStates = (allStates) => allStates.map((item, index) => ({
+    [index + 1]: item.lgas
+  }));
+
   useEffect(() => {
     if (formData?.id === undefined && store.data?.data?.id === undefined) {
       setInit(true);
     } else if (formData?.id !== undefined || store.data?.data?.id !== undefined) {
       setInit(false);
     }
-    setLgas(NaijaStates.lgas(formData.state)?.lgas);
+    setLgas(mapIndex(NaijaStates.lgas(formData.location)?.lgas));
+    setStates(mapIndex(NaijaStates.states()));
+    console.log(JSON.stringify(mapAllStates(NaijaStates.all())));
   }, [formData]);
 
   useEffect(() => {
@@ -381,7 +414,7 @@ const CreateProject = () => {
                    formBuilderProjectsStart2Props(
                      {
                        formData,
-                       states: NaijaStates.states(),
+                       states,
                        lgas,
                        skeleton: store?.project?.data?.data?.id,
                        excuseSkeleton: 'title',
@@ -452,7 +485,7 @@ const CreateProject = () => {
                                   type="button"
                                   disabled={!(formData.summary?.length > 0
                                     && formData.donationTarget
-                                    && store?.project?.data?.data?.id?.length > 0)}
+                                    && formData?.id?.length > 0)}
                                   onClick={() => setAccordionTab(2)}
                                 >
                                   Continue
