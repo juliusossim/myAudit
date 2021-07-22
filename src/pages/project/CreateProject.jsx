@@ -433,6 +433,8 @@ const CreateProject = () => {
                   formItems={
                     formBuilderProjectsPreviewProps({
                       formData,
+                      states,
+                      lgas,
                       categories: store.projectCategories.data.data,
                       multiple: true,
                       removeItem: removeAtIndex,

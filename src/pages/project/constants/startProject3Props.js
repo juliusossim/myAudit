@@ -1,4 +1,3 @@
-import NaijaStates from 'naija-state-local-government';
 import { validationPatterns } from '../../../utilities/validation';
 import { profileType } from '../../../utilities/dummyData';
 
@@ -8,6 +7,8 @@ const formBuilderProjectsPreviewProps = (
     categories,
     loading,
     btnMethod,
+    states,
+    lgas,
     multiple,
     removeItem,
     setFormData,
@@ -136,9 +137,10 @@ const formBuilderProjectsPreviewProps = (
         className: 'w-100 m-b-20 col-6',
         name: 'state',
         label: 'State',
-        options: NaijaStates.states(),
+        options: states,
         optionIndex: 'name',
-        value: formData?.state || '',
+        valueIndex: 'value',
+        value: formData?.location || '',
         validations: {
           required: false
         },
@@ -153,15 +155,15 @@ const formBuilderProjectsPreviewProps = (
         className: 'w-100 m-b-20 col-6',
         name: 'city',
         label: 'LGA',
-        options: NaijaStates.lgas(formData.state).lgas,
+        options: lgas,
         optionIndex: 'name',
-        valueIndex: 'id',
+        valueIndex: 'value',
         titleIndex: 'description',
         value: formData.city || '',
         validations: {
           required: true
         },
-        error: errors?.categoryId,
+        error: errors?.lga,
         onBlur: handleBlur,
         onChange: handleChange
       }
@@ -366,9 +368,10 @@ const formBuilderProjectsPreviewProps = (
         className: 'w-100 m-b-20 col-6',
         name: 'state',
         label: 'State',
-        options: NaijaStates.states(),
+        options: states,
         optionIndex: 'name',
-        value: formData?.state || '',
+        valueIndex: 'value',
+        value: formData?.location || '',
         validations: {
           required: false
         },
@@ -383,15 +386,14 @@ const formBuilderProjectsPreviewProps = (
         className: 'w-100 m-b-20 col-6',
         name: 'city',
         label: 'LGA',
-        options: NaijaStates.lgas(formData.state).lgas,
+        options: lgas,
         optionIndex: 'name',
-        valueIndex: 'id',
-        titleIndex: 'description',
+        valueIndex: 'value',
         value: formData.city || '',
         validations: {
           required: true
         },
-        error: errors?.categoryId,
+        error: errors?.city,
         onBlur: handleBlur,
         onChange: handleChange
       }
