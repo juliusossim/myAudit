@@ -130,14 +130,10 @@ const MyAccount = () => {
             store.status === 'failed'
             && (
               (
-                <div className="w-600 margin-center m-t-40 ">
-                  <div className="login-form-container p-20">
-                    <div className="login-form pb-5h">
-                      <h3 className="bold text-dark">
-                        we could not load your data
-                      </h3>
-                    </div>
-                  </div>
+                <div className="login-form pb-5h">
+                  <h3 className="bold text-dark">
+                    we could not load your data
+                  </h3>
                 </div>
               )
             )

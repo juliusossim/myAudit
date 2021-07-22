@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import localforage from 'localforage';
+import isThisWeek from 'date-fns/isThisWeek';
+import isThisMonth from 'date-fns/isThisMonth';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
 import Card from '@material-ui/core/Card';
@@ -11,53 +12,102 @@ const user = { ...JSON.parse(localStorage.getItem('user')) };
 
 const Notifications = () => {
   const dispatch = useDispatch();
+  const store = useSelector((state) => state.profile.notifications);
   const [formData] = useState({ ...user, account_name: `${user.first_name || ''} ${user.last_name || ''}` });
   const [show, setShow] = useState(false);
+  const [month, setMonth] = useState([]);
+  const [week, setWeek] = useState([]);
   const handleShow = () => setShow(!show);
+
+  const mapToView = (items) => items.length > 0 && items.map((item) => (
+    <Card className="mb-2">
+      <CardContent>
+        <div className="d-flex">
+          <div>
+            <RiNotification4Line className="text-wema font-1-5" />
+          </div>
+          <div className="pl-1">
+            {item.message}
+          </div>
+          <small>
+            {item.reason}
+          </small>
+        </div>
+      </CardContent>
+    </Card>
+  ));
 
   useEffect(() => {
     dispatch(notifications());
   }, []);
+
+  useEffect(() => {
+    if (store.status === 'success') {
+      const weekData = store.data?.data?.filter((item) => isThisWeek(new Date(item.dateCreated)));
+      const monthData = store.data?.data?.filter((item) => isThisMonth(new Date(item.dateCreated))
+        && !isThisWeek(new Date(item.dateCreated)));
+      setMonth(monthData);
+      setWeek(weekData);
+    }
+  }, [store.status]);
+
   return (
     <div className="w-600 margin-center m-t-40 ">
       <div className="login-form-container p-20">
-        <h3 className="bold text-dark">
-          Notifications
-        </h3>
-        <div className="py-3">
-          <h5 className="bold text-dark">
-            this week
-          </h5>
-          <Card>
-            <CardContent>
-              <div className="d-flex">
-                <div>
-                  <RiNotification4Line className="text-wema font-1-5" />
-                </div>
-                <div className="pl-1">
-                  your profile has been approved and now live
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-        <div className="py-3">
-          <h5 className="bold text-dark">
-            this month
-          </h5>
-          <Card>
-            <CardContent>
-              <div className="d-flex">
-                <div>
-                  <RiNotification4Line className="text-wema font-1-5" />
-                </div>
-                <div className="pl-1">
-                  your profile has been approved and now live
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
+        {
+          store.status === 'pending'
+          && (
+            <div className="dial-loader text-wema left-5">
+              <p className="ping">Pulling notifications...</p>
+            </div>
+          )
+        }
+        {
+          store.status === 'success'
+          && (
+            <div className="login-form pb-5h">
+              <h3 className="bold text-dark mt-2">
+                Notifications
+              </h3>
+              {
+                week.length > 0
+                && (
+                  <div className="py-3 ">
+                    <h5 className="bold text-dark mb-2">
+                      this week
+                    </h5>
+                    {
+                      mapToView(week)
+                    }
+                  </div>
+                )
+              }
+              {
+                month.length > 0
+                && (
+                  <div className="py-3">
+                    <h5 className="bold text-dark mb-2">
+                      this month
+                    </h5>
+                    {
+                      mapToView(month)
+                    }
+                  </div>
+                )
+              }
+            </div>
+          )
+        }
+        {
+          store.status === 'Failed'
+          && (
+            <div className="login-form pb-5h">
+              <h3 className="bold text-dark">
+                we could not load your data
+              </h3>
+            </div>
+          )
+        }
       </div>
     </div>
 

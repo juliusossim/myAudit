@@ -363,7 +363,7 @@ const RegisterPage = () => {
           };
           const storageUser = result;
           console.log(result);
-          storageUser.data.user.otpVerified = true;
+          storageUser.otpVerified = true;
           localforage.setItem('user', storageUser);
         }
         // setDisableOtp(!item.registered);

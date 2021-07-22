@@ -25,7 +25,7 @@ const initialState = {
     data: {},
     status: 'initial'
   },
-  notification: {
+  notifications: {
     data: {},
     status: 'initial'
   }
