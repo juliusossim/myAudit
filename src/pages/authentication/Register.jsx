@@ -518,7 +518,7 @@ const RegisterPage = () => {
                 <div>
                   <h1>Your Profile is Ready</h1>
                   <div className="text-center w-50 btn mr-md-3">
-                    <Link to="/project" className="text-white btn-small">
+                    <Link to="/create-project" className="text-white btn-small">
                       Start A Project
                     </Link>
                   </div>
