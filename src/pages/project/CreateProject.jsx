@@ -112,10 +112,10 @@ const CreateProject = () => {
   const replacedName = (name, apiValue) => {
     if (apiValue) {
       if (name === 'city') {
-        return ({ lga: apiValue });
+        return ({ lgaId: apiValue });
       }
       if (name === 'location') {
-        return ({ state: apiValue });
+        return ({ stateId: apiValue });
       }
     }
     return {};
@@ -227,9 +227,9 @@ const CreateProject = () => {
     name: ar
   }));
 
-  const mapAllStates = (allStates) => allStates.map((item, index) => ({
-    [index + 1]: item.lgas
-  }));
+  // const mapAllStates = (allStates) => allStates.map((item, index) => ({
+  //   [index + 1]: item.lgas
+  // }));
 
   useEffect(() => {
     if (formData?.id === undefined && store.data?.data?.id === undefined) {
@@ -239,7 +239,7 @@ const CreateProject = () => {
     }
     setLgas(mapIndex(NaijaStates.lgas(formData.location)?.lgas));
     setStates(mapIndex(NaijaStates.states()));
-    console.log(JSON.stringify(mapAllStates(NaijaStates.all())));
+    // console.log(JSON.stringify(mapAllStates(NaijaStates.all())));
   }, [formData]);
 
   useEffect(() => {

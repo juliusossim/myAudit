@@ -39,7 +39,6 @@ const Select2 = (
     setSelectedOption(opt[optionIndex]);
     setSearchterm('');
     setEdit(false);
-    console.log(opt);
     onChange({
       target: {
         name,
