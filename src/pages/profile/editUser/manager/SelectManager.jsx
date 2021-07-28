@@ -18,6 +18,7 @@ import {
 } from '../../../../redux/actions/authenticationActions';
 import formBuilderCorporateManagerProps from './constants/managers';
 import formBuilderOtp from '../../../authentication/constants/registration/otp';
+import Loader from '../../../../components/microComponents/loader';
 
 const Index = ({ handleClose, id }) => {
   /* redux */
@@ -90,7 +91,7 @@ const Index = ({ handleClose, id }) => {
       <div className="login-form-container p-20">
         {
           store?.profile?.corporateManagers?.status === 'pending'
-          && (<div className="dial-loader text-wema left-5"><p className="ping">Loading</p></div>)
+          && <Loader />
         }
         {
           store?.profile?.corporateManagers?.status === 'success'
@@ -115,11 +116,7 @@ const Index = ({ handleClose, id }) => {
               <div>
                 {
                   store?.profile?.corporateManagers?.status === 'pending'
-                && (
-                  <div className="dial-loader text-wema left-5">
-                    <p className="ping">Loading</p>
-                  </div>
-                )
+                && <Loader />
                 }
                 {
                   store?.profile?.corporateManagers?.status === 'failed'
@@ -127,20 +124,7 @@ const Index = ({ handleClose, id }) => {
                 }
                 {
                   store?.auth.sendAccountOtp?.status === 'pending'
-                  && (
-                    <div className="dots_loader d-flex">
-                      <p className="mr-md-1 pb-md-1"> sending OTP</p>
-                      <div className="mt-md-1">
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                      </div>
-                    </div>
-                  )
+                  && <Loader />
                 }
                 {
                   store?.auth.sendAccountOtp?.status === 'failed'
@@ -176,20 +160,7 @@ const Index = ({ handleClose, id }) => {
               <div>
                 {
                   store.verifyAccountOtp?.status === 'pending'
-                  && (
-                    <div className="dots_loader d-flex">
-                      <p className="mr-md-1 pb-md-1"> verifying token</p>
-                      <div className="mt-md-1">
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                      </div>
-                    </div>
-                  )
+                  && <Loader />
                 }
                 {
                   store.verifyAccountOtp?.status === 'failed'
