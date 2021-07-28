@@ -6,18 +6,17 @@ import _ from 'lodash';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import { RiNotification4Line } from 'react-icons/all';
+import Badge from '@material-ui/core/Badge';
 import { notifications } from '../../redux/actions/profileActions';
+import Loader from '../../components/microComponents/loader';
 
 const user = { ...JSON.parse(localStorage.getItem('user')) };
 
 const Notifications = () => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state.profile.notifications);
-  const [formData] = useState({ ...user, account_name: `${user.first_name || ''} ${user.last_name || ''}` });
-  const [show, setShow] = useState(false);
   const [month, setMonth] = useState([]);
   const [week, setWeek] = useState([]);
-  const handleShow = () => setShow(!show);
 
   const mapToView = (items) => items.length > 0 && items.map((item) => (
     <Card className="mb-2">
@@ -57,9 +56,7 @@ const Notifications = () => {
         {
           store.status === 'pending'
           && (
-            <div className="dial-loader text-wema left-5">
-              <p className="ping">Pulling notifications...</p>
-            </div>
+            <Loader />
           )
         }
         {
@@ -67,14 +64,21 @@ const Notifications = () => {
           && (
             <div className="login-form pb-5h">
               <h3 className="bold text-dark mt-2">
-                Notifications
+                <Badge badgeContent={store?.data?.data?.length} color="secondary">
+                  <span className=" border-bottom">
+                    Notifications
+                  </span>
+                </Badge>
               </h3>
               {
                 week.length > 0
                 && (
                   <div className="py-3 ">
                     <h5 className="bold text-dark mb-2">
-                      this week
+                      <Badge badgeContent={week.length} color="secondary">
+                        this week
+                      </Badge>
+
                     </h5>
                     {
                       mapToView(week)
@@ -87,7 +91,10 @@ const Notifications = () => {
                 && (
                   <div className="py-3">
                     <h5 className="bold text-dark mb-2">
-                      this month
+                      <Badge badgeContent={month.length} color="secondary">
+                        this month
+                      </Badge>
+
                     </h5>
                     {
                       mapToView(month)

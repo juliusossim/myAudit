@@ -13,7 +13,6 @@ const GeneralPage = () => {
      */
     window.location.replace('/register');
   };
-
   // const carouselSlides = [
   //   {
   //     content: (

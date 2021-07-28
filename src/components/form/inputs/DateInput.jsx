@@ -71,7 +71,7 @@ const DateInput = (props) => {
                   value={props.value}
                   helperText={show && props.helperText}
                   onChange={handleChange}
-                  minDate={new Date(props.value)}
+                  minDate={new Date(props.minDate)}
                   KeyboardButtonProps={{
                     'aria-label': 'change date'
                   }}

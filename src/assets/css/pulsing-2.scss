@@ -1,10 +1,9 @@
 .loader {
-  width:100px;
-  height:100px;
-  position:relative;
-  top: 20vh;
-  left: 45vw;
-  --s:15px;
+  width: 100px;
+  height: 100px;
+  position: relative;
+  margin: auto;
+  --s: 15px;
 }
 .loader::before,
 .loader::after,
@@ -36,8 +35,8 @@
 
 .loader-container {
   position: relative;
-  height: 50vh;
-  width: 100vh;
+  height: 100%;
+  width: 100%;
 }
 
 @keyframes m{

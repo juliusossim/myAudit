@@ -2,6 +2,7 @@
 import React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { stringDoesNotExist } from '../../../utilities/stringOperations';
+import Loader from '../../microComponents/loader';
 
 const SelectInput = (
   {
@@ -108,20 +109,7 @@ const SelectInput = (
               </label>
               {
                 (loading === 'pending')
-                  ? (
-                    <div className="dots_loader d-flex">
-                      <p className="mr-md-1 pb-md-1">{loading?.text || 'fetching your details'}</p>
-                      <div className="mt-md-1">
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                      </div>
-                    </div>
-                  )
+                  ? <Loader />
                   : (
                     <select
                       className={error?.length > 0 ? 'error-field' : ''}

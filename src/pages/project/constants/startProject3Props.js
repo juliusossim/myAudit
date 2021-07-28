@@ -1,5 +1,5 @@
 import { validationPatterns } from '../../../utilities/validation';
-import { profileType } from '../../../utilities/dummyData';
+import { profileType, projectType } from '../../../utilities/dummyData';
 
 const formBuilderProjectsPreviewProps = (
   {
@@ -16,7 +16,9 @@ const formBuilderProjectsPreviewProps = (
     handleBlur,
     handleChange,
     handleDateChange,
-    errors
+    errors,
+    minDate,
+    minStartDate
   }
 ) => {
   const propsIndividual = [
@@ -134,7 +136,7 @@ const formBuilderProjectsPreviewProps = (
     {
       kind: 'select2',
       props: {
-        className: 'w-100 m-b-20 col-6',
+        className: 'w-100 m-b-20 col-md-6',
         name: 'state',
         label: 'State',
         options: states,
@@ -152,7 +154,7 @@ const formBuilderProjectsPreviewProps = (
     {
       kind: 'select2',
       props: {
-        className: 'w-100 m-b-20 col-6',
+        className: 'w-100 m-b-20 col-md-6',
         name: 'city',
         label: 'LGA',
         options: lgas,
@@ -171,11 +173,12 @@ const formBuilderProjectsPreviewProps = (
     {
       kind: 'date',
       props: {
-        className: 'w-100 m-b-20 col-6',
+        className: 'w-100 m-b-20 col-md-6',
         variant: 'static',
         // orientation: 'landscape',
         disablePast: true,
         name: 'startDate',
+        minDate: minStartDate,
         helperText: 'it may take about 5 working days to get your project approved',
         label: 'Start Date',
         type: 'date',
@@ -191,9 +194,9 @@ const formBuilderProjectsPreviewProps = (
     {
       kind: 'date',
       props: {
-        className: 'w-100 m-b-20 col-6',
+        className: 'w-100 m-b-20 col-md-6',
         variant: 'static',
-        minDate: new Date(),
+        minDate,
         // orientation: 'landscape',
         disablePast: true,
         name: 'endDate',
@@ -298,7 +301,7 @@ const formBuilderProjectsPreviewProps = (
         optionIndex: 'type',
         valueIndex: 'value',
         value: formData?.projectType || '',
-        options: profileType,
+        options: projectType,
         validations: {
           required: true
         },
@@ -365,7 +368,7 @@ const formBuilderProjectsPreviewProps = (
     {
       kind: 'select2',
       props: {
-        className: 'w-100 m-b-20 col-6',
+        className: 'w-100 m-b-20 col-md-6',
         name: 'state',
         label: 'State',
         options: states,
@@ -383,7 +386,7 @@ const formBuilderProjectsPreviewProps = (
     {
       kind: 'select2',
       props: {
-        className: 'w-100 m-b-20 col-6',
+        className: 'w-100 m-b-20 col-md-6',
         name: 'city',
         label: 'LGA',
         options: lgas,
@@ -404,6 +407,7 @@ const formBuilderProjectsPreviewProps = (
         className: 'w-100 m-b-20',
         variant: 'static',
         // orientation: 'landscape',
+        minDate: minStartDate,
         disablePast: true,
         name: 'startDate',
         helperText: 'it may take about 5 working days to get your project approved',
@@ -423,11 +427,11 @@ const formBuilderProjectsPreviewProps = (
       props: {
         className: 'w-100 m-b-20',
         variant: 'static',
-        minDate: new Date(),
         // orientation: 'landscape',
         disablePast: true,
         name: 'endDate',
         label: 'End Date',
+        minDate,
         helperText: 'consider padding for approval delays.',
         type: 'date',
         value: formData?.endDate || '',

@@ -16,7 +16,8 @@ const MatDatetimPickers = ({
   label,
   value,
   helperText,
-  ampm
+  ampm,
+  minDate
 }) => {
   const handleChange = (date) => onChange({ date, name });
 
@@ -26,7 +27,7 @@ const MatDatetimPickers = ({
         {/* <Grid container justify="space-around"> */}
         <KeyboardDatePicker
           autoOk
-          minDate={value}
+          minDate={minDate}
           variant="inline"
           openTo="date"
           margin="normal"

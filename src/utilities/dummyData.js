@@ -80,6 +80,15 @@ export const projectCategories = [
     name: 'tourism'
   }
 ];
+export const approvalStatus = [
+  'pending',
+  'approved',
+  'returned',
+  'rejected',
+  'paused',
+  'deleted',
+  'none'
+];
 export const popularProjects = [
   {
     id: 1,

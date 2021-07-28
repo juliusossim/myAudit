@@ -21,6 +21,7 @@ import {
   register, verifyCorporate, verifyIndividual, verifyAccountOtp, sendAccountOtp
 } from '../../redux/actions/authenticationActions';
 import { uploadFile } from '../../services/fetch';
+import Loader from '../../components/microComponents/loader';
 
 /**
  *
@@ -44,19 +45,28 @@ const RegisterPage = () => {
     registered: false
   });
   // constants
-  const verifyAccount = () => {
+  const verifyAccount = (val) => {
     if (user.details?.role === 'Manager') {
+      if (typeof val === 'object') {
+        return dispatch(
+          verifyCorporate({ account_number: formData.account_number })
+        );
+      }
+      return dispatch(
+        verifyCorporate({ account_number: val })
+      );
+    }
+    if (typeof val === 'object') {
       return dispatch(
         verifyCorporate({ account_number: formData.account_number })
       );
     }
     return dispatch(
-      verifyIndividual({ account_number: formData.account_number })
+      verifyIndividual({ account_number: val })
     );
   };
 
   const handleRegister = () => {
-    setShow(true);
     dispatch(register(formData));
   };
   const sendOtp = () => {
@@ -124,7 +134,7 @@ const RegisterPage = () => {
       [name]: val
     }));
     if (name === 'account_number' && val.length === 10) {
-      verifyAccount();
+      verifyAccount(val);
     }
   };
 
@@ -179,14 +189,6 @@ const RegisterPage = () => {
     }
     >
       <div className="text-white">
-        {
-          store?.register.status === 'pending'
-          && (
-            <div className="center-text text-success">
-              Loading...
-            </div>
-          )
-        }
         {
           store?.register.status !== 'pending'
           && (
@@ -258,6 +260,9 @@ const RegisterPage = () => {
    && setFormData({ ...formData, file: URL.createObjectURL(file[0]) });
   }, [file, progress]);
   useEffect(() => {
+    if (store.register.status === 'pending') {
+      setShow(true);
+    }
     localforage.getItem('user', (err, value) => value).then((result) => {
       let item = {
         registered: false
@@ -395,260 +400,241 @@ const RegisterPage = () => {
   return (
     <div className="content">
       <div className="max-w-600 w-600 margin-center m-t-40">
-        <div className="login-form-container p-20">
-          <h3 className={user?.details?.otpVerified ? 'd-none' : ''}>
-            {
-              user.registered ? `Verify ${user?.details?.otp ? 'OTP' : 'Profile'}` : 'Create Profile'
-            }
-          </h3>
-          <p className={user?.details?.otpVerified ? 'd-none' : ''}>{`To Start A Project, You Need To ${user.registered ? `Verify ${user?.details?.otp ? 'OTP...' : 'Profile...'}` : 'Create A Profile'}...`}</p>
-          <hr />
-          <div className="login-form pb-5h">
-            {
-              user.registered && user?.details?.role === 'User' && typeof user?.details?.otp === 'undefined' && !user?.details?.otpVerified
-              && (
-                <div>
-                  <FormBuilder
-                    formItems={
-                      formBuilderIndividualProps(
-                        {
-                          formData,
-                          handleBlur,
-                          handleChange,
-                          errors,
-                          btnMethod: verifyAccount,
-                          loading: store.verifyIndividual.status
-                        }
-                      )
-                    }
-                  />
-                  <div>
-                    {
-                      store.sendAccountOtp?.status === 'pending'
-                      && (
-                        <div className="dots_loader d-flex">
-                          <p className="mr-md-1 pb-md-1"> Sending OTP</p>
-                          <div className="mt-md-1">
-                            <span />
-                            <span />
-                            <span />
-                            <span />
-                            <span />
-                            <span />
-                            <span />
-                          </div>
-                        </div>
-                      )
-                    }
-                    {
-                      store.sendAccountOtp?.status === 'failed'
-                      && (<div className="text-danger"><p className="ping">OTP Could Failed To Send. Please Try Again</p></div>)
-                    }
-                  </div>
-                </div>
-              )
-            }
-            {
-              !user.registered
-              && (
-                <FormBuilder
-                  formItems={
-                    formBuilderProps(
-                      {
-                        formData,
-                        handleBlur,
-                        handleChange,
-                        errors,
-                        selectDisabled: selectType
-                      }
-                    )
-                  }
-                />
-              )
-            }
-            {
-              user.details?.otp && typeof user.details?.otpVerified === 'undefined'
-              && (
-                <div>
-                  <FormBuilder
-                    formItems={
-                      formBuilderOtp(
-                        {
-                          formData,
-                          handleBlur,
-                          handleChange,
-                          btnMethod: verifyAccount,
-                          errors,
-                          selectDisabled: disableOtp,
-                          loading: store.verifyAccountOtp.status
-                        }
-                      )
-                    }
-                  />
-                  <div>
-                    {
-                      store.verifyAccountOtp?.status === 'pending'
-                      && (
-                        <div className="dots_loader d-flex">
-                          <p className="mr-md-1 pb-md-1"> verifying token</p>
-                          <div className="mt-md-1">
-                            <span />
-                            <span />
-                            <span />
-                            <span />
-                            <span />
-                            <span />
-                            <span />
-                          </div>
-                        </div>
-                      )
-                    }
-                    {
-                      store.verifyAccountOtp?.status === 'failed'
-                      && (<div className="text-danger"><p className="text-center">OTP Verification Failed</p></div>)
-                    }
-                  </div>
-                </div>
-              )
-            }
-
-            {
-              user.details?.otpVerified
-              && (
-                <div>
-                  <h1>Your Profile is Ready</h1>
-                  <div className="text-center w-50 btn mr-md-3">
-                    <Link to="/create-project" className="text-white btn-small">
-                      Start A Project
-                    </Link>
-                  </div>
-                  <div className="text-center w-25 btn-small btn">
-                    <Link to="/" className="text-white">
-                      Home
-                    </Link>
-                  </div>
-                </div>
-              )
-            }
-
-            {
-              user.registered && user.details?.role === 'Manager' && typeof user.details?.otp === 'undefined'
-              && (
-                <div>
-                  <FormBuilder
-                    formItems={
-                      formBuilderCorporateProps(
-                        {
-                          formData,
-                          handleBlur,
-                          handleChange,
-                          options: user.details.signatories || formData.signatories,
-                          btnMethod: verifyAccount,
-                          errors,
-                          selectDisabled: user.details.signatories?.length < 1,
-                          loading: store.verifyCorporate.status
-                        }
-                      )
-                    }
-                  />
-                  <div>
-                    {
-                      store.sendAccountOtp?.status === 'pending'
-                     && (<div className="dial-loader text-wema left-5"><p className="ping">Loading</p></div>)
-                    }
-                    {
-                      store.sendAccountOtp?.status === 'failed'
-                     && (<div className="text-danger"><p className="ping">Failed</p></div>)
-                    }
-                  </div>
-                </div>
-              )
-            }
-
-            {
-              !user.registered
-              && (
-                <div>
-                  <div>
-                    <input className="text-wema" type="checkbox" disabled={formData.profile_type === 10} name="terms" checked={formData.terms} onChange={handleChecked} />
-                    {' '}
-                    <span className="terms">
-                      <a href="" className="text-wema mr-1">
-                        I accept
-                      </a>
-                      the terms and conditions
-                      of Wemabank Crowdfunding
-                    </span>
-                  </div>
+        {
+          store?.register.status === 'pending'
+            ? <Loader />
+            : (
+              <div className="login-form-container p-20">
+                <h3 className={user?.details?.otpVerified ? 'd-none' : ''}>
                   {
-                    formData.terms
+                    user.registered ? `Verify ${user?.details?.otp ? 'OTP' : 'Profile'}` : 'Create Profile'
+                  }
+                </h3>
+                <p className={user?.details?.otpVerified ? 'd-none' : ''}>{`To Start A Project, You Need To ${user.registered ? `Verify ${user?.details?.otp ? 'OTP...' : 'Profile...'}` : 'Create A Profile'}...`}</p>
+                <hr />
+                <div className="login-form pb-5h">
+                  {
+                    user.registered && user?.details?.role === 'User' && typeof user?.details?.otp === 'undefined' && !user?.details?.otpVerified
                     && (
-                      <button
-                        className="w-100 btn btn-small float-right"
-                        type="button"
-                        onClick={handleRegister}
-                      >
-                        Create Account
-                      </button>
+                      <div>
+                        <FormBuilder
+                          formItems={
+                            formBuilderIndividualProps(
+                              {
+                                formData,
+                                handleBlur,
+                                handleChange,
+                                errors,
+                                btnMethod: verifyAccount,
+                                loading: store.verifyIndividual.status
+                              }
+                            )
+                          }
+                        />
+                        <div>
+                          {
+                            store.sendAccountOtp?.status === 'pending'
+                            && <Loader />
+
+                          }
+                          {
+                            store.sendAccountOtp?.status === 'failed'
+                            && (<div className="text-danger"><p className="ping">OTP Could Failed To Send. Please Try Again</p></div>)
+                          }
+                        </div>
+                      </div>
+                    )
+                  }
+                  {
+                    !user.registered
+                    && (
+                      <FormBuilder
+                        formItems={
+                          formBuilderProps(
+                            {
+                              formData,
+                              handleBlur,
+                              handleChange,
+                              errors,
+                              selectDisabled: selectType
+                            }
+                          )
+                        }
+                      />
+                    )
+                  }
+                  {
+                    user.details?.otp && typeof user.details?.otpVerified === 'undefined'
+                    && (
+                      <div>
+                        <FormBuilder
+                          formItems={
+                            formBuilderOtp(
+                              {
+                                formData,
+                                handleBlur,
+                                handleChange,
+                                btnMethod: verifyAccount,
+                                errors,
+                                selectDisabled: disableOtp,
+                                loading: store.verifyAccountOtp.status
+                              }
+                            )
+                          }
+                        />
+                        <div>
+                          {
+                            store.verifyAccountOtp?.status === 'pending'
+                            && <Loader />
+                          }
+                          {
+                            store.verifyAccountOtp?.status === 'failed'
+                            && (<div className="text-danger"><p className="text-center">OTP Verification Failed</p></div>)
+                          }
+                        </div>
+                      </div>
                     )
                   }
 
-                  <p className="text-center">
-                    <small>
-                      Already have an account?
-                    </small>
-                    <Link className="text-wema" to="/login"> Sign In</Link>
-                  </p>
+                  {
+                    user.details?.otpVerified
+                    && (
+                      <div>
+                        <h1>Your Profile is Ready</h1>
+                        <div className="text-center w-50 btn mr-md-3">
+                          <Link to="/create-project" className="text-white btn-small">
+                            Start A Project
+                          </Link>
+                        </div>
+                        <div className="text-center w-25 btn-small btn">
+                          <Link to="/" className="text-white">
+                            Home
+                          </Link>
+                        </div>
+                      </div>
+                    )
+                  }
 
-                </div>
-              )
-            }
-            {
-              user.registered && !user?.details?.otpVerified
-              && (
-                <div>
-                  <button
-                    className="w-100 btn btn-small"
-                    type="button"
-                    disabled={disableOtp}
-                    onClick={handleOtp}
-                  >
-                    {
-                      typeof user.details?.otp === 'undefined'
-                        ? 'Send OTP'
-                        : 'Confirm OTP'
-                    }
-                  </button>
-                  <div className="text-center w-100 ">
-                    <Link to="/" className="text-wema">
-                      Proceed home
-                    </Link>
-                  </div>
+                  {
+                    user.registered && user.details?.role === 'Manager' && typeof user.details?.otp === 'undefined'
+                    && (
+                      <div>
+                        <FormBuilder
+                          formItems={
+                            formBuilderCorporateProps(
+                              {
+                                formData,
+                                handleBlur,
+                                handleChange,
+                                options: user.details.signatories || formData.signatories,
+                                btnMethod: verifyAccount,
+                                errors,
+                                selectDisabled: user.details.signatories?.length < 1,
+                                loading: store.verifyCorporate.status
+                              }
+                            )
+                          }
+                        />
+                        <div>
+                          {
+                            store.sendAccountOtp?.status === 'pending'
+                            && <Loader />
+                          }
+                          {
+                            store.sendAccountOtp?.status === 'failed'
+                            && (<div className="text-danger"><p className="ping">Failed</p></div>)
+                          }
+                        </div>
+                      </div>
+                    )
+                  }
 
-                </div>
-              )
-            }
-            {/* { */}
-            {/*  formData.page !== 0 */}
-            {/*  && ( */}
-            {/*    <button title="Go Back" type="button" onClick={goBack}
+                  {
+                    !user.registered
+                    && (
+                      <div>
+                        <div>
+                          <input className="text-wema" type="checkbox" disabled={formData.profile_type === 10} name="terms" checked={formData.terms} onChange={handleChecked} />
+                          {' '}
+                          <span className="terms">
+                            <a href="" className="text-wema mr-1">
+                              I accept
+                            </a>
+                            the terms and conditions
+                            of Wemabank Crowdfunding
+                          </span>
+                        </div>
+                        {
+                          formData.terms
+                          && (
+                            <button
+                              className="w-100 btn btn-small float-right"
+                              type="button"
+                              onClick={handleRegister}
+                            >
+                              Create Account
+                            </button>
+                          )
+                        }
+
+                        <p className="text-center">
+                          <small>
+                            Already have an account?
+                          </small>
+                          <Link className="text-wema" to="/login"> Sign In</Link>
+                        </p>
+
+                      </div>
+                    )
+                  }
+                  {
+                    user.registered && !user?.details?.otpVerified
+                    && (
+                      <div>
+                        <button
+                          className="w-100 btn btn-small"
+                          type="button"
+                          disabled={disableOtp}
+                          onClick={handleOtp}
+                        >
+                          {
+                            typeof user.details?.otp === 'undefined'
+                              ? 'Send OTP'
+                              : 'Confirm OTP'
+                          }
+                        </button>
+                        <div className="text-center w-100 ">
+                          <Link to="/" className="text-wema">
+                            Proceed home
+                          </Link>
+                        </div>
+
+                      </div>
+                    )
+                  }
+                  {/* { */}
+                  {/*  formData.page !== 0 */}
+                  {/*  && ( */}
+                  {/*    <button title="Go Back" type="button" onClick={goBack}
              className="text-wema w-25 viewMoreBtn"> */}
-            {/*      <HiOutlineArrowNarrowLeft /> */}
-            {/*    </button> */}
-            {/*  ) */}
-            {/* } */}
-            {/* { */}
-            {/*  formData.forwardButton */}
-            {/*  && ( */}
-            {/*    <button title="Continue" type="button"
+                  {/*      <HiOutlineArrowNarrowLeft /> */}
+                  {/*    </button> */}
+                  {/*  ) */}
+                  {/* } */}
+                  {/* { */}
+                  {/*  formData.forwardButton */}
+                  {/*  && ( */}
+                  {/*    <button title="Continue" type="button"
              onClick={handleForward} className="text-wema w-25 viewMoreBtn float-right"> */}
-            {/*      <HiOutlineArrowNarrowRight /> */}
-            {/*    </button> */}
-            {/*  ) */}
-            {/* } */}
+                  {/*      <HiOutlineArrowNarrowRight /> */}
+                  {/*    </button> */}
+                  {/*  ) */}
+                  {/* } */}
 
-          </div>
-        </div>
+                </div>
+              </div>
+            )
+        }
       </div>
       <Modal
         className={show ? 'max-w-400 right top' : 'max-w-400 right top off'}

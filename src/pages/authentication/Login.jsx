@@ -5,6 +5,7 @@ import TextInput from '../../components/form/inputs/TextInput';
 import Modal from '../../components/microComponents/modal';
 import { login } from '../../redux/actions/authenticationActions';
 import { mapBackendErrors } from '../../utilities/validation';
+import Loader from '../../components/microComponents/loader';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ remember_me: false });
@@ -55,14 +56,6 @@ const LoginPage = () => {
     }
     >
       <div className="text-white">
-        {
-          store?.status === 'pending'
-          && (
-            <div className="center-text text-success">
-              Loading...
-            </div>
-          )
-        }
         {
           store?.status !== 'pending'
           && (
@@ -120,56 +113,62 @@ const LoginPage = () => {
 
   return (
     <div className="content">
-      <div className="max-w-600 w-600 margin-center m-t-40">
-        <div className="login-form-container p-20">
-          <h3 className="">Login</h3>
-          <p>Fill the form below to log into your profile</p>
-          <hr />
-          <div className="login-form">
-            <TextInput
-              label="Email"
-              name="email"
-              value={formData?.email || ''}
-              onChange={handleChange}
-              className="w-100 m-b-20"
-            />
-            <TextInput
-              label="Password"
-              type="password"
-              name="password"
-              value={formData?.password || ''}
-              onChange={handleChange}
-              className="w-100 m-b-20"
-            />
-            <div className="row">
-              <div className="w-50 p-md-2">
-                <input className="text-wema" type="checkbox" name="remember_me" checked={formData.remember_me} onChange={handleChecked} />
-                {' '}
-                <span className="terms mb-3">
-                  remember me
-                </span>
-              </div>
+      {
+        store?.status === 'pending'
+          ? <Loader />
+          : (
+            <div className="max-w-600 w-600 margin-center m-t-40">
+              <div className="login-form-container p-20">
+                <h3 className="">Login</h3>
+                <p>Fill the form below to log into your profile</p>
+                <hr />
+                <div className="login-form">
+                  <TextInput
+                    label="Email"
+                    name="email"
+                    value={formData?.email || ''}
+                    onChange={handleChange}
+                    className="w-100 m-b-20"
+                  />
+                  <TextInput
+                    label="Password"
+                    type="password"
+                    name="password"
+                    value={formData?.password || ''}
+                    onChange={handleChange}
+                    className="w-100 m-b-20"
+                  />
+                  <div className="row">
+                    <div className="w-50 p-md-2">
+                      <input className="text-wema" type="checkbox" name="remember_me" checked={formData.remember_me} onChange={handleChecked} />
+                      {' '}
+                      <span className="terms mb-3">
+                        remember me
+                      </span>
+                    </div>
 
-              <div className="w-50">
-                <Link to="/forgot-password">
-                  <button type="button" className="text-wema float-right  mb-3 viewMoreBtn">
-                    forgot password?
-                  </button>
-                </Link>
+                    <div className="w-50">
+                      <Link to="/forgot-password">
+                        <button type="button" className="text-wema float-right  mb-3 viewMoreBtn">
+                          forgot password?
+                        </button>
+                      </Link>
+                    </div>
+                  </div>
+                  <button className="w-100 btn btn-large" type="button" onClick={handleLogin}>Login</button>
+                  <div className="mt-3">
+                    <span className="">New to Wemabank Crowdfunding?</span>
+                    <Link to="/register">
+                      <button type="button" className="text-wema  viewMoreBtn">
+                        Sign Up
+                      </button>
+                    </Link>
+                  </div>
+                </div>
               </div>
             </div>
-            <button className="w-100 btn btn-large" type="button" onClick={handleLogin}>Login</button>
-            <div className="mt-3">
-              <span className="">New to Wemabank Crowdfunding?</span>
-              <Link to="/register">
-                <button type="button" className="text-wema  viewMoreBtn">
-                  Sign Up
-                </button>
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
+          )
+      }
       {typeof store !== 'undefined'
         && (
           <Modal

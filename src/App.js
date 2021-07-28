@@ -4,15 +4,19 @@ import { Switch, Route } from 'react-router-dom';
 import MainPortal from './routes/MainPortal';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
+import Loader from './components/microComponents/loader';
 
 function App() {
   return (
-
     <Suspense fallback={(
-      <div className="loader-container">
-        <div className="loader">
-          <i />
-        </div>
+      <div style={{
+        height: '50vh',
+        width: '50vw',
+        left: '45vw',
+        top: '20vh'
+      }}
+      >
+        <Loader />
       </div>
     )}
     >

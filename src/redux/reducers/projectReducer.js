@@ -67,6 +67,32 @@ const projectReducer = (state = initialState, { type, response, error }) => {
       }
     };
 
+  case constants.SUBMIT_PROJECT_PENDING:
+    return {
+      ...state,
+      submitProject: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.SUBMIT_PROJECT_SUCCESS:
+    return {
+      ...state,
+      submitProject: {
+        ...state.submitProject,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.PROJECT_FAILURE:
+    return {
+      ...state,
+      submitProject: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
   case constants.PROJECT_BY_STATUS_PENDING:
     return {
       ...state,

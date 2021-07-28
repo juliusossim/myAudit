@@ -11,6 +11,7 @@ import {
   validatePassword
 } from '../../../utilities/validation';
 import { stringDoesNotExist } from '../../../utilities/stringOperations';
+import Loader from '../../microComponents/loader';
 
 const TextInput = (props) => {
   const [reveal, setReveal] = useState(false);
@@ -88,20 +89,7 @@ const TextInput = (props) => {
               </label>
               {
                 (loading === 'pending')
-                  ? (
-                    <div className="dots_loader d-flex">
-                      <p className="mr-md-1 pb-md-1">{props.loading?.text || 'fetching your details'}</p>
-                      <div className="mt-md-1">
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                        <span />
-                      </div>
-                    </div>
-                  )
+                  ? <Loader />
                   : (
                     <input
                       className={props.error?.length > 0 ? 'error-field' : ''}

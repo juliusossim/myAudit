@@ -64,9 +64,9 @@ export const editProject = (payload) => {
 };
 
 export const submitProject = (payload) => {
-  const request = (req) => ({ type: constants.PROJECT_PENDING, request: req });
-  const success = (response) => ({ type: constants.PROJECT_SUCCESS, response });
-  const failure = (error) => ({ type: constants.PROJECT_FAILURE, error });
+  const request = (req) => ({ type: constants.SUBMIT_PROJECT_PENDING, request: req });
+  const success = (response) => ({ type: constants.SUBMIT_PROJECT_SUCCESS, response });
+  const failure = (error) => ({ type: constants.SUBMIT_PROJECT_FAILURE, error });
   const connection = post({
     endpoint: 'SUBMIT_PROJECT', auth: true, body: payload, param: payload.id, afterParam: 'submit'
   });

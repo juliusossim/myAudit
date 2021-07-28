@@ -1,13 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { HiOutlineChevronDown, HiOutlineChevronUp } from 'react-icons/all';
+import { HiOutlineChevronDown, HiOutlineChevronUp, RiNotification4Line } from 'react-icons/all';
 import Avatar from '@material-ui/core/Avatar';
+import { useDispatch, useSelector } from 'react-redux';
+import Badge from '@material-ui/core/Badge';
 import CrowdLogo from '../assets/images/crowd-funding-logo.png';
 import Modal from '../components/microComponents/modal';
 import SearchInput from '../components/form/inputs/search';
 import { currentUser, logout } from '../utilities/auth';
+import { notifications } from '../redux/actions/profileActions';
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state.profile.notifications);
   const [show, setShow] = useState(false);
   const [me, setMe] = useState(false);
   const [user, setUser] = useState({ loggedIn: false });
@@ -17,10 +22,17 @@ const Header = () => {
   };
   useEffect(() => {
     currentUser.then((result) => {
-      result?.id?.length
-      > 0 && setUser({ loggedIn: true, details: result });
+      result?.id !== undefined
+      && setUser({ loggedIn: true, details: result });
     });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
+
+  useEffect(() => {
+    dispatch(notifications());
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
   return (
     <header>
       <div className="content space-between flex-v-center">
@@ -56,6 +68,21 @@ const Header = () => {
                         : <HiOutlineChevronDown className="mt-md-3" />}
                     </button>
                   </Link>
+                  {
+                    store?.status === 'success'
+                    && (
+                      <Link to="/me">
+                        <h5 className="p-2">
+                          <Badge badgeContent={store?.data?.data?.length} color="secondary">
+                            <span className="text-wema">
+                              <RiNotification4Line />
+                            </span>
+                          </Badge>
+                        </h5>
+                      </Link>
+                    )
+                  }
+
                 </div>
               )
               : (

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FormBuilder from '../../components/form/builders/form';
 import formBuilderProps from './constants/changePassword';
@@ -6,6 +6,8 @@ import { validateField } from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
 import { changePassword } from '../../redux/actions/authenticationActions';
+import Loader from '../../components/microComponents/loader';
+import TextInput from '../../components/form/inputs/TextInput';
 
 const ChangePassword = () => {
   /* redux */
@@ -18,8 +20,19 @@ const ChangePassword = () => {
 
   const queryParam = window.location.search.substring(1);
 
+  useEffect(() => {
+    if (store.status === 'success') {
+      setShow(true);
+    }
+  }, [store]);
+
+  useEffect(() => {
+    if (store.status === 'success') {
+      setShow(true);
+    }
+  }, [store]);
+
   const handleRegister = () => {
-    setShow(true);
     dispatch(changePassword(formData, queryParam));
   };
 
@@ -46,15 +59,6 @@ const ChangePassword = () => {
     }
     >
       <div className="text-wema">
-        {
-          // (store?.status === 'pending' || store?.status === 'initial')
-          store?.status === 'pending'
-          && (
-            <div className="center-text text-white">
-              Loading...
-            </div>
-          )
-        }
         {
           store?.status !== 'pending'
           && (
@@ -108,28 +112,35 @@ const ChangePassword = () => {
         Change Password
       </p>
       <div className="max-w-600 w-600 margin-center m-t-40 ">
-        <div className="login-form-container p-20">
-          <p className="">Change your password below</p>
-          <hr />
-          <div className="login-form">
-            <FormBuilder
-              formItems={
-                formBuilderProps(
-                  {
-                    formData,
-                    handleBlur,
-                    handleChange,
-                    errors
-                  }
-                )
-              }
-            />
-            <button type="button" className="text-wema float-left viewMoreBtn mt-3" onClick={() => window.location.replace('/forgot-password')}>
-              &lt; Back
-            </button>
-            <button className="w-50 btn btn-small float-right" type="button" onClick={handleRegister}>Change Password</button>
-          </div>
-        </div>
+        {
+          store.status === 'pending'
+            ? <Loader />
+            : (
+              <div className="login-form-container p-20">
+                <p className="">Change your password below</p>
+                <hr />
+                <div className="login-form">
+                  <FormBuilder
+                    formItems={
+                      formBuilderProps(
+                        {
+                          formData,
+                          handleBlur,
+                          handleChange,
+                          errors
+                        }
+                      )
+                    }
+                  />
+                  <button type="button" className="text-wema float-left viewMoreBtn mt-3" onClick={() => window.location.replace('/forgot-password')}>
+                    &lt; Back
+                  </button>
+                  <button className="w-50 btn btn-small float-right" type="button" onClick={handleRegister}>Change Password</button>
+                </div>
+              </div>
+            )
+        }
+
       </div>
       <Modal
         className={show ? 'max-w-400 right top' : 'max-w-400 right top off'}

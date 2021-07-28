@@ -7,10 +7,13 @@ import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import isValid from 'date-fns/isValid';
 import isAfter from 'date-fns/isAfter';
 import { FiEdit, RiDeleteBin6Line } from 'react-icons/all';
+import Chip from '@material-ui/core/Chip';
 import { myProjects } from '../../redux/actions/profileActions';
 import LazyImage from '../../components/microComponents/lazyImg';
-import { getOneName } from '../../utilities/stringOperations';
+import { getOneName, stringCaps } from '../../utilities/stringOperations';
 import { diffDays } from '../../utilities/dateOperations';
+import Loader from '../../components/microComponents/loader';
+import { approvalStatus } from '../../utilities/dummyData';
 
 const Projects = () => {
   const dispatch = useDispatch();
@@ -26,6 +29,11 @@ const Projects = () => {
       return formatDistanceToNow(new Date(endDate), { addSuffix: true });
     }
     return null;
+  };
+  const approvalColors = {
+    deleted: 'secondary',
+    approved: 'primary',
+    paused: 'secondary'
   };
   useEffect(() => {
     if (store.status === 'success' && store.data?.data?.length > 0) {
@@ -46,9 +54,7 @@ const Projects = () => {
                   {
                     store.status === 'pending'
                     && (
-                      <div className="dial-loader text-wema left-25">
-                        <p className="ping">Extracting projects...</p>
-                      </div>
+                      <Loader />
                     )
                   }
                   {
@@ -67,6 +73,12 @@ const Projects = () => {
                                     <div className="col-md-5 mb-5">
                                       <h3>
                                         {item.title}
+                                        <Chip
+                                          color={
+                                            approvalColors[approvalStatus[item.approvalStatus]]
+                                          }
+                                          label={stringCaps(approvalStatus[item.approvalStatus])}
+                                        />
                                       </h3>
                                       <small>
                                         {item.location || 'Anonymous location'}
@@ -85,15 +97,15 @@ const Projects = () => {
                                       </div>
                                       <div className="row mt-5 mb-2">
                                         <div className="pr-1 raised col-md-6">
-                                          <span className="bold mr-1">{`N${item.amountRaised || 0}`}</span>
+                                          <span className="bold mr-1">{`N${item.amountRaised?.toLocaleString() || 0}`}</span>
                                           raised
                                         </div>
                                         <div className="col-md-6 ">
                                           <span>Target</span>
-                                          <span className="bold">{` N${item.donationTarget || 0}`}</span>
+                                          <span className="bold">{` N${item.donationTarget?.toLocaleString() || 0}`}</span>
                                         </div>
                                       </div>
-                                      <div className="progress mt-2 mb-3" title={`N${(item.donationTarget - item.amountRaised || 0)} to hit target`}>
+                                      <div className="progress mt-2 mb-3" title={`N${(item.donationTarget - item.amountRaised || 0).toLocaleString()} to hit target`}>
                                         <div
                                           className="progress-bar bg-wema"
                                           role="progressbar"

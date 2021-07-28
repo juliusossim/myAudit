@@ -146,6 +146,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             label={label}
             placeholder={placeholder}
             rows={rows}
+            minDate={minDate}
             validations={validations}
             btn={btn}
             helperText={helperText}

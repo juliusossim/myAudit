@@ -10,7 +10,9 @@ const formBuilderProjectsStart2Props = (
     handleDateChange,
     skeleton,
     excuseSkeleton,
-    errors
+    errors,
+    minStartDate,
+    minDate
   }
 ) => ([
   {
@@ -82,6 +84,7 @@ const formBuilderProjectsStart2Props = (
       label: 'Start Date',
       type: 'date',
       skeleton,
+      minDate: minStartDate,
       excuseSkeleton,
       helperText: 'if approved, your project starts next week by default',
       value: formData?.startDate || '',
@@ -98,7 +101,7 @@ const formBuilderProjectsStart2Props = (
     props: {
       className: 'w-100 m-b-20 col-6',
       variant: 'standard',
-      minDate: new Date(),
+      minDate,
       // orientation: 'landscape',
       disablePast: true,
       name: 'endDate',

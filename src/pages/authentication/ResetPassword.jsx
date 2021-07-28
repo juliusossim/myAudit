@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import FormBuilder from '../../components/form/builders/form';
 import formBuilderProps from './constants/resetPassword';
@@ -6,6 +6,7 @@ import { mapBackendErrors, validateField } from '../../utilities/validation';
 import { slugToString } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
 import { resetPassword } from '../../redux/actions/authenticationActions';
+import Loader from '../../components/microComponents/loader';
 
 const ResetPassword = () => {
   /* redux */
@@ -18,8 +19,13 @@ const ResetPassword = () => {
 
   const queryParam = window.location.search.substring(1);
 
+  useEffect(() => {
+    if (store.status === 'success') {
+      setShow(true);
+    }
+  }, [store]);
+
   const handleRegister = () => {
-    setShow(true);
     formData.code = queryParam;
     dispatch(resetPassword(formData));
   };
@@ -42,22 +48,11 @@ const ResetPassword = () => {
       // eslint-disable-next-line no-nested-ternary
       (store?.status === 'failed')
         ? 'mt-5 p-5'
-        : (
-          store?.status === 'pending'
-            ? 'mt-5 p-5 '
-            : 'mt-5 p-5 bg-wema'
-        )
+        : 'mt-5 p-5 bg-wema'
+
     }
     >
       <div className="text-white">
-        {
-          store?.status === 'pending'
-          && (
-            <div className="center-text text-success">
-              Loading...
-            </div>
-          )
-        }
         {
           store?.status !== 'pending'
           && (
@@ -126,28 +121,34 @@ const ResetPassword = () => {
         Change Password
       </p>
       <div className="max-w-600 w-600 margin-center m-t-40 ">
-        <div className="login-form-container p-20">
-          <p className="">Change your password below</p>
-          <hr />
-          <div className="login-form">
-            <FormBuilder
-              formItems={
-                formBuilderProps(
-                  {
-                    formData,
-                    handleBlur,
-                    handleChange,
-                    errors
-                  }
-                )
-              }
-            />
-            <button type="button" className="text-wema float-left viewMoreBtn mt-3" onClick={() => window.location.replace('/forgot-password')}>
-              &lt; Back
-            </button>
-            <button className="w-50 btn btn-small float-right" type="button" onClick={handleRegister}>Change Password</button>
-          </div>
-        </div>
+        {
+          store.status === 'pending'
+            ? <Loader />
+            : (
+              <div className="login-form-container p-20">
+                <p className="">Change your password below</p>
+                <hr />
+                <div className="login-form">
+                  <FormBuilder
+                    formItems={
+                      formBuilderProps(
+                        {
+                          formData,
+                          handleBlur,
+                          handleChange,
+                          errors
+                        }
+                      )
+                    }
+                  />
+                  <button type="button" className="text-wema float-left viewMoreBtn mt-3" onClick={() => window.location.replace('/forgot-password')}>
+                    &lt; Back
+                  </button>
+                  <button className="w-50 btn btn-small float-right" type="button" onClick={handleRegister}>Change Password</button>
+                </div>
+              </div>
+            )
+        }
       </div>
       <Modal
         className={show ? 'max-w-400 right top' : 'max-w-400 right top off'}

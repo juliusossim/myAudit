@@ -8,6 +8,7 @@ import FormBuilder from '../../components/form/builders/form';
 import formBuilderProps from './constants/myInfo';
 // import {uploadFile} from "../../services/fetch";
 import User from '../../assets/images/User.svg';
+import Loader from '../../components/microComponents/loader';
 
 const MyAccount = () => {
   /* redux */
@@ -68,9 +69,7 @@ const MyAccount = () => {
           {
             store.status === 'pending'
                   && (
-                    <div className="dial-loader text-wema left-5">
-                      <p className="ping">Pulling profile info...</p>
-                    </div>
+                    <Loader />
                   )
           }
           {
@@ -89,11 +88,19 @@ const MyAccount = () => {
                             <Avatar
                               className="w-96 h-144"
                             >
-                              <img src={formData?.profile_pic_url || User} alt="user Thumbnail" />
+                              <img
+                                src={formData?.profile_pic_url
+                              || User}
+                                alt="user Thumbnail"
+                              />
                             </Avatar>
                           </div>
                           <div className="col-md-4 center-center mt-5">
-                            <button type="button" className="no-bg edit-picture-btn bg-gray font-14 line-height-21 text-pale">
+                            <button
+                              type="button"
+                              className="no-bg
+                            edit-picture-btn bg-gray font-14 line-height-21 text-pale"
+                            >
                               Change Profile
                             </button>
                           </div>

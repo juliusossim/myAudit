@@ -4,6 +4,7 @@ import DateFnsUtils from '@date-io/date-fns';
 
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Skeleton from '@material-ui/lab/Skeleton';
+import Loader from '../../microComponents/loader';
 
 const CalendarInput = (props) => {
   const [reveal, setReveal] = useState(false);
@@ -34,20 +35,7 @@ const CalendarInput = (props) => {
             </label>
             {
               props.loading === 'pending'
-                ? (
-                  <div className="dots_loader d-flex">
-                    <p className="mr-md-1 pb-md-1"> fetching your details</p>
-                    <div className="mt-md-1">
-                      <span />
-                      <span />
-                      <span />
-                      <span />
-                      <span />
-                      <span />
-                      <span />
-                    </div>
-                  </div>
-                )
+                ? <Loader />
                 : (
                   <MuiPickersUtilsProvider utils={DateFnsUtils}>
                     <DatePicker

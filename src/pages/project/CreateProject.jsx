@@ -9,6 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import NaijaStates from 'naija-state-local-government';
+import { Link } from 'react-router-dom';
 import FormBuilder from '../../components/form/builders/form';
 import { validateField } from '../../utilities/validation';
 import { camelToString, notifier, stringDoesNotExist } from '../../utilities/stringOperations';
@@ -21,6 +22,7 @@ import {
 } from '../../redux/actions/projectActions';
 import { findItem } from '../../utilities/arrayOperations';
 import ModalTemplate from '../../components/temps/modalTemps/temp';
+import Loader from '../../components/microComponents/loader';
 
 /**
  *
@@ -48,6 +50,8 @@ const CreateProject = () => {
   const [states, setStates] = useState([]);
   const [init, setInit] = useState(true);
   const [skeleton, setSkeleton] = useState(false);
+  const [minDate, setMinDate] = useState(new Date());
+  const [minStartDate] = useState(addDays(Moment.now(), 5));
 
   const handleCreateProject = () => {
     setCreated(true);
@@ -63,6 +67,7 @@ const CreateProject = () => {
       const targetAmount = () => formData.donationTarget.replace(/[^\d.]/g, '');
       tem.donationTarget = Number(targetAmount());
     }
+    setAccordionTab(4);
     dispatch(submitProject(tem));
   };
   const handleSave = () => {
@@ -81,7 +86,7 @@ const CreateProject = () => {
   I am appealing to the general public to join in raising funds to support our ${category?.name || formData.title}
   `;
     }
-    console.log(tem);
+
     setFormData(tem);
     dispatch(editProject(tem));
   };
@@ -244,6 +249,7 @@ const CreateProject = () => {
 
   useEffect(() => {
     setFormData({ ...formData, endDate: addDays(new Date(formData.startDate), 7) });
+    setMinDate(addDays(new Date(formData.startDate), 7));
   }, [formData.startDate]);
 
   useEffect(() => {
@@ -328,221 +334,236 @@ const CreateProject = () => {
               </IconButton>
             </div>
           </div>
-          <div className="login-form pb-5h">
-            {
-              accordionTab === 3
-              && (
-                <div>
-                  <div className="text-wema">
-                    <h4>Preview</h4>
-                    <p>Make all changes you consider necessary before submitting for approval</p>
-                  </div>
-                  <hr />
-                </div>
-              )
-            }
-            {
-              accordionTab === 1 && store.project?.data?.data?.id === undefined
-              && (
-                <div>
-                  <div className="text-wema">
-                    <h4>Initiate A New Project</h4>
-                    <p>Give your project a befitting headline</p>
-                  </div>
-                  <hr />
-                </div>
-              )
-            }
-
-            {accordionTab === 1
-            && (
-              <div>
-                {
-                  init
-                    ? (
-                      <FormBuilder
-                        formItems={
-                          title(
-                            {
-                              formData,
-                              categories: store?.projectCategories?.data?.data,
-                              multiple: true,
-                              removeItem: removeAtIndex,
-                              setFormData: cancelUpload,
-                              progress,
-                              handleBlur,
-                              handleChange,
-                              handleDateChange,
-                              btnMethod: () => setFormData({ ...formData, title: '' }),
-                              loading: { status: nameEdit && store?.project?.status, text: 'initializing your project' },
-                              errors
-                            }
-                          )
-                        }
-                      />
-                    )
-                    : (
-                      <FormBuilder
-                        formItems={
-                          formBuilderProjectsStartProps(
-                            {
-                              formData,
-                              categories: store?.projectCategories?.data?.data,
-                              multiple: true,
-                              removeItem: removeAtIndex,
-                              setFormData: cancelUpload,
-                              progress,
-                              handleBlur,
-                              handleChange,
-                              handleDateChange,
-                              btnMethod: () => setFormData({ ...formData, title: '' }),
-                              loading: { status: nameEdit && store?.project?.status, text: 'initializing your project' },
-                              errors
-                            }
-                          )
-                        }
-                      />
-                    )
-                }
-              </div>
-            )}
-
-            {accordionTab === 2
-             && (
-               <FormBuilder
-                 formItems={
-                   formBuilderProjectsStart2Props(
-                     {
-                       formData,
-                       states,
-                       lgas,
-                       skeleton: store?.project?.data?.data?.id,
-                       excuseSkeleton: 'title',
-                       handleBlur,
-                       handleChange,
-                       handleDateChange,
-                       errors
-                     }
-                   )
-                 }
-               />
-             )}
-            {accordionTab === 3
-              && (
-                <FormBuilder
-                  formItems={
-                    formBuilderProjectsPreviewProps({
-                      formData,
-                      states,
-                      lgas,
-                      categories: store.projectCategories.data.data,
-                      multiple: true,
-                      removeItem: removeAtIndex,
-                      skeleton: store?.project?.data?.data?.id,
-                      excuseSkeleton: 'title',
-                      setFormData: cancelUpload,
-                      progress,
-                      handleBlur,
-                      handleChange,
-                      handleDateChange,
-                      btnMethod: () => setFormData({ ...formData, title: '' }),
-                      loading: { status: nameEdit && store.project.status, text: 'initializing your project' },
-                      errors
-                    })
-                  }
-                />
-              )}
-
-            {
-              (
-                <div>
+          {
+            !init && store.project?.status === 'pending'
+              ? <Loader />
+              : (
+                <div className="login-form pb-5h">
                   {
-                    accordionTab === 2
-                    && (
-                      <button type="button" onClick={goBack} className="text-wema w-25 viewMoreBtn">
-                        &lt; back
-                      </button>
-                    )
+                    accordionTab === 3
+                  && (
+                    <div>
+                      <div className="text-wema">
+                        <h4>Preview</h4>
+                        <p>
+                          Make all changes you consider necessary before submitting for approval
+                        </p>
+                      </div>
+                      <hr />
+                    </div>
+                  )
+                  }
+                  {
+                    accordionTab === 1 && store.project?.data?.data?.id === undefined
+                  && (
+                    <div>
+                      <div className="text-wema">
+                        <h4>Initiate A New Project</h4>
+                        <p>Give your project a befitting headline</p>
+                      </div>
+                      <hr />
+                    </div>
+                  )
                   }
 
-                  <div className="col-md-8 float-right pb-md-3">
+                  {accordionTab === 1
+                && (
+                  <div>
                     {
-                      accordionTab !== 3
-                      && (
-                        <div className="flex">
-                          <button
-                            title="save and continue later"
-                            className="w-50 btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
-                            type="button"
-                            // disabled={!store?.project?.data?.data?.id?.length > 0}
-                            onClick={handleSaveProgress}
-                          >
-                            Save
-                          </button>
-                          {
-                            accordionTab === 1
-                              ? (
-                                <button
-                                  className="w-75 btn btn-small float-right"
-                                  type="button"
-                                  disabled={!(formData.summary?.length > 0
-                                    && formData.donationTarget
-                                    && formData?.id?.length > 0)}
-                                  onClick={() => setAccordionTab(2)}
-                                >
-                                  Continue
-                                </button>
+                      init
+                        ? (
+                          <FormBuilder
+                            formItems={
+                              title(
+                                {
+                                  formData,
+                                  categories: store?.projectCategories?.data?.data,
+                                  multiple: true,
+                                  removeItem: removeAtIndex,
+                                  setFormData: cancelUpload,
+                                  progress,
+                                  handleBlur,
+                                  handleChange,
+                                  handleDateChange,
+                                  btnMethod: () => setFormData({ ...formData, title: '' }),
+                                  loading: { status: nameEdit && store?.project?.status, text: 'initializing your project' },
+                                  errors
+                                }
                               )
-                              : (
-                                <button
-                                  title="submit for approval"
-                                  className="w-75 btn btn-small float-right"
-                                  type="button"
-                                  // disabled={!submittable}
-                                  onClick={handleCreateProject}
-                                >
-                                  Done
-                                </button>
+                            }
+                          />
+                        )
+                        : (
+                          <FormBuilder
+                            formItems={
+                              formBuilderProjectsStartProps(
+                                {
+                                  formData,
+                                  categories: store?.projectCategories?.data?.data,
+                                  multiple: true,
+                                  removeItem: removeAtIndex,
+                                  setFormData: cancelUpload,
+                                  progress,
+                                  handleBlur,
+                                  handleChange,
+                                  handleDateChange,
+                                  btnMethod: () => setFormData({ ...formData, title: '' }),
+                                  loading: { status: nameEdit && store?.project?.status, text: 'initializing your project' },
+                                  errors
+                                }
                               )
-                          }
-                        </div>
+                            }
+                          />
+                        )
+                    }
+                  </div>
+                )}
+
+                  {accordionTab === 2
+                && (
+                  <FormBuilder
+                    formItems={
+                      formBuilderProjectsStart2Props(
+                        {
+                          formData,
+                          states,
+                          lgas,
+                          minDate,
+                          minStartDate,
+                          skeleton: store?.project?.data?.data?.id,
+                          excuseSkeleton: 'title',
+                          handleBlur,
+                          handleChange,
+                          handleDateChange,
+                          errors
+                        }
                       )
                     }
-                    {
-                      accordionTab === 3
-                      && <Button onClick={handleSubmitProject}>Submit</Button>
-                    }
-                    {
-                      store.project.status === 'pending' && !nameEdit
-                    && (
-                      <div className="dots_loader d-flex">
+                  />
+                )}
+                  {accordionTab === 3
+                && (
+                  <div className="row">
+                    <FormBuilder
+                      formItems={
+                        formBuilderProjectsPreviewProps({
+                          formData,
+                          states,
+                          lgas,
+                          minDate,
+                          minStartDate,
+                          categories: store.projectCategories.data.data,
+                          multiple: true,
+                          removeItem: removeAtIndex,
+                          skeleton: store?.project?.data?.data?.id,
+                          excuseSkeleton: 'title',
+                          setFormData: cancelUpload,
+                          progress,
+                          handleBlur,
+                          handleChange,
+                          handleDateChange,
+                          btnMethod: () => setFormData({ ...formData, title: '' }),
+                          loading: { status: nameEdit && store.project.status, text: 'initializing your project' },
+                          errors
+                        })
+                      }
+                    />
+                  </div>
+                )}
+                  {
+                    store.submitProject?.status === 'success'
+                  && (
+                    <div>
+                      <h1 className="">Success</h1>
+                      <hr className="border-wema" />
+                      <div className="text-wema my-4">
+                        Your Project is Submitted for approval
+                      </div>
+                      <button type="button" onClick={() => window.location.reload()} className="btn btn-small">
+                        Start Another Project
+                      </button>
+                      {/* </div> */}
+                      <div className="text-center ml-2 w-25 btn-small btn">
+                        <Link to="/me" className="text-white">
+                          My Projects
+                        </Link>
+                      </div>
+                    </div>
+                  )
+                  }
 
+                  {
+                    store.submitProject?.status !== 'success'
+                  && (
+                    <div>
+                      {
+                        accordionTab === 2
+                        && (
+                          <button type="button" onClick={goBack} className="text-wema w-25 viewMoreBtn">
+                            &lt; back
+                          </button>
+                        )
+                      }
+
+                      <div className="col-md-8 float-right pb-md-3">
                         {
                           accordionTab !== 3
-                          && <p className="mr-md-1 pb-md-1"> saving your progress </p>
+                          && (
+                            <div className="flex">
+                              <button
+                                title="save and continue later"
+                                className="w-50 btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
+                                type="button"
+                                // disabled={!store?.project?.data?.data?.id?.length > 0}
+                                onClick={handleSaveProgress}
+                              >
+                                Save
+                              </button>
+                              {
+                                accordionTab === 1
+                                  ? (
+                                    <button
+                                      className="w-75 btn btn-small float-right"
+                                      type="button"
+                                      disabled={!(formData.summary?.length > 0
+                                        && formData.donationTarget
+                                        && formData?.id?.length > 0)}
+                                      onClick={() => setAccordionTab(2)}
+                                    >
+                                      Continue
+                                    </button>
+                                  )
+                                  : (
+                                    <button
+                                      title="submit for approval"
+                                      className="w-75 btn btn-small float-right"
+                                      type="button"
+                                      // disabled={!submittable}
+                                      onClick={handleCreateProject}
+                                    >
+                                      Done
+                                    </button>
+                                  )
+                              }
+                            </div>
+                          )
                         }
                         {
                           accordionTab === 3
-                          && <p className="mr-md-1 pb-md-1"> submitting...</p>
+                          && <Button onClick={handleSubmitProject}>Submit</Button>
                         }
-
-                        <div className="mt-md-1">
-                          <span />
-                          <span />
-                          <span />
-                          <span />
-                          <span />
-                          <span />
-                          <span />
-                        </div>
+                        {
+                          store.project.status === 'pending' && !nameEdit
+                          && <Loader />
+                        }
                       </div>
-                    )
-                    }
-                  </div>
+                    </div>
+                  )
+                  }
                 </div>
               )
-            }
-          </div>
+          }
+
         </div>
       </div>
       <Modal
