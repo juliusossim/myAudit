@@ -116,8 +116,9 @@ const Profile = () => {
 
                 </div>
                 <div className="login-form ">
-                  {displayPages(accordionTab)}
-                  {/* <Transactions /> */}
+                  <div className="h-max-75">
+                    {displayPages(accordionTab)}
+                  </div>
                 </div>
                 {/* </div> */}
               </div>

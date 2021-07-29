@@ -45,6 +45,7 @@ img {
   max-height: 25vh;
   overflow-y: auto;
 }
+
 .ontop{
   z-index: 10000;
   top: 9vh;
@@ -473,6 +474,10 @@ main {
 }
 .h-250 {
   height: 15.6rem;
+}
+.h-max-75{
+  max-height: 75vh!important;
+  overflow-y: auto;
 }
 .font-14 {
   font-size:  0.9rem;
