@@ -176,6 +176,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             btnMethod={btnMethod}
             skeleton={skeleton}
             excuseSkeleton={excuseSkeleton}
+            loading={loading}
           />
         );
       case 'text_area':

@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import localforage from 'localforage';
 import { useDispatch, useSelector } from 'react-redux';
-import _ from 'lodash';
-import Button from '@material-ui/core/Button';
 import formatDistanceToNow from 'date-fns/formatDistanceToNow';
 import isValid from 'date-fns/isValid';
 import isAfter from 'date-fns/isAfter';
 import { FiEdit, RiDeleteBin6Line } from 'react-icons/all';
 import Chip from '@material-ui/core/Chip';
+import { Link } from 'react-router-dom';
 import { myProjects } from '../../redux/actions/profileActions';
 import LazyImage from '../../components/microComponents/lazyImg';
-import { getOneName, stringCaps } from '../../utilities/stringOperations';
-import { diffDays } from '../../utilities/dateOperations';
+import { stringCaps } from '../../utilities/stringOperations';
 import Loader from '../../components/microComponents/loader';
-import { approvalStatus } from '../../utilities/dummyData';
+import { approvalStatus, approvalColors } from '../../utilities/dummyData';
+import { positiveDiffs } from '../../utilities/dateOperations';
 
 const Projects = () => {
   const dispatch = useDispatch();
@@ -24,17 +22,6 @@ const Projects = () => {
     dispatch(myProjects());
   };
   // const refreshUser = setUser(store.data);
-  const positiveDiffs = (endDate) => {
-    if (isValid(endDate)) {
-      return formatDistanceToNow(new Date(endDate), { addSuffix: true });
-    }
-    return null;
-  };
-  const approvalColors = {
-    deleted: 'secondary',
-    approved: 'primary',
-    paused: 'secondary'
-  };
   useEffect(() => {
     if (store.status === 'success' && store.data?.data?.length > 0) {
       setFormData([...store.data.data]);
@@ -137,10 +124,12 @@ const Projects = () => {
                                       </div>
                                     </div>
                                     <div className="col-md-2">
-                                      <button type="button" className=" btn-edit text-edit w-100">
-                                        <FiEdit className="mt-1 mr-1" />
-                                        Edit
-                                      </button>
+                                      <Link to={{ pathname: '/create-project', tab: 3, id: item.projectId }}>
+                                        <button type="button" className=" btn-edit text-edit w-100">
+                                          <FiEdit className="mt-1 mr-1" />
+                                          Edit
+                                        </button>
+                                      </Link>
                                       <button type="button" className="btn-sm btn-delete text-delete w-100 mt-5">
                                         <RiDeleteBin6Line className="mt-1 mr-1" />
                                         Delete

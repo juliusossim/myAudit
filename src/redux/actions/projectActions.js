@@ -1,5 +1,7 @@
 // import localforage from 'localforage';
-import { get, patch, post } from '../../services/fetch';
+import {
+  get, patch, post, del
+} from '../../services/fetch';
 import constants from '../constants';
 
 const dispatchConnection = (connection, pending, action) => async (dispatch) => {
@@ -8,9 +10,9 @@ const dispatchConnection = (connection, pending, action) => async (dispatch) => 
 };
 
 export const createProjectName = (payload) => {
-  const request = (req) => ({ type: constants.PROJECT_PENDING, request: req });
-  const success = (response) => ({ type: constants.PROJECT_SUCCESS, response });
-  const failure = (error) => ({ type: constants.PROJECT_FAILURE, error });
+  const request = (req) => ({ type: constants.INIT_PROJECT_PENDING, request: req });
+  const success = (response) => ({ type: constants.INIT_PROJECT_SUCCESS, response });
+  const failure = (error) => ({ type: constants.INIT_PROJECT_FAILURE, error });
 
   return async (dispatch) => {
     const res = post({ endpoint: 'CREATE_PROJECT_NAME', auth: true, body: payload });
@@ -45,7 +47,41 @@ export const createProject = (payload) => {
     });
   };
 };
+export const getProject = (payload) => {
+  const request = (req) => ({ type: constants.GET_PROJECT_PENDING, request: req });
+  const success = (response) => ({ type: constants.GET_PROJECT_SUCCESS, response });
+  const failure = (error) => ({ type: constants.GET_PROJECT_FAILURE, error });
 
+  return async (dispatch) => {
+    const res = get({ endpoint: 'GET_PROJECT', auth: true, param: payload });
+
+    dispatch(request(res));
+
+    return res.then((response) => {
+      if (response?.status === 200 || response?.status === 201) {
+        dispatch(success(response?.data));
+      } else if (response) {
+        dispatch(failure(response?.errors || response));
+      } else dispatch(failure('You are currently not connected to the internet!'));
+    });
+  };
+};
+export const editProject1 = (payload) => {
+  const request = (req) => ({ type: constants.EDIT_PROJECT_1_PENDING, request: req });
+  const success = (response) => ({ type: constants.EDIT_PROJECT_1_SUCCESS, response });
+  const failure = (error) => ({ type: constants.EDIT_PROJECT_1_FAILURE, error });
+  const connection = patch({
+    endpoint: 'EDIT_PROJECT', auth: true, body: payload, param: payload.id
+  });
+  const dispatchActions = ({ response, dispatch }) => {
+    if (response?.status === 200) {
+      dispatch(success(response?.data));
+    } else if (response) {
+      dispatch(failure(response?.errors || response));
+    } else dispatch(failure('You are currently not connected to the internet!'));
+  };
+  return dispatchConnection(connection, request, dispatchActions);
+};
 export const editProject = (payload) => {
   const request = (req) => ({ type: constants.EDIT_PROJECT_PENDING, request: req });
   const success = (response) => ({ type: constants.EDIT_PROJECT_SUCCESS, response });
@@ -117,10 +153,10 @@ export const projectCategories = () => {
   };
 };
 
-export const uploadLogo = ({ payload, setProgress }) => {
-  const request = (req) => ({ type: constants.UPLOAD_LOGO_PENDING, request: req });
-  const success = (response) => ({ type: constants.UPLOAD_LOGO_SUCCESS, response });
-  const failure = (error) => ({ type: constants.UPLOAD_LOGO_FAILURE, error });
+export const uploadMedia = ({ payload, setProgress }) => {
+  const request = (req) => ({ type: constants.UPLOAD_MEDIA_PENDING, request: req });
+  const success = (response) => ({ type: constants.UPLOAD_MEDIA_SUCCESS, response });
+  const failure = (error) => ({ type: constants.UPLOAD_MEDIA_FAILURE, error });
   const data = new FormData();
   data.append('file', payload.file);
   return async (dispatch) => {
@@ -144,3 +180,38 @@ export const uploadLogo = ({ payload, setProgress }) => {
     });
   };
 };
+
+/* almighty action function */
+export const projectAction = ({
+  action, routeOptions
+}) => {
+  const request = (req) => ({ type: constants[`${action}_PENDING`], request: req });
+  const success = (response) => ({ type: constants[`${action}_SUCCESS`], response });
+  const failure = (error) => ({ type: constants[`${action}_FAILURE`], error });
+  const methods = {
+    get: () => get({ ...routeOptions.options }),
+    post: () => post({ ...routeOptions.options }),
+    patch: () => patch({ ...routeOptions.options }),
+    del: () => del({ ...routeOptions.options })
+  };
+  return async (dispatch) => {
+    const res = methods[routeOptions.method]();
+    dispatch(request(res));
+    return res.then((response) => {
+      if (response?.status === 200) {
+        dispatch(success(response?.data));
+      } else if (response) {
+        dispatch(failure(response?.errors || response));
+      } else dispatch(failure('You are currently not connected to the internet!'));
+    });
+  };
+};
+
+// post({
+//   endpoint: 'PROJECT_MEDIA',
+//   auth: true,
+//   body: data,
+//   setProgress,
+//   param: payload.id,
+//   multipart: true
+// });

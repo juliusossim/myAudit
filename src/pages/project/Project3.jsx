@@ -1,0 +1,313 @@
+import React, {
+  useEffect, useCallback, useState
+} from 'react';
+import localforage from 'localforage';
+import addDays from 'date-fns/addDays';
+import Moment from 'moment';
+import { useDispatch, useSelector } from 'react-redux';
+import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
+import Button from '@material-ui/core/Button';
+import NaijaStates from 'naija-state-local-government';
+import { Link } from 'react-router-dom';
+import FormBuilder from '../../components/form/builders/form';
+import { validateField } from '../../utilities/validation';
+import { camelToString, notifier, stringDoesNotExist } from '../../utilities/stringOperations';
+import Modal from '../../components/microComponents/modal';
+import { formBuilderProjectsStartProps, title } from './constants/startProject1Props';
+import formBuilderProjectsStart2Props from './constants/startProject2Props';
+import formBuilderProjectsPreviewProps from './constants/startProject3Props';
+import {
+  editProject, submitProject, uploadMedia, getProject, projectAction
+} from '../../redux/actions/projectActions';
+import { findItem } from '../../utilities/arrayOperations';
+import ModalTemplate from '../../components/temps/modalTemps/temp';
+import Loader from '../../components/microComponents/loader';
+
+/**
+ *
+ * @returns {JSX.Element}
+ * @constructor
+ */
+const Project3 = ({ data, setAccordionTab }) => {
+  /* redux */
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state.project);
+  /* state */
+  const [formData, setFormData] = useState({ ...data });
+  const [errors, setErrors] = useState({});
+  const [progress, setProgress] = useState(0);
+  const [lgas, setLgas] = useState([]);
+  const [states, setStates] = useState([]);
+  const [minDate, setMinDate] = useState(new Date());
+  const [minStartDate] = useState(addDays(Moment.now(), 5));
+
+  const mapIndex = (arr) => arr.map((ar, index) => ({
+    value: index + 1,
+    name: ar
+  }));
+
+  const showUpload = (err) => notifier({
+    type: 'error',
+    title: 'error',
+    text: 'media upload failed'
+  });
+
+  useEffect(() => {
+    if (store.stateLga.status === 'success') {
+      setStates(store?.stateLga?.data?.data);
+      setLgas(store?.stateLga?.data?.data?.filter(
+        (ste) => ste.stateId === (formData.stateId || 1)
+      )[0].lgas);
+    }
+  }, [store.stateLga.status, formData]);
+
+  useEffect(() => {
+    if (store.media.status === 'failed' && store?.getProject?.status !== 'pending') {
+      showUpload(store.media?.message);
+    }
+    return true;
+  }, [store.media?.status]);
+
+  useEffect(() => {
+    dispatch(getProject(formData.id));
+  }, []);
+
+  // useEffect(() => {
+  //   if (store.media?.status === 'success') {
+  //     setFormData({ ...formData, files: [...formData.files, store?.data?.data] });
+  //   }
+  // }, [store.media?.status]);
+
+  useEffect(() => {
+    setFormData({ ...formData, endDate: addDays(new Date(formData.startDate), 7) });
+    setMinDate(addDays(new Date(formData.startDate), 7));
+  }, [formData.startDate]);
+
+  useEffect(() => {
+    if (store?.getProject?.status === 'success') {
+      setFormData({
+        file: [...store?.getProject?.data?.data?.media],
+        ...store.getProject?.data?.data
+      });
+    }
+  }, [store?.getProject?.status]);
+
+  useEffect(() => {
+    if (store?.submitProject?.status === 'success') {
+      setAccordionTab(4);
+    } else if (store.submitProject?.status === 'failed') {
+      notifier({
+        type: 'error',
+        title: 'error',
+        text: 'this project cannot be submitted for approval'
+      });
+    }
+  }, [store?.submitProject?.status]);
+
+  const cancelUpload = () => {
+    setFormData({ ...formData, file: '', logo_id: '' });
+  };
+  const handleDateChange = ({ date, name }) => {
+    setFormData({ ...formData, [name]: date });
+  };
+  const apiOptions = ({
+    method, param, auth = false, body, endpoint, pQuery
+  }) => (
+    {
+      method,
+      options: {
+        param,
+        body,
+        auth,
+        endpoint,
+        pQuery
+      }
+    }
+  );
+  const handleSubmitProject = () => {
+    const tem = {
+      ...formData
+    };
+    if (formData.donationTarget !== undefined && typeof formData.donationTarget === 'string') {
+      const targetAmount = () => formData.donationTarget.replace(/[^\d.]/g, '');
+      tem.donationTarget = Number(targetAmount());
+    }
+    if (tem.approvalStatus !== undefined) {
+      switch (formData.approvalStatus) {
+      case 0:
+        return dispatch(editProject(tem));
+      case 1:
+        return dispatch(projectAction(
+          {
+            action: 'EDIT_PROJECT_REQUEST',
+            routeOptions: apiOptions({
+              method: 'patch',
+              param: tem.id,
+              body: tem,
+              endpoint: 'EDIT_PROJECT_REQUEST',
+              auth: true
+            })
+          }
+        ));
+      default:
+        return dispatch(submitProject(tem));
+      }
+    }
+    return false;
+  };
+
+  const replacedName = (name, apiValue) => {
+    if (apiValue) {
+      if (name === 'lga') {
+        return ({ lgaId: apiValue });
+      }
+      if (name === 'state') {
+        return ({ stateId: apiValue });
+      }
+    }
+    return {};
+  };
+
+  const handleChange = (e) => {
+    const {
+      name, value, files, apiValue
+    } = e?.target;
+    if (name === 'media' && formData?.file?.indexOf(files[0] === -1)) {
+      const fileSize = (files[0]?.size / 1024 / 1024).toFixed(3);
+      if (fileSize > 1) {
+        return notifier({
+          type: 'error',
+          title: 'error',
+          text: `the media size of ${fileSize}MB is too large, size must not be larger than 1MB`
+        });
+      }
+      setFormData({
+        ...formData,
+        file: [...formData.file, files[0]]
+      });
+      dispatch(
+        uploadMedia(
+          {
+            payload: { file: files[0], id: formData.id }, setProgress
+          }
+        )
+      );
+      // uploadFile({ file: files[0], handleProgress, url: 'Uploads/logo' });
+    } else {
+      let val = value;
+      if (name === 'projectType' || name === 'categoryId') {
+        val = Number(val);
+      }
+      setFormData((state) => ({
+        ...state,
+        ...replacedName(name, apiValue),
+        [name]: val
+      }));
+    }
+    return true;
+  };
+
+  const handleBlur = (e, validations) => {
+    const { name, value } = e.target;
+    const field = camelToString(name);
+
+    typeof field !== 'undefined'
+    && setErrors(
+      {
+        ...errors,
+        [name]: (
+          validateField(validations, field, value)
+        )
+      }
+    );
+  };
+  const removeAtIndex = (item) => {
+    const fileCopy = [...formData.file];
+    const index = fileCopy.indexOf(item);
+    fileCopy.splice(index, 1);
+    setFormData({ ...formData, file: [...fileCopy] });
+  };
+
+  const deleteProjectMedia = (item) => {
+    dispatch(projectAction(
+      {
+        action: 'DELETE_MEDIA',
+        routeOptions: apiOptions({
+          method: 'patch',
+          param: formData.id,
+          body: item.uri,
+          endpoint: 'DELETE_PROJECT_MEDIA',
+          auth: true
+        })
+      }
+    ));
+  };
+
+  return (
+    <div className="login-form pb-5h">
+
+      <div>
+        <div className="text-wema">
+          <h4>
+            <span className="pr-1">Review</span>
+            <span className="pr-1 bold">{formData.title}</span>
+          </h4>
+        </div>
+        <hr />
+      </div>
+
+      <div>
+        <FormBuilder
+          formItems={
+            formBuilderProjectsPreviewProps({
+              formData,
+              states,
+              lgas,
+              minDate,
+              minStartDate,
+              categories: store.projectCategories.data.data,
+              multiple: true,
+              removeItem: deleteProjectMedia,
+              skeleton: store?.project?.data?.data?.id,
+              excuseSkeleton: 'title',
+              setFormData: cancelUpload,
+              progress,
+              handleBlur,
+              handleChange,
+              handleDateChange,
+              btnMethod: () => setFormData({ ...formData, title: '' }),
+              loading: { status: store.project.status, text: 'initializing your project' },
+              loadingMedia: store.media?.status,
+              errors
+            })
+          }
+        />
+
+      </div>
+
+      <div>
+
+        <div className="float-right d-flex">
+          <button
+            title="submit for review and approval"
+            className=" btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
+            type="button"
+            disabled={store?.submitProject?.status === 'pending'}
+            onClick={handleSubmitProject}
+          >
+            Submit for approval
+          </button>
+        </div>
+
+        <div className="row">
+          {
+            store?.submitProject?.status === 'pending'
+            && <Loader />
+          }
+        </div>
+      </div>
+    </div>
+  );
+};
+export default Project3;

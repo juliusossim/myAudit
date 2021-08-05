@@ -3,6 +3,7 @@ import React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { FaPlus } from 'react-icons/all';
 import ProgressBar from '../../microComponents/circularProgress';
+import Loader from '../../microComponents/loader';
 
 const FileInput = (
   {
@@ -21,23 +22,76 @@ const FileInput = (
     validations,
     error,
     skeleton,
-    excuseSkeleton
+    excuseSkeleton,
+    loading
   }
 ) => {
   const data = [...new Set(file)];
-
   return (
     <div className={`${error?.length > 0 ? `${className} col-12` : `${className}`} form-group`}>
       <>
         {
           multiple ? (
             <div className="row light-border p-3">
-
               {
-                data.map((upload) => (
+                data.map((upload, key) => (
                   <div className="col-md-4" key={upload.name}>
-                    <img src={URL.createObjectURL(upload)} alt={upload} />
-                    <button onClick={() => removeItem(upload)} type="button" className="text-white btn-sm btn-danger radius50  remove-media">x</button>
+                    {
+                      progress > 0 && (
+                        <div>
+                          {
+                            (progress < 100 && (key + 1) === data.length) ? (
+                              <ProgressBar
+                                progress={progress}
+                                size={80}
+                                strokeWidth={3}
+                                circleOneStroke="#f1ecf3b0"
+                                circleTwoStroke="#A01B88"
+                              />
+                            )
+                              : (
+                                <div>
+                                  {
+                                    loading === 'pending' && (key + 1) === data.length
+                                      ? <Loader />
+                                      : (
+                                        <>
+                                          {
+                                            (key + 1) < data.length
+                                              ? (
+                                                <>
+                                                  <img
+                                                    src={
+                                                      upload.uri || URL.createObjectURL(upload)
+                                                    }
+                                                    alt={upload}
+                                                  />
+                                                  <button onClick={() => removeItem(upload)} type="button" className="text-white btn-sm btn-danger radius50  remove-media">x</button>
+
+                                                </>
+                                              )
+                                              : loading === 'success' && (key + 1) === data.length && (
+                                                <>
+                                                  <img
+                                                    src={
+                                                      upload.uri || URL.createObjectURL(upload)
+                                                    }
+                                                    alt={upload}
+                                                  />
+                                                  <button onClick={() => removeItem(upload)} type="button" className="text-white btn-sm btn-danger radius50  remove-media">x</button>
+                                                </>
+                                              )
+                                          }
+                                        </>
+                                      )
+                                  }
+                                </div>
+                              )
+
+                          }
+                        </div>
+                      )
+                    }
                   </div>
                 ))
               }

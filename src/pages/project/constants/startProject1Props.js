@@ -15,6 +15,7 @@ export const formBuilderProjectsStartProps = (
     handleChange,
     btnMethod,
     loading,
+    loadingMedia,
     errors
   }
 ) => {
@@ -34,6 +35,7 @@ export const formBuilderProjectsStartProps = (
         excuseSkeleton,
         setFormData,
         progress,
+        loading: loadingMedia,
         validations: {
           required: true,
           pattern: validationPatterns.image
@@ -137,6 +139,7 @@ export const formBuilderProjectsStartProps = (
         removeItem,
         setFormData,
         progress,
+        loading: loadingMedia,
         validations: {
           required: true,
           pattern: validationPatterns.image
@@ -220,13 +223,8 @@ export const formBuilderProjectsStartProps = (
 export const title = (
   {
     formData,
-    categories,
-    multiple,
-    removeItem,
-    setFormData,
     skeleton,
     excuseSkeleton,
-    progress,
     handleBlur,
     handleChange,
     btnMethod,

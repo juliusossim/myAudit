@@ -89,6 +89,11 @@ export const approvalStatus = [
   'deleted',
   'none'
 ];
+export const approvalColors = {
+  deleted: 'secondary',
+  approved: 'primary',
+  paused: 'secondary'
+};
 export const popularProjects = [
   {
     id: 1,

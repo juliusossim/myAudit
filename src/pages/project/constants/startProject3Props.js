@@ -18,7 +18,8 @@ const formBuilderProjectsPreviewProps = (
     handleDateChange,
     errors,
     minDate,
-    minStartDate
+    minStartDate,
+    loadingMedia
   }
 ) => {
   const propsIndividual = [
@@ -58,6 +59,7 @@ const formBuilderProjectsPreviewProps = (
         removeItem,
         setFormData,
         progress,
+        loading: loadingMedia,
         validations: {
           required: true,
           pattern: validationPatterns.image
@@ -141,8 +143,8 @@ const formBuilderProjectsPreviewProps = (
         label: 'State',
         options: states,
         optionIndex: 'name',
-        valueIndex: 'value',
-        value: formData?.location || '',
+        valueIndex: 'stateId',
+        value: formData?.state || '',
         validations: {
           required: false
         },
@@ -155,13 +157,13 @@ const formBuilderProjectsPreviewProps = (
       kind: 'select2',
       props: {
         className: 'w-100 m-b-20 col-md-6',
-        name: 'city',
+        name: 'lga',
         label: 'LGA',
         options: lgas,
         optionIndex: 'name',
-        valueIndex: 'value',
+        valueIndex: 'id',
         titleIndex: 'description',
-        value: formData.city || '',
+        value: formData.lga || '',
         validations: {
           required: true
         },
@@ -267,6 +269,7 @@ const formBuilderProjectsPreviewProps = (
         removeItem,
         setFormData,
         progress,
+        loading: loadingMedia,
         validations: {
           required: true,
           pattern: validationPatterns.image
@@ -372,9 +375,9 @@ const formBuilderProjectsPreviewProps = (
         name: 'state',
         label: 'State',
         options: states,
-        optionIndex: 'name',
-        valueIndex: 'value',
-        value: formData?.location || '',
+        optionIndex: 'stateName',
+        valueIndex: 'stateId',
+        value: formData?.state || '',
         validations: {
           required: false
         },
@@ -387,16 +390,16 @@ const formBuilderProjectsPreviewProps = (
       kind: 'select2',
       props: {
         className: 'w-100 m-b-20 col-md-6',
-        name: 'city',
+        name: 'lga',
         label: 'LGA',
         options: lgas,
         optionIndex: 'name',
-        valueIndex: 'value',
-        value: formData.city || '',
+        valueIndex: 'id',
+        value: formData.lga || '',
         validations: {
           required: true
         },
-        error: errors?.city,
+        error: errors?.lga,
         onBlur: handleBlur,
         onChange: handleChange
       }

@@ -46,7 +46,7 @@ const ModalTemplate = ({
                 <p className="d-none">
                   {
                     status === 'success'
-                    && setTimeout(handleClose, 3000)
+                    && setTimeout(handleClose, 5000)
                   }
                 </p>
               </div>

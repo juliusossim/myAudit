@@ -1,4 +1,6 @@
 import PNotify from 'pnotify/dist/es/PNotify';
+import 'pnotify/dist/PNotifyBrightTheme.css';
+
 /**
  *
  * @param slug the slug to convert to normal string

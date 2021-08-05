@@ -10,6 +10,7 @@ const NewPassword = lazy(() => import('../pages/authentication/NewPassword'));
 const CreateProject = lazy(() => import('../pages/project/CreateProject'));
 const Unauthorized = lazy(() => import('../pages/authentication/Unauthorized'));
 const Profile = lazy(() => import('../pages/profile/Index'));
+const ProjectDetails = lazy(() => import('../pages/project/details/ProjectDetails'));
 
 const routes = [
   {
@@ -67,6 +68,11 @@ const routes = [
   {
     path: '/create-project',
     component: CreateProject,
+    exact: true
+  },
+  {
+    path: '/project/details',
+    component: ProjectDetails,
     exact: true
   },
   {

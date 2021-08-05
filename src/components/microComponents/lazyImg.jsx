@@ -8,7 +8,7 @@ import React, { useState, useEffect } from 'react';
 
 const placeHolder = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkqAcAAIUAgUW0RjgAAAAASUVORK5CYII=';
 
-const LazyImage = ({ src, alt }) => {
+const LazyImage = ({ src, alt, cls }) => {
   const [imageSrc, setImageSrc] = useState(placeHolder);
   const [imageRef, setImageRef] = useState();
 
@@ -59,7 +59,7 @@ const LazyImage = ({ src, alt }) => {
   }, [src, imageSrc, imageRef]);
   return (
     <img
-      className="lazyImage"
+      className={`${cls} lazyImage`}
       ref={setImageRef}
       src={imageSrc}
       alt={alt}

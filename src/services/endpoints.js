@@ -29,6 +29,7 @@ const paths = {
   // projects
   CREATE_PROJECT_NAME: `${servers.project}${projectEndpoints.createProjectName}`,
   CREATE_PROJECT: `${servers.project}${projectEndpoints.createProject}`,
+  GET_PROJECT: `${servers.project}${projectEndpoints.getProject}`,
   VIEW_PROJECTS: `${servers.project}${projectEndpoints.viewProjects}`,
   VIEW_PROJECT: `${servers.project}${projectEndpoints.viewProject}`,
   EDIT_PROJECT: `${servers.project}${projectEndpoints.editProject}`,
@@ -41,6 +42,8 @@ const paths = {
   PROJECT_BY_STATUS: `${servers.project}${projectEndpoints.projectByStatus()}`,
   SUBMIT_PROJECT: `${servers.project}${projectEndpoints.submitProject}`,
   PROJECT_CATEGORIES: `${servers.project}${projectEndpoints.projectCategories}`,
+  STATE_LGAS: `${servers.project}${projectEndpoints.stateLgas}`,
+  EDIT_PROJECT_REQUEST: `${servers.project}${projectEndpoints.editProjectRequest}`,
 
   // profile
   ME: `${servers.auth}${profileEndpoints.me}`,
@@ -51,7 +54,6 @@ const paths = {
   NOTIFICATIONS: `${servers.project}${profileEndpoints.notifications}`,
   MY_PROJECTS: `${servers.project}${projectEndpoints.myProjects}`,
   PROFILES: `${servers.auth}${profileEndpoints.getProfile}`
-
 };
 
 export default paths;

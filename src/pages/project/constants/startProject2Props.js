@@ -36,14 +36,14 @@ const formBuilderProjectsStart2Props = (
     kind: 'select2',
     props: {
       className: 'w-100 m-b-20 col-6',
-      name: 'location',
+      name: 'state',
       label: 'State',
       options: states,
-      optionIndex: 'name',
-      valueIndex: 'value',
+      optionIndex: 'stateName',
+      valueIndex: 'stateId',
       skeleton,
       excuseSkeleton,
-      value: formData?.location || '',
+      value: formData?.state || '',
       validations: {
         required: false
       },
@@ -56,15 +56,15 @@ const formBuilderProjectsStart2Props = (
     kind: 'select2',
     props: {
       className: 'w-100 m-b-20 col-6',
-      name: 'city',
+      name: 'lga',
       label: 'LGA',
       options: lgas,
       optionIndex: 'name',
-      valueIndex: 'value',
+      valueIndex: 'id',
       skeleton,
       excuseSkeleton,
       titleIndex: 'description',
-      value: formData.city || '',
+      value: formData.lga || '',
       validations: {
         required: true
       },

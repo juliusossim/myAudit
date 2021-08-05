@@ -28,9 +28,11 @@ const Notifications = () => {
           <div className="pl-1">
             {item.message}
           </div>
-          <small>
-            {item.reason}
-          </small>
+          <div>
+            <small>
+              {item.reason}
+            </small>
+          </div>
         </div>
       </CardContent>
     </Card>

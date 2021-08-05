@@ -1,12 +1,31 @@
-import React, { Suspense } from 'react';
+import React, {
+  Suspense, useCallback, useEffect
+} from 'react';
 import { Switch, Route } from 'react-router-dom';
 
+import { useDispatch } from 'react-redux';
 import MainPortal from './routes/MainPortal';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import Loader from './components/microComponents/loader';
+import { projectAction } from './redux/actions/projectActions';
 
 function App() {
+  const dispatch = useDispatch();
+  const apiMethod = (
+    {
+      method: 'get',
+      options: {
+        endpoint: 'STATE_LGAS'
+      }
+    }
+  );
+  const getStateLgas = useCallback(() => dispatch(projectAction(
+    { action: apiMethod.options.endpoint, routeOptions: apiMethod }
+  )), []);
+  useEffect(() => {
+    getStateLgas();
+  }, []);
   return (
     <Suspense fallback={(
       <div style={{

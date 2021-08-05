@@ -9,6 +9,14 @@ const initialState = {
     data: {},
     status: 'initial'
   },
+  project1: {
+    data: {},
+    status: 'initial'
+  },
+  getProject: {
+    data: {},
+    status: 'initial'
+  },
   projectByStatus: {
     data: {},
     status: 'initial'
@@ -34,6 +42,23 @@ const initialState = {
     status: 'initial'
   },
   projectCategories: {
+    data: {},
+    status: 'initial'
+  },
+  initProject: {
+    data: {},
+    status: 'initial'
+  },
+  media: {
+    data: {},
+    status: 'initial'
+  },
+  deleteMedia: {
+    data: {},
+    status: 'initial'
+  },
+
+  stateLga: {
     data: {},
     status: 'initial'
   }
@@ -67,27 +92,53 @@ const projectReducer = (state = initialState, { type, response, error }) => {
       }
     };
 
-  case constants.SUBMIT_PROJECT_PENDING:
+  case constants.GET_PROJECT_PENDING:
     return {
       ...state,
-      submitProject: {
+      getProject: {
         data: {},
         status: 'pending'
       }
     };
-  case constants.SUBMIT_PROJECT_SUCCESS:
+  case constants.GET_PROJECT_SUCCESS:
     return {
       ...state,
-      submitProject: {
-        ...state.submitProject,
+      getProject: {
+        ...state.getProject,
         data: response,
         status: 'success'
       }
     };
-  case constants.PROJECT_FAILURE:
+  case constants.GET_PROJECT_FAILURE:
     return {
       ...state,
-      submitProject: {
+      getProject: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.INIT_PROJECT_PENDING:
+    return {
+      ...state,
+      initProject: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.INIT_PROJECT_SUCCESS:
+    return {
+      ...state,
+      initProject: {
+        ...state.initProject,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.INIT_PROJECT_FAILURE:
+    return {
+      ...state,
+      initProject: {
         data: error || {},
         status: 'failed'
       }
@@ -122,7 +173,7 @@ const projectReducer = (state = initialState, { type, response, error }) => {
   case constants.SUBMIT_PROJECT_PENDING:
     return {
       ...state,
-      submit_project: {
+      submitProject: {
         data: {},
         status: 'pending'
       }
@@ -130,8 +181,8 @@ const projectReducer = (state = initialState, { type, response, error }) => {
   case constants.SUBMIT_PROJECT_SUCCESS:
     return {
       ...state,
-      submit_project: {
-        ...state.submit_project,
+      submitProject: {
+        ...state.submitProject,
         data: response,
         status: 'success'
       }
@@ -139,7 +190,7 @@ const projectReducer = (state = initialState, { type, response, error }) => {
   case constants.SUBMIT_PROJECT_FAILURE:
     return {
       ...state,
-      submit_project: {
+      submitProject: {
         data: error || {},
         status: 'failed'
       }
@@ -168,6 +219,34 @@ const projectReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       project: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.EDIT_PROJECT_1_PENDING:
+    return {
+      ...state,
+      project1: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.EDIT_PROJECT_1_SUCCESS:
+    return {
+      ...state,
+      project1: {
+        ...state.project1,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.EDIT_PROJECT_1_FAILURE:
+    return {
+      ...state,
+      project1: {
         data: error || {},
         status: 'failed'
       }
@@ -336,6 +415,99 @@ const projectReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       projectCategories: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.UPLOAD_MEDIA_PENDING:
+    return {
+      ...state,
+      media: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.UPLOAD_MEDIA_PROGRESS:
+    return {
+      ...state,
+      logProgress: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.UPLOAD_MEDIA_SUCCESS:
+    return {
+      ...state,
+      media: {
+        ...state.media,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.UPLOAD_MEDIA_FAILURE:
+    return {
+      ...state,
+      media: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.DELETE_MEDIA_PENDING:
+    return {
+      ...state,
+      deleteMedia: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.DELETE_MEDIA_SUCCESS:
+    return {
+      ...state,
+      deleteMedia: {
+        ...state.deleteMedia,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.DELETE_MEDIA_FAILURE:
+    return {
+      ...state,
+      deleteMedia: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.STATE_LGAS_PENDING:
+    return {
+      ...state,
+      stateLga: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.STATE_LGAS_SUCCESS:
+    return {
+      ...state,
+      stateLga: {
+        ...state.stateLga,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.STATE_LGAS_FAILURE:
+    return {
+      ...state,
+      stateLga: {
         data: error || {},
         status: 'failed'
       }

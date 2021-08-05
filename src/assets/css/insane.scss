@@ -1,0 +1,102 @@
+.three-d-pile {
+  transform:
+    scale(0.75)
+    rotateY(-30deg)
+    rotateX(45deg)
+    translateZ(4.5rem);
+  transform-origin: 50% 100%;
+  transform-style: preserve-3d;
+  box-shadow: 1rem 1rem 2rem rgba(0,0,0,0.25);
+  transition: 0.6s ease transform;
+
+  &:hover {
+    transform: scale(1);
+  }
+
+  &::before {
+    transform: translateZ(4rem);
+    &:hover {
+      transform: translateZ(0);
+    }
+  }
+
+  &::after {
+    transform: translateZ(-4rem);
+    &:hover {
+      transform: translateZ(-1px);
+    }
+  }
+}
+.tilt-right{
+    transform:
+      perspective(800px)
+      rotateY(25deg) scale(0.9)
+      rotateX(10deg);
+    filter: blur(2px);
+    opacity: 0.5;
+    transition: 0.6s ease all;
+
+    &:hover {
+      transform:
+        perspective(800px)
+        rotateY(-15deg)
+        translateY(-50px)
+        rotateX(10deg)
+        scale(1);
+      filter: blur(0);
+      opacity: 1;
+    }
+}
+.tilt-up {
+  transform:
+    perspective(900px)
+    rotateX(60deg)
+    scale(0.7);
+  box-shadow: 0px 20px 100px #555;
+  transition:0.5s ease all;
+
+  &:hover {
+    transform:
+      rotate(0deg)
+      scale(1)
+      translateY(10px);
+    @extend .bg-farm
+  }
+}
+.three-bgs{
+  height: 100%;
+/* max-height: 600px; */
+  //width: 1000px;
+  background-color: hsla(200,40%,30%,.4);
+  background-image:
+    url('https://78.media.tumblr.com/cae86e76225a25b17332dfc9cf8b1121/tumblr_p7n8kqHMuD1uy4lhuo1_540.png'),
+    url('https://78.media.tumblr.com/66445d34fe560351d474af69ef3f2fb0/tumblr_p7n908E1Jb1uy4lhuo1_1280.png'),
+    url('https://78.media.tumblr.com/8cd0a12b7d9d5ba2c7d26f42c25de99f/tumblr_p7n8kqHMuD1uy4lhuo2_1280.png'),
+    url('https://78.media.tumblr.com/5ecb41b654f4e8878f59445b948ede50/tumblr_p7n8on19cV1uy4lhuo1_1280.png'),
+    url('https://78.media.tumblr.com/28bd9a2522fbf8981d680317ccbf4282/tumblr_p7n8kqHMuD1uy4lhuo3_1280.png');
+  background-repeat: repeat-x;
+  background-position:
+    0 20%,
+    0 100%,
+    0 50%,
+    0 100%,
+    0 0;
+  background-size:
+    2500px,
+    800px,
+    500px 200px,
+    1000px,
+    400px 260px;
+  animation: 50s para infinite linear;
+}
+
+@keyframes para {
+  100% {
+    background-position:
+      -5000px 20%,
+      -800px 95%,
+      500px 50%,
+      1000px 100%,
+      400px 0;
+  }
+}
