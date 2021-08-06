@@ -161,7 +161,8 @@ export const patch = ({
  * @param {string} endpoint
  * @param {string} param
  * @param {boolean} auth
+ * @param {string} pQuery
  */
 export const del = ({
-  endpoint, param, auth = true
-}) => fetchBackend(endpoint, 'DELETE', auth, null, null, param);
+  endpoint, param, auth = true, pQuery
+}) => fetchBackend(endpoint, 'DELETE', auth, null, pQuery, param);

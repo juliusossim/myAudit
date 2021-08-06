@@ -9,7 +9,9 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import { useLocation, useParams } from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
-import { IoArrowBackCircleOutline, IoArrowForwardCircleOutline } from 'react-icons/all';
+import {
+  FaArrowDown, FaArrowRight, FaArrowUp, IoArrowBackCircleOutline, IoArrowForwardCircleOutline
+} from 'react-icons/all';
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import {
@@ -17,16 +19,17 @@ import {
 } from '../../../redux/actions/projectActions';
 import LazyImage from '../../../components/microComponents/lazyImg';
 import Kat from '../../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg';
-import { approvalStatus, approvalColors } from '../../../utilities/dummyData';
-import { stringCaps } from '../../../utilities/stringOperations';
+import { approvalStatus, approvalColors, popularProjects } from '../../../utilities/dummyData';
+import { getOneName, stringCaps } from '../../../utilities/stringOperations';
 import { positiveDiffs } from '../../../utilities/dateOperations';
+import CustomCarousel from '../../../components/microComponents/carousel';
 
 /**
  *
  * @returns {JSX.Element}
  * @constructor
  */
-const ProjectDetails = () => {
+const ProjectDetails = (items) => {
   const { id } = useLocation();
   const { tab } = useParams();
 
@@ -36,11 +39,26 @@ const ProjectDetails = () => {
   /* state */
   const [formData, setFormData] = useState({ id });
   const [accordionTab, setAccordionTab] = useState(tab || 1);
+  const [temp1, setTemp1] = useState([]);
+  const [temp2, setTemp2] = useState([]);
+  const [activeMedia, setActiveMedia] = useState(null);
   const [item] = useState({});
+  const [collapse, setCollapse] = useState(true);
 
-  useEffect(() => {
-    dispatch(projectCategories());
-  }, []);
+  // useEffect(() => {
+  //   if (items?.length > 0) {
+  //     const favoured = _.head(items);
+  //     setActiveMedia(favoured);
+  //   }
+  // }, []);
+  // useEffect(() => {
+  //   if (activeMedia !== null) {
+  //     const box = _.takeWhile(
+  //       (param, key) => key > _.lastIndexOf(items, (proj) => proj === activeMedia)
+  //     );
+  //     setTemp1(box);
+  //   }
+  // }, [activeMedia]);
 
   const Story = lazy(() => import('./Story'));
   const Project1 = lazy(() => import('../Project1'));
@@ -75,7 +93,44 @@ const ProjectDetails = () => {
   return (
     <div className="content">
       <div className="w-100 margin-center m-t-40 ">
-        <div className="login-form-container p-20 bg-light">
+        <div className={`login-form-container p-20 bg-light ${collapse && 'h-80h scroll-y neg-m-b-60'}`}>
+          <div className="row justify-content-between">
+            <div className="text-wema">
+              {
+                collapse
+                  ? (
+                    <p>
+                      Resized to fit device viewport, both page and window scrolling enabled.
+                    </p>
+                  )
+                  : (
+                    <p>
+                      Full page, normal scroll.
+                    </p>
+                  )
+              }
+            </div>
+            <div className="float-right">
+              <Button onClick={() => setCollapse(!collapse)}>
+                {
+                  collapse
+                    ? (
+                      <div className="float-right text-wema">
+                        <span>page</span>
+                        <FaArrowDown />
+                      </div>
+                    )
+                    : (
+                      <div className="float-right text-wema">
+                        <span>window</span>
+                        <FaArrowUp />
+                      </div>
+                    )
+                }
+
+              </Button>
+            </div>
+          </div>
           <div className="d-md-flex ">
             <div className=" max-w-750">
               <CardMedia className="">
@@ -232,6 +287,95 @@ const ProjectDetails = () => {
 
             {
               displayProject()
+            }
+          </div>
+          <div className="row projects text-left mt-5 ">
+            <div className="row justify-content-between ml-5 mr-5">
+              <p className="bold">
+                Similar Projects
+              </p>
+              <button type="button" className="text-wema float-right viewMoreBtn">
+                View More &gt;
+              </button>
+            </div>
+            {
+              popularProjects.map(
+                (tem, key) => (
+                  <div key={`project ${tem.id}`} className="col-md-3 mt-5">
+                    <Card className="ml-2">
+                      <CardContent>
+                        <div>
+                          <LazyImage src={tem.photo} alt={tem.name} />
+                        </div>
+                        <h3>
+                          {tem.name}
+                        </h3>
+                        <small>
+                          {tem.location}
+                        </small>
+                        <div>
+                          {tem.description}
+                        </div>
+                        <span className="pr-1 raised">
+                          {`N${tem.raised}`}
+                        </span>
+                        <span>
+                          raised of
+                          {' '}
+                          {`N${tem.target}`}
+                        </span>
+                        <div className="progress" title={`N${(tem.target - tem.raised)} to hit target`}>
+                          <div
+                            className="progress-bar bg-wema"
+                            role="progressbar"
+                            aria-valuenow={(tem.raised / tem.target) * 100}
+                            style={{ width: `${(tem.raised / tem.target) * 100}%` }}
+                            aria-valuemin="0"
+                            aria-valuemax="100"
+                            aria-labelledby="progress_bar"
+                          />
+                        </div>
+                        <div className="col-6 col-md-4">
+                          <p>
+                            Posted by:
+                          </p>
+                          <p className="posted-by">
+                            {getOneName(tem.manager_name)}
+                          </p>
+                        </div>
+                        <div className="col-6 col-md-4">
+                          <p>
+                            Fund %:
+                          </p>
+                          <p className="posted-by">
+                            { `${((tem.raised / tem.target) * 100).toFixed(0)}%` }
+                          </p>
+                        </div>
+                        <div className="col-6 col-md-4">
+                          <p>
+                            Duration
+                          </p>
+                          {
+                            positiveDiffs(new Date(tem.created_at), tem.duration).diff !== 0
+                              ? (
+                                <p className={positiveDiffs(new Date(tem.created_at), tem.duration).left ? 'text-wema posted-by' : 'text-danger'}>
+                                  {positiveDiffs(new Date(tem.created_at), tem.duration).diff}
+                                  <span className="pl-1">
+                                    {positiveDiffs(new Date(tem.created_at), tem.duration).left ? 'days left' : 'days due'}
+                                  </span>
+                                </p>
+                              ) : (
+                                <p>
+                                  due now
+                                </p>
+                              )
+                          }
+                        </div>
+                      </CardContent>
+                    </Card>
+                  </div>
+                )
+              )
             }
           </div>
         </div>

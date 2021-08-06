@@ -73,6 +73,13 @@ const Project3 = ({ data, setAccordionTab }) => {
     dispatch(getProject(formData.id));
   }, []);
 
+  useEffect(() => {
+    if (store.deleteMedia.status === 'success') {
+      removeAtIndex(formData.deleteMedia);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [store.deleteMedia?.status]);
+
   // useEffect(() => {
   //   if (store.media?.status === 'success') {
   //     setFormData({ ...formData, files: [...formData.files, store?.data?.data] });
@@ -230,13 +237,15 @@ const Project3 = ({ data, setAccordionTab }) => {
   };
 
   const deleteProjectMedia = (item) => {
+    console.log(item);
+    setFormData({ ...formData, deleteMedia: item });
     dispatch(projectAction(
       {
         action: 'DELETE_MEDIA',
         routeOptions: apiOptions({
-          method: 'patch',
+          method: 'del',
           param: formData.id,
-          body: item.uri,
+          pQuery: { mediaId: item.uri },
           endpoint: 'DELETE_PROJECT_MEDIA',
           auth: true
         })
