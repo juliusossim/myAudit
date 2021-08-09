@@ -52,7 +52,7 @@ const Header = () => {
                   <Link to="/">
                     <button type="button" className="btn bg-transparent text-wema center-center sign-in" onClick={() => logout('/', false)}><div>Sign Out</div></button>
                   </Link>
-                  <Link to="/create-project">
+                  <Link to="/create-project/1/0">
                     <button className="btn " type="button">Start Project</button>
                   </Link>
                   <Link to="/me" className="size4 ml-md-1 radius50 bg-light flex-h-center border-wema p-1">

@@ -66,12 +66,12 @@ const routes = [
     exact: true
   },
   {
-    path: '/create-project',
+    path: '/create-project/:id/:tab',
     component: CreateProject,
     exact: true
   },
   {
-    path: '/project/details',
+    path: '/project/details/:id/:tab',
     component: ProjectDetails,
     exact: true
   },

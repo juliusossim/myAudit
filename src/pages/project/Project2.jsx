@@ -9,7 +9,7 @@ import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import NaijaStates from 'naija-state-local-government';
-import { Link } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import FormBuilder from '../../components/form/builders/form';
 import { validateField } from '../../utilities/validation';
 import { camelToString, notifier, stringDoesNotExist } from '../../utilities/stringOperations';
@@ -23,6 +23,7 @@ import {
 import { findItem } from '../../utilities/arrayOperations';
 import ModalTemplate from '../../components/temps/modalTemps/temp';
 import Loader from '../../components/microComponents/loader';
+import SimpleSnackbar from '../../components/microComponents/snackBar';
 
 /**
  *
@@ -39,7 +40,8 @@ const Project2 = ({ data, setData, setAccordionTab }) => {
   const [show, setShow] = useState(false);
   const [lgas, setLgas] = useState([]);
   const [states, setStates] = useState([]);
-  const [skeleton, setSkeleton] = useState(false);
+  const [openSnack, setOpenSnack] = useState(false);
+  const [message, setMessage] = useState('');
   const [minDate, setMinDate] = useState(new Date());
   const [minStartDate] = useState(addDays(Moment.now(), 5));
 
@@ -68,11 +70,22 @@ const Project2 = ({ data, setData, setAccordionTab }) => {
     }
   }, [store.project.status]);
 
+  useEffect(() => {
+    if (store.project1?.status === 'failed') {
+      setOpenSnack(true);
+      setMessage('your progress is not saved');
+    } else if (store.project1?.status === 'success') {
+      setOpenSnack(true);
+      setMessage('your previous step progress is saved');
+    }
+  }, [store.project1.status]);
+
   const handleClose = () => {
     setShow(false);
     // console.log(formData, store.data.data);
     setData({ ...formData, ...store.data?.data });
-    setAccordionTab(3);
+    window.location.replace(`/create-project/${formData.id}/3`);
+    // return <Redirect to={`/create-project/${formData.id}/3`} />;
   };
 
   const handleDateChange = ({ date, name }) => {
@@ -187,6 +200,7 @@ const Project2 = ({ data, setData, setAccordionTab }) => {
           }
         </div>
       </div>
+      <SimpleSnackbar message={message} open={openSnack} setOpen={setOpenSnack} />
 
       <Modal
         className={show ? 'max-w-400 right top' : 'max-w-400 right top off'}

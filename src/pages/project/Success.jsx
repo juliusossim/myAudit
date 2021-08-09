@@ -36,9 +36,11 @@ const Success = () => (
     <div className="text-wema my-4">
       Your Project is Sent, An admin will review your request
     </div>
-    <button type="button" onClick={() => window.location.reload()} className="btn btn-small">
-      Start Another Project
-    </button>
+    <Link to="/create-project/1/0">
+      <button type="button" className="btn btn-small">
+        Start Another Project
+      </button>
+    </Link>
     {/* </div> */}
     <div className="text-center ml-2 w-25 btn-small btn">
       <Link to="/me" className="text-white">

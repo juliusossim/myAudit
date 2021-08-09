@@ -38,6 +38,7 @@ const paths = {
   PROJECT_UPDATES: `${servers.project}${projectEndpoints.showProjectUpdate}`,
   UPDATE_PROJECT: `${servers.project}${projectEndpoints.updateProject}`,
   PROJECT_DETAILS: `${servers.project}${projectEndpoints.projectDetails}`,
+  SIMILAR_PROJECTS: `${servers.project}${projectEndpoints.similarProjects}`,
   PROJECT_SUMMARY: `${servers.project}${projectEndpoints.projectSummary}`,
   PROJECT_BY_STATUS: `${servers.project}${projectEndpoints.projectByStatus()}`,
   SUBMIT_PROJECT: `${servers.project}${projectEndpoints.submitProject}`,

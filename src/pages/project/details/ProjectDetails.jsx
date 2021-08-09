@@ -1,10 +1,10 @@
 import React, {
-  useEffect, useState, lazy
+  useEffect, useState, lazy, useCallback
 } from 'react';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Avatar from '@material-ui/core/Avatar';
 import IconButton from '@material-ui/core/IconButton';
 import { useLocation, useParams } from 'react-router-dom';
@@ -15,6 +15,8 @@ import {
 import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import {
+  getProject,
+  projectAction,
   projectCategories
 } from '../../../redux/actions/projectActions';
 import LazyImage from '../../../components/microComponents/lazyImg';
@@ -22,7 +24,7 @@ import Kat from '../../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg';
 import { approvalStatus, approvalColors, popularProjects } from '../../../utilities/dummyData';
 import { getOneName, stringCaps } from '../../../utilities/stringOperations';
 import { positiveDiffs } from '../../../utilities/dateOperations';
-import CustomCarousel from '../../../components/microComponents/carousel';
+import { apiOptions } from '../../../services/fetch';
 
 /**
  *
@@ -30,20 +32,69 @@ import CustomCarousel from '../../../components/microComponents/carousel';
  * @constructor
  */
 const ProjectDetails = (items) => {
-  const { id } = useLocation();
-  const { tab } = useParams();
+  const { id, tab } = useParams();
 
   /* redux */
   const dispatch = useDispatch();
+  const store = useSelector((state) => state.project);
 
   /* state */
-  const [formData, setFormData] = useState({ id });
+  const [project, setProject] = useState({});
+  const [similar, setSimilar] = useState([]);
   const [accordionTab, setAccordionTab] = useState(tab || 1);
   const [temp1, setTemp1] = useState([]);
   const [temp2, setTemp2] = useState([]);
   const [activeMedia, setActiveMedia] = useState(null);
-  const [item] = useState({});
   const [collapse, setCollapse] = useState(true);
+
+  const retrieveSimilarProjects = useCallback(() => {
+    dispatch(projectAction(
+      {
+        action: 'SIMILAR_PROJECTS',
+        routeOptions: apiOptions({
+          method: 'get',
+          param: id,
+          endpoint: 'SIMILAR_PROJECTS',
+          auth: true,
+          afterParam: 'similar'
+        })
+      }
+    ));
+  }, []);
+
+  const projectDetails = useCallback(() => {
+    dispatch(projectAction(
+      {
+        action: 'PROJECT_DETAILS',
+        routeOptions: apiOptions({
+          method: 'get',
+          param: id,
+          endpoint: 'PROJECT_DETAILS',
+          auth: true,
+          afterParam: 'details'
+        })
+      }
+    ));
+  }, []);
+
+  useEffect(() => {
+    projectDetails();
+  }, []);
+  useEffect(() => {
+    retrieveSimilarProjects();
+  }, [project]);
+
+  useEffect(() => {
+    if (store.projectDetails?.status === 'success') {
+      setProject({ ...store.projectDetails?.data?.data });
+    }
+  }, [store.projectDetails?.status]);
+
+  useEffect(() => {
+    if (store.similarProjects?.status === 'success') {
+      setSimilar([...store.similarProjects?.data?.data]);
+    }
+  }, [store.similarProjects.status]);
 
   // useEffect(() => {
   //   if (items?.length > 0) {
@@ -61,29 +112,11 @@ const ProjectDetails = (items) => {
   // }, [activeMedia]);
 
   const Story = lazy(() => import('./Story'));
-  const Project1 = lazy(() => import('../Project1'));
-  const Project2 = lazy(() => import('../Project2'));
-  const Project3 = lazy(() => import('../Project3'));
   const Success = lazy(() => import('../Success'));
 
   const displayProject = () => {
     switch (accordionTab) {
     case 2:
-      return (
-        <Project2
-          setAccordionTab={setAccordionTab}
-          data={formData}
-          setData={setFormData}
-        />
-      );
-    case 3:
-      return (
-        <Project3
-          setAccordionTab={setAccordionTab}
-          data={{ id: formData.id }}
-        />
-      );
-    case 4:
       return <Success />;
     default:
       return <Story />;
@@ -177,47 +210,53 @@ const ProjectDetails = (items) => {
                   <CardContent>
                     <div className="">
                       <h3>
-                        Operation feed the nation
+                        <span>{project.title}</span>
                         <Chip
                           color={
-                            approvalColors[approvalStatus[item.approvalStatus]]
+                            approvalColors[approvalStatus[project.approvalStatus]]
                           }
-                          label={stringCaps(approvalStatus[item.approvalStatus])}
+                          label={stringCaps(approvalStatus[project.approvalStatus])}
                         />
                       </h3>
                       <small>
-                        {item.location || 'Anonymous location'}
+                        {project.location || 'Anonymous location'}
                       </small>
                       <div className="col-md-5 mt-5">
                         <div className="d-flex">
                           <div className="mr-5">
                             Donors
-                            <p className="bold">{item.donors || 'None'}</p>
+                            <p className="bold">{project.donors || 'None'}</p>
                           </div>
                           <div>
                             Shares
-                            <p className="bold">{item.shares || 0}</p>
+                            <p className="bold">{project.shares || 0}</p>
                           </div>
                         </div>
                       </div>
                       <div className="d-flex mt-5 mb-2">
                         <div className="pr-1 raised">
-                          <span className="bold mr-1">{`N${item.amountRaised?.toLocaleString() || 0}`}</span>
+                          <span className="bold mr-1">
+                            <span>&#8358;</span>
+                            {project.amountRaised?.toLocaleString() || 0}
+                          </span>
                           raised
                         </div>
                         <div className="pl-5 ">
                           <span>Target</span>
-                          <span className="bold">{` N${item.donationTarget?.toLocaleString() || 0}`}</span>
+                          <span className="bold pl-1">
+                            <span>&#8358;</span>
+                            {project.donationTarget?.toLocaleString() || 0}
+                          </span>
                         </div>
                       </div>
-                      <div className="progress mt-3 mb-3" title={`N${(item.donationTarget - item.amountRaised || 0).toLocaleString()} to hit target`}>
+                      <div className="progress mt-3 mb-3" title={`#${(project.donationTarget - 8).toLocaleString()} to hit target`}>
                         <div
                           className="progress-bar bg-wema"
                           role="progressbar"
                           aria-valuenow={
-                            (item.amountRaised / item.donationTarget) * 100
+                            (project.amountRaised / project.donationTarget) * 100
                           }
-                          style={{ width: `${(item.amountRaised / item.donationTarget) * 100}%` }}
+                          style={{ width: `${(project.amountRaised / project.donationTarget) * 100}%` }}
                           aria-valuemin="0"
                           aria-valuemax="100"
                           aria-labelledby="progress_bar"
@@ -228,7 +267,7 @@ const ProjectDetails = (items) => {
                           <span>Fund Percent:</span>
                           <span className="bold ml-2">
                             {
-                              ((item.amountRaised / item.donationTarget) * 100)
+                              ((project.amountRaised / project.donationTarget) * 100)
                                 .toFixed(0) || 0
                             }
                             %
@@ -236,7 +275,7 @@ const ProjectDetails = (items) => {
                         </div>
                         <div className="pl-5">
                           {
-                            `Due ${positiveDiffs(new Date(item.endDate))}`
+                            `Due ${positiveDiffs(new Date(project.endDate))}`
                           }
                         </div>
                       </div>

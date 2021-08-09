@@ -9,8 +9,9 @@ export const editProject = 'Projects'; // param = id
 export const editProjectRequest = 'BackOffice/approveProject'; // param = id
 export const getProject = 'Projects'; // param = id
 export const submitProject = 'Projects'; // param = ${id} afterParam = submit
-export const projectSummary = (id) => 'Projects'; // param = ${id} afterParam = summary
-export const projectDetails = (id) => 'Projects'; // param = ${id} afterParam = details
+export const projectSummary = 'Projects'; // param = ${id} afterParam = summary
+export const projectDetails = 'Projects'; // param = ${id} afterParam = details
+export const similarProjects = 'Projects'; // param = ${id} afterParam = similar
 export const updateProject = (id) => 'ProjectUpdates';
 export const showProjectUpdate = (id) => 'ProjectUpdates'; // param = ${id}
 export const editProjectUpdate = (id) => 'ProjectUpdates'; // param = ${id}

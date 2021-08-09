@@ -61,6 +61,14 @@ const initialState = {
   stateLga: {
     data: {},
     status: 'initial'
+  },
+  similarProjects: {
+    data: {},
+    status: 'initial'
+  },
+  editProjectRequest: {
+    data: {},
+    status: 'initial'
   }
 };
 
@@ -252,6 +260,34 @@ const projectReducer = (state = initialState, { type, response, error }) => {
       }
     };
 
+  case constants.EDIT_PROJECT_REQUEST_PENDING:
+    return {
+      ...state,
+      editProjectRequest: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.EDIT_PROJECT_REQUEST_SUCCESS:
+    return {
+      ...state,
+      editProjectRequest: {
+        ...state.editProjectRequest,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.EDIT_PROJECT_REQUEST_FAILURE:
+    return {
+      ...state,
+      editProjectRequest: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
   case constants.PROJECT_DETAILS_PENDING:
     return {
       ...state,
@@ -275,6 +311,34 @@ const projectReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       projectDetails: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.SIMILAR_PROJECTS_PENDING:
+    return {
+      ...state,
+      similarProjects: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.SIMILAR_PROJECTS_SUCCESS:
+    return {
+      ...state,
+      similarProjects: {
+        ...state.similarProjects,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.SIMILAR_PROJECTS_FAILURE:
+    return {
+      ...state,
+      similarProjects: {
         data: error || {},
         status: 'failed'
       }

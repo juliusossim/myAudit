@@ -1,7 +1,6 @@
 import React, {
   useEffect, useCallback, useState
 } from 'react';
-import localforage from 'localforage';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
 import FormBuilder from '../../components/form/builders/form';
@@ -10,11 +9,12 @@ import { camelToString, notifier, stringDoesNotExist } from '../../utilities/str
 import Modal from '../../components/microComponents/modal';
 import { formBuilderProjectsStartProps } from './constants/startProject1Props';
 import {
-  projectCategories, editProject1, uploadMedia
+  projectCategories, editProject1, uploadMedia, projectAction
 } from '../../redux/actions/projectActions';
 import { findItem } from '../../utilities/arrayOperations';
 import ModalTemplate from '../../components/temps/modalTemps/temp';
 import Loader from '../../components/microComponents/loader';
+import { apiOptions } from '../../services/fetch';
 
 /**
  *
@@ -32,6 +32,7 @@ const Project1 = ({
   const [progress, setProgress] = useState(0);
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const showUpload = (err) => notifier({
     type: 'error',
@@ -45,6 +46,14 @@ const Project1 = ({
     }
     return true;
   }, [store.media?.status]);
+
+  useEffect(() => {
+    if (store.deleteMedia.status === 'success') {
+      removeAtIndex(formData.deleteMedia);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [store.deleteMedia?.status]);
+
   useEffect(() => {
     if (store.project1?.status === 'success') {
       setShow(true);
@@ -54,6 +63,7 @@ const Project1 = ({
 
   const handleClose = () => {
     setShow(false);
+    setLoading(false);
     return <Redirect to="/" />;
   };
   const cancelUpload = () => {
@@ -75,7 +85,6 @@ const Project1 = ({
       !== undefined && store?.projectCategories?.data?.data.filter(
       (cat) => cat.id === formData.categoryId
     );
-    console.log(category);
     // const authUser = JSON.parse(localStorage.getItem('loginData'));
     if (stringDoesNotExist(tem.description)) {
       tem.description = `
@@ -90,6 +99,7 @@ const Project1 = ({
   };
 
   const handleSave = () => {
+    setLoading(true);
     const tem = populateFormData();
     dispatch(editProject1(tem));
   };
@@ -153,8 +163,26 @@ const Project1 = ({
     setFormData({ ...formData, file: [...fileCopy] });
   };
 
+  const deleteProjectMedia = (item) => {
+    setFormData({ ...formData, deleteMedia: item });
+    dispatch(projectAction(
+      {
+        action: 'DELETE_MEDIA',
+        routeOptions: apiOptions({
+          method: 'del',
+          param: formData.id,
+          pQuery: { mediaId: item.uri },
+          endpoint: 'DELETE_PROJECT_MEDIA',
+          auth: true
+        })
+      }
+    ));
+  };
+
   const handleContinue = () => {
-    populateFormData();
+    setLoading(false);
+    const tem = populateFormData();
+    dispatch(editProject1(tem));
     setAccordionTab(2);
   };
 
@@ -182,7 +210,7 @@ const Project1 = ({
                 formData,
                 categories: store?.projectCategories?.data?.data,
                 multiple: true,
-                removeItem: removeAtIndex,
+                removeItem: deleteProjectMedia,
                 setFormData: cancelUpload,
                 progress,
                 handleBlur,
@@ -225,7 +253,7 @@ const Project1 = ({
 
         <div className="row">
           {
-            store?.project1?.status === 'pending'
+            loading
            && <Loader />
           }
         </div>

@@ -1,28 +1,18 @@
 import React, {
-  useEffect, useCallback, useState
+  useEffect, useState
 } from 'react';
-import localforage from 'localforage';
 import addDays from 'date-fns/addDays';
 import Moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
-import Avatar from '@material-ui/core/Avatar';
-import IconButton from '@material-ui/core/IconButton';
-import Button from '@material-ui/core/Button';
-import NaijaStates from 'naija-state-local-government';
-import { Link } from 'react-router-dom';
 import FormBuilder from '../../components/form/builders/form';
 import { validateField } from '../../utilities/validation';
-import { camelToString, notifier, stringDoesNotExist } from '../../utilities/stringOperations';
-import Modal from '../../components/microComponents/modal';
-import { formBuilderProjectsStartProps, title } from './constants/startProject1Props';
-import formBuilderProjectsStart2Props from './constants/startProject2Props';
+import { camelToString, notifier } from '../../utilities/stringOperations';
 import formBuilderProjectsPreviewProps from './constants/startProject3Props';
 import {
   editProject, submitProject, uploadMedia, getProject, projectAction
 } from '../../redux/actions/projectActions';
-import { findItem } from '../../utilities/arrayOperations';
-import ModalTemplate from '../../components/temps/modalTemps/temp';
 import Loader from '../../components/microComponents/loader';
+import { apiOptions } from '../../services/fetch';
 
 /**
  *
@@ -41,6 +31,7 @@ const Project3 = ({ data, setAccordionTab }) => {
   const [states, setStates] = useState([]);
   const [minDate, setMinDate] = useState(new Date());
   const [minStartDate] = useState(addDays(Moment.now(), 5));
+  const [loading, setLoading] = useState(false);
 
   const mapIndex = (arr) => arr.map((ar, index) => ({
     value: index + 1,
@@ -52,7 +43,9 @@ const Project3 = ({ data, setAccordionTab }) => {
     title: 'error',
     text: 'media upload failed'
   });
-
+  /**
+  * get States and LGAs
+  * */
   useEffect(() => {
     if (store.stateLga.status === 'success') {
       setStates(store?.stateLga?.data?.data);
@@ -101,16 +94,20 @@ const Project3 = ({ data, setAccordionTab }) => {
   }, [store?.getProject?.status]);
 
   useEffect(() => {
-    if (store?.submitProject?.status === 'success') {
+    if (store?.submitProject?.status === 'pending' || store?.project?.status === 'pending' || store?.editProjectRequest?.status === 'pending') {
+      setLoading(true);
+    }
+    if (store?.submitProject?.status === 'success' || store?.project?.status === 'success' || store?.editProjectRequest?.status === 'success') {
       setAccordionTab(4);
-    } else if (store.submitProject?.status === 'failed') {
+    } else if (store?.submitProject?.status === 'failed' || store?.project?.status === 'failed' || store?.editProjectRequest?.status === 'failed') {
       notifier({
         type: 'error',
         title: 'error',
-        text: 'this project cannot be submitted for approval'
+        text: 'this action failed to execute'
       });
     }
-  }, [store?.submitProject?.status]);
+  },
+  [store?.submitProject?.status, store?.editProjectRequest?.status, store?.project?.status]);
 
   const cancelUpload = () => {
     setFormData({ ...formData, file: '', logo_id: '' });
@@ -118,20 +115,6 @@ const Project3 = ({ data, setAccordionTab }) => {
   const handleDateChange = ({ date, name }) => {
     setFormData({ ...formData, [name]: date });
   };
-  const apiOptions = ({
-    method, param, auth = false, body, endpoint, pQuery
-  }) => (
-    {
-      method,
-      options: {
-        param,
-        body,
-        auth,
-        endpoint,
-        pQuery
-      }
-    }
-  );
   const handleSubmitProject = () => {
     const tem = {
       ...formData
@@ -237,7 +220,6 @@ const Project3 = ({ data, setAccordionTab }) => {
   };
 
   const deleteProjectMedia = (item) => {
-    console.log(item);
     setFormData({ ...formData, deleteMedia: item });
     dispatch(projectAction(
       {
@@ -302,7 +284,7 @@ const Project3 = ({ data, setAccordionTab }) => {
             title="submit for review and approval"
             className=" btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
             type="button"
-            disabled={store?.submitProject?.status === 'pending'}
+            disabled={loading}
             onClick={handleSubmitProject}
           >
             Submit for approval
@@ -311,7 +293,7 @@ const Project3 = ({ data, setAccordionTab }) => {
 
         <div className="row">
           {
-            store?.submitProject?.status === 'pending'
+            loading
             && <Loader />
           }
         </div>

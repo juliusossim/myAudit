@@ -124,10 +124,11 @@ export const uploadFile = ({
  * @param {object} pQuery
  * @param {string} param
  * @param {boolean} auth
+ * @param {string} afterParam
  */
 export const get = ({
-  endpoint, pQuery, param = null, auth = true
-}) => fetchBackend(endpoint, 'GET', auth, null, pQuery, param);
+  endpoint, pQuery, param = null, auth = true, afterParam
+}) => fetchBackend(endpoint, 'GET', auth, null, pQuery, param, null, afterParam);
 
 /**
  *
@@ -166,3 +167,34 @@ export const patch = ({
 export const del = ({
   endpoint, param, auth = true, pQuery
 }) => fetchBackend(endpoint, 'DELETE', auth, null, pQuery, param);
+
+/**
+ *@param {string} method
+ *@param {string} param
+ *@param {boolean} auth
+ *@param {boolean} multipart
+ *@param {any} body
+ *@param {string} endpoint
+ *@param {object} pQuery
+ *@param {string} afterParam
+ *@param {function} setProgress
+ */
+
+export const apiOptions = ({
+  method, param, auth = false, body, setProgress,
+  endpoint, pQuery, afterParam, multipart
+}) => (
+  {
+    method,
+    options: {
+      param,
+      afterParam,
+      body,
+      auth,
+      endpoint,
+      pQuery,
+      multipart,
+      setProgress
+    }
+  }
+);

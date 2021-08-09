@@ -58,18 +58,20 @@ const Projects = () => {
                                       <LazyImage src={item.primaryMedia?.uri} alt={item.title} />
                                     </div>
                                     <div className="col-md-5 mb-5">
-                                      <h3>
-                                        {item.title}
-                                        <Chip
-                                          color={
-                                            approvalColors[approvalStatus[item.approvalStatus]]
-                                          }
-                                          label={stringCaps(approvalStatus[item.approvalStatus])}
-                                        />
-                                      </h3>
-                                      <small>
-                                        {item.location || 'Anonymous location'}
-                                      </small>
+                                      <Link to={{ pathname: `/project/details/${item.projectId}/1`, tab: 1, id: item.projectId }}>
+                                        <h3>
+                                          {item.title}
+                                          <Chip
+                                            color={
+                                              approvalColors[approvalStatus[item.approvalStatus]]
+                                            }
+                                            label={stringCaps(approvalStatus[item.approvalStatus])}
+                                          />
+                                        </h3>
+                                        <small>
+                                          {item.location || 'Anonymous location'}
+                                        </small>
+                                      </Link>
                                       <div className="col-md-5 mt-5">
                                         <div className="d-flex">
                                           <div className="mr-5">
@@ -124,7 +126,7 @@ const Projects = () => {
                                       </div>
                                     </div>
                                     <div className="col-md-2">
-                                      <Link to={{ pathname: '/create-project', tab: 3, id: item.projectId }}>
+                                      <Link to={{ pathname: `/create-project/${item.projectId}/3` }}>
                                         <button type="button" className=" btn-edit text-edit w-100">
                                           <FiEdit className="mt-1 mr-1" />
                                           Edit
