@@ -11,6 +11,7 @@
 @import "mui";
 @import "sizes/sizes";
 @import "mediaSlider";
+@import "gradient";
 //@import "insane";
 @font-face {
   font-family: Poppins;
@@ -455,6 +456,7 @@ header {
 }
 
 main {
+  @extend .theme-bg;
   padding-top: 84px;
 }
 .end-icon {

@@ -9,6 +9,7 @@ import {
 } from '@material-ui/pickers';
 import { FaCheck, FaEye, FaEyeSlash } from 'react-icons/all';
 import Skeleton from '@material-ui/lab/Skeleton';
+import { capitalize } from '@material-ui/core';
 
 const DateInput = (props) => {
   const [show, setShow] = React.useState(true);
@@ -59,6 +60,12 @@ const DateInput = (props) => {
           )
           : (
             <>
+              {props.variant === 'static'
+              && (
+                <label htmlFor={props.name} className={props.value?.length ? 'active-field' : ''}>
+                  {capitalize(props.label)}
+                </label>
+              ) }
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   autoOk

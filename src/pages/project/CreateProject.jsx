@@ -20,7 +20,6 @@ import {
  */
 const CreateProject = () => {
   const { tab, id } = useParams();
-  console.log(id);
   /* redux */
   const dispatch = useDispatch();
 
@@ -73,45 +72,8 @@ const CreateProject = () => {
 
   return (
     <div className="content">
-      <div className="max-w-600 w-600 margin-center m-t-40">
-        <div className={`login-form-container p-20 bg-light ${collapse && 'h-80h scroll-y neg-m-b-60'}`}>
-          <div className="row justify-content-between">
-            <div className="text-wema">
-              {
-                collapse
-                  ? (
-                    <p>
-                      Resized to fit device viewport, both page and window scrolling enabled.
-                    </p>
-                  )
-                  : (
-                    <p>
-                      Full page, normal scroll.
-                    </p>
-                  )
-              }
-            </div>
-            <div className="float-right">
-              <Button onClick={() => setCollapse(!collapse)}>
-                {
-                  collapse
-                    ? (
-                      <div className="float-right text-wema">
-                        <span>page</span>
-                        <FaArrowDown />
-                      </div>
-                    )
-                    : (
-                      <div className="float-right text-wema">
-                        <span>window</span>
-                        <FaArrowUp />
-                      </div>
-                    )
-                }
-
-              </Button>
-            </div>
-          </div>
+      <div className="max-w-600 w-600 margin-center m-t-40 h-80h scroll-y neg-m-b-60">
+        <div className="login-form-container p-20 bg-light">
           <h3 className="bold text-center text-dark border-bottom border-wema border-right-0 border-top-0  ">
             { tab === undefined
               ? formData.title || 'Start a project'

@@ -126,7 +126,7 @@ const Projects = () => {
                                       </div>
                                     </div>
                                     <div className="col-md-2">
-                                      <Link to={{ pathname: `/create-project/${item.projectId}/3` }}>
+                                      <Link to={{ pathname: `/review/project/${item.projectId}` }}>
                                         <button type="button" className=" btn-edit text-edit w-100">
                                           <FiEdit className="mt-1 mr-1" />
                                           Edit

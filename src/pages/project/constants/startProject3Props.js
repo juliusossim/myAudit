@@ -138,7 +138,7 @@ const formBuilderProjectsPreviewProps = (
     {
       kind: 'select2',
       props: {
-        className: 'w-100 m-b-20 col-md-6',
+        className: 'w-100 m-b-20 col-md-6 pr-3',
         name: 'state',
         label: 'State',
         options: states,
@@ -156,7 +156,7 @@ const formBuilderProjectsPreviewProps = (
     {
       kind: 'select2',
       props: {
-        className: 'w-100 m-b-20 col-md-6',
+        className: 'w-100 m-b-20 col-md-6 pr-3',
         name: 'lga',
         label: 'LGA',
         options: lgas,
@@ -371,7 +371,7 @@ const formBuilderProjectsPreviewProps = (
     {
       kind: 'select2',
       props: {
-        className: 'w-100 m-b-20 col-md-6',
+        className: 'w-100 m-b-20 col-md-6 pr-3',
         name: 'state',
         label: 'State',
         options: states,
@@ -389,7 +389,7 @@ const formBuilderProjectsPreviewProps = (
     {
       kind: 'select2',
       props: {
-        className: 'w-100 m-b-20 col-md-6',
+        className: 'w-100 m-b-20 col-md-6 pr-3',
         name: 'lga',
         label: 'LGA',
         options: lgas,

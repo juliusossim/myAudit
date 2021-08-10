@@ -2,7 +2,7 @@ import React, {
   useEffect, useCallback, useState
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { Link, Redirect } from 'react-router-dom';
 import FormBuilder from '../../components/form/builders/form';
 import { validateField } from '../../utilities/validation';
 import { camelToString, notifier, stringDoesNotExist } from '../../utilities/stringOperations';
@@ -64,7 +64,7 @@ const Project1 = ({
   const handleClose = () => {
     setShow(false);
     setLoading(false);
-    return <Redirect to="/" />;
+    window.location.replace('/');
   };
   const cancelUpload = () => {
     setFormData({ ...formData, file: '', logo_id: '' });
@@ -99,6 +99,7 @@ const Project1 = ({
   };
 
   const handleSave = () => {
+    setShow(false);
     setLoading(true);
     const tem = populateFormData();
     dispatch(editProject1(tem));
@@ -183,7 +184,7 @@ const Project1 = ({
     setLoading(false);
     const tem = populateFormData();
     dispatch(editProject1(tem));
-    return <Redirect to={`/create-project/${formData.id}/2`} />;
+    setAccordionTab(2);
   };
 
   const text = () => `Your project ${formData.title} has been updated`;

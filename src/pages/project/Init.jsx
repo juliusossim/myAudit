@@ -67,18 +67,14 @@ const Init = ({ setAccordionTab, setData }) => {
       ...state,
       [name]: value
     }));
-    return debouncedChangeHandler(value);
+    return handleProgress(value);
   };
 
   const handleProgress = (name) => {
     setProceed(!stringDoesNotExist(name));
   };
 
-  const debouncedChangeHandler = useMemo(
-    () => debounce((name) => handleProgress(name), 500),
-    []
-  );
-
+  const debouncedChangeHandler = () => debounce((name) => handleProgress(name), 500);
   const handleBlur = (e, validations) => {
     const { name, value } = e.target;
     const field = camelToString(name);

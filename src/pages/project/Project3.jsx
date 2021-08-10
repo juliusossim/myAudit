@@ -4,6 +4,7 @@ import React, {
 import addDays from 'date-fns/addDays';
 import Moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
+import { Redirect, useParams } from 'react-router';
 import FormBuilder from '../../components/form/builders/form';
 import { validateField } from '../../utilities/validation';
 import { camelToString, notifier } from '../../utilities/stringOperations';
@@ -19,12 +20,13 @@ import { apiOptions } from '../../services/fetch';
  * @returns {JSX.Element}
  * @constructor
  */
-const Project3 = ({ data, setAccordionTab }) => {
+const Project3 = () => {
+  const { id } = useParams();
   /* redux */
   const dispatch = useDispatch();
   const store = useSelector((state) => state.project);
   /* state */
-  const [formData, setFormData] = useState({ ...data });
+  const [formData, setFormData] = useState({ id });
   const [errors, setErrors] = useState({});
   const [progress, setProgress] = useState(0);
   const [lgas, setLgas] = useState([]);
@@ -80,16 +82,20 @@ const Project3 = ({ data, setAccordionTab }) => {
   // }, [store.media?.status]);
 
   useEffect(() => {
-    setFormData({ ...formData, endDate: addDays(new Date(formData.startDate), 7) });
-    setMinDate(addDays(new Date(formData.startDate), 7));
+    if (formData.startDate) {
+      setFormData({ ...formData, endDate: addDays(new Date(formData.startDate), 7) });
+      setMinDate(addDays(new Date(formData.startDate), 7));
+    }
   }, [formData.startDate]);
 
   useEffect(() => {
     if (store?.getProject?.status === 'success') {
-      setFormData({
-        file: [...store?.getProject?.data?.data?.media],
-        ...store.getProject?.data?.data
-      });
+      if (store.getProject?.data?.data !== undefined) {
+        setFormData({
+          file: [...store?.getProject?.data?.data?.media],
+          ...store.getProject?.data?.data
+        });
+      }
     }
   }, [store?.getProject?.status]);
 
@@ -98,7 +104,7 @@ const Project3 = ({ data, setAccordionTab }) => {
       setLoading(true);
     }
     if (store?.submitProject?.status === 'success' || store?.project?.status === 'success' || store?.editProjectRequest?.status === 'success') {
-      setAccordionTab(4);
+      window.location.replace('/success');
     } else if (store?.submitProject?.status === 'failed' || store?.project?.status === 'failed' || store?.editProjectRequest?.status === 'failed') {
       notifier({
         type: 'error',
@@ -236,66 +242,72 @@ const Project3 = ({ data, setAccordionTab }) => {
   };
 
   return (
-    <div className="login-form pb-5h">
+    <div className="content">
+      <div className="max-w-600 w-600 margin-center m-t-40 h-80h scroll-y neg-m-b-60">
+        <div className="login-form-container p-20 bg-light">
+          <div className="login-form pb-5h">
 
-      <div>
-        <div className="text-wema">
-          <h4>
-            <span className="pr-1">Review</span>
-            <span className="pr-1 bold">{formData.title}</span>
-          </h4>
-        </div>
-        <hr />
-      </div>
+            <div>
+              <div className="text-wema">
+                <h4>
+                  <span className="pr-1">Review</span>
+                  <span className="pr-1 bold">{formData.title}</span>
+                </h4>
+              </div>
+              <hr />
+            </div>
 
-      <div>
-        <FormBuilder
-          formItems={
-            formBuilderProjectsPreviewProps({
-              formData,
-              states,
-              lgas,
-              minDate,
-              minStartDate,
-              categories: store.projectCategories.data.data,
-              multiple: true,
-              removeItem: deleteProjectMedia,
-              skeleton: store?.project?.data?.data?.id,
-              excuseSkeleton: 'title',
-              setFormData: cancelUpload,
-              progress,
-              handleBlur,
-              handleChange,
-              handleDateChange,
-              btnMethod: () => setFormData({ ...formData, title: '' }),
-              loading: { status: store.project.status, text: 'initializing your project' },
-              loadingMedia: store.media?.status,
-              errors
-            })
-          }
-        />
+            <div className="row">
+              <FormBuilder
+                formItems={
+                  formBuilderProjectsPreviewProps({
+                    formData,
+                    states,
+                    lgas,
+                    minDate,
+                    minStartDate,
+                    categories: store.projectCategories.data.data,
+                    multiple: true,
+                    removeItem: deleteProjectMedia,
+                    skeleton: store?.project?.data?.data?.id,
+                    excuseSkeleton: 'title',
+                    setFormData: cancelUpload,
+                    progress,
+                    handleBlur,
+                    handleChange,
+                    handleDateChange,
+                    btnMethod: () => setFormData({ ...formData, title: '' }),
+                    loading: { status: store.project.status, text: 'initializing your project' },
+                    loadingMedia: store.media?.status,
+                    errors
+                  })
+                }
+              />
 
-      </div>
+            </div>
 
-      <div>
+            <div>
 
-        <div className="float-right d-flex">
-          <button
-            title="submit for review and approval"
-            className=" btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
-            type="button"
-            disabled={loading}
-            onClick={handleSubmitProject}
-          >
-            Submit for approval
-          </button>
-        </div>
+              <div className="float-right d-flex">
+                <button
+                  title="submit for review and approval"
+                  className=" btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
+                  type="button"
+                  disabled={loading}
+                  onClick={handleSubmitProject}
+                >
+                  Submit for approval
+                </button>
+              </div>
 
-        <div className="row">
-          {
-            loading
+              <div className="row">
+                {
+                  loading
             && <Loader />
-          }
+                }
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>

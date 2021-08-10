@@ -30,22 +30,27 @@ import Loader from '../../components/microComponents/loader';
  * @constructor
  */
 const Success = () => (
-  <div>
-    <h1 className="">Success</h1>
-    <hr className="border-wema" />
-    <div className="text-wema my-4">
-      Your Project is Sent, An admin will review your request
-    </div>
-    <Link to="/create-project/1/0">
-      <button type="button" className="btn btn-small">
-        Start Another Project
-      </button>
-    </Link>
-    {/* </div> */}
-    <div className="text-center ml-2 w-25 btn-small btn">
-      <Link to="/me" className="text-white">
-        My Projects
-      </Link>
+  <div className="content">
+    <div className="max-w-600 w-600 margin-center m-t-40 h-80h scroll-y neg-m-b-60">
+      <div className="login-form-container p-20 bg-light">
+        <div className="login-form pb-5h">
+          <h1 className="">Success</h1>
+          <hr className="border-wema" />
+          <div className="text-wema my-4">
+            Your Project is Sent, An admin will review your request accordingly
+          </div>
+          <Link to="/create-project/1/0">
+            <button type="button" className="btn btn-small">
+              Start Another Project
+            </button>
+          </Link>
+          <div className="text-center ml-2 w-25 btn-small btn">
+            <Link to="/me" className="text-white">
+              My Projects
+            </Link>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 );

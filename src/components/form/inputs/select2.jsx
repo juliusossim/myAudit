@@ -96,7 +96,7 @@ const Select2 = (
 
   return (
     <div className={`${error?.length > 0 ? `${className} col-12 ` : `${className}`} form-group`}>
-      <div className="content">
+      <div className="width-100">
         {
           skeleton !== undefined && !skeleton && excuseSkeleton !== name
             ? (

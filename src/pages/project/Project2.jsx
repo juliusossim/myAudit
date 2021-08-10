@@ -52,7 +52,7 @@ const Project2 = ({ data, setData }) => {
 
   useEffect(() => {
     if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-      console.info('reloaded');
+      // console.info('reloaded');
       dispatch(getProject(formData.id));
     }
   }, []);
@@ -90,8 +90,8 @@ const Project2 = ({ data, setData }) => {
     setShow(false);
     // console.log(formData, store.data.data);
     setData({ ...formData, ...store.data?.data });
-    window.location.replace(`/create-project/${formData.id}/3`);
-    // return <Redirect to={`/create-project/${formData.id}/3`} />;
+    window.location.replace(`/review/project/${formData.id}`);
+    // return <Redirect to={`/review/project/${formData.id}`} />;
   };
 
   const handleDateChange = ({ date, name }) => {

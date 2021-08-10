@@ -17,6 +17,7 @@ const Notifications = () => {
   const store = useSelector((state) => state.profile.notifications);
   const [month, setMonth] = useState([]);
   const [week, setWeek] = useState([]);
+  const [old, setOld] = useState([]);
 
   const mapToView = (items) => items.length > 0 && items.map((item) => (
     <Card className="mb-2">
@@ -28,11 +29,11 @@ const Notifications = () => {
           <div className="pl-1">
             {item.message}
           </div>
-          <div>
-            <small>
-              {item.reason}
-            </small>
-          </div>
+        </div>
+        <div>
+          <small>
+            {item.reason}
+          </small>
         </div>
       </CardContent>
     </Card>
@@ -47,6 +48,9 @@ const Notifications = () => {
       const weekData = store.data?.data?.filter((item) => isThisWeek(new Date(item.dateCreated)));
       const monthData = store.data?.data?.filter((item) => isThisMonth(new Date(item.dateCreated))
         && !isThisWeek(new Date(item.dateCreated)));
+      const joinArr = weekData.concat(monthData);
+      const oldData = store.data?.data?.filter((item) => joinArr.indexOf(item) === -1);
+      setOld(oldData);
       setMonth(monthData);
       setWeek(weekData);
     }
@@ -100,6 +104,22 @@ const Notifications = () => {
                     </h5>
                     {
                       mapToView(month)
+                    }
+                  </div>
+                )
+              }
+              {
+                old.length > 0
+                && (
+                  <div className="py-3">
+                    <h5 className="bold text-dark mb-2">
+                      <Badge badgeContent={month.length} color="secondary">
+                        Earlier
+                      </Badge>
+
+                    </h5>
+                    {
+                      mapToView(old)
                     }
                   </div>
                 )

@@ -41,7 +41,7 @@ function App() {
     >
 
       {/* <Router history={history}> */}
-      <div className="w-full">
+      <div className="w-full bg-45-deg">
         <Header />
         <Switch>
 
