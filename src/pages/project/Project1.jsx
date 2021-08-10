@@ -186,7 +186,7 @@ const Project1 = ({
     return <Redirect to={`/create-project/${formData.id}/2`} />;
   };
 
-  const text = () => `Your project ${formData.title} has been initialized`;
+  const text = () => `Your project ${formData.title} has been updated`;
 
   return (
     <div className="login-form pb-5h">
