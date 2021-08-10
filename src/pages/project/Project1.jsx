@@ -183,7 +183,7 @@ const Project1 = ({
     setLoading(false);
     const tem = populateFormData();
     dispatch(editProject1(tem));
-    setAccordionTab(2);
+    return <Redirect to={`/create-project/${formData.id}/2`} />;
   };
 
   const text = () => `Your project ${formData.title} has been initialized`;

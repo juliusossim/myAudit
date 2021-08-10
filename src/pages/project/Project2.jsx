@@ -18,7 +18,7 @@ import { formBuilderProjectsStartProps, title } from './constants/startProject1P
 import formBuilderProjectsStart2Props from './constants/startProject2Props';
 import formBuilderProjectsPreviewProps from './constants/startProject3Props';
 import {
-  projectCategories, editProject, projectByStatus, submitProject, createProjectName, uploadMedia
+  editProject, getProject
 } from '../../redux/actions/projectActions';
 import { findItem } from '../../utilities/arrayOperations';
 import ModalTemplate from '../../components/temps/modalTemps/temp';
@@ -30,7 +30,7 @@ import SimpleSnackbar from '../../components/microComponents/snackBar';
  * @returns {JSX.Element}
  * @constructor
  */
-const Project2 = ({ data, setData, setAccordionTab }) => {
+const Project2 = ({ data, setData }) => {
   /* redux */
   const dispatch = useDispatch();
   const store = useSelector((state) => state.project);
@@ -50,6 +50,12 @@ const Project2 = ({ data, setData, setAccordionTab }) => {
     name: ar
   }));
 
+  useEffect(() => {
+    if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
+      console.info('reloaded');
+      dispatch(getProject(formData.id));
+    }
+  }, []);
   useEffect(() => {
     if (store.stateLga.status === 'success') {
       setStates(store?.stateLga?.data?.data);
