@@ -202,7 +202,7 @@ export const projectAction = ({
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('connection failed, you are probably not connected to the internet!'));
     });
   };
 };

@@ -55,7 +55,7 @@ const Project1 = ({
   }, [store.deleteMedia?.status]);
 
   useEffect(() => {
-    if (store.project1?.status === 'success') {
+    if (store.project1?.status === 'success' && formData.from !== 2) {
       setShow(true);
     }
     return true;
@@ -64,7 +64,9 @@ const Project1 = ({
   const handleClose = () => {
     setShow(false);
     setLoading(false);
-    window.location.replace('/');
+    if (formData.from !== 2) {
+      window.location.replace('/');
+    }
   };
   const cancelUpload = () => {
     setFormData({ ...formData, file: '', logo_id: '' });

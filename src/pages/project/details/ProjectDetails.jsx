@@ -26,6 +26,7 @@ import { getOneName, stringCaps } from '../../../utilities/stringOperations';
 import { positiveDiffs } from '../../../utilities/dateOperations';
 import { apiOptions } from '../../../services/fetch';
 import MediaSlider from '../../../components/microComponents/mediaSlider';
+import ProjectInfo from '../../../components/ui/projectInfo';
 
 /**
  *
@@ -147,45 +148,8 @@ const ProjectDetails = (items) => {
 
   return (
     <div className="content">
-      <div className="w-100 margin-center m-t-40 ">
-        <div className={`login-form-container p-20 bg-light ${collapse && 'h-80h scroll-y neg-m-b-60'}`}>
-          <div className="row justify-content-between">
-            <div className="text-wema">
-              {
-                collapse
-                  ? (
-                    <p>
-                      Resized to fit device viewport, both page and window scrolling enabled.
-                    </p>
-                  )
-                  : (
-                    <p>
-                      Full page, normal scroll.
-                    </p>
-                  )
-              }
-            </div>
-            <div className="float-right">
-              <Button onClick={() => setCollapse(!collapse)}>
-                {
-                  collapse
-                    ? (
-                      <div className="float-right text-wema">
-                        <span>page</span>
-                        <FaArrowDown />
-                      </div>
-                    )
-                    : (
-                      <div className="float-right text-wema">
-                        <span>window</span>
-                        <FaArrowUp />
-                      </div>
-                    )
-                }
-
-              </Button>
-            </div>
-          </div>
+      <div className="w-100 margin-center m-t-40 h-80h scroll-y neg-m-b-60">
+        <div className="login-form-container p-20 bg-light">
           <div className="d-md-flex ">
             <div className=" max-w-750">
               <CardMedia className="">
@@ -211,102 +175,25 @@ const ProjectDetails = (items) => {
               </div>
               <hr />
             </div>
-            <div className="">
-              <Paper elevation={3} className="ml-4">
-                <div className="mt-3">
-                  <CardContent>
-                    <div className="">
-                      <h3>
-                        <span>{project.title}</span>
-                        <Chip
-                          color={
-                            approvalColors[approvalStatus[project.approvalStatus]]
-                          }
-                          label={stringCaps(approvalStatus[project.approvalStatus])}
-                        />
-                      </h3>
-                      <small>
-                        {project.location || 'Anonymous location'}
-                      </small>
-                      <div className="col-md-5 mt-5">
-                        <div className="d-flex">
-                          <div className="mr-5">
-                            Donors
-                            <p className="bold">{project.donors || 'None'}</p>
-                          </div>
-                          <div>
-                            Shares
-                            <p className="bold">{project.shares || 0}</p>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="d-flex mt-5 mb-2">
-                        <div className="pr-1 raised">
-                          <span className="bold mr-1">
-                            <span>&#8358;</span>
-                            {project.amountRaised?.toLocaleString() || 0}
-                          </span>
-                          raised
-                        </div>
-                        <div className="pl-5 ">
-                          <span>Target</span>
-                          <span className="bold pl-1">
-                            <span>&#8358;</span>
-                            {project.donationTarget?.toLocaleString() || 0}
-                          </span>
-                        </div>
-                      </div>
-                      <div className="progress mt-3 mb-3" title={`#${(project.donationTarget - project?.amountRaised).toLocaleString()} to hit target`}>
-                        <div
-                          className="progress-bar bg-wema"
-                          role="progressbar"
-                          aria-valuenow={
-                            (project.amountRaised / project.donationTarget) * 100
-                          }
-                          style={{ width: `${(project.amountRaised / project.donationTarget) * 100}%` }}
-                          aria-valuemin="0"
-                          aria-valuemax="100"
-                          aria-labelledby="progress_bar"
-                        />
-                      </div>
-                      <div className="d-flex mt-4">
-                        <div className="">
-                          <span>Fund Percent:</span>
-                          <span className="bold ml-2">
-                            {
-                              typeof ((project.amountRaised / project.donationTarget) * 100)
-                                .toFixed(0) === 'number'
-                                ? (
-                                  <span>
-                                    {
-                                      ((project.amountRaised / project.donationTarget) * 100)
-                                        .toFixed(0)
-                                    }
-                                  </span>
-                                )
-                                : (
-                                  <span>
-                                    0
-                                  </span>
-                                )
-                            }
-                            %
-                          </span>
-                        </div>
-                        <div className="pl-5">
-                          {
-                            `Due ${positiveDiffs(new Date(project.endDate))}`
-                          }
-                        </div>
-                      </div>
-                    </div>
-                    <div className="d-flex mt-5">
-                      <button type="button" className="btn w-50 mr-2">Donate</button>
-                      <button type="button" className="btn-plain w-50 border-wema hover-wema">Share</button>
-                    </div>
-                  </CardContent>
-                </div>
-              </Paper>
+            <div className="pl-5">
+              <ProjectInfo
+                project={project}
+                actions={[
+                  {
+                    text: 'Donate',
+                    action: () => console.log('donate')
+                  },
+                  {
+                    text: 'Share',
+                    plain: true,
+                    action: () => console.log('share')
+                  }
+                ]}
+                logo
+                style
+                shares
+                clss="h-40"
+              />
             </div>
           </div>
           <div className="max-w-750">
@@ -360,84 +247,12 @@ const ProjectDetails = (items) => {
             {
               similar.map(
                 (tem, key) => (
-                  <div key={`project ${tem.id}`} className="col-md-3 mt-5">
-                    <Card className="ml-2">
-                      <CardContent>
-                        <div>
-                          <LazyImage src={tem.media} alt={tem.title} />
-                        </div>
-                        <h3>
-                          {tem.title}
-                        </h3>
-                        <small>
-                          <span>{tem.lga}</span>
-                          <span className="ml-1">{tem.state}</span>
-                        </small>
-                        <div>
-                          {tem.summary}
-                        </div>
-                        <span className="pr-1 raised">
-                          <span>&#8358;</span>
-                          {tem.amountRaised?.toLocaleString() || 0}
-                        </span>
-                        <span>
-                          raised of
-                          <span className="ml-1">&#8358;</span>
-                          {tem.donationTarget?.toLocaleString() || 0}
-                        </span>
-                        <div className="progress mt-3 mb-3" title={`#${(tem.donationTarget - tem?.amountRaised).toLocaleString() || 0} to hit target`}>
-                          <div
-                            className="progress-bar bg-wema"
-                            role="progressbar"
-                            aria-valuenow={
-                              (tem.amountRaised / tem.donationTarget) * 100
-                            }
-                            style={{ width: `${(tem.amountRaised / tem.donationTarget) * 100}%` }}
-                            aria-valuemin="0"
-                            aria-valuemax="100"
-                            aria-labelledby="progress_bar"
-                          />
-                        </div>
-                        <div className="col-6 col-md-4">
-                          <p>
-                            Posted by:
-                          </p>
-                          <p className="posted-by">
-                            {tem.creator?.fullName}
-                          </p>
-                        </div>
-                        <div className="d-flex">
-                          <div className="">
-                            <span>Fund Percent:</span>
-                            <span className="bold ml-2">
-                              {
-                                typeof ((tem.amountRaised / tem.donationTarget) * 100)
-                                  .toFixed(0) === 'number'
-                                  ? (
-                                    <span>
-                                      {
-                                        ((tem.amountRaised / tem.donationTarget) * 100)
-                                          .toFixed(0)
-                                      }
-                                    </span>
-                                  )
-                                  : (
-                                    <span>
-                                      0
-                                    </span>
-                                  )
-                              }
-                              %
-                            </span>
-                          </div>
-                          <div className="pl-2">
-                            {
-                              `Due ${positiveDiffs(new Date(tem.endDate))}`
-                            }
-                          </div>
-                        </div>
-                      </CardContent>
-                    </Card>
+                  <div key={`project ${tem.id}`} className="col-md-4 mt-5">
+                    <ProjectInfo
+                      logo={false}
+                      styled={1}
+                      project={tem}
+                    />
                   </div>
                 )
               )

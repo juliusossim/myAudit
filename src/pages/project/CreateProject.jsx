@@ -12,6 +12,7 @@ import {
   projectAction,
   projectCategories
 } from '../../redux/actions/projectActions';
+import CollapsedBreadcrumbs from '../../layouts/Breadcrumb';
 
 /**
  *
@@ -25,8 +26,8 @@ const CreateProject = () => {
 
   /* state */
   const [formData, setFormData] = useState({ id });
+  const [bread, setBread] = useState(null);
   const [accordionTab, setAccordionTab] = useState(parseInt(tab, 10) || 0);
-  const [collapse, setCollapse] = useState(true);
 
   useEffect(() => {
     dispatch(projectCategories());
@@ -37,6 +38,11 @@ const CreateProject = () => {
   const Project2 = lazy(() => import('./Project2'));
   const Project3 = lazy(() => import('./Project3'));
   const Success = lazy(() => import('./Success'));
+
+  const goBack = () => {
+    setAccordionTab(1);
+    setFormData({ ...formData, from: 2 });
+  };
 
   const displayProject = () => {
     switch (accordionTab) {
@@ -53,6 +59,7 @@ const CreateProject = () => {
         <Project2
           setAccordionTab={setAccordionTab}
           data={formData}
+          setBread={setBread}
           setData={setFormData}
         />
       );
@@ -72,6 +79,29 @@ const CreateProject = () => {
 
   return (
     <div className="content">
+      <div className="row">
+        {
+          accordionTab === 0
+          && (
+            <CollapsedBreadcrumbs max={2} current="Initialize project" />
+          )
+        }
+        {
+          accordionTab === 1
+          && (
+            <CollapsedBreadcrumbs max={2} current="Project information" />
+          )
+        }
+        {
+          accordionTab === 2
+          && (
+            <CollapsedBreadcrumbs
+              max={2}
+              current="Project location"
+            />
+          )
+        }
+      </div>
       <div className="max-w-600 w-600 margin-center m-t-40 h-80h scroll-y neg-m-b-60">
         <div className="login-form-container p-20 bg-light">
           <h3 className="bold text-center text-dark border-bottom border-wema border-right-0 border-top-0  ">

@@ -5,6 +5,7 @@ import Avatar from '@material-ui/core/Avatar';
 import { useDispatch, useSelector } from 'react-redux';
 import Badge from '@material-ui/core/Badge';
 import CrowdLogo from '../assets/images/crowd-funding-logo.png';
+import User from '../assets/images/User.svg';
 import Modal from '../components/microComponents/modal';
 import SearchInput from '../components/form/inputs/search';
 import { currentUser, logout } from '../utilities/auth';
@@ -22,16 +23,13 @@ const Header = () => {
   };
   useEffect(() => {
     currentUser.then((result) => {
-      result?.id !== undefined
-      && setUser({ loggedIn: true, details: result });
+      if (result?.id !== undefined) {
+        setUser({ loggedIn: true, details: result });
+        dispatch(notifications());
+      }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
-
-  useEffect(() => {
-    dispatch(notifications());
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   return (
     <header>
@@ -56,7 +54,8 @@ const Header = () => {
                     <button className="btn " type="button">Start Project</button>
                   </Link>
                   <Link to="/me" className="size4 ml-md-1 radius50 bg-light flex-h-center border-wema p-1">
-                    <img className="radius50 center " src={CrowdLogo} alt="profile logo" />
+                    <Avatar src={User} alt="profile logo" />
+
                   </Link>
                   <Link to="#">
                     <button type="button" className={`${show ? 'text-wema' : ''} ml-md-1 d-flex no-border bg-transparent`} onClick={handleMe}>

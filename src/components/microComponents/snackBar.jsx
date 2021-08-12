@@ -28,17 +28,21 @@ export default function SimpleSnackbar({
         message={message}
         action={(
           <>
-            <Button color="secondary" size="small" onClick={handleClose}>
-              {actionText || 'Ok'}
-            </Button>
-            <IconButton
-              size="small"
-              aria-label="close"
-              color="inherit"
+            <Button
               onClick={(e) => {
                 handleClose(e);
                 action();
               }}
+              color="secondary"
+              size="small"
+            >
+              {actionText || 'Ok'}
+            </Button>
+            <IconButton
+              onClick={handleClose}
+              size="small"
+              aria-label="close"
+              color="inherit"
             >
               <FaTimes fontSize="small" />
             </IconButton>

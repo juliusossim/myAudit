@@ -1,4 +1,4 @@
-import React, { lazy, useState } from 'react';
+import React, { lazy, useEffect, useState } from 'react';
 import localforage from 'localforage';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
@@ -12,10 +12,15 @@ import { sendAccountOtp, verifyAccountOtp } from '../../redux/actions/authentica
 const SelectManager = lazy(() => import('./editUser/manager/SelectManager'));
 const user = { ...JSON.parse(localStorage.getItem('user')) };
 
-const WithdrawalDetails = () => {
+const WithdrawalDetails = ({ setCurrent }) => {
   const dispatch = useDispatch();
   const [formData] = useState({ ...user, account_name: `${user.first_name || ''} ${user.last_name || ''}` });
   const [show, setShow] = useState(false);
+
+  useEffect(() => {
+    setCurrent('My withdrawal details');
+  }, []);
+
   const handleShow = () => setShow(!show);
   const verifyOtp = () => {
     // setShow(true);

@@ -14,6 +14,7 @@ import {
 } from '../../redux/actions/projectActions';
 import Loader from '../../components/microComponents/loader';
 import { apiOptions } from '../../services/fetch';
+import SimpleSnackbar from '../../components/microComponents/snackBar';
 
 /**
  *
@@ -34,6 +35,8 @@ const Project3 = () => {
   const [minDate, setMinDate] = useState(new Date());
   const [minStartDate] = useState(addDays(Moment.now(), 5));
   const [loading, setLoading] = useState(false);
+  const [openSnack, setOpenSnack] = useState(false);
+  const [message, setMessage] = useState('');
 
   const mapIndex = (arr) => arr.map((ar, index) => ({
     value: index + 1,
@@ -103,7 +106,12 @@ const Project3 = () => {
     if (store?.submitProject?.status === 'pending' || store?.project?.status === 'pending' || store?.editProjectRequest?.status === 'pending') {
       setLoading(true);
     }
-    if (store?.submitProject?.status === 'success' || store?.project?.status === 'success' || store?.editProjectRequest?.status === 'success') {
+    if (store?.project?.status === 'success' && formData.approvalStatus === 6) {
+      setOpenSnack(true);
+      setLoading(false);
+      setMessage(`${formData.title} is not yet submitted. Do you wish to Submit Now?`);
+    }
+    if (store?.submitProject?.status === 'success' || store?.editProjectRequest?.status === 'success' || (store?.project?.status === 'success' && formData.approvalStatus === 0)) {
       window.location.replace('/success');
     } else if (store?.submitProject?.status === 'failed' || store?.project?.status === 'failed' || store?.editProjectRequest?.status === 'failed') {
       notifier({
@@ -111,6 +119,7 @@ const Project3 = () => {
         title: 'error',
         text: 'this action failed to execute'
       });
+      setLoading(false);
     }
   },
   [store?.submitProject?.status, store?.editProjectRequest?.status, store?.project?.status]);
@@ -131,8 +140,8 @@ const Project3 = () => {
     }
     if (tem.approvalStatus !== undefined) {
       switch (formData.approvalStatus) {
-      case 0:
-        return dispatch(editProject(tem));
+      case 2:
+        return dispatch(submitProject(tem));
       case 1:
         return dispatch(projectAction(
           {
@@ -147,7 +156,7 @@ const Project3 = () => {
           }
         ));
       default:
-        return dispatch(submitProject(tem));
+        return dispatch(editProject(tem));
       }
     }
     return false;
@@ -291,12 +300,14 @@ const Project3 = () => {
               <div className="float-right d-flex">
                 <button
                   title="submit for review and approval"
-                  className=" btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
+                  className=" btn-plain text-wema border-wema hover-wema mr-md-1"
                   type="button"
                   disabled={loading}
                   onClick={handleSubmitProject}
                 >
-                  Submit for approval
+                  <span className="px-5">
+                    {formData.approvalStatus === 1 ? ' Submit for approval' : 'Ok'}
+                  </span>
                 </button>
               </div>
 
@@ -307,6 +318,13 @@ const Project3 = () => {
                 }
               </div>
             </div>
+            <SimpleSnackbar
+              message={message}
+              open={openSnack}
+              setOpen={setOpenSnack}
+              action={() => dispatch(submitProject(formData))}
+              actionText="Submit Project"
+            />
           </div>
         </div>
       </div>

@@ -64,7 +64,7 @@ const formBuilderProjectsStart2Props = (
       skeleton,
       excuseSkeleton,
       titleIndex: 'description',
-      value: formData.lga || '',
+      value: formData?.lga || '',
       validations: {
         required: true
       },

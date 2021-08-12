@@ -77,12 +77,6 @@
   padding: 4vh 0;
   align-items: center;
 }
-.projectsSection{
-  padding: 3vh 30px;
-  background: #a01b8826;
-  margin: 10vh 0;
-  //opacity: 0.1;
-}
 .projects{
   @extend .fonts;
   color: #1d2124;
@@ -122,9 +116,6 @@
 .categoryButtons {
   /* Text */
   background: #FFFFFF;
-  /* Primary */
-  margin: 30px;
-  min-width: 200px;
   height: 50px;
   border: 1px solid #A01B88;
   box-sizing: border-box;
@@ -141,9 +132,6 @@
   }
 }
 .category {
-  margin-left: 13vw;
-  max-width: 76vw;
-  padding: 0 30px;
   .title {
     @extend .fonts;
     font-weight: 500;

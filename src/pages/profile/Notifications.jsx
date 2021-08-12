@@ -12,7 +12,7 @@ import Loader from '../../components/microComponents/loader';
 
 const user = { ...JSON.parse(localStorage.getItem('user')) };
 
-const Notifications = () => {
+const Notifications = ({ setCurrent }) => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state.profile.notifications);
   const [month, setMonth] = useState([]);
@@ -40,6 +40,7 @@ const Notifications = () => {
   ));
 
   useEffect(() => {
+    setCurrent('My notifications');
     dispatch(notifications());
   }, []);
 

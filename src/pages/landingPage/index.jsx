@@ -1,10 +1,15 @@
-import React from 'react';
+import React, { useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import CustomCarousel from '../../components/microComponents/carousel';
 import LazyImage from '../../components/microComponents/lazyImg';
 import howItWorks from '../../assets/images/howItWorks.svg';
 import { getOneName } from '../../utilities/stringOperations';
 import { diffDays } from '../../utilities/dateOperations';
 import { popularProjects, raisersCategory } from '../../utilities/dummyData';
+import { projectAction } from '../../redux/actions/projectActions';
+import { apiOptions } from '../../services/fetch';
+import Loader from '../../components/microComponents/loader';
+import ProjectInfo from '../../components/ui/projectInfo';
 
 const GeneralPage = () => {
   const startProject = () => {
@@ -13,6 +18,9 @@ const GeneralPage = () => {
      */
     window.location.replace('/register');
   };
+  /* redux */
+  const dispatch = useDispatch();
+  const store = useSelector((state) => state.home);
   // const carouselSlides = [
   //   {
   //     content: (
@@ -47,6 +55,34 @@ const GeneralPage = () => {
   // ];
   // const firstImg = import('../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg')
   //   .then((makeChange) => <LazyImage src={makeChange} alt="make a difference" />);
+
+  const popularFundraisers = useCallback(() => {
+    dispatch(projectAction(
+      {
+        action: 'POPULAR_FUNDRAISERS',
+        routeOptions: apiOptions({
+          method: 'get',
+          endpoint: 'POPULAR_FUNDRAISERS'
+        })
+      }
+    ));
+  }, []);
+  const popularNgos = useCallback(() => {
+    dispatch(projectAction(
+      {
+        action: 'POPULAR_NGOS',
+        routeOptions: apiOptions({
+          method: 'get',
+          endpoint: 'POPULAR_NGOS'
+        })
+      }
+    ));
+  }, []);
+
+  useEffect(() => {
+    popularFundraisers();
+    popularNgos();
+  }, []);
 
   const positiveDiffs = (second, duration) => {
     const diff = duration - diffDays({
@@ -83,195 +119,105 @@ const GeneralPage = () => {
           </div>
         </div>
       </div>
-      <div className="center-text page">
-        <h3 className="howItWorks text-center">
-          How It works with Wemabank Crowdfunding
-        </h3>
-        <div className="pl-2 ">
-          <img src={howItWorks} alt="how It works" />
+      <div className="row bg-light">
+        <div className="content">
+          <div className="w-100 margin-center m-t-40 ">
+            <div className="center-text my-4 ">
+              <h3 className="howItWorks text-center">
+                How It works with Wemabank Crowdfunding
+              </h3>
+              <div className="pl-2 ">
+                <img src={howItWorks} alt="how It works" />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="projectsSection">
-        <div className="row projects text-left mt-5 ">
-          <div className="row justify-content-between ml-5 mr-5">
-            <h3>
-              Most Popular Fundraisers
-            </h3>
-            <button type="button" className="text-wema float-right viewMoreBtn">
-              View More &gt;
-            </button>
-          </div>
-          {
-            popularProjects.map(
-              (item, key) => (
-                <div key={`project ${item.id}`} className="col-md-3 mt-5">
-                  <div>
-                    <LazyImage src={item.photo} alt={item.name} />
-                  </div>
+
+      <div className="row bg-wema-light">
+        <div className="content">
+          <div className="w-100 margin-center m-t-40">
+            <div className="my-4">
+              <div className="row projects text-left mt-5 ">
+                <div className="row justify-content-between ml-5 mr-5">
                   <h3>
-                    {item.name}
+                    Most Popular Fundraisers
                   </h3>
-                  <small>
-                    {item.location}
-                  </small>
-                  <div>
-                    {item.description}
-                  </div>
-                  <span className="pr-1 raised">
-                    {`N${item.raised}`}
-                  </span>
-                  <span>
-                    raised of
-                    {' '}
-                    {`N${item.target}`}
-                  </span>
-                  <div className="progress" title={`N${(item.target - item.raised)} to hit target`}>
-                    <div
-                      className="progress-bar bg-wema"
-                      role="progressbar"
-                      aria-valuenow={(item.raised / item.target) * 100}
-                      style={{ width: `${(item.raised / item.target) * 100}%` }}
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      aria-labelledby="progress_bar"
-                    />
-                  </div>
-                  <div className="col-4">
-                    <p>
-                      Posted by:
-                    </p>
-                    {getOneName(item.manager_name)}
-                  </div>
-                  <div className="col-4">
-                    <p>
-                      Fund %:
-                    </p>
-                    { `${((item.raised / item.target) * 100).toFixed(0)}%` }
-                  </div>
-                  <div className="col-4">
-                    <p>
-                      Duration
-                    </p>
-                    {
-                      positiveDiffs(new Date(item.created_at), item.duration).diff !== 0
-                        ? (
-                          <p className={positiveDiffs(new Date(item.created_at), item.duration).left ? '' : 'text-danger'}>
-                            {positiveDiffs(new Date(item.created_at), item.duration).diff}
-                            <span className="pl-1">
-                              {positiveDiffs(new Date(item.created_at), item.duration).left ? 'days left' : 'days due'}
-                            </span>
-                          </p>
-                        ) : 'due now'
-                    }
-                  </div>
+                  <button type="button" className="text-wema float-right viewMoreBtn">
+                    View More &gt;
+                  </button>
                 </div>
-              )
-            )
-          }
-        </div>
-        <div className="row projects text-left mt-5 ">
-          <div className="row justify-content-between ml-5 mr-5">
-            <h3>
-              Most Popular NGOs
-            </h3>
-            <button type="button" className="text-wema float-right viewMoreBtn">
-              View More &gt;
-            </button>
-          </div>
-          {
-            popularProjects.map(
-              (item, key) => (
-                <div key={`project ${item.id}`} className="col-md-3 mt-5">
-                  <div>
-                    <LazyImage src={item.photo} alt={item.name} />
-                  </div>
+                {
+                  store?.popularFundraisers?.status === 'pending'
+                    ? <Loader />
+                    : store?.popularFundraisers?.data?.data?.map(
+                      (item, key) => (
+                        <div className="col-md-3">
+                          <ProjectInfo
+                            styled
+                            project={item}
+                          />
+                        </div>
+                      )
+                    )
+                }
+              </div>
+              <div className="row projects text-left mt-5 ">
+                <div className="row justify-content-between ml-5 mr-5">
                   <h3>
-                    {item.name}
+                    Most Popular NGOs
                   </h3>
-                  <small>
-                    {item.location}
-                  </small>
-                  <div>
-                    {item.description}
-                  </div>
-                  <span className="pr-1 raised">
-                    {`N${item.raised}`}
-                  </span>
-                  <span>
-                    raised of
-                    {' '}
-                    {`N${item.target}`}
-                  </span>
-                  <div className="progress" title={`N${(item.target - item.raised)} to hit target`}>
-                    <div
-                      className="progress-bar bg-wema"
-                      role="progressbar"
-                      aria-valuenow={(item.raised / item.target) * 100}
-                      style={{ width: `${(item.raised / item.target) * 100}%` }}
-                      aria-valuemin="0"
-                      aria-valuemax="100"
-                      aria-labelledby="progress_bar"
-                    />
-                  </div>
-                  <div className="col-6 col-md-4">
-                    <p>
-                      Posted by:
-                    </p>
-                    <p className="posted-by">
-                      {getOneName(item.manager_name)}
-                    </p>
-                  </div>
-                  <div className="col-6 col-md-4">
-                    <p>
-                      Fund %:
-                    </p>
-                    <p className="posted-by">
-                      { `${((item.raised / item.target) * 100).toFixed(0)}%` }
-                    </p>
-                  </div>
-                  <div className="col-6 col-md-4">
-                    <p>
-                      Duration
-                    </p>
-                    {
-                      positiveDiffs(new Date(item.created_at), item.duration).diff !== 0
-                        ? (
-                          <p className={positiveDiffs(new Date(item.created_at), item.duration).left ? 'text-wema posted-by' : 'text-danger'}>
-                            {positiveDiffs(new Date(item.created_at), item.duration).diff}
-                            <span className="pl-1">
-                              {positiveDiffs(new Date(item.created_at), item.duration).left ? 'days left' : 'days due'}
-                            </span>
-                          </p>
-                        ) : (
-                          <p>
-                            due now
-                          </p>
-                        )
-                    }
-                  </div>
+                  <button type="button" className="text-wema float-right viewMoreBtn">
+                    View More &gt;
+                  </button>
                 </div>
-              )
-            )
-          }
+                {
+                  store?.popularNgos?.status === 'pending'
+                    ? <Loader />
+                    : store?.popularNgos?.data?.data?.map(
+                      (item, key) => (
+                        <div className="col-md-3">
+                          <ProjectInfo
+                            styled
+                            project={item}
+                          />
+                        </div>
+                      )
+                    )
+                }
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div className="category text-center">
-        <div className="text-center title">
-          Browse Fundraisers Categories
+      <div className="row bg-light">
+        <div className="content">
+          <div className="w-100 margin-center m-t-40">
+            <div className="category row justify-content-center my-4">
+              <div className="text-center title">
+                Browse Fundraisers Categories
+              </div>
+              <div className="row ">
+                <div className="col-md-8 offset-md-2 ">
+                  {
+                    raisersCategory.map(
+                      (category) => (
+                        <button key={category} type="button" className="px-5 m-2 categoryButtons butt">
+                          <span>
+                            {category}
+                          </span>
+                        </button>
+                      )
+                    )
+                  }
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        {
-          raisersCategory.map(
-            (category) => (
-              <button key={category} type="button" className="categoryButtons butt">
-                <span>
-                  {category}
-                </span>
-              </button>
-            )
-          )
-        }
       </div>
     </div>
+
   );
 };
 

@@ -13,7 +13,7 @@ import Loader from '../../components/microComponents/loader';
 import { approvalStatus, approvalColors } from '../../utilities/dummyData';
 import { positiveDiffs } from '../../utilities/dateOperations';
 
-const Projects = () => {
+const Projects = ({ setCurrent }) => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state.profile.projects);
   const [formData, setFormData] = useState([]);
@@ -29,6 +29,7 @@ const Projects = () => {
     }
   }, [store.status]);
   useEffect(() => {
+    setCurrent('My projects');
     dispatch(myProjects());
   }, []);
   return (

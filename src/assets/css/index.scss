@@ -49,8 +49,8 @@ img {
 
 .ontop{
   z-index: 10000;
-  top: 9vh;
-  left: 1rem;
+  top: 3vh;
+  //left: 1rem;
   position: absolute !important;
 }
 .no-outline { outline: none!important;}
@@ -352,7 +352,7 @@ a.gray:hover {
   background: #A01B88;
 }
 .bg-wema-light {
-  background: rgba(160, 27, 136, 0.18) !important;
+  background: #e7d0e394 !important;
 }
 .float-right {
   float: right!important;
@@ -710,6 +710,12 @@ button:focus {
     padding-top: 17px;
   }
 
+}
+a {
+  color: inherit;
+  &:hover {
+    @extend .text-wema
+  }
 }
 /*scroll*/
 .overflow-x-hidden {

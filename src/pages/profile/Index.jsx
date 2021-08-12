@@ -7,6 +7,7 @@ import Notifications from './Notifications';
 import Projects from './Projects';
 import { currentUser } from '../../utilities/auth';
 import BackdropModal from '../../components/microComponents/backdropModal';
+import CollapsedBreadcrumbs from '../../layouts/Breadcrumb';
 
 /**
  *
@@ -17,19 +18,22 @@ const Profile = () => {
   const [accordionTab, setAccordionTab] = useState(1);
   const [user, setUser] = useState({});
   const [open, setOpen] = React.useState(false);
+  const [current, setCurrent] = React.useState('My Acount');
 
   const displayPages = (tab) => {
     switch (tab) {
     case 2:
-      return <MyAccount />;
+      return <MyAccount setCurrent={setCurrent} />;
     case 3:
-      return <WithdrawalDetails />;
+      return <WithdrawalDetails setCurrent={setCurrent} />;
     case 4:
-      return <Transactions />;
+      return <Transactions setCurrent={setCurrent} />;
     case 5:
-      return <Notifications />;
+
+      return <Notifications setCurrent={setCurrent} />;
     default:
-      return <Projects />;
+
+      return <Projects setCurrent={setCurrent} />;
     }
   };
 
@@ -64,6 +68,7 @@ const Profile = () => {
         (user?.status === 'Active' || user?.status === 1)
           && (
             <div className="content">
+              <CollapsedBreadcrumbs max={2} current={current} prevs={[{ name: 'My Account', to: '/me' }]} />
               <div className="w-100 margin-center m-t-40 ">
                 {/* <div className="login-form-container p-20"> */}
                 <h3 className="bold text-dark">Profile</h3>

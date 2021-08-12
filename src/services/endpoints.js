@@ -45,6 +45,8 @@ const paths = {
   PROJECT_CATEGORIES: `${servers.project}${projectEndpoints.projectCategories}`,
   STATE_LGAS: `${servers.project}${projectEndpoints.stateLgas}`,
   EDIT_PROJECT_REQUEST: `${servers.project}${projectEndpoints.editProjectRequest}`,
+  POPULAR_FUNDRAISERS: `${servers.project}${projectEndpoints.popularFundraisers}`,
+  POPULAR_NGOS: `${servers.project}${projectEndpoints.popularNGOs}`,
 
   // profile
   ME: `${servers.auth}${profileEndpoints.me}`,

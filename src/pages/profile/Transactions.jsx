@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import localforage from 'localforage';
 import { useDispatch, useSelector } from 'react-redux';
 import _ from 'lodash';
@@ -9,10 +9,15 @@ import OrdinaryTable from '../../components/table';
 
 const userscol = ['name', 'role', 'department', 'joined'];
 
-const Transactions = () => {
+const Transactions = ({ setCurrent }) => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state.profile);
-  const [user, setUser] = React.useState({});
+  const [user, setUser] = useState({});
+
+  useEffect(() => {
+    setCurrent('My transactions');
+  }, []);
+
   const getUser = React.useCallback(() => {
     localforage.getItem('user', (err, value) => value).then((result) => setUser(result));
     dispatch(myProfile());

@@ -10,6 +10,7 @@ import IconButton from '@material-ui/core/IconButton';
 import Button from '@material-ui/core/Button';
 import NaijaStates from 'naija-state-local-government';
 import { Link, Redirect } from 'react-router-dom';
+import { BiArrowBack } from 'react-icons/all';
 import FormBuilder from '../../components/form/builders/form';
 import { validateField } from '../../utilities/validation';
 import { camelToString, notifier, stringDoesNotExist } from '../../utilities/stringOperations';
@@ -30,7 +31,12 @@ import SimpleSnackbar from '../../components/microComponents/snackBar';
  * @returns {JSX.Element}
  * @constructor
  */
-const Project2 = ({ data, setData }) => {
+const Project2 = (
+  {
+    setAccordionTab, data, setData,
+    setBread
+  }
+) => {
   /* redux */
   const dispatch = useDispatch();
   const store = useSelector((state) => state.project);
@@ -49,13 +55,6 @@ const Project2 = ({ data, setData }) => {
     value: index + 1,
     name: ar
   }));
-
-  useEffect(() => {
-    if (performance.navigation.type === performance.navigation.TYPE_RELOAD) {
-      // console.info('reloaded');
-      dispatch(getProject(formData.id));
-    }
-  }, []);
   useEffect(() => {
     if (store.stateLga.status === 'success') {
       setStates(store?.stateLga?.data?.data);
@@ -86,6 +85,10 @@ const Project2 = ({ data, setData }) => {
     }
   }, [store.project1.status]);
 
+  const goBack = () => {
+    setAccordionTab(1);
+    setData({ ...formData, from: 2 });
+  };
   const handleClose = () => {
     setShow(false);
     // console.log(formData, store.data.data);
@@ -185,9 +188,20 @@ const Project2 = ({ data, setData }) => {
 
       </div>
 
-      <div>
+      <div className="row justify-content-between">
+        <div>
+          <button
+            title="save and preview"
+            className=" btn-plain  text-wema border-wema hover-wema mr-md-1"
+            type="button"
+            disabled={store?.project?.status === 'pending'}
+            onClick={goBack}
+          >
+            <BiArrowBack />
+          </button>
+        </div>
 
-        <div className="float-right">
+        <div className="">
           <button
             title="save and preview"
             className=" btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"

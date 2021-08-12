@@ -193,11 +193,28 @@
   min-height: 10vh;
   max-height: 10vh;
 }
-.h-52h {
-  height: 52vh;
-  min-height: 52vh;
-  max-height: 52vh;
+.h-18h {
+  height: 18vh !important;
+  min-height: 18vh !important;
+  max-height: 18vh !important;
 }
+
+.h-52h {
+  height: 52vh !important;
+  min-height: 52vh !important;
+  max-height: 52vh !important;
+}
+.h-45h {
+  height: 45vh !important;
+  min-height: 45vh !important;
+  max-height: 45vh !important;
+}
+.h-40h {
+  height: 40vh !important;
+  min-height: 40vh !important;
+  max-height: 40vh !important;
+}
+
 .h-60h {
   height: 60vh;
   min-height: 60vh;

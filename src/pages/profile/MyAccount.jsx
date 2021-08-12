@@ -10,7 +10,7 @@ import formBuilderProps from './constants/myInfo';
 import User from '../../assets/images/User.svg';
 import Loader from '../../components/microComponents/loader';
 
-const MyAccount = () => {
+const MyAccount = ({ setCurrent }) => {
   /* redux */
   const dispatch = useDispatch();
   const store = useSelector((state) => state.profile.profile);
@@ -54,6 +54,7 @@ const MyAccount = () => {
   };
 
   useEffect(() => {
+    setCurrent('My profile');
     dispatch(myProfile());
   }, []);
   useEffect(() => {

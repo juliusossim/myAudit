@@ -1,10 +1,9 @@
 import React, { useEffect, useMemo } from 'react';
-import Skeleton from '@material-ui/lab/Skeleton';
-import Button from '@material-ui/core/Button';
-import CardContent from '@material-ui/core/CardContent';
-import Card from '@material-ui/core/Card';
 import { IoCheckmark } from 'react-icons/io5';
+import Button from '@material-ui/core/Button';
+import Card from '@material-ui/core/Card';
 import TextInput from './TextInput';
+import Chip from '../../ui/chip';
 
 const Select2 = (
   {
@@ -21,6 +20,7 @@ const Select2 = (
     optionIndex,
     valueIndex,
     titleIndex,
+    multi,
     skeleton,
     excuseSkeleton
   }
@@ -29,38 +29,65 @@ const Select2 = (
   const [searchResults, setSearchResults] = React.useState([]);
   const [selectOptions, setSelectOptions] = React.useState(options);
   const [selectedOption, setSelectedOption] = React.useState(value);
+  const [selectedOptions, setSelectedOptions] = React.useState([]);
+  const [multiOptions, setMultiOptions] = React.useState([]);
   const [show, setShow] = React.useState(false);
   const [edit, setEdit] = React.useState(false);
 
   const handleChange = (e) => {
     setSearchterm(e.target.value);
   };
+  const isMulti = multi !== undefined;
+  const deselect = (dat) => {
+    const filtered = selectedOptions.filter((da) => da !== dat);
+    const filtered2 = multiOptions.filter((da) => da[optionIndex] !== dat);
+    setSelectedOptions([...filtered]);
+    setMultiOptions(filtered2);
+  };
   const handleSelect = (opt) => {
-    setSelectedOption(opt[optionIndex]);
+    if (!isMulti) {
+      setSelectedOption(opt[optionIndex]);
+    }
+    let temp = [];
+    let basket = [];
+    if (selectedOptions.includes(opt[optionIndex])) {
+      temp = selectedOptions.filter((item) => item !== opt[optionIndex]);
+      basket = multiOptions.filter((item) => item !== opt);
+    } else {
+      temp = [...selectedOptions, opt[optionIndex]];
+      basket = [...multiOptions, opt];
+    }
+    const selectedValues = basket.map((tem) => tem[optionIndex]);
+    const selectedApiValues = basket.map((tem) => tem[valueIndex]);
+    setSelectedOptions([...temp]);
+    setMultiOptions(basket);
     setSearchterm('');
     setEdit(false);
+    console.log(selectedValues, selectedApiValues);
     onChange({
       target: {
         name,
-        value: opt[optionIndex],
-        apiValue: opt[valueIndex]
+        value: isMulti ? selectedValues : opt[optionIndex],
+        apiValue: isMulti ? selectedApiValues : opt[valueIndex]
       }
     });
   };
 
-  const available = () => options.filter((option) => {
+  const available = () => options?.filter((option) => {
     const temp = option.constructor === Object ? option[optionIndex] : option;
     return temp.toLowerCase().includes(searchTerm?.toLowerCase());
   });
-  const optionsProp = selectOptions.map((option) => (
+
+  const optionsProp = selectOptions?.map((option) => (
     typeof option === 'object'
       ? (
         <li
+          className="li"
           value={option[valueIndex]}
           key={option[optionIndex]}
           title={option[titleIndex]}
         >
-          <Button className="font-09 text-wema" onClick={() => handleSelect(option)}>
+          <Button className="btn-plain text-success no-border text-hover-white" onClick={() => handleSelect(option)}>
             {
               selectedOption === option[optionIndex]
               && <IoCheckmark />
@@ -71,10 +98,11 @@ const Select2 = (
       ) : (
         <li
           value={option}
+          className="li"
           key={option}
           title={option}
         >
-          <Button name={name} className="font-09 text-wema" onClick={() => handleSelect(option)}>
+          <Button name={name} className="font-09 text-wema btn-plain text-success no-border text-hover-white" onClick={() => handleSelect(option)}>
             {
               selectedOption === option
               && <IoCheckmark />
@@ -87,7 +115,7 @@ const Select2 = (
     setSearchResults(available());
   }, [searchTerm, options]);
   useEffect(() => {
-    if (searchResults.length > 0) {
+    if (searchResults?.length > 0) {
       setSelectOptions(searchResults);
     } else {
       setSelectOptions(options);
@@ -96,112 +124,74 @@ const Select2 = (
 
   return (
     <div className={`${error?.length > 0 ? `${className} col-12 ` : `${className}`} form-group`}>
-      <div className="width-100">
-        {
-          skeleton !== undefined && !skeleton && excuseSkeleton !== name
-            ? (
-              <Skeleton animation="wave">
-                <div className={`${className} col-12 form-group`}>
-                  <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
-                    {label}
-                  </label>
-                  <TextInput
-                    name={name}
-                    value={selectedOption}
-                    readOnly
-                    onChange={() => console.log(value)}
-                  />
-                  <Card className={show ? 'ontop' : 'd-none'}>
-                    <CardContent>
-                      <ul
-                        className={error?.length > 0 ? 'error-field' : ''}
-                        id={name}
-                        onChange={onChange}
-                        onBlur={((e) => typeof onBlur === 'function'
-                        && onBlur(e, validations))}
-                      >
-                        <li>
-                          <input className="col-12" type="search" value={searchTerm} onChange={handleChange} />
-                        </li>
-                        <li className="select-2 ">
-                          <ul>
-                            {optionsProp}
-                          </ul>
-                        </li>
-                      </ul>
-                    </CardContent>
-
-                  </Card>
+      <div className="">
+        <div
+          onMouseEnter={() => {
+            setShow(true);
+            setEdit(true);
+          }}
+          onMouseLeave={() => setShow(false)}
+        >
+          <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
+            {label}
+          </label>
+          {
+            multi !== undefined
+              ? (
+                <div className="border-farm border-radius-5 p-1 multi-empty">
                   {
-                    error?.length > 0
-                      ? (
-                        <ul className="error-msg">
-                          {
-                            error.map(
-                              (err) => <li key={err}>{err}</li>
-                            )
-                          }
-                        </ul>
-                      )
-                      : null
+                    selectedOptions.length < 1
+                      ? `select ${label}`
+                      : selectedOptions.map((opt) => <Chip key={opt} text={opt} del={deselect} />)
                   }
                 </div>
-              </Skeleton>
-            )
-            : (
-              <div
-                onMouseEnter={() => {
-                  setShow(true);
-                  setEdit(true);
-                }}
-                onMouseLeave={() => setShow(false)}
-              >
-                <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
-                  {label}
-                </label>
+              )
+              : (
                 <TextInput
                   name={name}
                   value={selectedOption}
                   readOnly
-                  onChange={() => console.log(value)}
+                  onChange={() => value}
                 />
-                <Card className={show ? 'ontop' : 'd-none'}>
-                  <CardContent>
-                    <div
-                      className={error?.length > 0 ? 'error-field' : 'center-center'}
-                      id={name}
-                      onChange={onChange}
-                      onBlur={((e) => typeof onBlur === 'function'
-                       && onBlur(e, validations))}
-                    >
-                      <div className="mb-3">
-                        <input type="search" placeholder={`search ${label} here...`} value={searchTerm} onChange={handleChange} />
-                      </div>
-                      <div className="select-2 text-left col-12">
+              )
+          }
 
-                        {optionsProp}
+          <Card className={show ? 'ontop' : 'd-none'}>
+            <div className="card-body">
+              <div
+                className={error?.length > 0 ? 'error-field' : 'center-center'}
+                id={name}
+                onChange={onChange}
+                onBlur={((e) => typeof onBlur === 'function'
+                  && onBlur(e, validations))}
+              >
+                <div className="mb-3">
+                  <input type="search" placeholder={`search ${label} here...`} value={searchTerm} onChange={handleChange} />
+                </div>
+                <div className="select-2 text-left col-12">
 
-                      </div>
-                    </div>
-                  </CardContent>
+                  {optionsProp}
 
-                </Card>
-                {
-                  error?.length > 0
-                    ? (
-                      <ul className="error-msg">
-                        {
-                          error.map(
-                            (err) => <li key={err}>{err}</li>
-                          )
-                        }
-                      </ul>
-                    )
-                    : null
-                }
+                </div>
               </div>
-            )
-        }
+            </div>
+
+          </Card>
+          {
+            error?.length > 0
+              ? (
+                <ul className="error-msg">
+                  {
+                    error.map(
+                      (err) => <li key={err}>{err}</li>
+                    )
+                  }
+                </ul>
+              )
+              : null
+          }
+        </div>
+
       </div>
     </div>
   );
