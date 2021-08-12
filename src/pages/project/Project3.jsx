@@ -5,6 +5,10 @@ import addDays from 'date-fns/addDays';
 import Moment from 'moment';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useParams } from 'react-router';
+import _ from 'lodash';
+import CardMedia from '@material-ui/core/CardMedia';
+import CardContent from '@material-ui/core/CardContent';
+import Card from '@material-ui/core/Card';
 import FormBuilder from '../../components/form/builders/form';
 import { validateField } from '../../utilities/validation';
 import { camelToString, notifier } from '../../utilities/stringOperations';
@@ -15,6 +19,7 @@ import {
 import Loader from '../../components/microComponents/loader';
 import { apiOptions } from '../../services/fetch';
 import SimpleSnackbar from '../../components/microComponents/snackBar';
+import Kat from '../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg';
 
 /**
  *
@@ -74,6 +79,12 @@ const Project3 = () => {
   useEffect(() => {
     if (store.deleteMedia.status === 'success') {
       removeAtIndex(formData.deleteMedia);
+    } else if (store.deleteMedia?.status === 'failed') {
+      notifier({
+        type: 'error',
+        title: 'error',
+        text: 'this media could not be deleted at this time, try again later'
+      });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.deleteMedia?.status]);
@@ -252,7 +263,7 @@ const Project3 = () => {
 
   return (
     <div className="content">
-      <div className="max-w-600 w-600 margin-center m-t-40 h-80h scroll-y neg-m-b-60">
+      <div className="w-100 margin-center m-t-40 ">
         <div className="login-form-container p-20 bg-light">
           <div className="login-form pb-5h">
 
@@ -267,31 +278,154 @@ const Project3 = () => {
             </div>
 
             <div className="row">
-              <FormBuilder
-                formItems={
-                  formBuilderProjectsPreviewProps({
-                    formData,
-                    states,
-                    lgas,
-                    minDate,
-                    minStartDate,
-                    categories: store.projectCategories.data.data,
-                    multiple: true,
-                    removeItem: deleteProjectMedia,
-                    skeleton: store?.project?.data?.data?.id,
-                    excuseSkeleton: 'title',
-                    setFormData: cancelUpload,
-                    progress,
-                    handleBlur,
-                    handleChange,
-                    handleDateChange,
-                    btnMethod: () => setFormData({ ...formData, title: '' }),
-                    loading: { status: store.project.status, text: 'initializing your project' },
-                    loadingMedia: store.media?.status,
-                    errors
-                  })
-                }
-              />
+              <div className="col-md-7">
+                <CardMedia
+                  className="h-18h"
+                  image={
+                    _.head(formData?.file)?.uri
+                    || Kat
+                  }
+                  title={formData.title}
+                />
+                <div className=" px-5">
+                  <div>
+                    <div className="text-wema py-3">
+                      <h4>
+                        <span className="pr-1">Location</span>
+                      </h4>
+                    </div>
+                  </div>
+                  <FormBuilder
+                    formItems={
+                      formBuilderProjectsPreviewProps({
+                        formData,
+                        states,
+                        lgas,
+                        minDate,
+                        minStartDate,
+                        categories: store.projectCategories.data.data,
+                        multiple: true,
+                        removeItem: deleteProjectMedia,
+                        skeleton: store?.project?.data?.data?.id,
+                        excuseSkeleton: 'title',
+                        setFormData: cancelUpload,
+                        progress,
+                        handleBlur,
+                        handleChange,
+                        handleDateChange,
+                        btnMethod: () => setFormData({ ...formData, title: '' }),
+                        loading: { status: store.project.status, text: 'initializing your project' },
+                        loadingMedia: store.media?.status,
+                        errors
+                      }).location
+                    }
+                  />
+                  <div>
+                    <div className="text-wema py-3">
+                      <h4>
+                        <span className="pr-1">About</span>
+                      </h4>
+                    </div>
+                  </div>
+                  <div className="">
+                    <FormBuilder
+                      formItems={
+                        formBuilderProjectsPreviewProps({
+                          formData,
+                          states,
+                          lgas,
+                          minDate,
+                          minStartDate,
+                          categories: store.projectCategories.data.data,
+                          multiple: true,
+                          removeItem: deleteProjectMedia,
+                          skeleton: store?.project?.data?.data?.id,
+                          excuseSkeleton: 'title',
+                          setFormData: cancelUpload,
+                          progress,
+                          handleBlur,
+                          handleChange,
+                          handleDateChange,
+                          btnMethod: () => setFormData({ ...formData, title: '' }),
+                          loading: { status: store.project.status, text: 'initializing your project' },
+                          loadingMedia: store.media?.status,
+                          errors
+                        }).description
+                      }
+                    />
+                  </div>
+                </div>
+              </div>
+              <div className="col-md-5 px-5 login-form-container">
+                <div>
+                  <div className="text-wema py-3">
+                    <h4>
+                      <span className="pr-1">Info</span>
+                    </h4>
+                  </div>
+                </div>
+                <FormBuilder
+                  formItems={
+                    formBuilderProjectsPreviewProps({
+                      formData,
+                      states,
+                      lgas,
+                      minDate,
+                      minStartDate,
+                      categories: store.projectCategories.data.data,
+                      multiple: true,
+                      removeItem: deleteProjectMedia,
+                      skeleton: store?.project?.data?.data?.id,
+                      excuseSkeleton: 'title',
+                      setFormData: cancelUpload,
+                      progress,
+                      handleBlur,
+                      handleChange,
+                      handleDateChange,
+                      btnMethod: () => setFormData({ ...formData, title: '' }),
+                      loading: { status: store.project.status, text: 'initializing your project' },
+                      loadingMedia: store.media?.status,
+                      errors
+                    }).info
+                  }
+                />
+              </div>
+              <div className="col-12 ">
+                <div>
+                  <div className="text-wema py-3 text-center">
+                    <h4>
+                      <span className="pr-1">Calendar</span>
+                    </h4>
+                  </div>
+                </div>
+                <div className="row">
+                  <FormBuilder
+                    formItems={
+                      formBuilderProjectsPreviewProps({
+                        formData,
+                        states,
+                        lgas,
+                        minDate,
+                        minStartDate,
+                        categories: store.projectCategories.data.data,
+                        multiple: true,
+                        removeItem: deleteProjectMedia,
+                        skeleton: store?.project?.data?.data?.id,
+                        excuseSkeleton: 'title',
+                        setFormData: cancelUpload,
+                        progress,
+                        handleBlur,
+                        handleChange,
+                        handleDateChange,
+                        btnMethod: () => setFormData({ ...formData, title: '' }),
+                        loading: { status: store.project.status, text: 'initializing your project' },
+                        loadingMedia: store.media?.status,
+                        errors
+                      }).calendar
+                    }
+                  />
+                </div>
+              </div>
 
             </div>
 

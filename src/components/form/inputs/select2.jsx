@@ -75,7 +75,7 @@ const Select2 = (
 
   const available = () => options?.filter((option) => {
     const temp = option.constructor === Object ? option[optionIndex] : option;
-    return temp.toLowerCase().includes(searchTerm?.toLowerCase());
+    return temp?.toLowerCase()?.includes(searchTerm?.toLowerCase());
   });
 
   const optionsProp = selectOptions?.map((option) => (
@@ -138,7 +138,7 @@ const Select2 = (
           {
             multi !== undefined
               ? (
-                <div className="border-farm border-radius-5 p-1 multi-empty">
+                <div className="border-farm border-radius-5 px-1 multi-empty">
                   {
                     selectedOptions.length < 1
                       ? `select ${label}`
@@ -166,7 +166,7 @@ const Select2 = (
                   && onBlur(e, validations))}
               >
                 <div className="mb-3">
-                  <input type="search" placeholder={`search ${label} here...`} value={searchTerm} onChange={handleChange} />
+                  <input type="search" placeholder={selectedOption || `search ${label} here...`} value={searchTerm} onChange={handleChange} />
                 </div>
                 <div className="select-2 text-left col-12">
 

@@ -102,7 +102,7 @@ const CreateProject = () => {
           )
         }
       </div>
-      <div className="max-w-600 w-600 margin-center m-t-40 h-80h scroll-y neg-m-b-60">
+      <div className="max-w-600 w-600 margin-center m-t-40">
         <div className="login-form-container p-20 bg-light">
           <h3 className="bold text-center text-dark border-bottom border-wema border-right-0 border-top-0  ">
             { tab === undefined
