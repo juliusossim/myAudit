@@ -60,7 +60,6 @@
       rotate(0deg)
       scale(1)
       translateY(10px);
-    @extend .bg-farm
   }
 }
 .three-bgs{
@@ -100,3 +99,18 @@
       400px 0;
   }
 }
+.wema-house-parallax {
+    /* The image used */
+    background-image: url("../../../assets/images/wemaHouse.jpeg");
+
+    /* Set a specific height */
+    min-height: 47vw;
+  opacity: .5;
+
+    /* Create the parallax scrolling effect */
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+

@@ -1,5 +1,5 @@
 import React from 'react';
-import { alpha, makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
@@ -29,9 +29,10 @@ const useStyles = makeStyles((theme) => ({
   search: {
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
-    backgroundColor: alpha(theme.palette.common.white, 0.15),
+    backgroundColor: 'white',
+    color: '#A01B88',
     '&:hover': {
-      backgroundColor: alpha(theme.palette.common.white, 0.25)
+      backgroundColor: '#A01B88'
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
@@ -44,6 +45,7 @@ const useStyles = makeStyles((theme) => ({
   searchIcon: {
     padding: theme.spacing(0, 2),
     height: '100%',
+    color: '#A01B88',
     position: 'absolute',
     pointerEvents: 'none',
     display: 'flex',
@@ -81,10 +83,11 @@ const useStyles = makeStyles((theme) => ({
  * @param {string} title
  * @param {array} menu
  * @param {element} logo
+ * @param {element} dp
  * @param {array} mobile
 */
-const PrimarySearchAppBar = ({
-  logo, menu, mobile, title, account
+const SearchAppBar = ({
+  logo, menu, mobile, title, account, dp, clss
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -123,7 +126,7 @@ const PrimarySearchAppBar = ({
     >
       {
         menu?.map((item) => (
-          <Link to={item.to || '#'}>
+          <Link to={item.to || '#'} onClick={item.action}>
             <MenuItem onClick={handleMenuClose}>{item.name}</MenuItem>
           </Link>
         ))
@@ -143,8 +146,8 @@ const PrimarySearchAppBar = ({
       onClose={handleMobileMenuClose}
     >
       {
-        mobile?.map((item) => (
-          <Link to={item.to || '#'}>
+        menu?.map((item) => (
+          <Link to={item.to || '#'} onClick={item.action}>
             <MenuItem>
               <IconButton color="inherit">
                 <Badge badgeContent={item.count} color="secondary">
@@ -163,25 +166,22 @@ const PrimarySearchAppBar = ({
           aria-haspopup="true"
           color="inherit"
         >
-          {accountText.icon}
+          {account?.icon}
         </IconButton>
-        <p>{accountText}</p>
+        {dp}
       </MenuItem>
     </Menu>
   );
 
   return (
     <div className={classes.grow}>
-      <AppBar position="static">
-        <Toolbar>
-          <IconButton
-            edge="start"
-            className={classes.menuButton}
-            color="inherit"
-            aria-label="open drawer"
-          >
-            {logo}
-          </IconButton>
+      <AppBar className="bg-light text-wema" position="fixed">
+        <Toolbar className={clss}>
+          <div className="max-w-200">
+            <Link to="/" className="logo">
+              <img src={logo} alt="crowd funding logo" />
+            </Link>
+          </div>
           <Typography className={classes.title} variant="h6" noWrap>
             {title}
           </Typography>
@@ -200,21 +200,23 @@ const PrimarySearchAppBar = ({
           </div>
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
-            <IconButton aria-label="show 17 new notifications" color="inherit">
-              <Badge badgeContent={17} color="secondary">
-                <MdNotifications />
-              </Badge>
-            </IconButton>
-            <IconButton
-              edge="end"
-              aria-label="account of current user"
-              aria-controls={menuId}
-              aria-haspopup="true"
-              onClick={handleProfileMenuOpen}
-              color="inherit"
-            >
-              <MdAccountCircle />
-            </IconButton>
+            {
+              menu?.map((item) => (
+                <Link to={item.to || '#'}>
+                  <MenuItem>
+                    <IconButton color="inherit">
+                      <Badge badgeContent={item.count} color="secondary">
+                        {item.icon}
+                      </Badge>
+                    </IconButton>
+                    {item.name}
+                  </MenuItem>
+                </Link>
+              ))
+            }
+            {
+              dp
+            }
           </div>
           <div className={classes.sectionMobile}>
             <IconButton
@@ -234,4 +236,4 @@ const PrimarySearchAppBar = ({
     </div>
   );
 };
-export default PrimarySearchAppBar;
+export default SearchAppBar;

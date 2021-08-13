@@ -278,7 +278,7 @@ const Project3 = () => {
             </div>
 
             <div className="row">
-              <div className="col-md-7">
+              <div className="col-md-7 card-container">
                 <CardMedia
                   className="h-18h"
                   image={
@@ -356,7 +356,7 @@ const Project3 = () => {
                   </div>
                 </div>
               </div>
-              <div className="col-md-5 px-5 login-form-container">
+              <Card className="col-md-5 px-5 ">
                 <div>
                   <div className="text-wema py-3">
                     <h4>
@@ -389,7 +389,7 @@ const Project3 = () => {
                     }).info
                   }
                 />
-              </div>
+              </Card>
               <div className="col-12 ">
                 <div>
                   <div className="text-wema py-3 text-center">

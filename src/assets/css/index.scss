@@ -12,6 +12,9 @@
 @import "sizes/sizes";
 @import "mediaSlider";
 @import "gradient";
+@import "insane/hover";
+@import "insane/background";
+@import "insane/shadow";
 //@import "insane";
 @font-face {
   font-family: Poppins;
@@ -444,7 +447,7 @@ header {
 
   .header-left {
     .logo {
-      width: 200px;
+      width: 100px;
       display: flex;
 
       img {
@@ -457,7 +460,7 @@ header {
 
 main {
   @extend .theme-bg;
-  padding-top: 84px;
+  padding-top: 20px;
 }
 .end-icon {
   position: absolute;
@@ -465,6 +468,7 @@ main {
   right: 6%;
   cursor: pointer;
 }
+
 .terms {
   @extend .fonts;
   font-size: 13px;
@@ -484,6 +488,15 @@ main {
   max-height: 75vh!important;
   overflow-y: auto;
 }
+.h-max-100{
+  max-height: 100vh!important;
+  overflow-y: auto;
+}
+.h-max-200{
+  max-height: 200vh!important;
+  overflow-y: auto;
+}
+
 .font-14 {
   font-size:  0.9rem;
 }
@@ -492,6 +505,13 @@ main {
 }
 .text-pale {
   color: #777777;
+}
+.px-13vw {
+  padding-left: 13vw !important;
+  padding-right: 13vw !important;
+}
+.MuiToolbar-gutters {
+  @extend .px-13vw
 }
 .edit-picture-btn {
   border: 1px solid #D2D2D2;
@@ -527,6 +547,17 @@ main {
   border: 1px solid #E4E4E4;
   border-radius: 5px;
   box-shadow: 0 0 40px #999;
+
+  .login-form {
+    @extend .login-form-margin
+  }
+}
+.card-container {
+  width: 100%;
+  background-color: #dbceff;
+  //border: 1px solid #E4E4E4;
+  border-radius: 5px;
+  //box-shadow: 0 0 40px rgba(142, 123, 153, 0.42);
 
   .login-form {
     @extend .login-form-margin

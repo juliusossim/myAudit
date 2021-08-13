@@ -51,7 +51,7 @@ export const getOneName = (fullName, first = true) => {
   return first ? names[0] : names[1];
 };
 
-export const stringDoesNotExist = (str) => (!str || str.length === 0 || /^\s*$/.test(str) || !str.trim());
+export const stringDoesNotExist = (str) => (typeof str !== 'string' || str?.length === 0 || /^\s*$/.test(str) || !str?.trim());
 export const notifier = ({
   type, title, text, stack
 }) => {
