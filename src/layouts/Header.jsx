@@ -46,19 +46,9 @@ const Header = () => {
         dispatch(notifications());
         setMenu([
           {
-            name: 'sign in',
-            icon: <RiLoginCircleLine />,
-            to: '/login'
-          },
-          {
             name: 'sign out',
             icon: <RiLogoutCircleLine />,
             action: () => logout('/', false)
-          },
-          {
-            name: 'sign up',
-            icon: <SiGnuprivacyguard />,
-            to: '/register'
           },
           {
             icon: <IoIosCreate />,
@@ -101,7 +91,7 @@ const Header = () => {
           <Avatar src={User} alt="profile logo" />
         </Link>
       )}
-      clss="p-13vw"
+      clss="px-14vw"
       menu={menu}
     />
     // <header>

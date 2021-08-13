@@ -32,7 +32,8 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: 'white',
     color: '#A01B88',
     '&:hover': {
-      backgroundColor: '#A01B88'
+      backgroundColor: 'rgba(160,27,136,0.47)',
+      color: '#fff'
     },
     marginRight: theme.spacing(2),
     marginLeft: 0,
