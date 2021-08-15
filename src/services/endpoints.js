@@ -22,7 +22,7 @@ const paths = {
   RESET_PASSWORD: `${servers.auth}${authEndpoints.resetPassword}`,
   FORGOT_PASSWORD: `${servers.auth}${authEndpoints.forgotPasswordApi}`,
   // uploads
-  PROFILE_PICTURE: `${servers.project}${fileUploads.profilePic}`,
+  DP: `${servers.project}${fileUploads.profilePic}`,
   PROJECT_MEDIA: `${servers.project}${fileUploads.project}`,
   DELETE_PROJECT_MEDIA: `${servers.project}${fileUploads.deleteProjectMedia}`,
   LOGO: `${servers.project}${fileUploads.logo}`,

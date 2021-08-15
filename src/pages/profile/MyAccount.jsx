@@ -7,6 +7,7 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import { FcCurrencyExchange, RiLockPasswordLine, RiLogoutCircleLine } from 'react-icons/all';
+import { Link } from 'react-router-dom';
 import { myProfile } from '../../redux/actions/profileActions';
 import FormBuilder from '../../components/form/builders/form';
 import formBuilderProps from './constants/myInfo';
@@ -16,11 +17,17 @@ import Kat from '../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg';
 import Loader from '../../components/microComponents/loader';
 import { logout } from '../../utilities/auth';
 import ListMat from '../../components/ui/listMat';
+import { formBuilderProjectsStartProps } from '../project/constants/startProject1Props';
+import { projectAction, uploadMedia } from '../../redux/actions/projectActions';
+import { apiOptions } from '../../services/fetch';
+import { camelToString, notifier } from '../../utilities/stringOperations';
+import { validateField } from '../../utilities/validation';
+import profileProps from './constants/profilePic';
 
 const MyAccount = ({ setCurrent }) => {
   /* redux */
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.profile.profile);
+  const store = useSelector((state) => state.profile);
   /* state */
   const [formData, setFormData] = useState();
   const [file, setFile] = useState(null);
@@ -36,28 +43,31 @@ const MyAccount = ({ setCurrent }) => {
       setFile(files);
       // uploadFile({ file: files[0], handleProgress, url: 'Uploads/logo' });
     }
-    // if (name === 'profile_type' || name === 'manager') {
-    //   val = Number(value);
-    //   if (name === 'manager') {
-    //     const manager = typeof user.details.signatories
-    //     !== 'undefined' && formData.manager !== 'select manager'
-    //       ? user.details.signatories[val]
-    //       : null;
-    //     setFormData({
-    //       ...formData,
-    //       account_name: manager?.account_name,
-    //       phone_number: manager?.phone_number,
-    //       customer_id: manager?.customer_id
-    //     });
-    //   }
-    // }
-    setFormData((state) => ({
-      ...state,
-      [name]: val
-    }));
-    if (name === 'account_number' && val.length === 10) {
-      // verifyAccount();
+    if (name === 'profile_pic_url') {
+      const fileSize = (files[0]?.size / 1024 / 1024).toFixed(3);
+      if (fileSize > 1) {
+        return notifier({
+          type: 'error',
+          title: 'error',
+          text: `the media size of ${fileSize}MB is too large, size must not be larger than 1MB`
+        });
+      }
+      // setFormData({
+      //   ...formData,
+      //   file: [...formData.file, files[0]]
+      // });
+      uploadDP(files[0]);
+      // uploadFile({ file: files[0], handleProgress, url: 'Uploads/logo' });
+    } else {
+      setFormData((state) => ({
+        ...state,
+        [name]: val
+      }));
+      if (name === 'account_number' && val.length === 10) {
+        // verifyAccount();
+      }
     }
+    return true;
   };
 
   useEffect(() => {
@@ -65,10 +75,15 @@ const MyAccount = ({ setCurrent }) => {
     dispatch(myProfile());
   }, []);
   useEffect(() => {
-    if (store.status === 'success') {
-      setFormData({ ...store.data.data.user });
+    if (store?.profile?.status === 'success') {
+      setFormData({ ...store?.profile?.data?.data?.user });
     }
-  }, [store.status]);
+  }, [store?.profile?.status]);
+  // useEffect(() => {
+  //   if (store?.dp?.status === 'success') {
+  //     setFormData({ ...formData, dp: store?.dp?.data?.data?. });
+  //   }
+  // }, [store?.profile?.status]);
 
   const linkProps = [
     {
@@ -87,6 +102,41 @@ const MyAccount = ({ setCurrent }) => {
       onClick: () => setShow(true)
     }
   ];
+  const deleteDP = (item) => {
+    setFormData({ ...formData, deleteMedia: item });
+    dispatch(projectAction(
+      {
+        action: 'DELETE_MEDIA',
+        routeOptions: apiOptions({
+          method: 'del',
+          param: formData.id,
+          pQuery: { mediaId: item.uri },
+          endpoint: 'DELETE_PROJECT_MEDIA',
+          auth: true
+        })
+      }
+    ));
+  };
+  const uploadDP = (item) => {
+    const data = new FormData();
+    data.append('profile_pic_url', item);
+    dispatch(projectAction(
+      {
+        action: 'DP',
+        routeOptions: apiOptions({
+          method: 'post',
+          body: data,
+          multipart: true,
+          setProgress,
+          endpoint: 'DP',
+          auth: true
+        })
+      }
+    ));
+  };
+  const cancelUpload = () => {
+    setFormData({ ...formData, file: '', logo_id: '' });
+  };
 
   return (
     <div>
@@ -94,13 +144,13 @@ const MyAccount = ({ setCurrent }) => {
       <div className="w-100 bg-light margin-center m-t-40 ">
         <div className=" p-20">
           {
-            store.status === 'pending'
+            store?.profile?.status === 'pending'
                   && (
                     <Loader />
                   )
           }
           {
-            store.status === 'success'
+            store?.profile?.status === 'success'
                   && (
                     (
                       <div className="row">
@@ -124,24 +174,22 @@ const MyAccount = ({ setCurrent }) => {
                           <CardContent>
                             <div className="d-flex">
                               <div className="">
-                                <Avatar
-                                  className="w-96 h-144"
-                                >
-                                  <img
-                                    src={formData?.profile_pic_url
-                                    || User}
-                                    alt="user Thumbnail"
-                                  />
-                                </Avatar>
+                                <Avatar src={formData?.profile_pic_url
+                                  || User}
+                                />
                               </div>
-                              <div className="col-md-4 center-center mt-5">
-                                <button
-                                  type="button"
-                                  className="no-bg
-                            edit-picture-btn bg-gray font-14 line-height-21 text-pale"
-                                >
-                                  Change Profile
-                                </button>
+                              <div className="float-right">
+                                <div className="file-input ml-2">
+                                  <button type="button">
+                                    change picture
+                                  </button>
+                                  <input
+                                    type="file"
+                                    className="btn pb-3 px-2 bg-wema py-1 w-50"
+                                    name="profile_pic_url"
+                                    onChange={handleChange}
+                                  />
+                                </div>
                               </div>
                             </div>
                             <FormBuilder
@@ -165,7 +213,7 @@ const MyAccount = ({ setCurrent }) => {
                                 // disabled={!store?.project?.data?.data?.id?.length > 0}
                                 // onClick={handleSaveProgress}
                               >
-                                Edit Profile
+                                Save
                               </button>
                             </div>
                           </CardContent>

@@ -115,11 +115,11 @@
 }
 .categoryButtons {
   /* Text */
-  background: #FFFFFF;
+  //background: #FFFFFF;
   height: 50px;
   border: 1px solid #A01B88;
   box-sizing: border-box;
-  border-radius: 10px;
+    border-radius: 10px;
   span {
     @extend .fonts;
     font-size: 16px;
@@ -129,6 +129,9 @@
     line-height: 140.5%;
     /* or 22px */
     align-items: center;
+    &:hover {
+      //color: white;
+    }
   }
 }
 .category {

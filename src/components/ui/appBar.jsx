@@ -203,7 +203,7 @@ const SearchAppBar = ({
           <div className={classes.sectionDesktop}>
             {
               menu?.map((item) => (
-                <Link to={item.to || '#'}>
+                <Link to={item.to || '#'} onClick={item.action}>
                   <MenuItem>
                     <IconButton color="inherit">
                       <Badge badgeContent={item.count} color="secondary">

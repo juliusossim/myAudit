@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import CustomCarousel from '../../components/microComponents/carousel';
 import LazyImage from '../../components/microComponents/lazyImg';
 import howItWorks from '../../assets/images/howItWorks.svg';
@@ -202,11 +203,11 @@ const GeneralPage = () => {
                   {
                     raisersCategory.map(
                       (category) => (
-                        <button key={category} type="button" className="px-5 m-2 categoryButtons butt">
-                          <span>
+                        <Link to="/" key={category} type="button" className="px-5 m-2 pt-2 transformed-4 categoryButtons butt" data-text={category}>
+                          <span className="">
                             {category}
                           </span>
-                        </button>
+                        </Link>
                       )
                     )
                   }

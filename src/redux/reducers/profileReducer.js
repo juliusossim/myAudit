@@ -28,6 +28,10 @@ const initialState = {
   notifications: {
     data: {},
     status: 'initial'
+  },
+  dp: {
+    data: {},
+    status: 'initial'
   }
 };
 
@@ -236,6 +240,32 @@ const profileReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       notifications: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.DP_PENDING:
+    return {
+      ...state,
+      dp: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.DP_SUCCESS:
+    return {
+      ...state,
+      dp: {
+        ...state.dp,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.DP_FAILURE:
+    return {
+      ...state,
+      dp: {
         data: error || {},
         status: 'failed'
       }
