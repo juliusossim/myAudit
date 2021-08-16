@@ -92,14 +92,14 @@ const MyAccount = ({ setCurrent }) => {
       link: '/change-password'
     },
     {
-      name: 'sign out',
-      icon: <RiLogoutCircleLine />,
-      onClick: () => logout('/', false)
-    },
-    {
       name: 'Change Withdrawal Account',
       icon: <FcCurrencyExchange />,
       onClick: () => setShow(true)
+    },
+    {
+      name: 'sign out',
+      icon: <RiLogoutCircleLine />,
+      onClick: () => logout('/', false)
     }
   ];
   const deleteDP = (item) => {
