@@ -36,7 +36,7 @@ export const camelToString = (camelCase) => camelCase
  * @param dash the slug pattern
  * @returns {*} the converted slug
  */
-export const slugify = (string, dash = '_') => string.replace(' ', dash);
+export const slugify = (string, dash = '_') => !stringDoesNotExist(string) && string.replace(' ', dash);
 
 /**
  * @param fullName :
@@ -67,4 +67,14 @@ export const stringCaps = (string) => {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
   return string;
+};
+export const sentenceCaps = (text) => {
+  if (!stringDoesNotExist(text)) {
+    text.replace(/(^\s*)|(\s*$)/gi, '');
+    text.replace(/[ ]{2,}/gi, ' ');
+    text.replace(/\n /, '\n');
+    const words = text.split(' ');
+    return words.map((word) => `${stringCaps(word)} `);
+  }
+  return false;
 };

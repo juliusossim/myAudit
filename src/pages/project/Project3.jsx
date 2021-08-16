@@ -14,7 +14,7 @@ import { validateField } from '../../utilities/validation';
 import { camelToString, notifier } from '../../utilities/stringOperations';
 import formBuilderProjectsPreviewProps from './constants/startProject3Props';
 import {
-  editProject, submitProject, uploadMedia, getProject, projectAction
+  editProject, submitProject, uploadMedia, getProject, projectAction, projectCategories
 } from '../../redux/actions/projectActions';
 import Loader from '../../components/microComponents/loader';
 import { apiOptions } from '../../services/fetch';
@@ -74,6 +74,7 @@ const Project3 = () => {
 
   useEffect(() => {
     dispatch(getProject(formData.id));
+    dispatch(projectCategories());
   }, []);
 
   useEffect(() => {

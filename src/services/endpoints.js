@@ -47,6 +47,7 @@ const paths = {
   EDIT_PROJECT_REQUEST: `${servers.project}${projectEndpoints.editProjectRequest}`,
   POPULAR_FUNDRAISERS: `${servers.project}${projectEndpoints.popularFundraisers}`,
   POPULAR_NGOS: `${servers.project}${projectEndpoints.popularNGOs}`,
+  SEARCH_PROJECTS: `${servers.project}${projectEndpoints.searchProject}`,
 
   // profile
   ME: `${servers.auth}${profileEndpoints.me}`,

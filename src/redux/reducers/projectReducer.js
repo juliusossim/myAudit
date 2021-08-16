@@ -66,6 +66,10 @@ const initialState = {
     data: {},
     status: 'initial'
   },
+  searchProjects: {
+    data: {},
+    status: 'initial'
+  },
   editProjectRequest: {
     data: {},
     status: 'initial'
@@ -339,6 +343,34 @@ const projectReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       similarProjects: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.SEARCH_PROJECTS_PENDING:
+    return {
+      ...state,
+      searchProjects: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.SEARCH_PROJECTS_SUCCESS:
+    return {
+      ...state,
+      searchProjects: {
+        ...state.searchProjects,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.SEARCH_PROJECTS_FAILURE:
+    return {
+      ...state,
+      searchProjects: {
         data: error || {},
         status: 'failed'
       }

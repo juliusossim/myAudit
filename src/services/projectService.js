@@ -19,3 +19,4 @@ export const projectByStatus = (id) => 'Projects/byPublishStatus';
 export const stateLgas = 'lgas';
 export const popularFundraisers = 'Projects/popularFundraisers';
 export const popularNGOs = 'Projects/popularNGOs';
+export const searchProject = 'Projects'; // several queries

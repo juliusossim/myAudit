@@ -164,3 +164,38 @@
 }
 
 
+
+.cloned-2 {
+  padding: 10px;
+  transition: .2s .4s;
+}
+.cloned-2:hover {
+  color: #fff;
+  background: #542437;
+  transition: .2s;
+}
+
+.cloned-2:before,
+.cloned-2:after {
+  content: "";
+  position: absolute;
+  inset: 0 10px;
+  z-index: -1;
+  background: #D95B43;
+  opacity: 0;
+  transition: .2s .2s;
+}
+.cloned-2:before {
+  inset: 0 20px;
+  background: #ECD078;
+  transition-delay: 0s;
+}
+.cloned-2:hover:before,
+.cloned-2:hover:after {
+  transform: translateY(10px);
+  opacity: 1;
+}
+.cloned-2:hover:before {
+  transform: translateY(20px);
+  transition-delay: .4s;
+}

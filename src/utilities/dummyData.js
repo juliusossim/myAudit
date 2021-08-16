@@ -28,6 +28,39 @@ export const projectType = [
     value: 3
   }
 ];
+export const sortCats = [
+  'select project type',
+  {
+    id: 1,
+    type: 'most funded',
+    desc: 'corporate project',
+    value: 1
+  },
+  {
+    id: 2,
+    type: 'almost funded',
+    desc: 'organisational project',
+    value: 2
+  },
+  {
+    id: 3,
+    type: 'newly started',
+    desc: 'organisational project',
+    value: 3
+  },
+  {
+    id: 4,
+    type: 'ending soon',
+    desc: 'organisational project',
+    value: 4
+  },
+  {
+    id: 5,
+    type: 'completed',
+    desc: 'organisational project',
+    value: 5
+  }
+];
 export const profileType = [
   'select item...',
   {
