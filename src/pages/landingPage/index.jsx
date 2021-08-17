@@ -21,7 +21,7 @@ const GeneralPage = () => {
   };
   /* redux */
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.home);
+  const store = useSelector((state) => state);
   // const carouselSlides = [
   //   {
   //     content: (
@@ -149,9 +149,9 @@ const GeneralPage = () => {
                   </button>
                 </div>
                 {
-                  store?.popularFundraisers?.status === 'pending'
+                  store?.home?.popularFundraisers?.status === 'pending'
                     ? <Loader />
-                    : store?.popularFundraisers?.data?.data?.map(
+                    : store?.home?.popularFundraisers?.data?.data?.map(
                       (item, key) => (
                         <div key={item?.id} className="col-md-3">
                           <ProjectInfo
@@ -173,9 +173,9 @@ const GeneralPage = () => {
                   </button>
                 </div>
                 {
-                  store?.popularNgos?.status === 'pending'
+                  store?.home?.popularNgos?.status === 'pending'
                     ? <Loader />
-                    : store?.popularNgos?.data?.data?.map(
+                    : store?.home?.popularNgos?.data?.data?.map(
                       (item, key) => (
                         <div key={item?.id} className="col-md-3">
                           <ProjectInfo
@@ -201,11 +201,11 @@ const GeneralPage = () => {
               <div className="row ">
                 <div className="col-md-8 offset-md-2 ">
                   {
-                    raisersCategory.map(
+                    store?.project?.projectCategories?.data?.data?.map(
                       (category) => (
-                        <Link to="/" key={category} type="button" className="px-5 m-2 pt-2 transformed-4 categoryButtons butt" data-text={category}>
+                        <Link to="/" key={category.name} type="button" className="px-5 m-2 pt-2 transformed-4 categoryButtons butt" data-text={category.name}>
                           <span className="">
-                            {category}
+                            {category.name}
                           </span>
                         </Link>
                       )

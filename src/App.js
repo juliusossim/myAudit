@@ -8,7 +8,7 @@ import MainPortal from './routes/MainPortal';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import Loader from './components/microComponents/loader';
-import { projectAction } from './redux/actions/projectActions';
+import { projectAction, projectCategories } from './redux/actions/projectActions';
 
 function App() {
   const dispatch = useDispatch();
@@ -25,6 +25,7 @@ function App() {
   )), []);
   useEffect(() => {
     getStateLgas();
+    dispatch(projectCategories());
   }, []);
   return (
     <Suspense fallback={(
