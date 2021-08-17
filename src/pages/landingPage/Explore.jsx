@@ -6,7 +6,9 @@ import { projectAction, projectCategories, uploadMedia } from '../../redux/actio
 import { apiOptions } from '../../services/fetch';
 import Loader from '../../components/microComponents/loader';
 import ProjectInfo from '../../components/ui/projectInfo';
-import { sentenceCaps, slugify, stringCaps } from '../../utilities/stringOperations';
+import {
+  sentenceCaps, slugify, stringCaps, stringDoesNotExist
+} from '../../utilities/stringOperations';
 import SelectInput from '../../components/form/inputs/SelectInput';
 import { projectType, sortCats } from '../../utilities/dummyData';
 
@@ -24,30 +26,25 @@ const Explore = () => {
   /* state */
 
   const [formData, setFormData] = useState({});
-  const [pQuery, setPQuery] = useState({});
   const [sortBy, setSortBy] = useState('all categories');
 
   useEffect(() => {
     dispatch(projectCategories());
     searchProjects();
   }, []);
-  // useEffect(() => {
-  //   searchProjects();
-  // }, [pQuery]);
 
   useEffect(() => {
     const sortParam = sortCats.filter((item) => item?.id === formData.sort)[0]?.type;
-    setSortBy(sortParam);
-    // setPQuery({ sortBy: slugify(sortParam, '_') });
-    searchProjects({ sortBy: slugify(sortParam, '_') });
+    if (!stringDoesNotExist(sortParam)) {
+      setSortBy(sortParam);
+      searchProjects({ OrderBy: slugify(sortParam, '-') });
+    }
   }, [formData.sort]);
 
-  const filterCategories = (categoryId) => {
-    setPQuery({ categoryId });
-    searchProjects({ categoryId });
+  const filterCategories = (CategoryId) => {
+    searchProjects({ CategoryId });
   };
   const searchProjects = useCallback((slug) => {
-    // console.log(pQuery);
     dispatch(projectAction(
       {
         action: 'SEARCH_PROJECTS',
@@ -76,9 +73,9 @@ const Explore = () => {
   return (
     <div className="">
       <div className="">
-        <div className="row">
+        <div className="">
           <div className="content">
-            <div className="w-100 row margin-center m-t-40">
+            <div className="w-100 row  m-t-40">
               <div className="col-md-3 my-4">
                 {
                   store?.projectCategories?.status === 'pending'
@@ -123,10 +120,10 @@ const Explore = () => {
                 }
               </div>
               <div className="my-4 col-md-9">
-                <div className="row projects text-left mt-5 ">
+                <div className="col-12  projects text-left mt-5 ">
                   <div className="row justify-content-between pr-3">
                     <p className="bold font-22">
-                      {sentenceCaps(sortBy)}
+                      {sentenceCaps(sortBy) || 'All Categories'}
                     </p>
                     <div>
                       <div className=" d-flex">
@@ -148,13 +145,14 @@ const Explore = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="row justify-content-between">
+                  <div className="row">
                     {
                       store?.searchProjects?.status === 'pending'
-                        && <Loader />
+                        && <div className="col-12"><Loader /></div>
                     }
                     {
-                      store?.searchProjects?.data?.data?.items?.map(
+                      store?.searchProjects?.status === 'success'
+                      && store?.searchProjects?.data?.data?.items?.map(
                         (item, key) => (
                           <div key={item.id} className="col-md-4">
                             <div className="">
@@ -165,6 +163,14 @@ const Explore = () => {
                             </div>
                           </div>
                         )
+                      )
+                    }
+                    {
+                      store?.searchProjects?.status === 'failed'
+                      && (
+                        <div className="card-body">
+                          We could not load the requested data at this time.
+                        </div>
                       )
                     }
                   </div>

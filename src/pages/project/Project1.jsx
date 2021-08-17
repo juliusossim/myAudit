@@ -90,7 +90,7 @@ const Project1 = ({
     // const authUser = JSON.parse(localStorage.getItem('loginData'));
     if (stringDoesNotExist(tem.description)) {
       tem.description = `
-  Hi my name is ${formData.creator.fullName?.name || 'anonymous'},
+  Hi my name is ${formData.creator?.fullName?.name || 'anonymous'},
   I am appealing to the general public to join in raising funds to support our ${category?.name || formData.title}
   `;
     }

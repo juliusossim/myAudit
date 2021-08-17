@@ -63,7 +63,7 @@ const useStyles = makeStyles((theme) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('md')]: {
-      width: '20ch'
+      width: '25ch'
     }
   },
   sectionDesktop: {
@@ -81,14 +81,16 @@ const useStyles = makeStyles((theme) => ({
 }));
 /**
  * @param {object} account
+ * @param {string} clss
  * @param {string} title
  * @param {array} menu
  * @param {element} logo
  * @param {element} dp
+ * @param {element} popMenu
  * @param {array} mobile
 */
 const SearchAppBar = ({
-  logo, menu, mobile, title, account, dp, clss
+  logo, menu, mobile, title, account, dp, clss, popMenu
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -127,7 +129,7 @@ const SearchAppBar = ({
     >
       {
         menu?.map((item) => (
-          <Link to={item.to || '#'} onClick={item.action}>
+          <Link key={item.name || Math.random()} to={item.to || '#'} onClick={item.action}>
             <MenuItem onClick={handleMenuClose}>{item.name}</MenuItem>
           </Link>
         ))
@@ -148,7 +150,7 @@ const SearchAppBar = ({
     >
       {
         menu?.map((item) => (
-          <Link to={item.to || '#'} onClick={item.action}>
+          <Link key={item?.name || Math.random()} to={item.to || '#'} onClick={item.action}>
             <MenuItem>
               <IconButton color="inherit">
                 <Badge badgeContent={item.count} color="secondary">
@@ -202,8 +204,11 @@ const SearchAppBar = ({
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {
+              popMenu
+            }
+            {
               menu?.map((item) => (
-                <Link to={item.to || '#'} onClick={item.action}>
+                <Link key={item?.name || Math.random()} to={item.to || '#'} onClick={item.action}>
                   <MenuItem>
                     <IconButton color="inherit">
                       <Badge badgeContent={item.count} color="secondary">

@@ -55,9 +55,9 @@ const Profile = () => {
   );
   useEffect(() => {
     currentUser.then((result) => {
-      if (result.status === 'Inactive') {
+      if (result?.status === 'Inactive') {
         handleOpen();
-      } else if (result.status === 'Active' || result?.status === 1) {
+      } else if (result?.status === 'Active' || result?.status === 1) {
         setUser({ ...result });
       }
     });

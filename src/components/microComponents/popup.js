@@ -6,6 +6,7 @@ import Popper from '@material-ui/core/Popper';
 import PopupState, { bindToggle, bindPopper } from 'material-ui-popup-state';
 import Fade from '@material-ui/core/Fade';
 import Paper from '@material-ui/core/Paper';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   typography: {
@@ -19,7 +20,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function Popup({ temp }) {
+export default function Popup({ temp, text }) {
   const classes = useStyles();
   const [clicked, setClicked] = React.useState(false);
 
@@ -27,16 +28,14 @@ export default function Popup({ temp }) {
     <PopupState variant="popper" popupId="demo-popup-popper">
       {(popupState) => (
         <div>
-          <button type="button" onClick={() => setClicked(!clicked)}>
+          <Link to="#" type="button" onClick={() => setClicked(!clicked)}>
             {/* eslint-disable-next-line react/jsx-props-no-spreading */}
             <Button variant="contained" {...bindToggle(popupState)} style={{ background: '#F4F8FB' }}>
               {
-                clicked
-                  ? 'less'
-                  : 'more'
+                text
               }
             </Button>
-          </button>
+          </Link>
 
           {/* eslint-disable-next-line react/jsx-props-no-spreading */}
           <Popper {...bindPopper(popupState)} transition className={classes.popper}>

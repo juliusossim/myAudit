@@ -35,7 +35,7 @@ const FileInput = (
             <div className="row light-border p-3">
               {
                 data.map((upload, key) => (
-                  <div className="col-md-4" key={upload.name}>
+                  <div className="col-md-4" key={JSON.stringify(upload)}>
                     {
                       loading === 'initial'
                         && (

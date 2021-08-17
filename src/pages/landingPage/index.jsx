@@ -153,7 +153,7 @@ const GeneralPage = () => {
                     ? <Loader />
                     : store?.popularFundraisers?.data?.data?.map(
                       (item, key) => (
-                        <div className="col-md-3">
+                        <div key={item?.id} className="col-md-3">
                           <ProjectInfo
                             styled
                             project={item}
@@ -177,7 +177,7 @@ const GeneralPage = () => {
                     ? <Loader />
                     : store?.popularNgos?.data?.data?.map(
                       (item, key) => (
-                        <div className="col-md-3">
+                        <div key={item?.id} className="col-md-3">
                           <ProjectInfo
                             styled
                             project={item}

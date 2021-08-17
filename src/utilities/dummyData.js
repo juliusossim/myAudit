@@ -32,7 +32,7 @@ export const sortCats = [
   'select project type',
   {
     id: 1,
-    type: 'most funded',
+    type: 'most popular',
     desc: 'corporate project',
     value: 1
   },

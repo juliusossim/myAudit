@@ -40,7 +40,7 @@ const LoginPage = () => {
   };
   const handleClose = () => {
     setShow(false);
-    return window.location.replace('/home');
+    return window.location.replace('/explore');
   };
 
   const modalTemplate = (
