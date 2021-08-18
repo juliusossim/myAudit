@@ -154,19 +154,19 @@ const Project3 = () => {
       switch (formData.approvalStatus) {
       case 2:
         return dispatch(submitProject(tem));
-      case 1:
-        return dispatch(projectAction(
-          {
-            action: 'EDIT_PROJECT_REQUEST',
-            routeOptions: apiOptions({
-              method: 'patch',
-              param: tem.id,
-              body: tem,
-              endpoint: 'EDIT_PROJECT_REQUEST',
-              auth: true
-            })
-          }
-        ));
+      // case 1:
+      //   return dispatch(projectAction(
+      //     {
+      //       action: 'EDIT_PROJECT_REQUEST',
+      //       routeOptions: apiOptions({
+      //         method: 'patch',
+      //         param: tem.id,
+      //         body: tem,
+      //         endpoint: 'EDIT_PROJECT_REQUEST',
+      //         auth: true
+      //       })
+      //     }
+      //   ));
       default:
         return dispatch(editProject(tem));
       }
