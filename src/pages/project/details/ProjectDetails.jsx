@@ -148,31 +148,36 @@ const ProjectDetails = (items) => {
 
   return (
     <div className="content">
-      <div className="w-100 margin-center m-t-40 h-80h scroll-y neg-m-b-60">
+      <div className="w-100 margin-center m-t-40">
         <div className="login-form-container p-20 bg-light">
           <div className="d-md-flex ">
             <div className=" max-w-750">
               <CardMedia className="">
                 <LazyImage cls="h-400" src={activeMedia?.uri || Kat} alt="kat" />
               </CardMedia>
-              <div className="d-flex mt-lg-3">
-                <div className="d-flex">
-                  <button type="button" className="border-radius-50 btn-small btn-plain text-wema  hover-wema bg-wema-light h-50 mt-3">
-                    <IoArrowBackCircleOutline className="" onClick={() => handleSelectSlide(true)} />
-                  </button>
-                  <button type="button" className="border-radius-50 btn-small btn-plain text-wema  hover-wema bg-wema-light top-neg-7 ml-2 h-50 mt-4">
-                    <IoArrowForwardCircleOutline onClick={() => handleSelectSlide(false)} />
-                  </button>
-                </div>
-                <div className="d-md-flex d-none w-600 pl-5 overflow-x-hidden h-50">
-                  <MediaSlider
-                    mediaFiles={media}
-                    selected={activeMedia}
-                    slideClass={slideClss}
-                    setSelected={setActiveMedia}
-                  />
-                </div>
-              </div>
+              {
+                project?.media?.length > 1
+                && (
+                  <div className="d-flex mt-lg-3">
+                    <div className="d-flex">
+                      <button type="button" className="border-radius-50 btn-small btn-plain text-wema  hover-wema bg-wema-light h-50 mt-3">
+                        <IoArrowBackCircleOutline className="" onClick={() => handleSelectSlide(true)} />
+                      </button>
+                      <button type="button" className="border-radius-50 btn-small btn-plain text-wema  hover-wema bg-wema-light top-neg-7 ml-2 h-50 mt-4">
+                        <IoArrowForwardCircleOutline onClick={() => handleSelectSlide(false)} />
+                      </button>
+                    </div>
+                    <div className="d-md-flex d-none w-600 pl-5 overflow-x-hidden h-50">
+                      <MediaSlider
+                        mediaFiles={media}
+                        selected={activeMedia}
+                        slideClass={slideClss}
+                        setSelected={setActiveMedia}
+                      />
+                    </div>
+                  </div>
+                )
+              }
               <hr />
             </div>
             <div className="pl-5">

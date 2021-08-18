@@ -16,11 +16,11 @@ import Kat from '../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg';
 const ProjectInfo = ({
   project, styled, logo, actions, chip, shares, clss
 }) => (
-  <div className="">
-    <Paper elevation={3} className={clss || 'h-52h'}>
+  <div className="post-container">
+    <Paper elevation={3} className={clss || 'h-52h post'}>
       <div className="mt-1">
         <CardContent>
-          <div className="">
+          <div className="post-title">
             <div className={logo ? 'd-none' : ''}>
               <CardMedia
                 className="h-18h"

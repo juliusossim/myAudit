@@ -91,8 +91,8 @@ const Explore = () => {
                       <div className="pt-3">
                         {
                           store?.projectCategories?.data?.data?.map((cat) => (
-                            <Link to="#" onClick={() => filterCategories(cat?.id)} className="py-2 " key={cat.id}>
-                              <span className="font-22 font-black theme-font">
+                            <Link to="#" onClick={() => filterCategories(cat?.id)} className="py-2 sixth" key={cat.id}>
+                              <span className="font-22 font-black theme-font  ">
                                 {stringCaps(cat.name)}
                               </span>
                               <span className="float-right mr-3 text-muted">
@@ -154,7 +154,7 @@ const Explore = () => {
                       store?.searchProjects?.status === 'success'
                       && store?.searchProjects?.data?.data?.items?.map(
                         (item, key) => (
-                          <div key={item.id} className="col-md-4">
+                          <div key={item.id} className="col-md-4 mb-4">
                             <div className="">
                               <ProjectInfo
                                 styled
