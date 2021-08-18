@@ -33,6 +33,7 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.3",
+    "react-water-wave": "^1.0.5",
     "redux": "^4.0.5",
     "redux-persist": "^6.0.0",
     "redux-reset": "^0.3.0",
