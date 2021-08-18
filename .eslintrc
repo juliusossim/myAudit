@@ -10,6 +10,7 @@
 	},
 	"rules": {
     "indent": ["error", 2],
+    "template-curly-spacing": ["error", "never"],
     "no-console":"off",
 		"comma-dangle": ["error", "never"],
 		"linebreak-style": ["error", "unix"], // support LF linebreak style for linux

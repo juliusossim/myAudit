@@ -139,14 +139,19 @@ const GeneralPage = () => {
         <div className="content">
           <div className="w-100 margin-center m-t-40">
             <div className="my-4">
-              <div className="row projects text-left mt-5 ">
+              <div className={store?.home?.popularFundraisers?.data?.data?.length > 0 ? 'row projects text-left mt-5' : 'd-none'}>
                 <div className="row justify-content-between ml-5 mr-5">
-                  <h3>
+                  <div className="theme-title">
                     Most Popular Fundraisers
-                  </h3>
-                  <button type="button" className="text-wema float-right viewMoreBtn">
-                    View More &gt;
-                  </button>
+                  </div>
+                  {
+                    store?.home?.popularFundraisers?.data?.data?.length > 4
+                        && (
+                          <button type="button" className="text-wema float-right viewMoreBtn">
+                            View More &gt;
+                          </button>
+                        )
+                  }
                 </div>
                 {
                   store?.home?.popularFundraisers?.status === 'pending'
@@ -163,14 +168,19 @@ const GeneralPage = () => {
                     )
                 }
               </div>
-              <div className="row projects text-left mt-5 ">
+              <div className={store?.home?.popularNgos?.data?.data?.length > 0 ? 'row projects text-left mt-5 ' : 'd-none'}>
                 <div className="row justify-content-between ml-5 mr-5">
                   <h3>
                     Most Popular NGOs
                   </h3>
-                  <button type="button" className="text-wema float-right viewMoreBtn">
-                    View More &gt;
-                  </button>
+                  {
+                    store?.home?.popularNgos?.data?.data?.length > 4
+                        && (
+                          <button type="button" className="text-wema float-right viewMoreBtn">
+                            View More &gt;
+                          </button>
+                        )
+                  }
                 </div>
                 {
                   store?.home?.popularNgos?.status === 'pending'
@@ -191,7 +201,8 @@ const GeneralPage = () => {
           </div>
         </div>
       </div>
-      <div className="row bg-light">
+
+      <div className={store?.project?.projectCategories?.data?.data?.length > 0 ? 'row bg-light' : 'd-none'}>
         <div className="content">
           <div className="w-100 margin-center m-t-40">
             <div className="category row justify-content-center my-4">
@@ -203,7 +214,7 @@ const GeneralPage = () => {
                   {
                     store?.project?.projectCategories?.data?.data?.map(
                       (category) => (
-                        <Link to="/" key={category.name} type="button" className="px-5 m-2 pt-2 transformed-4 categoryButtons butt" data-text={category.name}>
+                        <Link to={{ pathname: '/explore', cat: category }} key={category.name} type="button" className="px-5 m-2 pt-2 transformed-4 categoryButtons butt" data-text={category.name}>
                           <span className="">
                             {category.name}
                           </span>

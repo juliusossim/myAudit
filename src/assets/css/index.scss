@@ -15,6 +15,8 @@
 @import "insane/hover";
 @import "insane/background";
 @import "insane/shadow";
+@import "mixins/mediaqueries";
+
 //@import "insane";
 @font-face {
   font-family: Poppins;
@@ -67,11 +69,13 @@ img {
   border: 1px solid #C6C6C6;
 }
 .select-2{
+  @extend .theme-font;
   max-height: 25vh;
   overflow-y: auto;
 }
 
 .ontop{
+  @extend .theme-font;
   z-index: 10000;
   top: 2vh;
   //left: 1rem;
@@ -80,6 +84,7 @@ img {
 .no-outline { outline: none!important;}
 
 p, textarea {
+  @extend .theme-font;
   white-space: pre-line;
 }
 
@@ -89,6 +94,7 @@ div, header, section {
 }
 
 section {
+  @extend .theme-font;
   width: 100%;
   margin: 0;
 }
@@ -96,8 +102,10 @@ section {
 button, input, select, textarea {
   outline: none;
   border: none;
+  @extend .theme-font;
 }
 button {
+  @extend .theme-font;
   cursor: pointer;
 }
 
@@ -119,6 +127,7 @@ a.gray:hover {
   padding-right: 10px;
   padding-left: 10px;
   margin-bottom: 20px;
+  @extend .theme-font;
 }
 .col-1 {
   width: 8.33%;
@@ -417,7 +426,7 @@ main {
 }
 
 .terms {
-  @extend .fonts;
+   @extend .theme-font;
   font-size: 13px;
   line-height: 19.5px;
   color: #2E2E2E;

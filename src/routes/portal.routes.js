@@ -27,6 +27,11 @@ const routes = [
     exact: true
   },
   {
+    path: '/explore/:param',
+    component: Explore,
+    exact: true
+  },
+  {
     path: '/me',
     component: Profile,
     exact: true

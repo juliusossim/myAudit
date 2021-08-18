@@ -9,6 +9,7 @@ import _ from 'lodash';
 import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
+import { Link } from 'react-router-dom';
 import FormBuilder from '../../components/form/builders/form';
 import { validateField } from '../../utilities/validation';
 import { camelToString, notifier } from '../../utilities/stringOperations';
@@ -20,6 +21,7 @@ import Loader from '../../components/microComponents/loader';
 import { apiOptions } from '../../services/fetch';
 import SimpleSnackbar from '../../components/microComponents/snackBar';
 import Kat from '../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg';
+import BackdropModal from '../../components/microComponents/backdropModal';
 
 /**
  *
@@ -40,7 +42,7 @@ const Project3 = () => {
   const [minDate, setMinDate] = useState(new Date());
   const [minStartDate] = useState(addDays(Moment.now(), 5));
   const [loading, setLoading] = useState(false);
-  const [openSnack, setOpenSnack] = useState(false);
+  const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
 
   const mapIndex = (arr) => arr.map((ar, index) => ({
@@ -119,7 +121,7 @@ const Project3 = () => {
       setLoading(true);
     }
     if (store?.project?.status === 'success' && formData.approvalStatus === 6) {
-      setOpenSnack(true);
+      handleOpen();
       setLoading(false);
       setMessage(`${formData.title} is not yet submitted. Do you wish to Submit Now?`);
     }
@@ -135,7 +137,12 @@ const Project3 = () => {
     }
   },
   [store?.submitProject?.status, store?.editProjectRequest?.status, store?.project?.status]);
-
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleOpen = () => {
+    setOpen(true);
+  };
   const cancelUpload = () => {
     setFormData({ ...formData, file: '', logo_id: '' });
   };
@@ -146,6 +153,7 @@ const Project3 = () => {
     const tem = {
       ...formData
     };
+    handleClose();
     if (formData.donationTarget !== undefined && typeof formData.donationTarget === 'string') {
       const targetAmount = () => formData.donationTarget.replace(/[^\d.]/g, '');
       tem.donationTarget = Number(targetAmount());
@@ -173,7 +181,25 @@ const Project3 = () => {
     }
     return false;
   };
-
+  const modalContent = (
+    <div>
+      <h3 className="text-wema">
+        {
+          `${formData.title} updated`
+        }
+      </h3>
+      <p>
+        <span>Do you wish to submit for approval now?  </span>
+        <div className="d-flex">
+          <button type="button" className="btn m-3" onClick={() => { dispatch(submitProject(formData)); handleClose(); }}>Submit for approval</button>
+          <Link to="/me" className="btn-plain border-1 m-3">My Projects</Link>
+          <Link to="/" className="btn m-3">Home</Link>
+          <Link to="/create-project" className="btn-plain border-1 m-3">Start A new project</Link>
+          <button type="button" className=" btn-danger m-3" onClick={handleClose}>Close</button>
+        </div>
+      </p>
+    </div>
+  );
   const replacedName = (name, apiValue) => {
     if (apiValue) {
       if (name === 'lga') {
@@ -453,13 +479,7 @@ const Project3 = () => {
                 }
               </div>
             </div>
-            <SimpleSnackbar
-              message={message}
-              open={openSnack}
-              setOpen={setOpenSnack}
-              action={() => dispatch(submitProject(formData))}
-              actionText="Submit Project"
-            />
+            <BackdropModal handleClose={handleClose} open={open} content={modalContent} />
           </div>
         </div>
       </div>

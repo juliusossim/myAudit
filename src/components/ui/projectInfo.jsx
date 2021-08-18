@@ -146,12 +146,12 @@ const ProjectInfo = ({
                   </p>
                 </div>
               )}
-              <div className={styled ? 'pl-5' : ''}>
+              <div className={styled ? 'pl-2' : ''}>
                 <small className={styled ? 'd-block' : ''}>Fund Percent:</small>
                 <span className="bold ml-2 text-center">
                   {
                     typeof ((project?.amountRaised / project?.donationTarget) * 100)
-                      .toFixed(0) === 'number'
+                      === 'number'
                       ? (
                         <span>
                           {
@@ -169,7 +169,7 @@ const ProjectInfo = ({
                   %
                 </span>
               </div>
-              <div className="pl-5">
+              <div className="pl-1">
                 <small className={styled ? 'd-block' : ''}>Duration:</small>
                 {
                   `Due ${positiveDiffs(new Date(project?.endDate))}`

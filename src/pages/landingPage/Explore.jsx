@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { AiOutlineArrowRight, IoSadOutline } from 'react-icons/all';
 import { projectAction, projectCategories, uploadMedia } from '../../redux/actions/projectActions';
 import { apiOptions } from '../../services/fetch';
@@ -13,12 +13,7 @@ import SelectInput from '../../components/form/inputs/SelectInput';
 import { projectType, sortCats } from '../../utilities/dummyData';
 
 const Explore = () => {
-  const startProject = () => {
-    /**
-     Todo: redirect to project page.
-     */
-    window.location.replace('/register');
-  };
+  const { cat } = useLocation();
   /* redux */
   const dispatch = useDispatch();
   const store = useSelector((state) => state.project);
@@ -26,11 +21,15 @@ const Explore = () => {
   /* state */
 
   const [formData, setFormData] = useState({});
-  const [sortBy, setSortBy] = useState('all categories');
+  const [sortBy, setSortBy] = useState(cat?.name);
 
   useEffect(() => {
     dispatch(projectCategories());
-    searchProjects();
+    if (cat === undefined) {
+      searchProjects();
+    } else {
+      searchProjects({ CategoryId: cat?.id });
+    }
   }, []);
 
   useEffect(() => {
@@ -41,8 +40,9 @@ const Explore = () => {
     }
   }, [formData.sort]);
 
-  const filterCategories = (CategoryId) => {
-    searchProjects({ CategoryId });
+  const filterCategories = (Category) => {
+    setSortBy(Category.name);
+    searchProjects({ CategoryId: Category.id });
   };
   const searchProjects = useCallback((slug) => {
     dispatch(projectAction(
@@ -90,10 +90,10 @@ const Explore = () => {
                       </p>
                       <div className="pt-3">
                         {
-                          store?.projectCategories?.data?.data?.map((cat) => (
-                            <Link to="#" onClick={() => filterCategories(cat?.id)} className="py-2 sixth" key={cat.id}>
+                          store?.projectCategories?.data?.data?.map((category) => (
+                            <Link to="#" onClick={() => filterCategories(category)} className="py-2 sixth" key={category.id}>
                               <span className="font-22 font-black theme-font  ">
-                                {stringCaps(cat.name)}
+                                {stringCaps(category.name)}
                               </span>
                               <span className="float-right mr-3 text-muted">
                                 <AiOutlineArrowRight />
