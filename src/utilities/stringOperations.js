@@ -1,5 +1,6 @@
 import PNotify from 'pnotify/dist/es/PNotify';
 import 'pnotify/dist/PNotifyBrightTheme.css';
+import _ from 'lodash';
 
 /**
  *
@@ -49,6 +50,34 @@ export const slugify = (string, dash = '_') => !stringDoesNotExist(string) && st
 export const getOneName = (fullName, first = true) => {
   const names = fullName.split(' ');
   return first ? names[0] : names[1];
+};
+
+/**
+ * @param {number} den :
+  * denominator, full amount
+ * @param {number} num :
+  * numerator, current amount.
+ * @param {number} percent: optional percent value
+ * @param {boolean} complete: should show complete instead of value above 100%
+ * @returns {string} percentage || complete || num || 0.
+ */
+export const percentCalculator = ({
+  den, num, percent, complete = true
+}) => {
+  let value = '0%';
+  if (_.isNumber(percent) && _.isNumber(den)) {
+    value = (percent * den) / 100;
+    value = value.toLocaleString();
+  }
+  if (_.isNumber(num) && _.isNumber(den)) {
+    value = (num / den) * 100;
+    if (complete) {
+      value = value > 101 ? 'complete' : `${value.toFixed(0)}%`;
+    } else {
+      value = `${value}%`;
+    }
+  }
+  return value;
 };
 
 export const stringDoesNotExist = (str) => (typeof str !== 'string' || str?.length === 0 || /^\s*$/.test(str) || !str?.trim());

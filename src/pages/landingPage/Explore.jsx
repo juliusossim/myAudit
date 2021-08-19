@@ -91,15 +91,18 @@ const Explore = () => {
                       <div className="pt-3">
                         {
                           store?.projectCategories?.data?.data?.map((category) => (
-                            <Link to="#" onClick={() => filterCategories(category)} className="py-2 sixth" key={category.id}>
-                              <span className="font-22 font-black theme-font  ">
-                                {stringCaps(category.name)}
-                              </span>
-                              <span className="float-right mr-3 text-muted">
-                                <AiOutlineArrowRight />
-                              </span>
-                              <hr className="bg-black" />
-                            </Link>
+                            <div className="categoryLink">
+                              <Link to="#" onClick={() => filterCategories(category)} className="py-2" key={category.id}>
+                                <span className="font-22 font-black theme-font  ">
+                                  {stringCaps(category.name)}
+                                </span>
+                                <span className="float-right mr-3 text-muted">
+                                  <AiOutlineArrowRight className="catIcon" />
+                                </span>
+                                <hr className="bg-black" />
+                              </Link>
+                            </div>
+
                           ))
                         }
                       </div>

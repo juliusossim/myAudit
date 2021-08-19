@@ -22,6 +22,10 @@
   font-family: Poppins;
   src: url('./poppins/Poppins-Regular.ttf');
 }
+@font-face {
+  font-family: Avenir;
+  src: url('./avenir/AvenirLTStd-Book.otf');
+}
 
 * {
   box-sizing: border-box;
@@ -39,7 +43,10 @@
   font-size: 1rem;
 }
 .theme-font {
-  font-family: Poppins, "SF Pro Text", 'Helvetica Neue', sans-serif;
+  font-family: Poppins, sans-serif;
+}
+.theme-font-2 {
+  font-family: Avenir, sans-serif;
 }
 .bg-inherit {
   background: inherit !important;
@@ -67,6 +74,9 @@ img {
 
 .light-border {
   border: 1px solid #C6C6C6;
+}
+.overflow-y-hidden {
+  overflow-y: hidden;
 }
 .select-2{
   @extend .theme-font;
@@ -456,6 +466,16 @@ main {
 .font-14 {
   font-size:  0.9rem;
 }
+.font-10 {
+  font-size: 10px;
+}
+.font-8 {
+  font-size: 8px;
+}
+.font-12 {
+  font-size: 12px;
+}
+
 .line-height-21 {
   line-height: 1.31rem;
 }
@@ -599,7 +619,7 @@ footer {
 
   &:hover {
     background: #A01B8888 !important;
-    color: #fff;
+    color: #fff!important;
   }
 }
 i.btn {

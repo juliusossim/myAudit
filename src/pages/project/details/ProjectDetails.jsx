@@ -149,7 +149,7 @@ const ProjectDetails = (items) => {
   return (
     <div className="content">
       <div className="w-100 margin-center m-t-40">
-        <div className="login-form-container p-20 bg-light">
+        <div className="p-20 bg-light">
           <div className="d-md-flex ">
             <div className=" max-w-750">
               <CardMedia className="">

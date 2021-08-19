@@ -114,9 +114,9 @@ const GeneralPage = () => {
             Raise funds with ease and securely. get started now...
           </small>
           <div>
-            <button type="button" className="btn btn-small butt" onClick={startProject}>
+            <Link to="/create-project" className="btn btn-small hover-wema">
               Start a Project Today
-            </button>
+            </Link>
           </div>
         </div>
       </div>
@@ -141,9 +141,9 @@ const GeneralPage = () => {
             <div className="my-4">
               <div className={store?.home?.popularFundraisers?.data?.data?.length > 0 ? 'row projects text-left mt-5' : 'd-none'}>
                 <div className="row justify-content-between ml-5 mr-5">
-                  <div className="theme-title">
+                  <h3 className="theme-title">
                     Most Popular Fundraisers
-                  </div>
+                  </h3>
                   {
                     store?.home?.popularFundraisers?.data?.data?.length > 4
                         && (
