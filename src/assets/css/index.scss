@@ -52,7 +52,7 @@
   background: inherit !important;
 }
 .border-1 {
-  border: solid 1px;
+  border: solid 1px #0000002e;
   border-radius: 7px;
 }
 body {
@@ -77,6 +77,10 @@ img {
 }
 .overflow-y-hidden {
   overflow-y: hidden;
+}
+.top-10 {
+  position: relative;
+  top: 10vh;
 }
 .select-2{
   @extend .theme-font;

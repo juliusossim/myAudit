@@ -178,7 +178,7 @@ const SearchAppBar = ({
 
   return (
     <div className={classes.grow}>
-      <AppBar className="bg-light text-wema" position="fixed">
+      <AppBar className="bg-light text-wema position-fixed    " position="fixed">
         <Toolbar className={clss}>
           <div className="max-w-200">
             <Link to="/" className="logo">

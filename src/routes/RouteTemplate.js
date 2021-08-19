@@ -13,7 +13,7 @@ const RouteTemplate = ({ redirect, routes }) => {
     />
   ) : null));
   return (
-    <main>
+    <main className="min-h-100">
       <Suspense
         fallback={(
           <div className="loader-container">

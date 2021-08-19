@@ -12,6 +12,7 @@ const CreateProject = lazy(() => import('../pages/project/CreateProject'));
 const Project3 = lazy(() => import('../pages/project/Project3'));
 const Success = lazy(() => import('../pages/project/Success'));
 const Unauthorized = lazy(() => import('../pages/authentication/Unauthorized'));
+const Notifications = lazy(() => import('../pages/profile/Notifications'));
 const Profile = lazy(() => import('../pages/profile/Index'));
 const ProjectDetails = lazy(() => import('../pages/project/details/ProjectDetails'));
 
@@ -84,6 +85,11 @@ const routes = [
   {
     path: '/success',
     component: Success,
+    exact: true
+  },
+  {
+    path: '/notifications',
+    component: Notifications,
     exact: true
   },
   {

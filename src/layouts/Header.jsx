@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { lazy, useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import {
   IoIosCreate,
@@ -18,9 +18,12 @@ import { notifications } from '../redux/actions/profileActions';
 import SearchAppBar from '../components/ui/appBar';
 import Popup from '../components/microComponents/popup';
 import FadeMenu from '../components/microComponents/menu';
+import BackdropModal from '../components/microComponents/backdropModal';
 
 const Header = () => {
   const { pathname } = useLocation();
+
+  const Notifications = lazy(() => import('../pages/profile/Notifications'));
 
   const dispatch = useDispatch();
   const store = useSelector((state) => state.profile.notifications);
@@ -45,7 +48,6 @@ const Header = () => {
   const [user, setUser] = useState({ loggedIn: false });
   const handleMe = () => {
     setShow(!show);
-    setMe(true);
   };
   useEffect(() => {
     currentUser.then((result) => {
@@ -121,6 +123,7 @@ const Header = () => {
         handleClick={handleClick}
       />
       <SearchAppBar
+        className="position-fixed"
         logo={CrowdLogo}
         popMenu={user?.loggedIn && (
           <Link className="mt-3" onClick={handleClick} to="#">

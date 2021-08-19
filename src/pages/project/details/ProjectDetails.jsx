@@ -10,20 +10,13 @@ import IconButton from '@material-ui/core/IconButton';
 import { useLocation, useParams } from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
 import {
-  FaArrowDown, FaArrowRight, FaArrowUp, IoArrowBackCircleOutline, IoArrowForwardCircleOutline
+  IoArrowBackCircleOutline, IoArrowForwardCircleOutline
 } from 'react-icons/all';
-import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
 import {
-  getProject,
-  projectAction,
-  projectCategories
+  projectAction
 } from '../../../redux/actions/projectActions';
 import LazyImage from '../../../components/microComponents/lazyImg';
 import Kat from '../../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg';
-import { approvalStatus, approvalColors, popularProjects } from '../../../utilities/dummyData';
-import { getOneName, stringCaps } from '../../../utilities/stringOperations';
-import { positiveDiffs } from '../../../utilities/dateOperations';
 import { apiOptions } from '../../../services/fetch';
 import MediaSlider from '../../../components/microComponents/mediaSlider';
 import ProjectInfo from '../../../components/ui/projectInfo';
@@ -34,7 +27,7 @@ import ProjectInfo from '../../../components/ui/projectInfo';
  * @constructor
  */
 const ProjectDetails = (items) => {
-  const { id, tab } = useParams();
+  const { id, tab } = useLocation();
 
   /* redux */
   const dispatch = useDispatch();
@@ -64,13 +57,13 @@ const ProjectDetails = (items) => {
     ));
   }, []);
 
-  const projectDetails = useCallback(() => {
+  const projectDetails = useCallback((theId) => {
     dispatch(projectAction(
       {
         action: 'PROJECT_DETAILS',
         routeOptions: apiOptions({
           method: 'get',
-          param: id,
+          param: theId,
           endpoint: 'PROJECT_DETAILS',
           auth: true,
           afterParam: 'details'
@@ -80,8 +73,8 @@ const ProjectDetails = (items) => {
   }, []);
 
   useEffect(() => {
-    projectDetails();
-  }, []);
+    projectDetails(id);
+  }, [id]);
   useEffect(() => {
     retrieveSimilarProjects();
   }, [project]);

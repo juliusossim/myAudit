@@ -40,7 +40,9 @@ const Notifications = ({ setCurrent }) => {
   ));
 
   useEffect(() => {
-    setCurrent('My notifications');
+    if (setCurrent !== undefined) {
+      setCurrent('My notifications');
+    }
     dispatch(notifications());
   }, []);
 
@@ -58,16 +60,17 @@ const Notifications = ({ setCurrent }) => {
   }, [store.status]);
 
   return (
-    <div className="w-600 margin-center m-t-40 ">
-      <div className="login-form-container p-20">
-        {
-          store.status === 'pending'
+    <div className={setCurrent === undefined ? 'login-form top-10' : ''}>
+      <div className="w-600 margin-center m-t-40 ">
+        <div className="login-form-container p-20 mt-5">
+          {
+            store.status === 'pending'
           && (
             <Loader />
           )
-        }
-        {
-          store.status === 'success'
+          }
+          {
+            store.status === 'success'
           && (
             <div className="login-form pb-5h">
               <h3 className="bold text-dark mt-2">
@@ -127,9 +130,9 @@ const Notifications = ({ setCurrent }) => {
               }
             </div>
           )
-        }
-        {
-          store.status === 'Failed'
+          }
+          {
+            store.status === 'Failed'
           && (
             <div className="login-form pb-5h">
               <h3 className="bold text-dark">
@@ -137,7 +140,8 @@ const Notifications = ({ setCurrent }) => {
               </h3>
             </div>
           )
-        }
+          }
+        </div>
       </div>
     </div>
 

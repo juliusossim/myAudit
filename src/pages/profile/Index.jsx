@@ -69,10 +69,10 @@ const Profile = () => {
           && (
             <div className="content">
               <CollapsedBreadcrumbs max={2} current={current} prevs={[{ name: 'My Account', to: '/me' }]} />
-              <div className="w-100 margin-center m-t-40 ">
+              <div className="w-100 margin-center m-t-40">
                 {/* <div className="login-form-container p-20"> */}
                 <h3 className="bold text-dark">Profile</h3>
-                <div className="d-flex py-3">
+                <div className="d-flex py-2 border-1">
                   <div className={`p-md-2 accordion-div-2  ${accordionTab === 1 && 'is-focus'}`}>
                     <button
                       type="button"
@@ -120,7 +120,7 @@ const Profile = () => {
                   </div>
 
                 </div>
-                <div className="login-form ">
+                <div className="login-form">
                   <div className="h-max-200">
                     {displayPages(accordionTab)}
                   </div>
