@@ -39,7 +39,7 @@ const ProjectInfo = ({
                 label={stringCaps(approvalStatus[project?.approvalStatus])}
               />
               <div className={logo ? 'd-none' : ''}>
-                <p>
+                <p className="text-muted theme-font-2">
                   <small>
                     <span className="px-1">
                       {`${stringDoesNotExist(project.lga) ? 'Abuja' : stringCaps(project.lga)},`}
@@ -56,13 +56,13 @@ const ProjectInfo = ({
           <div className={logo ? 'd-flex' : 'd-none'}>
             <Avatar src={User} alt="profile logo" />
             <div className="pl-1">
-              <p>
+              <p className="text-muted theme-font-2">
                 <small>Posted By:</small>
                 {' '}
-                {project.creator?.fullName}
+                <small className="bold">{project.creator?.fullName}</small>
               </p>
               <p>
-                <small>
+                <small className="text-muted theme-font-2">
                   2 Projects |
                   <span className="px-1">
                     {`${stringDoesNotExist(project.lga) ? 'Abuja' : stringCaps(project.lga)},`}
