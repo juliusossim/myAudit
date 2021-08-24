@@ -92,11 +92,20 @@ const Project3 = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.deleteMedia?.status]);
 
-  // useEffect(() => {
-  //   if (store.media?.status === 'success') {
-  //     setFormData({ ...formData, files: [...formData.files, store?.data?.data] });
-  //   }
-  // }, [store.media?.status]);
+  useEffect(() => {
+    if (store.media.status === 'failed' && store?.getProject?.status !== 'pending') {
+      showUpload(store.media?.message);
+    }
+    if (store.media.status === 'success' && store?.getProject?.status !== 'pending') {
+      const images = formData?.file;
+      images?.pop();
+      setFormData({
+        ...formData,
+        file: [...images, store?.media?.data?.data]
+      });
+    }
+    return true;
+  }, [store.media?.status]);
 
   useEffect(() => {
     if (formData.startDate) {
@@ -280,7 +289,7 @@ const Project3 = () => {
         routeOptions: apiOptions({
           method: 'del',
           param: formData.id,
-          pQuery: { mediaId: item.uri },
+          afterParam: item.id,
           endpoint: 'DELETE_PROJECT_MEDIA',
           auth: true
         })

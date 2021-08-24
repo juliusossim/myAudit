@@ -28,11 +28,25 @@ const Select2 = (
   const [searchTerm, setSearchterm] = React.useState('');
   const [searchResults, setSearchResults] = React.useState([]);
   const [selectOptions, setSelectOptions] = React.useState(options);
-  const [selectedOption, setSelectedOption] = React.useState(value);
+  const [selectedOption, setSelectedOption] = React.useState('');
   const [selectedOptions, setSelectedOptions] = React.useState([]);
   const [multiOptions, setMultiOptions] = React.useState([]);
   const [show, setShow] = React.useState(false);
   const [edit, setEdit] = React.useState(false);
+
+  useEffect(() => {
+    setSearchResults(available());
+  }, [searchTerm, options]);
+  useEffect(() => {
+    if (searchResults?.length > 0) {
+      setSelectOptions(searchResults);
+    } else {
+      setSelectOptions(options);
+    }
+  }, [searchResults, options]);
+  useEffect(() => setSelectedOption(value), [value]);
+
+  console.log(selectedOptions, value);
 
   const handleChange = (e) => {
     setSearchterm(e.target.value);
@@ -63,7 +77,6 @@ const Select2 = (
     setMultiOptions(basket);
     setSearchterm('');
     setEdit(false);
-    console.log(selectedValues, selectedApiValues);
     onChange({
       target: {
         name,
@@ -111,16 +124,6 @@ const Select2 = (
           </Button>
         </li>
       )));
-  useEffect(() => {
-    setSearchResults(available());
-  }, [searchTerm, options]);
-  useEffect(() => {
-    if (searchResults?.length > 0) {
-      setSelectOptions(searchResults);
-    } else {
-      setSelectOptions(options);
-    }
-  }, [searchResults, options]);
 
   return (
     <div className={`${error?.length > 0 ? `${className} col-12 ` : `${className}`} form-group`}>

@@ -35,14 +35,14 @@ const FileInput = (
             <div className="row light-border p-3">
               {
                 data.map((upload, key) => (
-                  <div className="col-md-4" key={JSON.stringify(upload)}>
+                  <div className="col-md-4" key={JSON.stringify(upload?.uri)}>
                     {
                       loading === 'initial'
                         && (
                           <>
                             <img
                               src={
-                                upload.uri || URL.createObjectURL(upload)
+                                upload.uri
                               }
                               alt={upload}
                             />
@@ -57,7 +57,7 @@ const FileInput = (
                           <>
                             <img
                               src={
-                                upload.uri || URL.createObjectURL(upload)
+                                upload.uri
                               }
                               alt={upload}
                             />
@@ -89,7 +89,7 @@ const FileInput = (
                                                 <>
                                                   <img
                                                     src={
-                                                      upload.uri || URL.createObjectURL(upload)
+                                                      upload.uri
                                                     }
                                                     alt={upload}
                                                   />

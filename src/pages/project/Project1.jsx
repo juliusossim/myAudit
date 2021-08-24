@@ -44,6 +44,14 @@ const Project1 = ({
     if (store.media.status === 'failed' && store?.project1?.status !== 'pending') {
       showUpload(store.media?.message);
     }
+    if (store.media.status === 'success' && store?.project1?.status !== 'pending') {
+      const images = formData?.file;
+      images?.pop();
+      setFormData({
+        ...formData,
+        file: [...images, store?.media?.data?.data]
+      });
+    }
     return true;
   }, [store.media?.status]);
 
@@ -160,7 +168,7 @@ const Project1 = ({
   };
 
   const removeAtIndex = (item) => {
-    const fileCopy = [...formData.file];
+    const fileCopy = [...formData?.file];
     const index = fileCopy.indexOf(item);
     fileCopy.splice(index, 1);
     setFormData({ ...formData, file: [...fileCopy] });
@@ -168,13 +176,14 @@ const Project1 = ({
 
   const deleteProjectMedia = (item) => {
     setFormData({ ...formData, deleteMedia: item });
+    console.log(item);
     dispatch(projectAction(
       {
         action: 'DELETE_MEDIA',
         routeOptions: apiOptions({
           method: 'del',
           param: formData.id,
-          pQuery: { mediaId: item.uri },
+          afterParam: item.id,
           endpoint: 'DELETE_PROJECT_MEDIA',
           auth: true
         })

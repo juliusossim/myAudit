@@ -69,8 +69,9 @@ const Projects = ({ setCurrent }) => {
                                             label={stringCaps(approvalStatus[item.approvalStatus])}
                                           />
                                         </h3>
-                                        <small>
-                                          {item.location || 'Anonymous location'}
+                                        <small className={item.state.length > 1 ? '' : 'd-none'}>
+                                          <span className="pr-1">{`${item.lga},`}</span>
+                                          <span>{item.state || ''}</span>
                                         </small>
                                       </Link>
                                       <div className="col-md-5 mt-5">

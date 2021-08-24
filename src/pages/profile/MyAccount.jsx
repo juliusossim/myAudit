@@ -75,6 +75,12 @@ const MyAccount = ({ setCurrent }) => {
     dispatch(myProfile());
   }, []);
   useEffect(() => {
+    if (store?.dp?.status === 'success') {
+      setFormData({ ...formData, profile_pic_url: store?.dp?.data?.data?.uri });
+      localforage.setItem('user', { ...formData, profile_pic_url: store?.dp?.data?.data?.uri });
+    }
+  }, [store?.dp]);
+  useEffect(() => {
     if (store?.profile?.status === 'success') {
       setFormData({ ...store?.profile?.data?.data?.user });
     }
@@ -158,9 +164,6 @@ const MyAccount = ({ setCurrent }) => {
                           <h3 className="bold text-dark">
                             My Profile
                           </h3>
-                          <p>
-                            Click Edit Profile below to edit your profile
-                          </p>
                           <hr />
                         </div>
                         <div className="col-md-5 pb-5h ">

@@ -28,7 +28,7 @@ const Header = () => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state.profile.notifications);
   const [show, setShow] = useState(false);
-  const [me, setMe] = useState(false);
+  const [dp, setDp] = useState(false);
   const [selected, setSelected] = useState({ name: 'Explore', to: '/explore' });
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -52,6 +52,7 @@ const Header = () => {
   useEffect(() => {
     currentUser.then((result) => {
       if (result?.id !== undefined) {
+        setDp(result?.profile_pic_url);
         setUser({ loggedIn: true, details: result });
         dispatch(notifications());
         setMenu([
@@ -133,7 +134,7 @@ const Header = () => {
         )}
         dp={user?.loggedIn && (
           <Link to="/me" className="mt-2">
-            <Avatar src={User} alt="profile logo" />
+            <Avatar src={dp || User} alt="profile logo" />
           </Link>
         )}
         clss="px-14vw"

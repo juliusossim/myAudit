@@ -42,10 +42,10 @@ const ProjectInfo = ({
                 <p className="text-muted theme-font-2">
                   <small>
                     <span className="px-1">
-                      {`${stringDoesNotExist(project.lga) ? 'Abuja' : stringCaps(project.lga)},`}
+                      {`${stringDoesNotExist(project.lga?.name) ? 'Abuja' : stringCaps(project.lga?.name)},`}
                     </span>
                     <span>
-                      {stringDoesNotExist(project.city) ? 'Nigeria' : stringCaps(project.state)}
+                      {stringDoesNotExist(project.state) ? 'Nigeria' : stringCaps(project.state)}
                     </span>
                   </small>
                 </p>
@@ -65,10 +65,10 @@ const ProjectInfo = ({
                 <small className="text-muted theme-font-2">
                   2 Projects |
                   <span className="px-1">
-                    {`${stringDoesNotExist(project.lga) ? 'Abuja' : stringCaps(project.lga)},`}
+                    {`${stringDoesNotExist(project.lga?.name) ? 'Abuja' : stringCaps(project.lga?.name)},`}
                   </span>
                   <span>
-                    {stringDoesNotExist(project.city) ? 'Nigeria' : stringCaps(project.state)}
+                    {stringDoesNotExist(project.state) ? 'Nigeria' : stringCaps(project.state)}
                   </span>
                 </small>
               </p>
