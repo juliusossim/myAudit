@@ -40,7 +40,7 @@ const Project3 = () => {
   const [lgas, setLgas] = useState([]);
   const [states, setStates] = useState([]);
   const [minDate, setMinDate] = useState(new Date());
-  const [minStartDate] = useState(addDays(Moment.now(), 5));
+  const [minStartDate] = useState(addDays(Moment.now(), 3));
   const [loading, setLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
@@ -133,8 +133,7 @@ const Project3 = () => {
       handleOpen();
       setLoading(false);
       setMessage(`${formData.title} is not yet submitted. Do you wish to Submit Now?`);
-    }
-    if (store?.submitProject?.status === 'success' || store?.editProjectRequest?.status === 'success' || (store?.project?.status === 'success' && formData.approvalStatus === 0)) {
+    } else if (store?.submitProject?.status === 'success' || store?.editProjectRequest?.status === 'success' || (store?.project?.status === 'success' && formData.approvalStatus !== 6)) {
       window.location.replace('/success');
     } else if (store?.submitProject?.status === 'failed' || store?.project?.status === 'failed' || store?.editProjectRequest?.status === 'failed') {
       notifier({
@@ -383,7 +382,7 @@ const Project3 = () => {
                           handleChange,
                           handleDateChange,
                           btnMethod: () => setFormData({ ...formData, title: '' }),
-                          loading: { status: store.project.status, text: 'initializing your project' },
+                          loading: { status: store.project.status, text: 'retrieving project name' },
                           loadingMedia: store.media?.status,
                           errors
                         }).description

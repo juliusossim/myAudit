@@ -16,7 +16,7 @@ const RouteTemplate = ({ redirect, routes }) => {
     <main className="min-h-100">
       <Suspense
         fallback={(
-          <div className="loader-container">
+          <div className="loader-container loader-container2">
             <div className="loader">
               <i />
             </div>

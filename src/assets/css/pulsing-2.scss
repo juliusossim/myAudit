@@ -38,6 +38,10 @@
   height: 100%;
   width: 100%;
 }
+.loader-container2 {
+  height: 100vh !important;
+  top: 50vh;
+}
 
 @keyframes m{
   to {transform:rotate(-1turn)}

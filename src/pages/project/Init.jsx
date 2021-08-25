@@ -53,9 +53,10 @@ const Init = ({ setAccordionTab, setData }) => {
         summary: `${formData.title} is a project requesting public funding to...`,
         projectType: 10,
         categoryId: 10,
-        location: 'Lagos',
-        startDate: addDays(Moment.now(), 5),
-        endDate: addDays(Moment.now(), 12)
+        state: 'Lagos',
+        stateId: 24,
+        startDate: addDays(Moment.now(), 3),
+        endDate: addDays(Moment.now(), 10)
       });
     }
   };

@@ -4,7 +4,7 @@ export const viewProjects = 'Projects';
 export const myProjects = 'Projects/me';
 export const viewProject = (id) => `Projects/${id}`;
 export const projectCategories = 'categories';
-export const deleteProject = (id) => `Projects/${id}`;
+export const deleteProject = 'Projects'; // param id
 export const editProject = 'Projects'; // param = id
 export const editProjectRequest = 'BackOffice/approveProject'; // param = id
 export const getProject = 'Projects'; // param = id

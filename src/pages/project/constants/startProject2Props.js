@@ -86,7 +86,7 @@ const formBuilderProjectsStart2Props = (
       skeleton,
       minDate: minStartDate,
       excuseSkeleton,
-      helperText: 'if approved, your project starts next week by default',
+      helperText: 'if approved, your project starts in three (3) days by default',
       value: formData?.startDate || '',
       validations: {
         required: true
@@ -108,7 +108,7 @@ const formBuilderProjectsStart2Props = (
       label: 'End Date',
       skeleton,
       excuseSkeleton,
-      helperText: 'The default end date is two weeks away.',
+      helperText: 'The default end date is ten (10) days away.',
       type: 'date',
       value: formData?.endDate || '',
       validations: {

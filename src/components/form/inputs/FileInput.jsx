@@ -44,6 +44,8 @@ const FileInput = (
                               src={
                                 upload.uri
                               }
+                              height="100px"
+                              width="100px"
                               alt={upload}
                             />
                             <button onClick={() => removeItem(upload)} type="button" className="text-white btn-sm btn-danger radius50  remove-media">x</button>
@@ -59,6 +61,8 @@ const FileInput = (
                               src={
                                 upload.uri
                               }
+                              height="100px"
+                              width="100px"
                               alt={upload}
                             />
                             <button onClick={() => removeItem(upload)} type="button" className="text-white btn-sm btn-danger radius50  remove-media">x</button>
@@ -91,6 +95,8 @@ const FileInput = (
                                                     src={
                                                       upload.uri
                                                     }
+                                                    height="100px"
+                                                    width="100px"
                                                     alt={upload}
                                                   />
                                                   <button onClick={() => removeItem(upload)} type="button" className="text-white btn-sm btn-danger radius50  remove-media">x</button>
@@ -201,7 +207,7 @@ const FileInput = (
                                   : file.length > 0 && (
                                     (
                                       <div>
-                                        <img src={file} alt="inserted library" />
+                                        <img src={file} alt="inserted library" height="100px" width="100px" />
                                         <button type="button" className="btn btn-small float-sm-right w-25 text-danger" onClick={setFormData}>Cancel</button>
                                       </div>
                                     )
@@ -253,7 +259,7 @@ const FileInput = (
                                 : file.length > 0 && (
                                   (
                                     <div>
-                                      <img src={file} alt="inserted library" />
+                                      <img src={file} alt="inserted library" height="100px" width="100px" />
                                       <button type="button" className="btn btn-small float-sm-right w-25 text-danger" onClick={setFormData}>Cancel</button>
                                     </div>
                                   )

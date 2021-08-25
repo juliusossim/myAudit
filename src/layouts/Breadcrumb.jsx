@@ -14,7 +14,7 @@ const CollapsedBreadcrumbs = ({ prevs, current, max }) => (
     </Link>
     { _.isArray(prevs)
       && prevs?.map((crumb) => (
-        <Link to={crumb.to} onClick={crumb.onClick}>
+        <Link key={crumb.name} to={crumb.to} onClick={crumb.onClick}>
           {crumb.name}
         </Link>
       ))}

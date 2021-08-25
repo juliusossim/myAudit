@@ -60,7 +60,7 @@ const Notifications = ({ setCurrent }) => {
   }, [store.status]);
 
   return (
-    <div className={setCurrent === undefined ? 'login-form top-10' : ''}>
+    <div className={setCurrent === undefined ? ' pb-5h' : ''}>
       <div className="w-600 margin-center m-t-40 ">
         <div className="login-form-container p-20 mt-5">
           {

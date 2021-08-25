@@ -49,7 +49,7 @@ const Project2 = (
   const [openSnack, setOpenSnack] = useState(false);
   const [message, setMessage] = useState('');
   const [minDate, setMinDate] = useState(new Date());
-  const [minStartDate] = useState(addDays(Moment.now(), 5));
+  const [minStartDate] = useState(addDays(Moment.now(), 3));
 
   const mapIndex = (arr) => arr.map((ar, index) => ({
     value: index + 1,

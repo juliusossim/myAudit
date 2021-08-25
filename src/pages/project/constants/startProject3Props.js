@@ -146,8 +146,8 @@ const formBuilderProjectsPreviewProps = (
           label: 'State',
           options: states,
           optionIndex: 'stateName',
-          valueIndex: 'state',
-          value: formData?.stateId || '',
+          valueIndex: 'stateId',
+          value: formData?.state || '',
           validations: {
             required: false
           },

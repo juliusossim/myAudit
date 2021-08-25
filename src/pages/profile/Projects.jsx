@@ -12,6 +12,8 @@ import { stringCaps } from '../../utilities/stringOperations';
 import Loader from '../../components/microComponents/loader';
 import { approvalStatus, approvalColors } from '../../utilities/dummyData';
 import { positiveDiffs } from '../../utilities/dateOperations';
+import { projectAction } from '../../redux/actions/projectActions';
+import { apiOptions } from '../../services/fetch';
 
 const Projects = ({ setCurrent }) => {
   const dispatch = useDispatch();
@@ -32,6 +34,23 @@ const Projects = ({ setCurrent }) => {
     setCurrent('My projects');
     dispatch(myProjects());
   }, []);
+
+  const deleteProject = (item) => {
+    console.log(item);
+    // setFormData({ ...formData, deleteMedia: item });
+    dispatch(projectAction(
+      {
+        action: 'DELETE_PROJECT',
+        routeOptions: apiOptions({
+          method: 'del',
+          param: item.projectId,
+          endpoint: 'DELETE_PROJECT',
+          auth: true
+        })
+      }
+    ));
+  };
+
   return (
     <div>
       {
@@ -134,7 +153,7 @@ const Projects = ({ setCurrent }) => {
                                           Edit
                                         </button>
                                       </Link>
-                                      <button type="button" className="btn-sm btn-delete text-delete w-100 mt-5">
+                                      <button onClick={() => deleteProject(item)} type="button" className="btn-sm btn-delete text-delete w-100 mt-5">
                                         <RiDeleteBin6Line className="mt-1 mr-1" />
                                         Delete
                                       </button>

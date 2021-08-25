@@ -46,8 +46,6 @@ const Select2 = (
   }, [searchResults, options]);
   useEffect(() => setSelectedOption(value), [value]);
 
-  console.log(selectedOptions, value);
-
   const handleChange = (e) => {
     setSearchterm(e.target.value);
   };
@@ -97,7 +95,7 @@ const Select2 = (
         <li
           className="li"
           value={option[valueIndex]}
-          key={option[optionIndex]}
+          key={option[valueIndex]}
           title={option[titleIndex]}
         >
           <Button className="btn-plain text-success no-border text-hover-white" onClick={() => handleSelect(option)}>
