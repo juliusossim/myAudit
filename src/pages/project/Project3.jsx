@@ -10,6 +10,7 @@ import CardMedia from '@material-ui/core/CardMedia';
 import CardContent from '@material-ui/core/CardContent';
 import Card from '@material-ui/core/Card';
 import { Link } from 'react-router-dom';
+import { IoSadOutline } from 'react-icons/all';
 import FormBuilder from '../../components/form/builders/form';
 import { validateField } from '../../utilities/validation';
 import { camelToString, notifier } from '../../utilities/stringOperations';
@@ -126,16 +127,18 @@ const Project3 = () => {
   }, [store?.getProject?.status]);
 
   useEffect(() => {
-    if (store?.submitProject?.status === 'pending' || store?.project?.status === 'pending' || store?.editProjectRequest?.status === 'pending') {
+    if (store?.submitProject?.status === 'pending' || store?.project?.status === 'pending' || store?.editProjectRequest?.status === 'pending' || store?.getProject?.status === 'pending') {
       setLoading(true);
     }
     if (store?.project?.status === 'success' && formData.approvalStatus === 6) {
       handleOpen();
       setLoading(false);
       setMessage(`${formData.title} is not yet submitted. Do you wish to Submit Now?`);
-    } else if (store?.submitProject?.status === 'success' || store?.editProjectRequest?.status === 'success' || (store?.project?.status === 'success' && formData.approvalStatus !== 6)) {
+    }
+    if (store?.submitProject?.status === 'success' || store?.editProjectRequest?.status === 'success' || (store?.project?.status === 'success' && formData.approvalStatus !== 6)) {
       window.location.replace('/success');
-    } else if (store?.submitProject?.status === 'failed' || store?.project?.status === 'failed' || store?.editProjectRequest?.status === 'failed') {
+    }
+    if (store?.submitProject?.status === 'failed' || store?.project?.status === 'failed' || store?.editProjectRequest?.status === 'failed') {
       notifier({
         type: 'error',
         title: 'error',
@@ -300,7 +303,16 @@ const Project3 = () => {
     <div className="content">
       <div className="w-100 margin-center m-t-40 ">
         <div className="login-form-container p-20 bg-light">
-          <div className="login-form pb-5h">
+          {
+            store?.getProject?.status === 'failed'
+            && (
+              <div className="card-body text-warning">
+                <IoSadOutline />
+                Failed to load project. Please try refreshing your browser or internet connection
+              </div>
+            )
+          }
+          <div className={`${store?.getProject?.status === 'failed' ? 'd-none' : 'login-form pb-5h'}`}>
 
             <div>
               <div className="text-wema">
@@ -483,7 +495,7 @@ const Project3 = () => {
               <div className="row">
                 {
                   loading
-            && <Loader />
+                  && <Loader />
                 }
               </div>
             </div>
