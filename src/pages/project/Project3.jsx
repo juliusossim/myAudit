@@ -137,8 +137,7 @@ const Project3 = () => {
     }
     if (store?.submitProject?.status === 'success' || store?.editProjectRequest?.status === 'success' || (store?.project?.status === 'success' && formData.approvalStatus !== 6)) {
       window.location.replace('/success');
-    }
-    if (store?.submitProject?.status === 'failed' || store?.project?.status === 'failed' || store?.editProjectRequest?.status === 'failed') {
+    } else if (store?.submitProject?.status === 'failed' || store?.project?.status === 'failed' || store?.editProjectRequest?.status === 'failed') {
       notifier({
         type: 'error',
         title: 'error',
