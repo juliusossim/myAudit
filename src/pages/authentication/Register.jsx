@@ -260,7 +260,7 @@ const RegisterPage = () => {
    && setFormData({ ...formData, file: URL.createObjectURL(file[0]) });
   }, [file, progress]);
   useEffect(() => {
-    if (store.register.status === 'pending') {
+    if (store.register.status === 'success') {
       setShow(true);
     }
     localforage.getItem('user', (err, value) => value).then((result) => {
@@ -502,12 +502,12 @@ const RegisterPage = () => {
                       <div>
                         <h1>Your Profile is Ready</h1>
                         <div className="text-center w-50 btn mr-md-3">
-                          <Link to="/create-project" className="text-white btn-small">
+                          <Link to="#" onClick={() => window.location.replace('/create-project')} className="text-white btn-small">
                             Start A Project
                           </Link>
                         </div>
                         <div className="text-center w-25 btn-small btn">
-                          <Link to="/" className="text-white">
+                          <Link to="#" onClick={() => window.location.replace('/')} className="text-white">
                             Home
                           </Link>
                         </div>
@@ -604,7 +604,7 @@ const RegisterPage = () => {
                           }
                         </button>
                         <div className="text-center w-100 ">
-                          <Link to="/" className="text-wema">
+                          <Link to="#" onClick={() => window.location.replace('/')} className="text-wema">
                             Proceed home
                           </Link>
                         </div>

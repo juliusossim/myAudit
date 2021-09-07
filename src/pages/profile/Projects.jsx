@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import formatDistanceToNow from 'date-fns/formatDistanceToNow';
-import isValid from 'date-fns/isValid';
 import isAfter from 'date-fns/isAfter';
 import { FiEdit, RiDeleteBin6Line } from 'react-icons/all';
 import Chip from '@material-ui/core/Chip';
@@ -12,44 +10,58 @@ import { stringCaps } from '../../utilities/stringOperations';
 import Loader from '../../components/microComponents/loader';
 import { approvalStatus, approvalColors } from '../../utilities/dummyData';
 import { positiveDiffs } from '../../utilities/dateOperations';
-import { projectAction } from '../../redux/actions/projectActions';
-import { apiOptions } from '../../services/fetch';
+import deleteProject from '../../components/crud/deleteProject';
 
 const Projects = ({ setCurrent }) => {
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.profile.projects);
+  const store = useSelector((state) => state);
   const [formData, setFormData] = useState([]);
   const [showView, setShowView] = useState(false);
   const getUser = () => {
     dispatch(myProjects());
   };
   // const refreshUser = setUser(store.data);
+  const handleFormUpdate = (data) => {
+    setFormData([...data]);
+    setShowView(true);
+  };
+  const handleDelete = (data) => {
+    const newData = formData.filter((item) => (
+      item.projectId !== data.projectId
+    ));
+    setFormData([...newData]);
+  };
+
   useEffect(() => {
-    if (store.status === 'success' && store.data?.data?.length > 0) {
-      setFormData([...store.data.data]);
+    if (store.profile?.projects?.status === 'success'
+    && store.profile?.projects?.data?.data?.length > 0) {
+      setFormData([...store.profile?.projects?.data.data]);
       setShowView(true);
     }
-  }, [store.status]);
+    if (store.project?.deleteProject?.status === 'success'
+    && store.profile?.projects?.data?.data?.length > 0) {
+      const newData = formData.filter(
+        (item) => item.id !== store.project?.deleteProject?.data?.data?.projectId
+      );
+      setFormData([...newData]);
+      setShowView(true);
+    }
+  }, [store.profile?.projects?.status]);
+  useEffect(() => {
+    if (store.project?.deleteProject?.status === 'success'
+    && store.profile?.projects?.data?.data?.length > 0) {
+      const newData = formData.filter(
+        (item) => item.projectId !== store.project?.deleteProject?.data?.data?.id
+      );
+      setFormData([...newData]);
+      setShowView(true);
+    }
+  }, [store.project?.deleteProject?.status]);
+
   useEffect(() => {
     setCurrent('My projects');
     dispatch(myProjects());
   }, []);
-
-  const deleteProject = (item) => {
-    console.log(item);
-    // setFormData({ ...formData, deleteMedia: item });
-    dispatch(projectAction(
-      {
-        action: 'DELETE_PROJECT',
-        routeOptions: apiOptions({
-          method: 'del',
-          param: item.projectId,
-          endpoint: 'DELETE_PROJECT',
-          auth: true
-        })
-      }
-    ));
-  };
 
   return (
     <div>
@@ -59,13 +71,13 @@ const Projects = ({ setCurrent }) => {
               <div className="w-100 margin-center m-t-40 ">
                 <div className="login-form-container p-20">
                   {
-                    store.status === 'pending'
+                    store.profile?.projects?.status === 'pending'
                     && (
                       <Loader />
                     )
                   }
                   {
-                    store.status === 'success'
+                    store.profile?.projects?.status === 'success'
                     && (
                       <div className="login-form pb-5h">
                         <div>
@@ -153,7 +165,7 @@ const Projects = ({ setCurrent }) => {
                                           Edit
                                         </button>
                                       </Link>
-                                      <button onClick={() => deleteProject(item)} type="button" className="btn-sm btn-delete text-delete w-100 mt-5">
+                                      <button onClick={() => deleteProject({ project: item, dispatch })} type="button" className="btn-sm btn-delete text-delete w-100 mt-5">
                                         <RiDeleteBin6Line className="mt-1 mr-1" />
                                         Delete
                                       </button>
@@ -174,7 +186,7 @@ const Projects = ({ setCurrent }) => {
                     )
                   }
                   {
-                    store.status === 'failed'
+                    store.profile?.projects?.status === 'failed'
                     && (
                       <div className="login-form pb-5h">
                         <h3 className="bold text-dark">

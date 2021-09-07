@@ -34,6 +34,7 @@ const paths = {
   VIEW_PROJECT: `${servers.project}${projectEndpoints.viewProject}`,
   EDIT_PROJECT: `${servers.project}${projectEndpoints.editProject}`,
   DELETE_PROJECT: `${servers.project}${projectEndpoints.deleteProject}`,
+  STOP_PROJECT: `${servers.project}${projectEndpoints.stopProject}`,
   EDIT_PROJECT_UPDATES: `${servers.project}${projectEndpoints.editProjectUpdate}`,
   PROJECT_UPDATES: `${servers.project}${projectEndpoints.showProjectUpdate}`,
   UPDATE_PROJECT: `${servers.project}${projectEndpoints.updateProject}`,
@@ -48,6 +49,11 @@ const paths = {
   POPULAR_FUNDRAISERS: `${servers.project}${projectEndpoints.popularFundraisers}`,
   POPULAR_NGOS: `${servers.project}${projectEndpoints.popularNGOs}`,
   SEARCH_PROJECTS: `${servers.project}${projectEndpoints.searchProject}`,
+  POST_COMMENT: `${servers.project}${projectEndpoints.postComment}`,
+  PROJECT_COMMENTS: `${servers.project}${projectEndpoints.projectComments}`,
+  GET_COMMENT: `${servers.project}${projectEndpoints.getComment}`,
+  PATCH_COMMENT: `${servers.project}${projectEndpoints.patchComment}`,
+  PROJECT_DONORS: `${servers.project}${projectEndpoints.projectDonors}`,
 
   // profile
   ME: `${servers.auth}${profileEndpoints.me}`,

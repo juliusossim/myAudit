@@ -1,0 +1,110 @@
+.social-btn {
+  min-width: 110px;
+  background-color: #fff;
+  padding: 1rem 2rem;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  transition: all .2s ease-in-out;
+  margin-right: 10px;
+
+  .social-icon {
+    transition: all .3s ease-in-out;
+  }
+  .social-name {
+    @extend .text-wema;
+    font-family: "Roboto", sans-serif;
+    //margin-left: 1px;
+    //align-self: center;
+    transform: translateX(0px);
+    transition: all .1s ease-in-out;
+    opacity: 1;
+  }
+
+  &:hover {
+    transform: scale(1.1);
+    border-radius: 10px;
+    //background: linear-gradient(to right, #ffa7f3 0%, #ffa7f3 100%);
+    box-shadow: 0px 10px 30px rgba(0,0,0,0.10);
+    .social-icon {
+      transform: translateX(30px) translateY(15px);
+      padding-right: 0;
+      color: #FFF;
+    }
+    .social-name {
+      transform: translateX(30px);
+      opacity: 0;
+    }
+  }
+  &:active {
+    transform: scale(1);
+    box-shadow: 0px 2px 10px rgba(0,0,0,0.10);
+  }
+}
+
+.twitter {
+  .social-icon {
+    color: #03A9F4;
+  }
+  &:hover {
+    background: radial-gradient( #03A9F4 25%, #f2d6f4 100%);
+    .social-icon {
+      color: white;
+    }
+  }
+}
+.telegram {
+  .social-icon {
+    color: #1f96c7;
+  }
+  &:hover {
+    background: radial-gradient( #1f96c7 25%, #f2d6f4 100%);
+    .social-icon {
+      color: white;
+    }
+  }
+}
+.linkedIn {
+  .social-icon {
+    color: #0077B7;
+  }
+  &:hover {
+    background: radial-gradient( #0077B7 25%, #f2d6f4 100%);
+    .social-icon {
+      color: white;
+    }
+  }
+}
+.facebook {
+  .social-icon {
+    color: #4267B2;
+  }
+  &:hover {
+    background: radial-gradient(#4267B2 25%, #f2d6f4 100%);
+    .social-icon {
+      color: white;
+    }
+  }
+}
+.whatsapp {
+  .social-icon {
+    color: #4CAF50;
+  }
+  &:hover {
+    background: radial-gradient(#4CAF50 25%, #f2d6f4 100%);
+    .social-icon {
+      color: white;
+    }
+  }
+}
+.email {
+  .social-icon {
+    color: #535353;
+  }
+  &:hover {
+    background: radial-gradient( #535353 25%, #f2d6f4 100%);
+    .social-icon {
+      color: white;
+    }
+  }
+}

@@ -12,14 +12,16 @@ import { percentCalculator, stringCaps, stringDoesNotExist } from '../../utiliti
 import { positiveDiffs } from '../../utilities/dateOperations';
 import User from '../../assets/images/User.svg';
 import Kat from '../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg';
-import useScript from '../../utilities/hooks/AlatPay';
+import BackdropModal from '../microComponents/backdropModal';
+import ShareTemp from '../temps/modalTemps/share';
 
 const ProjectInfo = ({
   project, styled, logo, actions, chip, shares, clss
 }) => {
-  const alatPay = useScript();
-  const popup = alatPay.setup({
-    key: '21b7ec29-8f5d-49dd-509c-08d94eccaef1',
+  const [open, setOpen] = React.useState(false);
+  // eslint-disable-next-line no-undef
+  const popup = Alatpay.setup({
+    key: '0e51c3b4-43fa-4f61-246c-08d9714d2cfe',
     email: 'user.johnjoe@email.com',
     phone: '08011111111',
     currency: 'NGN',
@@ -36,6 +38,14 @@ const ProjectInfo = ({
       console.log('Payment dialog is closed');
     }
   });
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+  };
 
   return (
     <Paper elevation={3} className={clss || 'h-52h post overflow-y-hidden'}>
@@ -187,10 +197,33 @@ const ProjectInfo = ({
             {
               actions !== undefined
            && actions.map((action) => (action.plain
-             ? <button onClick={action.onClick} type="button" className="btn-plain w-50 border-wema hover-wema">{stringCaps(action.text)}</button>
-             : <button onClick={action.onClick} type="button" className="btn w-50 mr-2">{stringCaps(action.text)}</button>))
+             ? (
+               <button
+                 onClick={action.onClick || handleOpen}
+                 key={action.text}
+                 type="button"
+                 className="btn-plain w-50 border-wema hover-wema"
+               >
+                 {stringCaps(action.text) || 'Share'}
+               </button>
+             )
+             : (
+               <button
+                 onClick={popup.show}
+                 key={action.text}
+                 type="button"
+                 className="btn w-50 mr-2"
+               >
+                 {stringCaps(action.text) || 'Donate'}
+               </button>
+             )))
             }
           </div>
+          <BackdropModal
+            content={<ShareTemp handleClose={handleClose} project={project} />}
+            handleClose={handleClose}
+            open={open}
+          />
         </div>
       </CardContent>
     </Paper>

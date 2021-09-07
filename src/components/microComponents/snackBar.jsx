@@ -19,7 +19,7 @@ export default function SimpleSnackbar({
     <div>
       <Snackbar
         anchorOrigin={{
-          vertical: 'bottom',
+          vertical: 'top',
           horizontal: 'left'
         }}
         open={open}

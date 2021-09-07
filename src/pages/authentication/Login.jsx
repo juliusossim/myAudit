@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import TextInput from '../../components/form/inputs/TextInput';
 import Modal from '../../components/microComponents/modal';
 import { login } from '../../redux/actions/authenticationActions';
@@ -15,8 +15,9 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state.auth.login);
 
+  useEffect(() => store?.status === 'success' && setShow(true), [store.status]);
+
   const handleLogin = () => {
-    setShow(true);
     // e.preventDefault();
     // window.location.replace('/home');
     // const payload = { ...formData };

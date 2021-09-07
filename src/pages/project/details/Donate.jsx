@@ -26,36 +26,12 @@ import ProjectInfo from '../../../components/ui/projectInfo';
  * @returns {JSX.Element}
  * @constructor
  */
-const ProjectDetails = (items) => {
-  const { id, tab } = useParams();
-
+const ProjectDetails = (project) => {
   /* redux */
   const dispatch = useDispatch();
   const store = useSelector((state) => state.project);
 
   /* state */
-  const [project, setProject] = useState({});
-  const [similar, setSimilar] = useState([]);
-  const [media, setMedia] = useState([]);
-  const [accordionTab, setAccordionTab] = useState(tab || 1);
-  const [slideClss, setSlideClss] = useState('');
-  const [activeMedia, setActiveMedia] = useState(null);
-  const [collapse, setCollapse] = useState(true);
-
-  const retrieveSimilarProjects = useCallback(() => {
-    dispatch(projectAction(
-      {
-        action: 'SIMILAR_PROJECTS',
-        routeOptions: apiOptions({
-          method: 'get',
-          param: id,
-          endpoint: 'SIMILAR_PROJECTS',
-          auth: true,
-          afterParam: 'similar'
-        })
-      }
-    ));
-  }, []);
 
   const projectDetails = useCallback((theId) => {
     dispatch(projectAction(
@@ -72,88 +48,6 @@ const ProjectDetails = (items) => {
     ));
   }, []);
 
-  useEffect(() => {
-    projectDetails(id);
-  }, [id]);
-  useEffect(() => {
-    retrieveSimilarProjects();
-  }, [project]);
-
-  useEffect(() => {
-    if (store.projectDetails?.status === 'success') {
-      setProject({ ...store.projectDetails?.data?.data });
-      setMedia(store.projectDetails?.data?.data?.media);
-      setActiveMedia(store.projectDetails?.data?.data?.media[0]);
-    }
-  }, [store.projectDetails?.status]);
-
-  useEffect(() => {
-    if (store.similarProjects?.status === 'success') {
-      setSimilar([...store.similarProjects?.data?.data]);
-    }
-  }, [store.similarProjects.status]);
-  useEffect(() => {
-    if (accordionTab === 2) {
-      projectComments();
-    }
-  }, [accordionTab]);
-
-  const reOrderMedia = (nexActive) => {
-    const temp = media.filter((item) => item !== nexActive);
-    temp.push(nexActive);
-    setMedia(temp);
-  };
-  const projectComments = () => dispatch(projectAction(
-    {
-      action: 'PROJECT_COMMENTS',
-      routeOptions: apiOptions({
-        method: 'get',
-        pQuery: { projectId: project.id },
-        endpoint: 'PROJECT_COMMENTS',
-        auth: true
-      })
-    }
-  ));
-  const handleSelectSlide = (back) => {
-    const activeIndex = _.findLastIndex(media, (item) => item === activeMedia);
-    if (back) {
-      setSlideClss('slide-right');
-      if (activeIndex === 0) {
-        const nexActive = _.last(media);
-        setActiveMedia(nexActive);
-        reOrderMedia(nexActive);
-      } else {
-        const nexActive = media[activeIndex - 1];
-        setActiveMedia(nexActive);
-        reOrderMedia(nexActive);
-      }
-    } else if (activeIndex === (project?.media?.length - 1)) {
-      setSlideClss('slide-left');
-      const nexActive = _.head(media);
-      setActiveMedia(nexActive);
-      reOrderMedia(nexActive);
-    } else {
-      setSlideClss('slide-left');
-      const nexActive = media[activeIndex + 1];
-      setActiveMedia(nexActive);
-      reOrderMedia(nexActive);
-    }
-  };
-
-  // const slideLeft = ()
-  const Story = lazy(() => import('./Story'));
-  const Success = lazy(() => import('../Success'));
-  const Comments = lazy(() => import('./Comments'));
-
-  const displayProject = () => {
-    switch (accordionTab) {
-    case 2:
-      return <Comments />;
-    default:
-      return <Story />;
-    }
-  };
-
   return (
     <div className="content">
       <div className="w-100 margin-center m-t-40">
@@ -161,32 +55,8 @@ const ProjectDetails = (items) => {
           <div className="d-md-flex ">
             <div className=" max-w-750">
               <CardMedia className="">
-                <LazyImage cls="h-400" src={activeMedia?.uri || Kat} alt="kat" />
+                <LazyImage cls="h-400" src={project?.media[0]?.uri || Kat} alt="kat" />
               </CardMedia>
-              {
-                project?.media?.length > 1
-                && (
-                  <div className="d-flex mt-lg-3">
-                    <div className="d-flex">
-                      <button type="button" className="border-radius-50 btn-small btn-plain text-wema  hover-wema bg-wema-light h-50 mt-3">
-                        <IoArrowBackCircleOutline className="" onClick={() => handleSelectSlide(true)} />
-                      </button>
-                      <button type="button" className="border-radius-50 btn-small btn-plain text-wema  hover-wema bg-wema-light top-neg-7 ml-2 h-50 mt-4">
-                        <IoArrowForwardCircleOutline onClick={() => handleSelectSlide(false)} />
-                      </button>
-                    </div>
-                    <div className="d-md-flex d-none w-600 pl-5 overflow-x-hidden h-50">
-                      <MediaSlider
-                        mediaFiles={media}
-                        selected={activeMedia}
-                        slideClass={slideClss}
-                        setSelected={setActiveMedia}
-                      />
-                    </div>
-                  </div>
-                )
-              }
-              <hr />
             </div>
             <div className="pl-5">
               <ProjectInfo

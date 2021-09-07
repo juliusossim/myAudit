@@ -73,6 +73,18 @@ const initialState = {
   editProjectRequest: {
     data: {},
     status: 'initial'
+  },
+  deleteProject: {
+    data: {},
+    status: 'initial'
+  },
+  stopProject: {
+    data: {},
+    status: 'initial'
+  },
+  comment: {
+    data: {},
+    status: 'initial'
   }
 };
 
@@ -604,6 +616,90 @@ const projectReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       stateLga: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.DELETE_PROJECT_PENDING:
+    return {
+      ...state,
+      deleteProject: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.DELETE_PROJECT_SUCCESS:
+    return {
+      ...state,
+      deleteProject: {
+        ...state.deleteProject,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.DELETE_PROJECT_FAILURE:
+    return {
+      ...state,
+      deleteProject: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.STOP_PROJECT_PENDING:
+    return {
+      ...state,
+      stopProject: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.STOP_PROJECT_SUCCESS:
+    return {
+      ...state,
+      stopProject: {
+        ...state.stopProject,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.STOP_PROJECT_FAILURE:
+    return {
+      ...state,
+      stopProject: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.PROJECT_COMMENTS_PENDING:
+    return {
+      ...state,
+      comment: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.PROJECT_COMMENTS_SUCCESS:
+    return {
+      ...state,
+      comment: {
+        ...state.comment,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.PROJECT_COMMENTS_FAILURE:
+    return {
+      ...state,
+      comment: {
         data: error || {},
         status: 'failed'
       }
