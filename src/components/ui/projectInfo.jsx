@@ -19,25 +19,6 @@ const ProjectInfo = ({
   project, styled, logo, actions, chip, shares, clss
 }) => {
   const [open, setOpen] = React.useState(false);
-  // eslint-disable-next-line no-undef
-  const popup = Alatpay.setup({
-    key: '0e51c3b4-43fa-4f61-246c-08d9714d2cfe',
-    email: 'user.johnjoe@email.com',
-    phone: '08011111111',
-    currency: 'NGN',
-    amount: 2000,
-
-    // metadata: {
-    //
-    // },
-
-    onTransaction(response) {
-      console.log('payment dialog returned ', response);
-    },
-    onClose() {
-      console.log('Payment dialog is closed');
-    }
-  });
 
   const handleClose = () => {
     setOpen(false);
@@ -56,11 +37,11 @@ const ProjectInfo = ({
               <CardMedia
                 className="h-18h"
                 image={_.head(project?.media)?.uri || Kat}
-                title={project.title}
+                title={project?.title}
               />
             </div>
             <div className="my-1 px-2">
-              <Link to={{ pathname: `/project/details/${project.id}/1`, tab: 1, id: project.id }}>
+              <Link to={{ pathname: `/project/details/${project?.id}/1`, tab: 1, id: project?.id }}>
                 <span className="h5 bold">{project?.title}</span>
                 <Chip
                   className={chip ? '' : 'd-none'}
@@ -73,10 +54,10 @@ const ProjectInfo = ({
                   <p className="text-muted theme-font-2">
                     <small>
                       <span className="px-1">
-                        {`${stringDoesNotExist(project.lga?.name) ? 'Abuja' : stringCaps(project.lga?.name)},`}
+                        {`${stringDoesNotExist(project?.lga?.name) ? 'Abuja' : stringCaps(project?.lga?.name)},`}
                       </span>
                       <span>
-                        {stringDoesNotExist(project.state) ? 'Nigeria' : stringCaps(project.state)}
+                        {stringDoesNotExist(project?.state) ? 'Nigeria' : stringCaps(project?.state)}
                       </span>
                     </small>
                   </p>
@@ -90,16 +71,16 @@ const ProjectInfo = ({
                 <p className="text-muted theme-font-2">
                   <small>Posted By:</small>
                   {' '}
-                  <small className="bold">{project.creator?.fullName}</small>
+                  <small className="bold">{project?.creator?.fullName}</small>
                 </p>
                 <p>
                   <small className="text-muted theme-font-2">
                     2 Projects |
                     <span className="px-1">
-                      {`${stringDoesNotExist(project.lga?.name) ? 'Abuja' : stringCaps(project.lga?.name)},`}
+                      {`${stringDoesNotExist(project?.lga?.name) ? 'Abuja' : stringCaps(project?.lga?.name)},`}
                     </span>
                     <span>
-                      {stringDoesNotExist(project.state) ? 'Nigeria' : stringCaps(project.state)}
+                      {stringDoesNotExist(project?.state) ? 'Nigeria' : stringCaps(project?.state)}
                     </span>
                   </small>
                 </p>
@@ -108,7 +89,7 @@ const ProjectInfo = ({
 
             <div className="my-1 px-2 theme-font-2 font-14">
               <p>
-                {project.summary}
+                {project?.summary}
               </p>
             </div>
             <div className={shares ? 'col-md-5 my-3' : 'd-none'}>
@@ -172,14 +153,14 @@ const ProjectInfo = ({
                 <small className="font-12 d-block">Posted By:</small>
 
                 <span className="bold font-10 text-center pl-1">
-                  {project.creator?.fullName || 'Private User'}
+                  {project?.creator?.fullName || 'Private User'}
                 </span>
               </div>
               <div className="pr-3">
                 <small className={styled ? 'd-block font-12' : 'font-12'}>Fund Percent:</small>
                 <span className="bold font-10 text-center pl-1">
                   {
-                    percentCalculator({ den: project.donationTarget, num: project?.amountRaised })
+                    percentCalculator({ den: project?.donationTarget, num: project?.amountRaised })
                   }
                 </span>
               </div>
@@ -208,14 +189,16 @@ const ProjectInfo = ({
                </button>
              )
              : (
-               <button
-                 onClick={popup.show}
-                 key={action.text}
-                 type="button"
-                 className="btn w-50 mr-2"
-               >
+               <Link to={{ pathname: `/project/donate/${project?.id}`, project }} className="btn w-50 mr-2">
+                 {/* <button */}
+                 {/*  // onClick={popup.show} */}
+                 {/*  key={action.text} */}
+                 {/*  type="button" */}
+                 {/*  className="btn w-50 mr-2" */}
+                 {/* > */}
                  {stringCaps(action.text) || 'Donate'}
-               </button>
+                 {/* </button> */}
+               </Link>
              )))
             }
           </div>

@@ -112,7 +112,7 @@ const SelectInput = (
                   ? <Loader />
                   : (
                     <select
-                      className={error?.length > 0 ? 'error-field' : className}
+                      className={error?.length > 0 ? 'error-field' : ''}
                       name={name}
                       id={name}
                       value={value}

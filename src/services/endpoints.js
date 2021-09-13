@@ -54,6 +54,7 @@ const paths = {
   GET_COMMENT: `${servers.project}${projectEndpoints.getComment}`,
   PATCH_COMMENT: `${servers.project}${projectEndpoints.patchComment}`,
   PROJECT_DONORS: `${servers.project}${projectEndpoints.projectDonors}`,
+  PROJECT_DONATE: `${servers.project}${projectEndpoints.projectDonate}`,
 
   // profile
   ME: `${servers.auth}${profileEndpoints.me}`,

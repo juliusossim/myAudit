@@ -2,33 +2,39 @@ import React from 'react';
 import Loader from '../microComponents/loader';
 
 const PageTemp = ({
-  status, view, error, noData
+  status, view, error, noData, initial
 }) => (
   <div>
-    {console.log(status)}
+    {console.log('status: ', status)}
     {
-      status === 'pending' && <Loader />
+      status === 'initial' && initial
     }
     {
-      status === 'success' && view
+      status === 'pending' && <Loader />
     }
     {
       status === 'failed' && (
         <div>
           <div className="card-body">
-            We could not load the requested data at this time. You may try and refresh.
+            {
+              error
+              || 'We could not load the requested data at this time. You may try and refresh'
+            }
           </div>
         </div>
       )
     }
     {
-      noData && (
+      status === 'success' && noData && (
         <div>
           <div className="card-body">
             There is no data to display yet.
           </div>
         </div>
       )
+    }
+    {
+      status === 'success' && view
     }
   </div>
 );

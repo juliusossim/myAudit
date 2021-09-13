@@ -15,6 +15,7 @@ const Unauthorized = lazy(() => import('../pages/authentication/Unauthorized'));
 const Notifications = lazy(() => import('../pages/profile/Notifications'));
 const Profile = lazy(() => import('../pages/profile/Index'));
 const ProjectDetails = lazy(() => import('../pages/project/details/ProjectDetails'));
+const Donate = lazy(() => import('../pages/project/details/Donate'));
 
 const routes = [
   {
@@ -95,6 +96,11 @@ const routes = [
   {
     path: '/project/details/:id/:tab',
     component: ProjectDetails,
+    exact: true
+  },
+  {
+    path: '/project/donate/:id',
+    component: Donate,
     exact: true
   },
   {

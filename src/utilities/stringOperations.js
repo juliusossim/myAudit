@@ -107,3 +107,14 @@ export const sentenceCaps = (text) => {
   }
   return false;
 };
+export const replacedName = (name, apiValue) => {
+  if (apiValue) {
+    if (name === 'lga') {
+      return ({ lgaId: apiValue });
+    }
+    if (name === 'state') {
+      return ({ stateId: apiValue });
+    }
+  }
+  return {};
+};

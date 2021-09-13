@@ -169,7 +169,7 @@ const GeneralPage = () => {
                 }
               </div>
               <div className={store?.home?.popularNgos?.data?.data?.length > 0 ? 'row projects text-left mt-5 ' : 'd-none'}>
-                <div className="row justify-content-between ml-5 mr-5">
+                <div className="row justify-content-between">
                   <h3>
                     Most Popular NGOs
                   </h3>

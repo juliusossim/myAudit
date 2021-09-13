@@ -28,6 +28,25 @@ export const projectType = [
     value: 3
   }
 ];
+export const countries = [
+  'select your country',
+  {
+    id: 1,
+    name: 'Nigeria'
+  },
+  {
+    id: 2,
+    name: 'USA'
+  },
+  {
+    id: 3,
+    name: 'UK'
+  },
+  {
+    id: 4,
+    name: 'Other'
+  }
+];
 export const sortCats = [
   'select project type',
   {
