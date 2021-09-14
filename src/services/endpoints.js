@@ -2,6 +2,7 @@ import * as authEndpoints from './authService';
 import * as fileUploads from './fileUploadService';
 import * as projectEndpoints from './projectService';
 import * as profileEndpoints from './profileService';
+import * as paymentEndpoints from './paymentService';
 
 const servers = {
   auth: process.env.REACT_APP_AUTH_SERVER,
@@ -34,7 +35,6 @@ const paths = {
   VIEW_PROJECT: `${servers.project}${projectEndpoints.viewProject}`,
   EDIT_PROJECT: `${servers.project}${projectEndpoints.editProject}`,
   DELETE_PROJECT: `${servers.project}${projectEndpoints.deleteProject}`,
-  STOP_PROJECT: `${servers.project}${projectEndpoints.stopProject}`,
   EDIT_PROJECT_UPDATES: `${servers.project}${projectEndpoints.editProjectUpdate}`,
   PROJECT_UPDATES: `${servers.project}${projectEndpoints.showProjectUpdate}`,
   UPDATE_PROJECT: `${servers.project}${projectEndpoints.updateProject}`,
@@ -53,8 +53,12 @@ const paths = {
   PROJECT_COMMENTS: `${servers.project}${projectEndpoints.projectComments}`,
   GET_COMMENT: `${servers.project}${projectEndpoints.getComment}`,
   PATCH_COMMENT: `${servers.project}${projectEndpoints.patchComment}`,
-  PROJECT_DONORS: `${servers.project}${projectEndpoints.projectDonors}`,
-  PROJECT_DONATE: `${servers.project}${projectEndpoints.projectDonate}`,
+
+  // payment
+  STOP_PROJECT: `${servers.project}${paymentEndpoints.stopProject}`,
+  PROJECT_DONORS: `${servers.project}${paymentEndpoints.projectDonors}`,
+  PROJECT_DONATE: `${servers.project}${paymentEndpoints.projectDonate}`,
+  USER_TRANSACTIONS: `${servers.project}${paymentEndpoints.userTransactions}`,
 
   // profile
   ME: `${servers.auth}${profileEndpoints.me}`,

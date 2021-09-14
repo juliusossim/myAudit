@@ -57,6 +57,16 @@
   border: solid 1px #0000002e;
   border-radius: 7px;
 }
+.transaction-text {
+  @extend .theme-font;
+  display: flex;
+  align-items: center;
+
+  /* Gray 2 */
+
+  color: #4F4F4F;
+
+}
 body {
   @extend .theme-font;
   margin: 0;

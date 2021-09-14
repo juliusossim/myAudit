@@ -65,7 +65,6 @@ const ProjectDetails = (items) => {
           method: 'get',
           param: theId,
           endpoint: 'PROJECT_DETAILS',
-          auth: true,
           afterParam: 'details'
         })
       }
@@ -109,8 +108,7 @@ const ProjectDetails = (items) => {
       routeOptions: apiOptions({
         method: 'get',
         pQuery: { projectId: project.id },
-        endpoint: 'PROJECT_COMMENTS',
-        auth: true
+        endpoint: 'PROJECT_COMMENTS'
       })
     }
   ));

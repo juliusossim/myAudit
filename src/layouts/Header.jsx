@@ -94,7 +94,7 @@ const Header = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.status]);
 
-  const toLinks = [
+  const toLinks = user?.loggedIn ? [
     {
       name: 'Explore',
       to: '/explore'
@@ -103,7 +103,13 @@ const Header = () => {
       name: 'Account',
       to: '/me'
     }
-  ];
+  ]
+    : [
+      {
+        name: 'Explore',
+        to: '/explore'
+      }
+    ];
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
@@ -126,7 +132,7 @@ const Header = () => {
       <SearchAppBar
         className="position-fixed"
         logo={CrowdLogo}
-        popMenu={user?.loggedIn && (
+        popMenu={(
           <Link className="mt-3" onClick={handleClick} to="#">
             {selected.name || 'Explore'}
             <IoIosArrowDown className="pt-2" />

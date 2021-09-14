@@ -11,6 +11,7 @@ import { projectAction } from '../../redux/actions/projectActions';
 import { apiOptions } from '../../services/fetch';
 import Loader from '../../components/microComponents/loader';
 import ProjectInfo from '../../components/ui/projectInfo';
+import PageTemp from '../../components/temps/PageTemp';
 
 const GeneralPage = () => {
   const startProject = () => {
@@ -85,16 +86,42 @@ const GeneralPage = () => {
     popularNgos();
   }, []);
 
-  const positiveDiffs = (second, duration) => {
-    const diff = duration - diffDays({
-      firstDate: new Date(Date.now()),
-      secondDate: new Date(second)
-    });
-    return ({
-      left: diff > 0,
-      diff
-    });
-  };
+  const popularNgosTemp = (
+    <div className="">
+      {
+        store?.home?.popularNgos?.data?.data?.map(
+          (item, key) => (
+            <div key={item.id} className="col-md-3 mb-4">
+              <div className="">
+                <ProjectInfo
+                  styled
+                  project={item}
+                />
+              </div>
+            </div>
+          )
+        )
+      }
+    </div>
+  );
+  const popularFundraisersTemp = (
+    <div>
+      {
+        store?.home?.popularFundraisers?.data?.data?.map(
+          (item, key) => (
+            <div key={item.id} className="col-md-3 mb-4">
+              <div className="">
+                <ProjectInfo
+                  styled
+                  project={item}
+                />
+              </div>
+            </div>
+          )
+        )
+      }
+    </div>
+  );
 
   return (
     <div>
@@ -135,68 +162,48 @@ const GeneralPage = () => {
         </div>
       </div>
 
-      <div className="row bg-wema-light">
+      <div className=" bg-wema-light">
         <div className="content">
-          <div className="w-100 margin-center m-t-40">
-            <div className="my-4">
-              <div className={store?.home?.popularFundraisers?.data?.data?.length > 0 ? 'row projects text-left mt-5' : 'd-none'}>
-                <div className="row justify-content-between ml-5 mr-5">
-                  <h3 className="theme-title">
-                    Most Popular Fundraisers
-                  </h3>
-                  {
-                    store?.home?.popularFundraisers?.data?.data?.length > 4
-                        && (
-                          <button type="button" className="text-wema float-right viewMoreBtn">
-                            View More &gt;
-                          </button>
-                        )
-                  }
-                </div>
+          <div className="w-100 margin-center m-t-40 projects">
+            <div className="container text-left my-4">
+              <div className="row justify-content-between ml-5 mr-5">
+                <h3 className="theme-title">
+                  Most Popular Fundraisers
+                </h3>
                 {
-                  store?.home?.popularFundraisers?.status === 'pending'
-                    ? <Loader />
-                    : store?.home?.popularFundraisers?.data?.data?.map(
-                      (item, key) => (
-                        <div key={item?.id} className="col-md-3">
-                          <ProjectInfo
-                            styled
-                            project={item}
-                          />
-                        </div>
-                      )
-                    )
+                  store?.home?.popularFundraisers?.data?.data?.length > 4
+                  && (
+                    <button type="button" className="text-wema float-right viewMoreBtn">
+                      View More &gt;
+                    </button>
+                  )
                 }
               </div>
-              <div className={store?.home?.popularNgos?.data?.data?.length > 0 ? 'row projects text-left mt-5 ' : 'd-none'}>
-                <div className="row justify-content-between">
-                  <h3>
-                    Most Popular NGOs
-                  </h3>
-                  {
-                    store?.home?.popularNgos?.data?.data?.length > 4
-                        && (
-                          <button type="button" className="text-wema float-right viewMoreBtn">
-                            View More &gt;
-                          </button>
-                        )
-                  }
-                </div>
+              <PageTemp
+                view={popularFundraisersTemp}
+                status={store?.home?.popularFundraisers?.status}
+                noData={store?.home?.popularFundraisers.data?.data?.length === 0}
+              />
+            </div>
+            <div className="container  mt-5 ">
+              <div className="row justify-content-between ml-5 mr-5">
+                <h3>
+                  Most Popular NGOs
+                </h3>
                 {
-                  store?.home?.popularNgos?.status === 'pending'
-                    ? <Loader />
-                    : store?.home?.popularNgos?.data?.data?.map(
-                      (item, key) => (
-                        <div key={item?.id} className="col-md-3">
-                          <ProjectInfo
-                            styled
-                            project={item}
-                          />
-                        </div>
-                      )
-                    )
+                  store?.home?.popularNgos?.data?.data?.length > 4
+                  && (
+                    <button type="button" className="text-wema float-right viewMoreBtn">
+                      View More &gt;
+                    </button>
+                  )
                 }
               </div>
+              <PageTemp
+                view={popularNgosTemp}
+                status={store?.home?.popularNgos?.status}
+                noData={store?.home?.popularNgos.data?.data?.length === 0}
+              />
             </div>
           </div>
         </div>

@@ -85,6 +85,10 @@ const initialState = {
   comment: {
     data: {},
     status: 'initial'
+  },
+  userTransactions: {
+    data: {},
+    status: 'initial'
   }
 };
 
@@ -700,6 +704,34 @@ const projectReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       comment: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.USER_TRANSACTIONS_PENDING:
+    return {
+      ...state,
+      userTransactions: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.USER_TRANSACTIONS_SUCCESS:
+    return {
+      ...state,
+      userTransactions: {
+        ...state.userTransactions,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.USER_TRANSACTIONS_FAILURE:
+    return {
+      ...state,
+      userTransactions: {
         data: error || {},
         status: 'failed'
       }

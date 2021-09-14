@@ -39,26 +39,33 @@ const DeleteProjectTemp = ({
 
   const initTemp = (
     <div>
-      <div className="d-flex justify-content-between align-content-center">
-        <p className="h1 bold py-3">
+      <div className="row  align-content-center">
+        <p className="text-danger bold py-3 row">
           Are You Sure You Want To Delete This Project Now?
         </p>
         <hr />
-        <div className="d-flex">
-          <button className="btn btn-danger" type="button" onClick={takeAction}>Yes</button>
-          <button className="btn btn-plain" type="button" onClick={handleClose}>No</button>
+        <div className="row justify-content-center ">
+          <button className="btn-plain border-wema text-danger mr-4  w-25 btn-small" type="button" onClick={takeAction}>Yes</button>
+          <button className="btn-plain text-wema border-wema w-25 btn-small" type="button" onClick={handleClose}>No</button>
         </div>
       </div>
     </div>
   );
   const successTemp = (
-    <div>
-      <p className="h3">
-        Projected successfully deleted.
-      </p>
-      <p className="text-info">
-        Your project is deleted and no more on the platform.
-      </p>
+    <div className="row justify-content-center">
+      <div className="">
+        <p className="text-wema bold font-1-5">
+          Projected successfully deleted.
+        </p>
+      </div>
+      <div className="row justify-content-center">
+        <p className="">
+          Your project is deleted and no more on the platform.
+        </p>
+      </div>
+      <div className="row justify-content-center">
+        <button className="btn-plain text-wema border-wema w-25 btn-small" type="button" onClick={handleClose}>Ok</button>
+      </div>
     </div>
   );
   return (
