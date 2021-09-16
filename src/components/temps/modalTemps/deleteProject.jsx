@@ -5,20 +5,22 @@ import {
 import IconButton from '@material-ui/core/IconButton';
 import { useDispatch, useSelector } from 'react-redux';
 import PageTemp from '../PageTemp';
-import { projectAction } from '../../../redux/actions/projectActions';
+import { projectAction, resetAction } from '../../../redux/actions/projectActions';
 import { apiOptions } from '../../../services/fetch';
 
 const DeleteProjectTemp = ({
-  handleClose, project, setData, data
+  handleClose, project, updateData
 }) => {
   /* Redux */
   const store = useSelector((state) => state.project?.deleteProject);
 
   useEffect(() => {
     if (store?.status === 'success') {
-      const newData = data.filter((item) => item !== project);
-      setData(newData);
-      setTimeout(() => handleClose, 1000);
+      updateData();
+      setTimeout(() => {
+        handleClose();
+        dispatch(resetAction({ action: 'DELETE_PROJECT_COMPLETE' }));
+      }, 2000);
     }
   }, [store?.status]);
 
@@ -33,7 +35,8 @@ const DeleteProjectTemp = ({
         param: projectId,
         endpoint: 'DELETE_PROJECT',
         auth: true
-      })
+      }),
+      onSuccess: 'COMPLETE'
     }
   ));
 

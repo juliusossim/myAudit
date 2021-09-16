@@ -643,6 +643,14 @@ const projectReducer = (state = initialState, { type, response, error }) => {
         status: 'success'
       }
     };
+  case constants.DELETE_PROJECT_COMPLETE:
+    return {
+      ...state,
+      deleteProject: {
+        data: {},
+        status: 'initial'
+      }
+    };
 
   case constants.DELETE_PROJECT_FAILURE:
     return {

@@ -28,13 +28,16 @@ const Projects = ({ setCurrent }) => {
   const isDelete = (project) => (
     project?.amountRaised === null || parseFloat(project?.amountRaised) === 0
   );
+  const updateData = () => {
+    const newData = formData.filter((item) => item.projectId !== theProject.projectId);
+    setFormData([...newData]);
+  };
   const template = (project) => ((
     project?.amountRaised === null || parseFloat(project?.amountRaised) === 0
   )
     ? (
       <DeleteProjectTemp
-        setData={setFormData}
-        data={formData}
+        updateData={updateData}
         project={project}
         handleClose={handleClose}
       />
@@ -68,36 +71,18 @@ const Projects = ({ setCurrent }) => {
       setFormData([...store.profile?.projects?.data.data]);
       setShowView(true);
     }
-    if (store.project?.deleteProject?.status === 'success'
-    && store.profile?.projects?.data?.data?.length > 0) {
-      const newData = formData.filter(
-        (item) => item.id !== store.project?.deleteProject?.data?.data?.projectId
-      );
-      setFormData([...newData]);
-      setShowView(true);
-    }
   }, [store.profile?.projects?.status]);
-  useEffect(() => {
-    if (store.project?.deleteProject?.status === 'success'
-    && store.profile?.projects?.data?.data?.length > 0) {
-      const newData = formData.filter(
-        (item) => item.projectId !== store.project?.deleteProject?.data?.data?.id
-      );
-      setFormData([...newData]);
-      setShowView(true);
-    }
-  }, [store.project?.deleteProject?.status]);
 
   useEffect(() => {
     setCurrent('My projects');
     dispatch(myProjects());
   }, []);
 
-  const successTemp = (
+  const successTemp = (data) => (
     <div className="login-form pb-5h">
       <div>
         {
-          formData.map(
+          data.map(
             (item, key) => (
               <div key={Math.random()}>
                 <div key={`project ${item.id}`} className="row mt-5">
@@ -186,13 +171,13 @@ const Projects = ({ setCurrent }) => {
                         setTheProject(item);
                       }}
                       type="button"
-                      className="btn-sm btn-delete text-delete w-100 mt-5"
+                      className={isDelete(item) ? 'btn-sm btn-delete text-delete w-100 mt-5' : 'btn-sm btn-edit text-edit w-100 mt-5'}
                     >
                       <RiDeleteBin6Line className="mt-1 mr-1" />
                       {isDelete(item) ? 'Delete' : 'End'}
                     </button>
                     <div className="m-t-40 pt-5">
-                      <button type="button" disabled={isAfter(new Date(item.endDate), new Date())} className="btn mt-5">
+                      <button type="button" disabled={isAfter(new Date(item.endDate), new Date()) || parseFloat(item.amountRaise) === 0} className="btn mt-5">
                         Withdraw funds
                       </button>
                     </div>
@@ -216,7 +201,7 @@ const Projects = ({ setCurrent }) => {
                 <div className="login-form-container p-20">
                   <PageTemp
                     status={store.profile?.projects?.status}
-                    view={successTemp}
+                    view={successTemp(formData)}
                     noData={formData.length === 0}
                   />
                 </div>

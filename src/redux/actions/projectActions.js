@@ -180,10 +180,17 @@ export const uploadMedia = ({ payload, setProgress }) => {
     });
   };
 };
+export const resetAction = ({ action }) => async (
+  dispatch
+) => {
+  console.log(action);
+  console.log(constants[action]);
+  dispatch({ type: constants[action] });
+};
 
 /* almighty action function */
 export const projectAction = ({
-  action, routeOptions
+  action, routeOptions, onSuccess
 }) => {
   const request = (req) => ({ type: constants[`${action}_PENDING`], request: req });
   const success = (response) => ({ type: constants[`${action}_SUCCESS`], response });
@@ -200,6 +207,9 @@ export const projectAction = ({
     return res.then((response) => {
       if (response?.status === 200) {
         dispatch(success(response?.data));
+        // if (onSuccess !== undefined) {
+        //   setTimeout(() => dispatch(constants[`${action}_${onSuccess}`]), 2000);
+        // }
       } else if (response) {
         dispatch(failure(response?.errors || response));
       } else dispatch(failure('connection failed, you are probably not connected to the internet!'));
