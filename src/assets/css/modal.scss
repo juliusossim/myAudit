@@ -1,4 +1,5 @@
 .c-modal {
+  @extend .z-indexMax;
   display: block;
   position: fixed;
   width: 500px;
@@ -64,6 +65,14 @@
   top: -1vh;
   right: 10.5vw;
 }
+.z-indexMax {
+  z-index: 100000;
+}
 .hidden {
   visibility: hidden;
+}
+.top-right-coner {
+  position: absolute;
+  right: 0;
+  top: -22px;
 }

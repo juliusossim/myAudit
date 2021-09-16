@@ -22,7 +22,7 @@ const OrdinaryTable = ({
         onSelectionChange={(rows) => {
           selectionHandler(rows);
         }}
-        onRowClick={(event, rowData) => handleRowClick(event, rowData)}
+        onRowClick={(event, rowData) => handleRowClick(rowData)}
       />
     </>
   );
