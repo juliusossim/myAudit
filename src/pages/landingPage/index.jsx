@@ -4,9 +4,6 @@ import { Link } from 'react-router-dom';
 import CustomCarousel from '../../components/microComponents/carousel';
 import LazyImage from '../../components/microComponents/lazyImg';
 import howItWorks from '../../assets/images/howItWorks.svg';
-import { getOneName } from '../../utilities/stringOperations';
-import { diffDays } from '../../utilities/dateOperations';
-import { popularProjects, raisersCategory } from '../../utilities/dummyData';
 import { projectAction } from '../../redux/actions/projectActions';
 import { apiOptions } from '../../services/fetch';
 import Loader from '../../components/microComponents/loader';
@@ -23,6 +20,8 @@ const GeneralPage = () => {
   /* redux */
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
+  /* state */
+  const [projects, setProjects] = React.useState([]);
   // const carouselSlides = [
   //   {
   //     content: (
@@ -58,38 +57,31 @@ const GeneralPage = () => {
   // const firstImg = import('../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg')
   //   .then((makeChange) => <LazyImage src={makeChange} alt="make a difference" />);
 
-  const popularFundraisers = useCallback(() => {
+  const popularProjects = useCallback(() => {
     dispatch(projectAction(
       {
-        action: 'POPULAR_FUNDRAISERS',
+        action: 'POPULAR_PROJECTS',
         routeOptions: apiOptions({
           method: 'get',
-          endpoint: 'POPULAR_FUNDRAISERS'
-        })
-      }
-    ));
-  }, []);
-  const popularNgos = useCallback(() => {
-    dispatch(projectAction(
-      {
-        action: 'POPULAR_NGOS',
-        routeOptions: apiOptions({
-          method: 'get',
-          endpoint: 'POPULAR_NGOS'
+          endpoint: 'POPULAR_PROJECTS'
         })
       }
     ));
   }, []);
 
   useEffect(() => {
-    popularFundraisers();
-    popularNgos();
+    popularProjects();
   }, []);
+  useEffect(() => {
+    if (store?.home?.popularProjects?.status === 'success') {
+      setProjects(store?.home?.popularProjects?.data?.data);
+    }
+  }, [store?.home?.popularProjects?.status]);
 
   const popularNgosTemp = (
     <div className="">
       {
-        store?.home?.popularNgos?.data?.data?.map(
+        projects?.popularNGOs?.map(
           (item, key) => (
             <div key={item.id} className="col-md-3 mb-4">
               <div className="">
@@ -107,7 +99,7 @@ const GeneralPage = () => {
   const popularFundraisersTemp = (
     <div>
       {
-        store?.home?.popularFundraisers?.data?.data?.map(
+        projects?.popularFundraisers?.map(
           (item, key) => (
             <div key={item.id} className="col-md-3 mb-4">
               <div className="">
@@ -171,7 +163,7 @@ const GeneralPage = () => {
                   Most Popular Fundraisers
                 </h3>
                 {
-                  store?.home?.popularFundraisers?.data?.data?.length > 4
+                  projects?.popularFundraisers?.length > 4
                   && (
                     <button type="button" className="text-wema float-right viewMoreBtn">
                       View More &gt;
@@ -181,8 +173,8 @@ const GeneralPage = () => {
               </div>
               <PageTemp
                 view={popularFundraisersTemp}
-                status={store?.home?.popularFundraisers?.status}
-                noData={store?.home?.popularFundraisers.data?.data?.length === 0}
+                status={store?.home?.popularProjects?.status}
+                noData={projects?.popularFundraisers?.length === 0}
               />
             </div>
             <div className="container  mt-5 ">
@@ -191,7 +183,7 @@ const GeneralPage = () => {
                   Most Popular NGOs
                 </h3>
                 {
-                  store?.home?.popularNgos?.data?.data?.length > 4
+                  projects?.popularNGOs?.length > 4
                   && (
                     <button type="button" className="text-wema float-right viewMoreBtn">
                       View More &gt;
@@ -201,8 +193,8 @@ const GeneralPage = () => {
               </div>
               <PageTemp
                 view={popularNgosTemp}
-                status={store?.home?.popularNgos?.status}
-                noData={store?.home?.popularNgos.data?.data?.length === 0}
+                status={store?.home?.popularProjects?.status}
+                noData={projects?.popularNGOs?.length === 0}
               />
             </div>
           </div>

@@ -26,7 +26,7 @@ const Header = () => {
   const Notifications = lazy(() => import('../pages/profile/Notifications'));
 
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.profile.notifications);
+  const store = useSelector((state) => state.profile);
   const [show, setShow] = useState(false);
   const [dp, setDp] = useState(false);
   const [selected, setSelected] = useState({ name: 'Explore', to: '/explore' });
@@ -72,7 +72,12 @@ const Header = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentUser]);
   useEffect(() => {
-    if (store?.status === 'success') {
+    if (store?.dp?.status === 'success') {
+      setDp(store?.dp?.data?.data?.uri);
+    }
+  }, [store?.dp?.status]);
+  useEffect(() => {
+    if (store?.notifications?.status === 'success') {
       setMenu([
         {
           name: 'sign out',
@@ -92,7 +97,7 @@ const Header = () => {
       ]);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store.status]);
+  }, [store?.notifications?.status]);
 
   const toLinks = user?.loggedIn ? [
     {

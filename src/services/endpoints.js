@@ -47,6 +47,7 @@ const paths = {
   STATE_LGAS: `${servers.project}${projectEndpoints.stateLgas}`,
   EDIT_PROJECT_REQUEST: `${servers.project}${projectEndpoints.editProjectRequest}`,
   POPULAR_FUNDRAISERS: `${servers.project}${projectEndpoints.popularFundraisers}`,
+  POPULAR_PROJECTS: `${servers.project}${projectEndpoints.popularProjects}`,
   POPULAR_NGOS: `${servers.project}${projectEndpoints.popularNGOs}`,
   SEARCH_PROJECTS: `${servers.project}${projectEndpoints.searchProject}`,
   POST_COMMENT: `${servers.project}${projectEndpoints.postComment}`,

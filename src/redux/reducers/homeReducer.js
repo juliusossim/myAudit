@@ -8,6 +8,10 @@ const initialState = {
   popularNgos: {
     data: {},
     status: 'initial'
+  },
+  popularProjects: {
+    data: {},
+    status: 'initial'
   }
 };
 
@@ -60,6 +64,33 @@ const homeReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       popularFundraisers: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+  case constants.POPULAR_PROJECTS_PENDING:
+    return {
+      ...state,
+      popularProjects: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.POPULAR_PROJECTS_SUCCESS:
+    return {
+      ...state,
+      popularProjects: {
+        ...state.popularProjects,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.POPULAR_PROJECTS_FAILURE:
+    return {
+      ...state,
+      popularProjects: {
         data: error || {},
         status: 'failed'
       }

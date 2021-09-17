@@ -5,12 +5,11 @@ const PageTemp = ({
   status, view, error, noData, initial
 }) => (
   <div>
-    {console.log('status: ', status)}
     {
       status === 'initial' && initial
     }
     {
-      status === 'pending' && <Loader />
+      status === 'pending' && <div className="min-w-300-w"><Loader /></div>
     }
     {
       status === 'failed' && (

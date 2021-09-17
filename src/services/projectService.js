@@ -17,6 +17,7 @@ export const showProjectUpdate = (id) => 'ProjectUpdates'; // param = ${id}
 export const editProjectUpdate = (id) => 'ProjectUpdates'; // param = ${id}
 export const projectByStatus = (id) => 'Projects/byPublishStatus';
 export const stateLgas = 'lgas';
+export const popularProjects = 'Projects/popularNGOsAndFundraisers';
 export const popularFundraisers = 'Projects/popularFundraisers';
 export const popularNGOs = 'Projects/popularNGOs';
 export const searchProject = 'Projects'; // several queries
