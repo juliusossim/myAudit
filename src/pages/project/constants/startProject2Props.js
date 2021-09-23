@@ -35,7 +35,7 @@ const formBuilderProjectsStart2Props = (
   {
     kind: 'select2',
     props: {
-      className: 'w-100 m-b-20 col-6',
+      className: 'w-100 m-b-20 col-md-6',
       name: 'state',
       label: 'State',
       options: states,
@@ -55,7 +55,7 @@ const formBuilderProjectsStart2Props = (
   {
     kind: 'select2',
     props: {
-      className: 'w-100 m-b-20 col-6',
+      className: 'w-100 m-b-20 col-md-6',
       name: 'lga',
       label: 'LGA',
       options: lgas,
@@ -76,7 +76,7 @@ const formBuilderProjectsStart2Props = (
   {
     kind: 'date',
     props: {
-      className: 'w-100 m-b-20 col-6',
+      className: 'w-100 m-b-20 col-12 col-md-6',
       variant: 'standard',
       // orientation: 'landscape',
       disablePast: true,
@@ -99,7 +99,7 @@ const formBuilderProjectsStart2Props = (
   {
     kind: 'date',
     props: {
-      className: 'w-100 m-b-20 col-6',
+      className: 'w-100 m-b-20 col-md-6',
       variant: 'standard',
       minDate,
       // orientation: 'landscape',

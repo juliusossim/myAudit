@@ -14,6 +14,7 @@ import User from '../../assets/images/User.svg';
 import Kat from '../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg';
 import BackdropModal from '../microComponents/backdropModal';
 import ShareTemp from '../temps/modalTemps/share';
+import ProjectProgress from '../temps/projectTemps/projectProgress';
 
 const ProjectInfo = ({
   project, styled, logo, actions, chip, shares, clss
@@ -30,16 +31,16 @@ const ProjectInfo = ({
 
   return (
     <Paper elevation={3} className={clss || 'h-52h post overflow-y-hidden'}>
+      <div className={logo ? 'd-none' : ''}>
+        <CardMedia
+          className="h-18h"
+          image={_.head(project?.media)?.uri || project?.primaryMedia?.uri || Kat}
+          title={project?.title}
+        />
+      </div>
       <CardContent>
         <div>
           <div className="post-title">
-            <div className={logo ? 'd-none' : ''}>
-              <CardMedia
-                className="h-18h"
-                image={_.head(project?.media)?.uri || Kat}
-                title={project?.title}
-              />
-            </div>
             <div className="my-1 px-2">
               <Link to={{ pathname: `/project/details/${project?.id}/1`, tab: 1, id: project?.id }}>
                 <span className="h5 bold">{project?.title}</span>
@@ -87,7 +88,7 @@ const ProjectInfo = ({
               </div>
             </div>
 
-            <div className="my-1 px-2 theme-font-2 font-14">
+            <div className="my-1 px-2 theme-font-2 font-14 h-50-m">
               <p>
                 {project?.summary}
               </p>
@@ -134,19 +135,23 @@ const ProjectInfo = ({
                 </span>
               </div>
             </div>
-            <div className="progress mt-1 mb-3" title={`#${(project?.donationTarget - project?.amountRaised).toLocaleString()} to hit target`}>
-              <div
-                className="progress-bar bg-wema"
-                role="progressbar"
-                aria-valuenow={
-                  (project?.amountRaised / project?.donationTarget) * 100
-                }
-                style={{ width: `${(project?.amountRaised / project?.donationTarget) * 100}%` }}
-                aria-valuemin="0"
-                aria-valuemax="100"
-                aria-labelledby="progress_bar"
-              />
-            </div>
+            <ProjectProgress project={project} />
+            {/* <div className="progress mt-1 mb-3" style={{ height: '8px' }}
+             title={`#${(project?.donationTarget - project?.amountRaised).toLocaleString()}
+             to hit target`}> */}
+            {/*  <div */}
+            {/*    className="progress-bar bg-wema" */}
+            {/*    role="progressbar" */}
+            {/*    aria-valuenow={ */}
+            {/*      (project?.amountRaised / project?.donationTarget) * 100 */}
+            {/*    } */}
+            {/*    style={{ width: `${(project?.amountRaised /
+            project?.donationTarget) * 100}%` }} */}
+            {/*    aria-valuemin="0" */}
+            {/*    aria-valuemax="100" */}
+            {/*    aria-labelledby="progress_bar" */}
+            {/*  /> */}
+            {/* </div> */}
             <div className="d-flex mt-1">
               <div className={styled ? 'pr-3' : 'd-none'}>
 

@@ -14,6 +14,7 @@ import BackdropModal from '../../components/microComponents/backdropModal';
 import DeleteProjectTemp from '../../components/temps/modalTemps/deleteProject';
 import EndProjectTemp from '../../components/temps/modalTemps/endProject';
 import PageTemp from '../../components/temps/PageTemp';
+import ProjectProgress from '../../components/temps/projectTemps/projectProgress';
 
 const Projects = ({ setCurrent }) => {
   const dispatch = useDispatch();
@@ -85,11 +86,11 @@ const Projects = ({ setCurrent }) => {
           data.map(
             (item, key) => (
               <div key={Math.random()}>
-                <div key={`project ${item.id}`} className="row mt-5">
+                <div key={`project ${item.id}`} className="row mt-md-5">
                   <div className="col-md-5">
                     <LazyImage src={item.primaryMedia?.uri} alt={item.title} />
                   </div>
-                  <div className="col-md-5 mb-5">
+                  <div className="col-md-5 mb-md-5">
                     <Link to={{ pathname: `/project/details/${item.projectId}/1`, tab: 1, id: item.projectId }}>
                       <h3>
                         {item.title}
@@ -105,7 +106,7 @@ const Projects = ({ setCurrent }) => {
                         <span>{item.state || ''}</span>
                       </small>
                     </Link>
-                    <div className="col-md-5 mt-5">
+                    <div className="col-md-5 mt-md-5 mt-2">
                       <div className="d-flex">
                         <div className="mr-5">
                           Donors
@@ -117,29 +118,35 @@ const Projects = ({ setCurrent }) => {
                         </div>
                       </div>
                     </div>
-                    <div className="row mt-5 mb-2">
-                      <div className="pr-1 raised col-md-6">
-                        <span className="bold mr-1">{`N${item.amountRaised?.toLocaleString() || 0}`}</span>
-                        raised
+                    <div className="d-flex flex-wrap mt-md-5 my-2">
+                      <div className="pr-1 raised ">
+                        <span className="bold">&#8358;</span>
+                        <span className="bold mr-1">{item.amountRaised?.toLocaleString() || 0}</span>
+                        raised,
                       </div>
-                      <div className="col-md-6 ">
+                      <div className=" ">
                         <span>Target</span>
-                        <span className="bold">{` N${item.donationTarget?.toLocaleString() || 0}`}</span>
+                        <span className="bold ml-1">&#8358;</span>
+                        <span className="bold">{item.donationTarget?.toLocaleString() || 0}</span>
                       </div>
                     </div>
-                    <div className="progress mt-2 mb-3" title={`N${(item.donationTarget - item.amountRaised || 0).toLocaleString()} to hit target`}>
-                      <div
-                        className="progress-bar bg-wema"
-                        role="progressbar"
-                        aria-valuenow={
-                          (item.amountRaised / item.donationTarget) * 100
-                        }
-                        style={{ width: `${(item.amountRaised / item.donationTarget) * 100}%` }}
-                        aria-valuemin="0"
-                        aria-valuemax="100"
-                        aria-labelledby="progress_bar"
-                      />
-                    </div>
+                    <ProjectProgress project={item} />
+                    {/* <div className="progress mt-2 mb-md-3"
+                    style={{ height: '8px' }} title={`N${(item.donationTarget - item.amountRaised ||
+                     0).toLocaleString()} to hit target`}> */}
+                    {/*  <div */}
+                    {/*    className="progress-bar bg-wema" */}
+                    {/*    role="progressbar" */}
+                    {/*    aria-valuenow={ */}
+                    {/*      (item.amountRaised / item.donationTarget) * 100 */}
+                    {/*    } */}
+                    {/*    style={{ width: `${(item.amountRaised /
+                     item.donationTarget) * 100}%` }} */}
+                    {/*    aria-valuemin="0" */}
+                    {/*    aria-valuemax="100" */}
+                    {/*    aria-labelledby="progress_bar" */}
+                    {/*  /> */}
+                    {/* </div> */}
                     <div className="row mt-3">
                       <div className="col-md-6">
                         <span>Fund Percent:</span>

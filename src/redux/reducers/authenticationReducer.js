@@ -199,6 +199,15 @@ const authenticationReducer = (state = initialState, { type, response, error }) 
       }
     };
 
+  case constants.LOGIN_COMPLETE:
+    return {
+      ...state,
+      login: {
+        data: {},
+        status: 'initial'
+      }
+    };
+
   case constants.LOGIN_FAILURE:
     return {
       ...state,

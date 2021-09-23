@@ -200,9 +200,16 @@
 }
 
 .h-52h {
-  height: 52vh !important;
-  min-height: 52vh !important;
-  max-height: 52vh !important;
+  height: 100% !important;
+  @include md {
+    height: 57vh !important;
+    min-height: 57vh !important;
+    max-height: 57vh !important;
+  } @include lg {
+    height: 52vh !important;
+        min-height: 52vh !important;
+        max-height: 52vh !important;
+  }
 }
 .h-45h {
   height: 45vh !important;
@@ -220,6 +227,11 @@
   max-height: 30vh !important;
 }
 
+.h-50-m {
+  height: 50px !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
+}
 .h-60h {
   height: 60vh;
   min-height: 60vh;

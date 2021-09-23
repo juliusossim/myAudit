@@ -15,6 +15,7 @@ import { findItem } from '../../utilities/arrayOperations';
 import ModalTemplate from '../../components/temps/modalTemps/temp';
 import Loader from '../../components/microComponents/loader';
 import { apiOptions } from '../../services/fetch';
+import PageTemp from '../../components/temps/PageTemp';
 
 /**
  *
@@ -64,7 +65,13 @@ const Project1 = ({
 
   useEffect(() => {
     if (store.project1?.status === 'success' && formData.from !== 2) {
-      setShow(true);
+      // setShow(true);
+      setTimeout(() => window.location.replace('/'), 500);
+      return notifier({
+        type: 'success',
+        title: 'Progress Saved',
+        text: `Your project ${formData.title} has been updated`
+      });
     }
     return true;
   }, [store.project1?.status]);
@@ -176,7 +183,6 @@ const Project1 = ({
 
   const deleteProjectMedia = (item) => {
     setFormData({ ...formData, deleteMedia: item });
-    console.log(item);
     dispatch(projectAction(
       {
         action: 'DELETE_MEDIA',
@@ -199,49 +205,57 @@ const Project1 = ({
   };
 
   const text = () => `Your project ${formData.title} has been updated`;
+  const initialTemp = (
+    <div>
+      <FormBuilder
+        formItems={
+          formBuilderProjectsStartProps(
+            {
+              formData,
+              categories: store?.projectCategories?.data?.data,
+              multiple: true,
+              removeItem: deleteProjectMedia,
+              setFormData: cancelUpload,
+              progress,
+              handleBlur,
+              handleChange,
+              handleDateChange,
+              btnMethod: () => setFormData({ ...formData, title: '' }),
+              loading: { status: store?.project?.status, text: 'initializing your project' },
+              loadingMedia: store.media?.status,
+              errors
+            }
+          )
+        }
+      />
+
+    </div>
+  );
 
   return (
     <div className="login-form pb-5h">
 
       <div>
         <div className="text-wema">
-          <h4>
+          <p className="font-bold">
             <span className="pr-1">Complete your</span>
-            <span className="pr-1 bold">{formData.title}</span>
+            {/* <span className="pr-1 bold">{formData.title}</span> */}
             <span className="">project</span>
-          </h4>
+          </p>
         </div>
         <hr />
       </div>
 
-      <div>
-        <FormBuilder
-          formItems={
-            formBuilderProjectsStartProps(
-              {
-                formData,
-                categories: store?.projectCategories?.data?.data,
-                multiple: true,
-                removeItem: deleteProjectMedia,
-                setFormData: cancelUpload,
-                progress,
-                handleBlur,
-                handleChange,
-                handleDateChange,
-                btnMethod: () => setFormData({ ...formData, title: '' }),
-                loading: { status: store?.project?.status, text: 'initializing your project' },
-                loadingMedia: store.media?.status,
-                errors
-              }
-            )
-          }
-        />
-
-      </div>
+      <PageTemp
+        initial={initialTemp}
+        view={initialTemp}
+        isPending={loading}
+        status={store?.project1?.status}
+      />
 
       <div>
 
-        <div className="float-right">
+        <div className="float-md-right text-center">
           <button
             title="save and continue"
             className="btn btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
@@ -252,9 +266,9 @@ const Project1 = ({
             Save and continue later
           </button>
         </div>
-        <div className="float-right">
+        <div className="float-md-right text-center">
           <button
-            className=" btn btn-small p-1 mr-1 float-right"
+            className=" btn btn-small p-1 mr-1 float-md-right text-center"
             type="button"
             disabled={store?.project1?.status === 'pending' || formData?.donationTarget?.length < 1}
             onClick={handleContinue}

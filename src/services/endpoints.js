@@ -59,6 +59,8 @@ const paths = {
   STOP_PROJECT: `${servers.project}${paymentEndpoints.stopProject}`,
   PROJECT_DONORS: `${servers.project}${paymentEndpoints.projectDonors}`,
   PROJECT_DONATE: `${servers.project}${paymentEndpoints.projectDonate}`,
+  PAYMENT_INITIATE: `${servers.project}${paymentEndpoints.projectInitiate}`,
+  PAYMENT_COMPLETE: `${servers.project}${paymentEndpoints.paymentsComplete}`,
   USER_TRANSACTIONS: `${servers.project}${paymentEndpoints.userTransactions}`,
 
   // profile

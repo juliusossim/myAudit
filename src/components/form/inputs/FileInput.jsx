@@ -11,6 +11,7 @@ const FileInput = (
     className,
     setFormData,
     text,
+    accepted,
     name,
     value,
     file,
@@ -28,11 +29,11 @@ const FileInput = (
 ) => {
   const data = [...new Set(file)];
   return (
-    <div className={`${error?.length > 0 ? `${className} col-12` : `${className}`} form-group`}>
+    <div className={`${error?.length > 0 ? `${className} col-12` : `${className}`} light-border form-group`}>
       <>
         {
           multiple ? (
-            <div className="row light-border p-3">
+            <div className="row p-3">
               {
                 data.map((upload, key) => (
                   <div className="col-md-4" key={JSON.stringify(upload?.uri)}>
@@ -129,7 +130,7 @@ const FileInput = (
                   : (
                     <button type="button" className="">
                       <div className=""><FaPlus /></div>
-                      <small> Add Media</small>
+                      <small>{text}</small>
                     </button>
                   )}
                 { skeleton !== undefined && !skeleton && excuseSkeleton !== name
@@ -159,7 +160,6 @@ const FileInput = (
                       onChange={onChange}
                     />
                   )}
-
               </div>
             </div>
           )
@@ -288,6 +288,10 @@ const FileInput = (
             : null
         }
       </>
+      <div className="text-wema ml-2">
+        <small>Accepted Type:</small>
+        <small className="ml-1">{accepted || 'jpeg, jpg, mp4, ogg, etc. (1MB max).'}</small>
+      </div>
     </div>
   );
 };

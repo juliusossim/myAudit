@@ -32,12 +32,30 @@ const Init = ({ setAccordionTab, setData }) => {
   const [proceed, setProceed] = useState(false);
 
   useEffect(() => {
-    if (store?.status === 'failed' || store?.status === 'success') {
+    if (store?.status === 'failed') {
+      // setShow(true);
+      notifier({
+        type: 'error',
+        title: 'Initialisation Failed',
+        text: 'The project failed to initialise, try this process again below'
+      });
+    }
+    if (store?.status === 'success') {
       setShow(true);
     }
+    return store?.status;
   }, [store?.status]);
-  // useEffect(() => debouncedChangeHandler.cancel(), []);
-
+  useEffect(() => {
+    if (show) {
+      notifier({
+        type: 'success',
+        title: 'Progress Saved',
+        text: 'Your project has been recorded'
+      });
+      setTimeout(() => handleClose(), 1000);
+    }
+  }, [show]);
+  // const text = `Your project ${formData.title} has been initialized`;
   const handleClose = () => {
     setData({ ...store?.data?.data, ...formData });
     setShow(false);
@@ -98,15 +116,12 @@ const Init = ({ setAccordionTab, setData }) => {
     fileCopy.splice(index, 1);
     setFormData({ ...formData, file: [...fileCopy] });
   };
-
-  const text = () => `Your project ${formData.title} has been initialized`;
-
   return (
     <div className="login-form pb-5h">
 
       <div>
         <div className="text-wema">
-          <h4>Initiate A New Project</h4>
+          <p className="font-bold">Initiate A New Project</p>
           <p>Give your project a befitting headline</p>
         </div>
         <hr />
@@ -141,24 +156,24 @@ const Init = ({ setAccordionTab, setData }) => {
             disabled={!proceed || store?.status === 'pending' || store?.status === 'success'}
             onClick={handleSaveProgress}
           >
-            <span className="pr-1">Initialize</span>
-            { proceed && formData.title }
+            <span className="pr-1">Proceed </span>
+            {/* { proceed && formData.title } */}
           </button>
         </div>
       </div>
 
-      <Modal
-        className={show ? 'max-w-400 right top' : 'max-w-400 right top off'}
-        content={(
-          <ModalTemplate
-            status={store?.status}
-            data={store?.data?.data}
-            handleClose={handleClose}
-            setShow={setShow}
-            text={text()}
-          />
-        )}
-      />
+      {/* <Modal */}
+      {/*  className={show ? 'max-w-400 right top' : 'max-w-400 right top off'} */}
+      {/*  content={( */}
+      {/*    <ModalTemplate */}
+      {/*      status={store?.status} */}
+      {/*      data={store?.data?.data} */}
+      {/*      handleClose={handleClose} */}
+      {/*      setShow={setShow} */}
+      {/*      text={text()} */}
+      {/*    /> */}
+      {/*  )} */}
+      {/* /> */}
     </div>
   );
 };

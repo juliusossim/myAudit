@@ -48,7 +48,8 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         skeleton,
         excuseSkeleton,
         variant,
-        stringValue
+        stringValue,
+        accepted
       } = props;
       switch (kind) {
       case 'select':
@@ -169,6 +170,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             name={name}
             error={error}
             label={label}
+            accepted={accepted}
             onChange={onChange}
             text={text}
             validations={validations}

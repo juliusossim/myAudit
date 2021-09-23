@@ -200,7 +200,7 @@ const Project3 = () => {
       </h3>
       <p>
         <span>Do you wish to submit for approval now?  </span>
-        <div className="d-flex">
+        <div className="d-md-flex row">
           <button type="button" className="btn m-3" onClick={() => { dispatch(submitProject(formData)); handleClose(); }}>Submit for approval</button>
           <Link to="/me" className="btn-plain border-1 m-3">My Projects</Link>
           <Link to="/" className="btn m-3">Home</Link>

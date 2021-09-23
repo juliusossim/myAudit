@@ -44,6 +44,7 @@ const Project2 = (
   const [formData, setFormData] = useState({ ...data });
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
+  const [success, setSuccess] = useState(false);
   const [lgas, setLgas] = useState([]);
   const [states, setStates] = useState([]);
   const [openSnack, setOpenSnack] = useState(false);
@@ -70,10 +71,28 @@ const Project2 = (
   }, [formData.startDate]);
 
   useEffect(() => {
-    if (store.project?.status === 'failed' || store.project?.status === 'success') {
+    if (store.project?.status === 'failed') {
+      notifier({
+        type: 'error',
+        title: 'Progress Failed To Save',
+        text: `Your project ${formData.title} could not be updated. Try again`
+      });
+    }
+    if (store.project?.status === 'success') {
       setShow(true);
     }
   }, [store.project.status]);
+
+  useEffect(() => {
+    if (show) {
+      notifier({
+        type: 'success',
+        title: 'Project Saved',
+        text: `Kindly review your project ${formData.title}`
+      });
+      setTimeout(() => handleClose(), 1000);
+    }
+  }, [show]);
 
   useEffect(() => {
     if (store.project1?.status === 'failed') {
@@ -81,7 +100,7 @@ const Project2 = (
       setMessage('your progress is not saved');
     } else if (store.project1?.status === 'success') {
       setOpenSnack(true);
-      setMessage('your previous step progress is saved');
+      setMessage('your progress is saved');
     }
   }, [store.project1.status]);
 
@@ -153,19 +172,18 @@ const Project2 = (
 
   return (
     <div className="login-form pb-5h">
-
       <div>
         <div className="text-wema">
-          <h4>
+          <p className="font-bold">
             <span className="pr-1">Complete your</span>
-            <span className="pr-1 bold">{formData.title}</span>
+            {/* <span className="pr-1 bold">{formData.title}</span> */}
             <span className="">project</span>
-          </h4>
+          </p>
         </div>
         <hr />
       </div>
 
-      <div>
+      <div className="row">
         <FormBuilder
           formItems={
             formBuilderProjectsStart2Props(

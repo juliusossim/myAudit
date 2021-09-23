@@ -42,7 +42,7 @@ function App() {
     >
 
       {/* <Router history={history}> */}
-      <div className="w-full wrapper">
+      <div className="w-full bg-white">
         <Header />
         <Switch>
 

@@ -1,7 +1,9 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
-import { AiOutlineArrowRight, IoSadOutline } from 'react-icons/all';
+import {
+  AiOutlineArrowRight, ImMenu3, IoSadOutline
+} from 'react-icons/all';
 import { projectAction, projectCategories, uploadMedia } from '../../redux/actions/projectActions';
 import { apiOptions } from '../../services/fetch';
 import Loader from '../../components/microComponents/loader';
@@ -11,6 +13,7 @@ import {
 } from '../../utilities/stringOperations';
 import SelectInput from '../../components/form/inputs/SelectInput';
 import { projectType, sortCats } from '../../utilities/dummyData';
+import PageTemp from '../../components/temps/PageTemp';
 
 const Explore = () => {
   const { cat } = useLocation();
@@ -22,6 +25,7 @@ const Explore = () => {
 
   const [formData, setFormData] = useState({});
   const [sortBy, setSortBy] = useState(cat?.name);
+  const [showCats, setShowCats] = useState(false);
 
   useEffect(() => {
     dispatch(projectCategories());
@@ -43,6 +47,7 @@ const Explore = () => {
   const filterCategories = (Category) => {
     setSortBy(Category.name);
     searchProjects({ CategoryId: Category.id });
+    setShowCats(false);
   };
   const searchProjects = useCallback((slug) => {
     dispatch(projectAction(
@@ -70,68 +75,112 @@ const Explore = () => {
       [name]: val
     }));
   };
+  const catsTemp = (
+    <div className="card-container bg-wema-light projects mt-md-5 mt-2 py-1 py-md-4 pl-4">
+      <p className="bold font-22 d-none d-md-block d-lg-block">
+        Explore Categories
+      </p>
+      <div className="bold font-22 d-md-none d-lg-none">
+        <button onClick={() => setShowCats(!showCats)} className="btn-plain row justify-content-between" type="button">
+          <div>
+            Explore Categories
+          </div>
+          <div className="text-wema">
+            <ImMenu3 />
+          </div>
+
+        </button>
+      </div>
+      <div className={showCats ? 'pt-3 d-md-none d-lg-none d-xl-none' : 'pt-3 d-none'}>
+        {
+          store?.projectCategories?.data?.data?.map((category) => (
+            <div className="categoryLink">
+              <Link to="#" onClick={() => filterCategories(category)} className="py-2" key={category.id}>
+                <span className="font-22 font-black theme-font  ">
+                  {stringCaps(category.name)}
+                </span>
+                <span className="float-right mr-3 text-muted">
+                  <AiOutlineArrowRight className="catIcon" />
+                </span>
+                <hr className="bg-black" />
+              </Link>
+            </div>
+
+          ))
+        }
+      </div>
+      <div className="pt-3 d-md-block d-none">
+        {
+          store?.projectCategories?.data?.data?.map((category) => (
+            <div className="categoryLink">
+              <Link to="#" onClick={() => filterCategories(category)} className="py-2" key={category.id}>
+                <span className="font-22 font-black theme-font  ">
+                  {stringCaps(category.name)}
+                </span>
+                <span className="float-right mr-3 text-muted">
+                  <AiOutlineArrowRight className="catIcon" />
+                </span>
+                <hr className="bg-black" />
+              </Link>
+            </div>
+
+          ))
+        }
+      </div>
+    </div>
+  );
+
+  const projectTemps = (
+    <div className="row">
+      {
+        store?.searchProjects?.data?.data?.items?.map(
+          (item, key) => (
+            <div key={item.id} className="col-md-6 col-lg-4 mb-4">
+              <div className="">
+                <ProjectInfo
+                  styled
+                  project={item}
+                />
+              </div>
+            </div>
+          )
+        )
+      }
+    </div>
+  );
+
   return (
     <div className="">
       <div className="">
         <div className="">
           <div className="content">
             <div className="w-100 row  m-t-40">
-              <div className="col-md-3 my-4">
-                {
-                  store?.projectCategories?.status === 'pending'
-                  && <Loader />
-                }
-                {
-                  store?.projectCategories?.status === 'success'
-                  && (
-                    <div className="card-containe bg-wema-light projects mt-5 py-4 pl-4">
-                      <p className="bold font-22">
-                        Explore Categories
-                      </p>
-                      <div className="pt-3">
-                        {
-                          store?.projectCategories?.data?.data?.map((category) => (
-                            <div className="categoryLink">
-                              <Link to="#" onClick={() => filterCategories(category)} className="py-2" key={category.id}>
-                                <span className="font-22 font-black theme-font  ">
-                                  {stringCaps(category.name)}
-                                </span>
-                                <span className="float-right mr-3 text-muted">
-                                  <AiOutlineArrowRight className="catIcon" />
-                                </span>
-                                <hr className="bg-black" />
-                              </Link>
-                            </div>
-
-                          ))
-                        }
+              <div className="col-md-3 my-md-4">
+                <PageTemp
+                  view={catsTemp}
+                  status={store?.projectCategories?.status}
+                  error={
+                    (
+                      <div className="card-container bg-wema-light text-center projects mt-md-5 py-md-4 pl-4">
+                        <IoSadOutline />
+                        <p className="bold font-22 text-warning">
+                          Failed To Load Categories
+                        </p>
                       </div>
-                    </div>
-                  )
-
-                }
-                {
-                  store?.projectCategories?.status === 'failed'
-                  && (
-                    <div className="card-containe bg-wema-light text-center projects mt-5 py-4 pl-4">
-                      <IoSadOutline />
-                      <p className="bold font-22 text-warning">
-                        Failed To Load Categories
-                      </p>
-                    </div>
-                  )
-                }
+                    )
+                  }
+                />
               </div>
-              <div className="my-4 col-md-9">
-                <div className="col-12  projects text-left mt-5 ">
+              <div className="my-md-4 col-md-9">
+                <div className="col-12  projects text-left mt-md-5 mt-2 ">
                   <div className="row justify-content-between pr-3">
-                    <p className="bold font-22">
+                    <p className="bold font-22 mb-2 mb-md-0">
                       {sentenceCaps(sortBy) || 'All Categories'}
                     </p>
                     <div>
                       <div className=" d-flex">
                         <div className="pr-2 pt-2">
-                          <p className="theme-font bold">Sort By</p>
+                          <p className="theme-font font-bold">Sort By</p>
                         </div>
                         <div className="">
                           <SelectInput
@@ -148,35 +197,19 @@ const Explore = () => {
                       </div>
                     </div>
                   </div>
-                  <div className="row">
-                    {
-                      store?.searchProjects?.status === 'pending'
-                        && <div className="col-12"><Loader /></div>
-                    }
-                    {
-                      store?.searchProjects?.status === 'success'
-                      && store?.searchProjects?.data?.data?.items?.map(
-                        (item, key) => (
-                          <div key={item.id} className="col-md-4 mb-4">
-                            <div className="">
-                              <ProjectInfo
-                                styled
-                                project={item}
-                              />
-                            </div>
-                          </div>
-                        )
-                      )
-                    }
-                    {
-                      store?.searchProjects?.status === 'failed'
-                      && (
+                  <PageTemp
+                    view={projectTemps}
+                    status={store?.searchProjects?.status}
+                    noData={store?.searchProjects?.data?.data?.items?.length === 0}
+                    error={
+                      (
                         <div className="card-body">
-                          We could not load the requested data at this time.
+                          We could not fetch the filter results.
+                          you can try again.
                         </div>
                       )
                     }
-                  </div>
+                  />
 
                 </div>
               </div>

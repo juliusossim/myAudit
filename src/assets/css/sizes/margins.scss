@@ -33,7 +33,13 @@
   margin-top: -20px!important;
 }
 .m-t-40 {
-  margin-top: 40px!important;
+  margin-top: 20px!important;
+  @include lg {
+    margin-top: 40px!important;
+  }
+  //@include xl {
+  //  margin-top: 40px!important;
+  //}
 }
 .m-t-50 {
   margin-top: 50px;
@@ -57,7 +63,13 @@
   margin-bottom: 50px!important;
 }
 .login-form-margin {
-  padding: 20px 70px !important;
+  padding: 0;
+  @include md {
+    padding: 10px 50px !important;
+  }
+  @include lg {
+    padding: 20px 70px !important;
+  }
 }
 .neg-m-b-50 {
   margin-bottom: -50px;

@@ -56,7 +56,7 @@ export const formBuilderProjectsStartProps = (
         excuseSkeleton,
         value: formData?.summary || '',
         validations: {
-          maxLength: 200
+          maxLength: 100
         },
         error: errors?.summary,
         onBlur: handleBlur,
@@ -130,6 +130,7 @@ export const formBuilderProjectsStartProps = (
         className: 'w-100 m-b-20',
         name: 'media',
         label: 'Project Media (images and videos)',
+        accepted: 'jpeg, jpg, mp4, ogg, etc',
         text: 'Add Media',
         skeleton,
         excuseSkeleton,

@@ -13,15 +13,11 @@ import {
 } from 'react-icons/all';
 import IconButton from '@material-ui/core/IconButton';
 import SimpleSnackbar from '../../microComponents/snackBar';
-import { stringCaps } from '../../../utilities/stringOperations';
+import { copyText, stringCaps } from '../../../utilities/stringOperations';
 
 const ShareTemp = ({ project, handleClose }) => {
   const [url] = useState(`${process.env.REACT_APP_BASE_URL}project/details/${project.id}/1`);
   const [open, setOpen] = useState(false);
-  const copyText = () => {
-    navigator.clipboard.writeText(url);
-    setOpen(true);
-  };
   return (
     <div>
       <div>
@@ -40,7 +36,7 @@ const ShareTemp = ({ project, handleClose }) => {
 
           <div className="border-wema p-2 mr-2">{url}</div>
           <div className="">
-            <button type="button" className="btn" onClick={copyText}>Copy</button>
+            <button type="button" className="btn" onClick={() => copyText({ str: url, callback: () => setOpen(true) })}>Copy</button>
           </div>
         </div>
       </div>

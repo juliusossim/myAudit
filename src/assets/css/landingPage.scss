@@ -13,9 +13,10 @@
   .content1 {
     position: absolute;
     left: 14vw !important;
-    top: 35vh;
-    width: 60vw;
+    top: 30vh;
+    width: 40vw;
     height: 8.7vh;
+    @include sm
   }
 
 

@@ -124,77 +124,74 @@ const Select2 = (
       )));
 
   return (
-    <div className={`${error?.length > 0 ? `${className} col-12 ` : `${className}`} form-group`}>
-      <div className="">
-        <div
-          onMouseEnter={() => {
-            setShow(true);
-            setEdit(true);
-          }}
-          onMouseLeave={() => setShow(false)}
-        >
-          <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
-            {label}
-          </label>
-          {
-            multi !== undefined
-              ? (
-                <div className="border-farm border-radius-5 px-1 multi-empty">
-                  {
-                    selectedOptions.length < 1
-                      ? `select ${label}`
-                      : selectedOptions.map((opt) => <Chip key={opt} text={opt} del={deselect} />)
-                  }
-                </div>
-              )
-              : (
-                <TextInput
-                  name={name}
-                  value={selectedOption}
-                  readOnly
-                  onChange={() => value}
-                />
-              )
-          }
-
-          <Card className={show ? 'ontop' : 'd-none'}>
-            <div className="card-body">
-              <div
-                className={error?.length > 0 ? 'error-field' : 'center-center'}
-                id={name}
-                onChange={onChange}
-                onBlur={((e) => typeof onBlur === 'function'
-                  && onBlur(e, validations))}
-              >
-                <div className="mb-3">
-                  <input type="search" placeholder={selectedOption || `search ${label} here...`} value={searchTerm} onChange={handleChange} />
-                </div>
-                <div className="select-2 text-left col-12">
-
-                  {optionsProp}
-
-                </div>
-              </div>
+    <div
+      className={`${error?.length > 0 ? `${className} col-12 ` : `${className}`} form-group`}
+      onMouseEnter={() => {
+        setShow(true);
+        setEdit(true);
+      }}
+      onMouseLeave={() => setShow(false)}
+    >
+      <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
+        {label}
+      </label>
+      {
+        multi !== undefined
+          ? (
+            <div className="border-radius-5 px-1 multi-empty w-100">
+              {
+                selectedOptions.length < 1
+                  ? `select ${label}`
+                  : selectedOptions.map((opt) => <Chip key={opt} text={opt} del={deselect} />)
+              }
             </div>
+          )
+          : (
+            <TextInput
+              name={name}
+              value={selectedOption}
+              readOnly
+              onChange={() => value}
+            />
+          )
+      }
 
-          </Card>
-          {
-            error?.length > 0
-              ? (
-                <ul className="error-msg">
-                  {
-                    error.map(
-                      (err) => <li key={err}>{err}</li>
-                    )
-                  }
-                </ul>
-              )
-              : null
-          }
+      <Card className={show ? 'ontop' : 'd-none'}>
+        <div className="card-body">
+          <div
+            className={error?.length > 0 ? 'error-field' : 'center-center'}
+            id={name}
+            onChange={onChange}
+            onBlur={((e) => typeof onBlur === 'function'
+              && onBlur(e, validations))}
+          >
+            <div className="mb-3">
+              <input type="search" placeholder={selectedOption || `search ${label} here...`} value={searchTerm} onChange={handleChange} />
+            </div>
+            <div className="select-2 text-left col-12">
+
+              {optionsProp}
+
+            </div>
+          </div>
         </div>
 
-      </div>
+      </Card>
+      {
+        error?.length > 0
+          ? (
+            <ul className="error-msg">
+              {
+                error.map(
+                  (err) => <li key={err}>{err}</li>
+                )
+              }
+            </ul>
+          )
+          : null
+      }
     </div>
+
   );
 };
 export default Select2;

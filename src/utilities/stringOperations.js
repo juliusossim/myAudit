@@ -3,7 +3,7 @@ import 'pnotify/dist/PNotifyBrightTheme.css';
 import _ from 'lodash';
 
 /**
- *
+ *converts slug to string
  * @param slug the slug to convert to normal string
  * @param dash the slug pattern
  * @returns {*} the converted normal string
@@ -80,6 +80,39 @@ export const percentCalculator = ({
   return value;
 };
 
+/**
+ *  converts locale string to number
+ * @param {string} str :
+ * @returns {number} || 0.
+ */
+export const localStringToNumber = (str) => {
+  if (stringDoesNotExist(str)) {
+    return notifier({
+      type: 'error',
+      title: 'Not supported',
+      text: 'not a valid string'
+    });
+  }
+  return parseFloat(str.replace(/\D/g, ''));
+};
+
+/**
+ *  converts locale string to number
+ * @param {string} str :
+ * @param {function} callback :
+ * @returns {number} || 0.
+ */
+export const copyText = ({ str, callback }) => {
+  if (stringDoesNotExist(str)) {
+    return notifier({
+      type: 'error',
+      title: 'Not Copied',
+      text: 'not a valid string'
+    });
+  }
+  navigator.clipboard.writeText(str);
+  return callback();
+};
 export const stringDoesNotExist = (str) => (typeof str !== 'string' || str?.length === 0 || /^\s*$/.test(str) || !str?.trim());
 export const notifier = ({
   type, title, text, stack

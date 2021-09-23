@@ -2,14 +2,14 @@ import React from 'react';
 import Loader from '../microComponents/loader';
 
 const PageTemp = ({
-  status, view, error, noData, initial
+  status, view, error, noData, initial, isPending
 }) => (
   <div>
     {
       status === 'initial' && initial
     }
     {
-      status === 'pending' && <div className="min-w-300-w"><Loader /></div>
+      (status === 'pending' || isPending) && <div className="min-w-300-w"><Loader /></div>
     }
     {
       status === 'failed' && (

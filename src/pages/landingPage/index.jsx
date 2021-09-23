@@ -122,7 +122,7 @@ const GeneralPage = () => {
         {/* <LazyImage src={firstImage} alt="make a difference" /> */}
         <div className="content1">
           <p className="small1">
-            Wemabank Crowdfunding
+            Wema Bank Crowdfunding
           </p>
           <div className="hero">
             Fundraising for projects and causes that
@@ -132,7 +132,7 @@ const GeneralPage = () => {
           <small className="small2">
             Raise funds with ease and securely. get started now...
           </small>
-          <div>
+          <div className="mb-sm-3">
             <Link to="/create-project" className="btn btn-small hover-wema">
               Start a Project Today
             </Link>
@@ -141,10 +141,10 @@ const GeneralPage = () => {
       </div>
       <div className="row bg-light">
         <div className="content">
-          <div className="w-100 margin-center m-t-40 ">
-            <div className="center-text my-4 ">
+          <div className="w-100 margin-center ">
+            <div className="center-text my-2">
               <h3 className="howItWorks text-center">
-                How It works with Wemabank Crowdfunding
+                How It works with Wema Bank Crowdfunding
               </h3>
               <div className="pl-2 ">
                 <img src={howItWorks} alt="how It works" />
@@ -209,7 +209,7 @@ const GeneralPage = () => {
                 Browse Fundraisers Categories
               </div>
               <div className="row ">
-                <div className="col-md-8 offset-md-2 ">
+                <div className="col-md-8 offset-md-2 text-center ">
                   {
                     store?.project?.projectCategories?.data?.data?.map(
                       (category) => (

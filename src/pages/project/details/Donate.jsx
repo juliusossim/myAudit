@@ -20,11 +20,17 @@ import Kat from '../../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg';
 import { apiOptions } from '../../../services/fetch';
 import FormBuilder from '../../../components/form/builders/form';
 import donationProps from './constants/donationProps';
-import { camelToString, notifier, stringDoesNotExist } from '../../../utilities/stringOperations';
+import {
+  camelToString, localStringToNumber, notifier, stringDoesNotExist
+} from '../../../utilities/stringOperations';
 import { validateField } from '../../../utilities/validation';
 import Poster1 from '../../../components/temps/projectTemps/poster1';
 import ProjectProgress from '../../../components/temps/projectTemps/projectProgress';
 import { currentUser } from '../../../utilities/auth';
+import BackdropModal from '../../../components/microComponents/backdropModal';
+import ManualTemp from '../../../components/temps/modalTemps/manualPaymentTemp';
+import Loader from '../../../components/microComponents/loader';
+import PageTemp from '../../../components/temps/PageTemp';
 
 /**
  *
@@ -44,7 +50,8 @@ const Donate = () => {
     ...project, country: 1, shareMyInfo: true, anonymous: false
   });
   const [errors, setErrors] = useState({});
-  const [user, setUser] = useState({});
+  const [formData, setFormData] = useState({});
+  const [init, setInit] = useState(false);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
 
@@ -54,11 +61,26 @@ const Donate = () => {
     }
   }, []);
   useEffect(() => {
+    if (store?.paymentComplete?.status === 'success') {
+      setOpen(false);
+      notifier({
+        text: 'Grateful',
+        title: 'Thanks for supporting a good course',
+        type: 'error'
+      });
+    }
+  }, [store?.paymentComplete?.status]);
+  // useEffect(() => init && initiateDonation(item), [init]);
+  useEffect(() => {
     if (!_.isEmpty(store.projectDetails?.data?.data)) {
       currentUser.then((result) => {
         if (!_.isEmpty(result)) {
           setItem({
-            ...store.projectDetails?.data?.data, phone_number: result?.phone_number, email: result?.email, fullName: `${result?.first_name} ${result?.middle_name} ${result?.last_name}`
+            ...item,
+            ...store.projectDetails?.data?.data,
+            phone_number: result?.phone_number,
+            email: result?.email,
+            fullName: `${result?.first_name} ${result?.middle_name} ${result?.last_name}`
           });
         } else {
           setItem({
@@ -69,6 +91,20 @@ const Donate = () => {
       });
     }
   }, [store.projectDetails?.status]);
+  useEffect(() => {
+    if (store.paymentInitiate?.status === 'success') {
+      setFormData(store.paymentInitiate?.data?.data);
+      setOpen(true);
+      setInit(false);
+    }
+    if (store.paymentInitiate?.status === 'failed') {
+      notifier({
+        text: 'Failed to initiate transaction',
+        title: 'Transaction Failed',
+        type: 'error'
+      });
+    }
+  }, [store.paymentInitiate?.status]);
 
   const formatDonation = (amount) => {
     let formattedAmount = amount;
@@ -96,15 +132,15 @@ const Donate = () => {
     }
     return result;
   };
-  const customerName = () => splitFullName(item?.fullName);
+  const customerName = (fullName) => splitFullName(fullName);
   // eslint-disable-next-line no-undef
   const popup = () => window.Alatpay !== undefined && Alatpay?.setup({
     // key: '0e51c3b4-43fa-4f61-246c-08d9714d2cfe',
     key: item?.businessId,
     email: item?.email,
     phone: item?.phone_number,
-    firstName: customerName()?.firstName,
-    lastName: customerName()?.lastName,
+    firstName: customerName(item?.fullName)?.firstName,
+    lastName: customerName(item?.fullName)?.lastName,
     currency: 'NGN',
     amount: formatDonation(item?.donation),
 
@@ -157,6 +193,46 @@ const Donate = () => {
       }
     ));
   }, []);
+  const initiateDonation = useCallback((data) => {
+    const donationPayload = {
+      customerFirstName: splitFullName(data?.fullName)?.firstName,
+      customerLastName: splitFullName(data?.fullName)?.lastName,
+      customerEmail: data?.email,
+      customerPhone: data?.phone_number,
+      projectId: id,
+      amount: localStringToNumber(data?.donation),
+      anonymous: data?.anonymous,
+      shareMyInfo: data?.shareMyInfo,
+      comment: data?.comment
+    };
+    dispatch(projectAction(
+      {
+        action: 'PAYMENT_INITIATE',
+        routeOptions: apiOptions({
+          method: 'post',
+          body: donationPayload,
+          endpoint: 'PAYMENT_INITIATE'
+        })
+      }
+    ));
+  }, []);
+  const completeDonation = useCallback((paid) => {
+    !paid && setOpen(false);
+    dispatch(projectAction(
+      {
+        action: 'PAYMENT_COMPLETE',
+        routeOptions: apiOptions({
+          method: 'post',
+          body: {
+            transactionReference: formData.paymentReference,
+            paymentMade: paid
+          },
+          endpoint: 'PAYMENT_COMPLETE'
+        })
+      }
+    ));
+  }, []);
+
   const handleChange = (e) => {
     const {
       name, value
@@ -180,6 +256,8 @@ const Donate = () => {
     });
   };
 
+  // const initialTemp =
+
   const handleBlur = (e, validations) => {
     const { name, value } = e.target;
     const field = camelToString(name);
@@ -194,115 +272,137 @@ const Donate = () => {
       }
     );
   };
+  const handleClose = (paid) => {
+    completeDonation(paid);
+  };
   return (
     <div className="content">
       <div className="w-100 margin-center m-t-40">
-        <div className="p-20 bg-light">
-          <div>
-            <p>
-              <small>
-                You are donating to
-              </small>
-            </p>
-            <p className="h4 bold">
-              {item?.title}
-            </p>
-          </div>
-          <div className="row">
-            <div className="col-md-7 ">
-              <div className="bg-white">
-                <div className="border p-4 mb-2">
-                  <p>
-                    <small className="bold">
-                      Please Enter Your Donation
-                    </small>
-                  </p>
-                  <div>
-                    <FormBuilder
-                      formItems={
-                        donationProps({
-                          formData: item,
-                          handleBlur,
-                          handleChange,
-                          errors
-                        }).amount
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="border p-4 mb-2">
-                  <p>
-                    <small className="bold">
-                      Personal Details
-                    </small>
-                  </p>
-                  <div className="row ">
-                    <FormBuilder
-                      formItems={
-                        donationProps({
-                          formData: item,
-                          handleBlur,
-                          handleChange,
-                          errors
-                        }).info
-                      }
-                    />
-                  </div>
-                  <div className="d-flex">
-                    <div className="ml-2">
-                      <input className="text-wema" type="checkbox" name="anonymous" checked={item.anonymous} onChange={handleChecked} />
-                      {' '}
-                      <span className="terms">
-                        Donate as anonymous
-                      </span>
-                    </div>
-                    <div className="pl-3">
-                      <input className="text-wema" type="checkbox" name="shareMyInfo" checked={item.shareMyInfo} onChange={handleChecked} />
-                      {' '}
-                      <span className="terms">
-                        Share My Email and Phone Number with Poster of this Project
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className="mt-2">
-                <input className="text-wema border-wema" type="checkbox" name="terms" checked={item.terms} onChange={handleChecked} />
-                {' '}
-                <span className="terms">
-                  <a href="" className="text-wema mr-1">
-                    I accept
-                  </a>
-                  the terms and conditions
-                  of Wemabank Crowdfunding
-                </span>
-              </div>
-              <div className="d-flex mt-3">
-                <button type="button" className="btn btn-sm w-25" onClick={() => popup().show()} disabled={!item?.terms} title={item?.terms ? '' : 'Please Accept terms and conditions first!'}>
-                  Donate
-                </button>
-                <button type="button" className="btn-plain btn-sm border-wema ml-2 w-25" onClick={() => goBack()}>
-                  Back
-                </button>
-              </div>
-            </div>
-            <div className="col-md-5">
+        <PageTemp
+          status={store.projectDetails?.status}
+          view={(
+            <div className="p-20 bg-light">
               <div>
-                <CardMedia
-                  className="h-30h"
-                  image={_.head(item?.media)?.uri || Kat}
-                  title={project?.title}
+                <p>
+                  <small>
+                    You are donating to
+                  </small>
+                </p>
+                <p className="h4 bold">
+                  {item?.title}
+                </p>
+              </div>
+              <div className="row">
+                <div className="col-md-7 ">
+                  <div className="bg-white">
+                    <div className="border p-4 mb-2">
+                      <p>
+                        <small className="bold">
+                          Please Enter Your Donation
+                        </small>
+                      </p>
+                      <div>
+                        <FormBuilder
+                          formItems={
+                            donationProps({
+                              formData: item,
+                              handleBlur,
+                              handleChange,
+                              errors
+                            }).amount
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="border p-4 mb-2">
+                      <p>
+                        <small className="bold">
+                          Personal Details
+                        </small>
+                      </p>
+                      <div className="row ">
+                        <FormBuilder
+                          formItems={
+                            donationProps({
+                              formData: item,
+                              handleBlur,
+                              handleChange,
+                              errors
+                            }).info
+                          }
+                        />
+                      </div>
+                      <div className="d-md-flex">
+                        <div className="ml-md-2">
+                          <input className="text-wema" type="checkbox" value={item.anonymous} name="anonymous" checked={item.anonymous} onChange={handleChecked} />
+                          {' '}
+                          <span className="terms">
+                            Donate as anonymous
+                          </span>
+                        </div>
+                        <div className="pl-md-3 pt-2 pt-md-0">
+                          <input className="text-wema" type="checkbox" name="shareMyInfo" checked={item.shareMyInfo} onChange={handleChecked} />
+                          {' '}
+                          <span className="terms">
+                            Share My Email and Phone Number with Poster of this Project
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <input className="text-wema border-wema" type="checkbox" name="terms" checked={item.terms} onChange={handleChecked} />
+                    {' '}
+                    <span className="terms">
+                      <a href="" className="text-wema mr-1">
+                        I accept
+                      </a>
+                      the terms and conditions
+                      of Wemabank Crowdfunding
+                    </span>
+                  </div>
+                  <div className="d-flex mt-3">
+                    <button type="button" className="btn btn-sm w-25" onClick={() => initiateDonation(item)} disabled={!item?.terms} title={item?.terms ? '' : 'Please Accept terms and conditions first!'}>
+                      Donate
+                    </button>
+                    <button type="button" className="btn-plain btn-sm border-wema ml-2 w-25" onClick={() => goBack()}>
+                      Back
+                    </button>
+                  </div>
+                  <div>
+                    {store?.paymentInitiate?.status === 'pending' && <Loader />}
+                  </div>
+                </div>
+                <div className="col-md-5">
+                  <div>
+                    <CardMedia
+                      className="h-30h"
+                      image={_.head(item?.media)?.uri || Kat}
+                      title={project?.title}
+                    />
+                  </div>
+                  <div className="mt-3 border p-3">
+                    <ProjectProgress project={item} />
+                  </div>
+                  <div className="mt-3 border p-3">
+                    <Poster1 project={item} />
+                  </div>
+                </div>
+                <BackdropModal
+                  handleClose={handleClose}
+                  content={(
+                    <ManualTemp
+                      data={store?.paymentInitiate?.data?.data}
+                      status={store?.paymentComplete?.status}
+                      handleCancel={handleClose}
+                    />
+                  )}
+                  open={open}
                 />
               </div>
-              <div className="mt-3 border p-3">
-                <ProjectProgress project={item} />
-              </div>
-              <div className="mt-3 border p-3">
-                <Poster1 project={item} />
-              </div>
             </div>
-          </div>
-        </div>
+          )}
+        />
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ProjectProgress = ({ project }) => (
-  <div className="progress mt-1 mb-3" title={`#${(project?.donationTarget - project?.amountRaised).toLocaleString()} to hit target`}>
+  <div className="progress mt-1 mb-3" style={{ height: '8px' }} title={`#${(project?.donationTarget - project?.amountRaised).toLocaleString()} to hit target`}>
     <div
       className="progress-bar bg-wema"
       role="progressbar"

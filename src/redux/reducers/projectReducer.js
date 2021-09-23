@@ -89,6 +89,14 @@ const initialState = {
   userTransactions: {
     data: {},
     status: 'initial'
+  },
+  paymentInitiate: {
+    data: {},
+    status: 'initial'
+  },
+  paymentComplete: {
+    data: {},
+    status: 'initial'
   }
 };
 
@@ -740,6 +748,62 @@ const projectReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       userTransactions: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.PAYMENT_INITIATE_PENDING:
+    return {
+      ...state,
+      paymentInitiate: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.PAYMENT_INITIATE_SUCCESS:
+    return {
+      ...state,
+      paymentInitiate: {
+        ...state.paymentInitiate,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.PAYMENT_INITIATE_FAILURE:
+    return {
+      ...state,
+      paymentInitiate: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.PAYMENT_COMPLETE_PENDING:
+    return {
+      ...state,
+      paymentComplete: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.PAYMENT_COMPLETE_SUCCESS:
+    return {
+      ...state,
+      paymentComplete: {
+        ...state.paymentComplete,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.PAYMENT_COMPLETE_FAILURE:
+    return {
+      ...state,
+      paymentComplete: {
         data: error || {},
         status: 'failed'
       }

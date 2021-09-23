@@ -22,6 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
   title: {
     display: 'none',
+    marginRight: theme.spacing(10),
     [theme.breakpoints.up('sm')]: {
       display: 'block'
     }
@@ -188,19 +189,19 @@ const SearchAppBar = ({
           <Typography className={classes.title} variant="h6" noWrap>
             {title}
           </Typography>
-          <div className={classes.search}>
-            <div className={classes.searchIcon}>
-              <MdSearch />
-            </div>
-            <InputBase
-              placeholder="Search…"
-              classes={{
-                root: classes.inputRoot,
-                input: classes.inputInput
-              }}
-              inputProps={{ 'aria-label': 'search' }}
-            />
-          </div>
+          {/* <div className={classes.search}> */}
+          {/*  <div className={classes.searchIcon}> */}
+          {/*    <MdSearch /> */}
+          {/*  </div> */}
+          {/*  <InputBase */}
+          {/*    placeholder="Search…" */}
+          {/*    classes={{ */}
+          {/*      root: classes.inputRoot, */}
+          {/*      input: classes.inputInput */}
+          {/*    }} */}
+          {/*    inputProps={{ 'aria-label': 'search' }} */}
+          {/*  /> */}
+          {/* </div> */}
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
             {
@@ -215,7 +216,7 @@ const SearchAppBar = ({
                         {item.icon}
                       </Badge>
                     </IconButton>
-                    {item.name}
+                    {!item?.mobileName && item.name}
                   </MenuItem>
                 </Link>
               ))

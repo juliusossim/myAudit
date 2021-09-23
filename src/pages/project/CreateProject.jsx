@@ -104,7 +104,7 @@ const CreateProject = () => {
       </div>
       <div className="max-w-600 w-600 margin-center m-t-40">
         <div className="login-form-container p-20 bg-light">
-          <h3 className="bold text-center text-dark border-bottom border-wema border-right-0 border-top-0  ">
+          <h3 className="font-bold text-center text-dark border-bottom border-top-0  ">
             { tab === undefined
               ? formData.title || 'Start a project'
               : 'Edit Project'}
@@ -112,7 +112,7 @@ const CreateProject = () => {
           {
             accordionTab !== 4 && tab === undefined && (
               <div className="row">
-                <div className={`col-md-4 accordion-div  ${accordionTab === 1 && 'is-focus'}`}>
+                <div className={`col-4 accordion-div  ${accordionTab === 1 && 'is-focus'}`}>
                   <IconButton type="button" onClick={() => setAccordionTab(1)}>
                     <div className={`radius50 w-2e h-2e center-items ${accordionTab === 1 ? 'border-wema' : 'faint-border'}`}>
 
@@ -126,7 +126,7 @@ const CreateProject = () => {
                     </div>
                   </IconButton>
                 </div>
-                <div className={`col-md-4 accordion-div  ${accordionTab === 2 && 'is-focus'}`}>
+                <div className={`col-4 accordion-div  ${accordionTab === 2 && 'is-focus'}`}>
                   <IconButton
                     disabled={!(formData.summary?.length > 0
                       && formData.donationTarget)}
@@ -141,20 +141,6 @@ const CreateProject = () => {
                         }
                       >
                         2
-                      </Avatar>
-                    </div>
-                  </IconButton>
-                </div>
-                <div className={`col-md-4 accordion-div  ${accordionTab === 3 && 'is-focus'}`}>
-                  <IconButton type="button" onClick={() => setAccordionTab(3)}>
-                    <div className={`radius50 w-2e h-2e center-items ${accordionTab === 3 ? 'border-wema' : 'faint-border d-none'}`}>
-
-                      <Avatar
-                        className={
-                          accordionTab === 3 ? 'styled-mui' : 'text-muted'
-                        }
-                      >
-                        3
                       </Avatar>
                     </div>
                   </IconButton>

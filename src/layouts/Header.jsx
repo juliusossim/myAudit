@@ -4,7 +4,7 @@ import {
   IoIosCreate,
   RiLoginCircleLine,
   RiLogoutCircleLine,
-  RiNotification4Line, SiGnuprivacyguard, IoIosArrowDown
+  RiNotification4Line, SiGnuprivacyguard, IoIosArrowDown, MdExplore
 } from 'react-icons/all';
 import Avatar from '@material-ui/core/Avatar';
 import { useDispatch, useSelector } from 'react-redux';
@@ -34,6 +34,11 @@ const Header = () => {
   const open = Boolean(anchorEl);
 
   const [menu, setMenu] = useState([
+    {
+      name: 'Explore',
+      icon: <MdExplore />,
+      to: '/explore'
+    },
     {
       name: 'sign in',
       icon: <RiLoginCircleLine />,
@@ -87,10 +92,12 @@ const Header = () => {
         {
           count: store?.data?.data?.length,
           icon: <RiNotification4Line />,
+          name: 'Notifications',
+          mobileName: true,
           to: '/notifications'
         },
         {
-          icon: <IoIosCreate />,
+          // icon: <IoIosCreate />,
           name: <button type="button" className="btn">create project</button>,
           to: '/create-project'
         }
@@ -137,15 +144,16 @@ const Header = () => {
       <SearchAppBar
         className="position-fixed"
         logo={CrowdLogo}
-        popMenu={(
-          <Link className="mt-3" onClick={handleClick} to="#">
-            {selected.name || 'Explore'}
-            <IoIosArrowDown className="pt-2" />
-          </Link>
-        )}
+        // popMenu={(
+        //   <Link className="mt-3" onClick={handleClick} to="#">
+        //     {selected.name || 'Explore'}
+        //     <IoIosArrowDown className="pt-2" />
+        //   </Link>
+        // )}
         dp={user?.loggedIn && (
-          <Link to="/me" className="mt-2">
+          <Link to="/me" className="mt-2 d-flex">
             <Avatar src={dp || User} alt="profile logo" />
+            <div className="text-center pl-1 mt-2">{user?.details?.first_name}</div>
           </Link>
         )}
         clss="px-14vw"
