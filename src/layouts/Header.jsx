@@ -85,6 +85,11 @@ const Header = () => {
     if (store?.notifications?.status === 'success') {
       setMenu([
         {
+          name: 'Explore',
+          icon: <MdExplore />,
+          to: '/explore'
+        },
+        {
           name: 'sign out',
           icon: <RiLogoutCircleLine />,
           action: () => logout('/', false)

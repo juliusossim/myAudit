@@ -47,7 +47,7 @@ const Donate = () => {
 
   /* state */
   const [item, setItem] = useState({
-    ...project, country: 1, shareMyInfo: true, anonymous: false
+    ...project, country: 1, shareMyInfo: true, anonymous: false, isManual: false
   });
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({});
@@ -63,11 +63,13 @@ const Donate = () => {
   useEffect(() => {
     if (store?.paymentComplete?.status === 'success') {
       setOpen(false);
-      notifier({
-        text: 'Grateful',
-        title: 'Thanks for supporting a good course',
-        type: 'error'
-      });
+      if (item?.paid) {
+        notifier({
+          text: 'Thanks for supporting a good course',
+          title: 'Grateful',
+          type: 'success'
+        });
+      }
     }
   }, [store?.paymentComplete?.status]);
   // useEffect(() => init && initiateDonation(item), [init]);
@@ -93,9 +95,15 @@ const Donate = () => {
   }, [store.projectDetails?.status]);
   useEffect(() => {
     if (store.paymentInitiate?.status === 'success') {
+      console.log(item.isManual);
       setFormData(store.paymentInitiate?.data?.data);
-      setOpen(true);
-      setInit(false);
+      if (item?.isManual) {
+        setOpen(true);
+        setInit(false);
+      } else {
+        popup()?.show();
+      }
+      setItem({ ...item, isManual: false });
     }
     if (store.paymentInitiate?.status === 'failed') {
       notifier({
@@ -132,6 +140,10 @@ const Donate = () => {
     }
     return result;
   };
+  const handleManuel = () => {
+    setItem({ ...item, isManual: true });
+    initiateDonation({ ...item, isManual: true });
+  };
   const customerName = (fullName) => splitFullName(fullName);
   // eslint-disable-next-line no-undef
   const popup = () => window.Alatpay !== undefined && Alatpay?.setup({
@@ -143,6 +155,7 @@ const Donate = () => {
     lastName: customerName(item?.fullName)?.lastName,
     currency: 'NGN',
     amount: formatDonation(item?.donation),
+    transactionRef: formData?.transactionReference,
 
     onTransaction(response) {
       console.log(response);
@@ -199,6 +212,7 @@ const Donate = () => {
       customerLastName: splitFullName(data?.fullName)?.lastName,
       customerEmail: data?.email,
       customerPhone: data?.phone_number,
+      isManual: data?.isManual,
       projectId: id,
       amount: localStringToNumber(data?.donation),
       anonymous: data?.anonymous,
@@ -273,6 +287,7 @@ const Donate = () => {
     );
   };
   const handleClose = (paid) => {
+    setItem({ ...item, paid });
     completeDonation(paid);
   };
   return (
@@ -362,8 +377,11 @@ const Donate = () => {
                     </span>
                   </div>
                   <div className="d-flex mt-3">
-                    <button type="button" className="btn btn-sm w-25" onClick={() => initiateDonation(item)} disabled={!item?.terms} title={item?.terms ? '' : 'Please Accept terms and conditions first!'}>
+                    <button type="button" className="btn btn-sm w-25 mr-2" onClick={() => initiateDonation(item)} disabled={!item?.terms} title={item?.terms ? '' : 'Please Accept terms and conditions first!'}>
                       Donate
+                    </button>
+                    <button type="button" className="btn btn-sm w-25" onClick={handleManuel} disabled={!item?.terms} title={item?.terms ? '' : 'Please Accept terms and conditions first!'}>
+                      Check/Teller
                     </button>
                     <button type="button" className="btn-plain btn-sm border-wema ml-2 w-25" onClick={() => goBack()}>
                       Back
