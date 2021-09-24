@@ -377,11 +377,13 @@ const Donate = () => {
                     </span>
                   </div>
                   <div className="d-flex mt-3">
-                    <button type="button" className="btn btn-sm w-25 mr-2" onClick={() => initiateDonation(item)} disabled={!item?.terms} title={item?.terms ? '' : 'Please Accept terms and conditions first!'}>
-                      Donate
-                    </button>
+                    {/* <button type="button" className="btn btn-sm w-25 mr-2"
+                     onClick={() => initiateDonation(item)} disabled={!item?.terms}
+                      title={item?.terms ? '' : 'Please Accept terms and conditions first!'}> */}
+                    {/*  Donate */}
+                    {/* </button> */}
                     <button type="button" className="btn btn-sm w-25" onClick={handleManuel} disabled={!item?.terms} title={item?.terms ? '' : 'Please Accept terms and conditions first!'}>
-                      Check/Teller
+                      Donate
                     </button>
                     <button type="button" className="btn-plain btn-sm border-wema ml-2 w-25" onClick={() => goBack()}>
                       Back
