@@ -41,16 +41,23 @@
     box-shadow: 0px 2px 10px rgba(0,0,0,0.10);
   }
 }
-.social-btn-2{
-  min-width: 0!important;
-  background: none!important;
-  padding: 0!important;
+.social-btn-2 {
+  min-width: 0 !important;
+  background: none !important;
+  padding: 0 !important;
+
+  .social-icon {
+    transform: translateX(5px) translateY(2px);
+    padding-right: 0;
+    color: #FFF !important;
+  }
+
   &:hover {
-    box-shadow: 0px 10px 30px rgba(0,0,0,0.10);
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.10);
+
     .social-icon {
       transform: translateX(5px) translateY(2px);
       padding-right: 0;
-      color: #FFF;
     }
   }
 }
@@ -63,6 +70,9 @@
     background: radial-gradient( #03A9F4 25%, #f2d6f4 100%);
     .social-icon {
       color: white;
+    }
+    .social-icon-2 {
+      color: #03A9F4 !important;
     }
   }
 }
@@ -86,6 +96,9 @@
     .social-icon {
       color: white;
     }
+    .social-icon-2 {
+      background: #0077B7 !important;
+    }
   }
 }
 .facebook {
@@ -96,6 +109,9 @@
     background: radial-gradient(#4267B2 25%, #f2d6f4 100%);
     .social-icon {
       color: white;
+    }
+    .social-icon-2 {
+      background: #4267B2 !important;
     }
   }
 }
@@ -108,6 +124,9 @@
     .social-icon {
       color: white;
     }
+    .social-icon-2 {
+      background: linear-gradient(0deg, #E09B3D 0.29%, #C74C4D 29.97%, #C21975 59.65%, #7024C4 99.22%) !important;
+    }
   }
 }
 .whatsapp {
@@ -118,6 +137,9 @@
     background: radial-gradient(#4CAF50 25%, #f2d6f4 100%);
     .social-icon {
       color: white;
+    }
+    .social-icon-2 {
+      background: #4CAF50 !important;
     }
   }
 }

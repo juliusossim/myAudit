@@ -21,6 +21,8 @@ export const popularProjects = 'Projects/popularNGOsAndFundraisers';
 export const popularFundraisers = 'Projects/popularFundraisers';
 export const popularNGOs = 'Projects/popularNGOs';
 export const searchProject = 'Projects'; // several queries
+export const detailsSimilar = 'Projects'; // param = ${id}, afterParam = 'detailed'
+export const commentsDonors = 'Projects'; // param = ${id}, afterParam = 'comments'
 export const projectComments = 'Comments'; // several queries
 export const getComment = 'Comments'; // id
 export const patchComment = 'Comments'; // id

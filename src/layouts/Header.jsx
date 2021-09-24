@@ -8,17 +8,12 @@ import {
 } from 'react-icons/all';
 import Avatar from '@material-ui/core/Avatar';
 import { useDispatch, useSelector } from 'react-redux';
-import Badge from '@material-ui/core/Badge';
 import CrowdLogo from '../assets/images/crowd-funding-logo.png';
 import User from '../assets/images/User.svg';
-import Modal from '../components/microComponents/modal';
-import SearchInput from '../components/form/inputs/search';
 import { currentUser, logout } from '../utilities/auth';
 import { notifications } from '../redux/actions/profileActions';
 import SearchAppBar from '../components/ui/appBar';
-import Popup from '../components/microComponents/popup';
 import FadeMenu from '../components/microComponents/menu';
-import BackdropModal from '../components/microComponents/backdropModal';
 
 const Header = () => {
   const { pathname } = useLocation();

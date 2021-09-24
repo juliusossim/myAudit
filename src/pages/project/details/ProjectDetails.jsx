@@ -60,12 +60,12 @@ const ProjectDetails = (items) => {
   const projectDetails = useCallback((theId) => {
     dispatch(projectAction(
       {
-        action: 'PROJECT_DETAILS',
+        action: 'DETAILS_SIMILAR',
         routeOptions: apiOptions({
           method: 'get',
           param: theId,
-          endpoint: 'PROJECT_DETAILS',
-          afterParam: 'details'
+          endpoint: 'DETAILS_SIMILAR',
+          afterParam: 'detailed'
         })
       }
     ));
@@ -75,27 +75,14 @@ const ProjectDetails = (items) => {
     projectDetails(id);
   }, [id]);
   useEffect(() => {
-    retrieveSimilarProjects();
-  }, [project]);
-
-  useEffect(() => {
-    if (store.projectDetails?.status === 'success') {
-      setProject({ ...store.projectDetails?.data?.data });
-      setMedia(store.projectDetails?.data?.data?.media);
-      setActiveMedia(store.projectDetails?.data?.data?.media[0]);
-    }
-  }, [store.projectDetails?.status]);
-
-  useEffect(() => {
-    if (store.similarProjects?.status === 'success') {
-      setSimilar([...store.similarProjects?.data?.data]);
-    }
-  }, [store.similarProjects.status]);
-  useEffect(() => {
-    if (accordionTab === 2) {
+    if (store.detailsSimilar?.status === 'success') {
       projectComments();
+      setProject({ ...store.detailsSimilar?.data?.data?.project });
+      setSimilar({ ...store.detailsSimilar?.data?.data?.similar });
+      setMedia(store.detailsSimilar?.data?.data?.project?.media);
+      setActiveMedia(store.detailsSimilar?.data?.data?.project?.media[0]);
     }
-  }, [accordionTab]);
+  }, [store.detailsSimilar?.status]);
 
   const reOrderMedia = (nexActive) => {
     const temp = media.filter((item) => item !== nexActive);
@@ -104,11 +91,12 @@ const ProjectDetails = (items) => {
   };
   const projectComments = () => dispatch(projectAction(
     {
-      action: 'PROJECT_COMMENTS',
+      action: 'COMMENTS_DONORS',
       routeOptions: apiOptions({
         method: 'get',
-        pQuery: { projectId: project.id },
-        endpoint: 'PROJECT_COMMENTS'
+        param: project.id,
+        afterParam: 'comments',
+        endpoint: 'COMMENTS_DONORS'
       })
     }
   ));
@@ -251,22 +239,28 @@ const ProjectDetails = (items) => {
               <p className="bold">
                 Similar Projects
               </p>
-              <button type="button" className="text-wema float-right viewMoreBtn">
+              <button type="button" className={similar.length > 3 ? 'text-wema float-right viewMoreBtn' : 'd-none'}>
                 View More &gt;
               </button>
             </div>
             {
-              similar.map(
-                (tem, key) => (
-                  <div key={`project ${tem.id}`} className="col-md-4 mt-5">
-                    <ProjectInfo
-                      logo={false}
-                      styled={1}
-                      project={tem}
-                    />
+              !_.isEmpty(similar)
+                ? similar.map(
+                  (tem, key) => (
+                    <div key={`project ${tem.id}`} className="col-md-4 mt-5">
+                      <ProjectInfo
+                        logo={false}
+                        styled={1}
+                        project={tem}
+                      />
+                    </div>
+                  )
+                )
+                : (
+                  <div className="font-bold text-info">
+                    There are no similar projects to display.
                   </div>
                 )
-              )
             }
           </div>
         </div>

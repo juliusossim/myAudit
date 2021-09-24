@@ -26,7 +26,7 @@ const Profile = () => {
   const displayPages = (tab) => {
     switch (tab) {
     case 2:
-      return <MyAccount setCurrent={setCurrent} />;
+      return <Projects setCurrent={setCurrent} />;
     case 3:
       return <WithdrawalDetails setCurrent={setCurrent} />;
     case 4:
@@ -35,8 +35,7 @@ const Profile = () => {
 
       return <Notifications setCurrent={setCurrent} />;
     default:
-
-      return <Projects setCurrent={setCurrent} />;
+      return <MyAccount setCurrent={setCurrent} />;
     }
   };
 
@@ -71,8 +70,10 @@ const Profile = () => {
         (user?.status === 'Active' || user?.status === 1)
           && (
             <div className="content">
-              <CollapsedBreadcrumbs max={2} current={current} prevs={[{ name: 'My Account', to: '/me' }]} />
-              <div className="w-100 margin-center m-t-40">
+              <div className="row">
+                <CollapsedBreadcrumbs max={2} current={current} prevs={[{ name: 'My Account', to: '/me' }]} />
+              </div>
+              <div className="w-100 m-t-40">
                 {/* <div className="login-form-container p-20"> */}
                 <div className="d-flex justify-content-between">
                   <h3 className="bold text-dark">Overview</h3>
@@ -87,7 +88,7 @@ const Profile = () => {
                       className={` no-border bg-transparent  ${accordionTab === 1 ? ' text-wema' : 'text-muted'}`}
                       onClick={() => setAccordionTab(1)}
                     >
-                      Projects
+                      Profile
                     </button>
                   </div>
                   <div className={`p-md-2 accordion-div-2  ${accordionTab === 2 && 'is-focus'}`}>
@@ -96,7 +97,7 @@ const Profile = () => {
                       className={` no-border bg-transparent  ${accordionTab === 2 ? ' text-wema' : 'text-muted'}`}
                       onClick={() => setAccordionTab(2)}
                     >
-                      Profile
+                      Projects
                     </button>
                   </div>
                   <div className={`p-md-2 accordion-div-2  ${accordionTab === 3 && 'is-focus'}`}>

@@ -239,19 +239,6 @@ const Project2 = (
         </div>
       </div>
       <SimpleSnackbar message={message} open={openSnack} setOpen={setOpenSnack} />
-
-      <Modal
-        className={show ? 'max-w-400 right top' : 'max-w-400 right top off'}
-        content={(
-          <ModalTemplate
-            status={store?.project?.status}
-            data={store?.project?.data?.data}
-            handleClose={handleClose}
-            setShow={setShow}
-            text={text()}
-          />
-        )}
-      />
     </div>
   );
 };

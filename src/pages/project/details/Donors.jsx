@@ -32,7 +32,7 @@ const Comments = ({
     <div>
       {
         store?.data?.length > 0 && (
-          store?.data?.map((item) => !stringDoesNotExist(item.comment) && (
+          store?.data?.map((item) => item.amount !== undefined && (
             <div className="d-flex">
               <div>
                 <img src={CommentsLogo} alt="comments" />

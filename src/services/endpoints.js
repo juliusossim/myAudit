@@ -54,6 +54,8 @@ const paths = {
   PROJECT_COMMENTS: `${servers.project}${projectEndpoints.projectComments}`,
   GET_COMMENT: `${servers.project}${projectEndpoints.getComment}`,
   PATCH_COMMENT: `${servers.project}${projectEndpoints.patchComment}`,
+  DETAILS_SIMILAR: `${servers.project}${projectEndpoints.detailsSimilar}`,
+  COMMENTS_DONORS: `${servers.project}${projectEndpoints.commentsDonors}`,
 
   // payment
   STOP_PROJECT: `${servers.project}${paymentEndpoints.stopProject}`,

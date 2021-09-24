@@ -16,11 +16,35 @@ const Notifications = lazy(() => import('../pages/profile/Notifications'));
 const Profile = lazy(() => import('../pages/profile/Index'));
 const ProjectDetails = lazy(() => import('../pages/project/details/ProjectDetails'));
 const Donate = lazy(() => import('../pages/project/details/Donate'));
+const About = lazy(() => import('../pages/landingPage/About'));
+const HowItWorks = lazy(() => import('../pages/landingPage/HowItWorks'));
+const Terms = lazy(() => import('../pages/landingPage/Terms'));
+const Privacy = lazy(() => import('../pages/landingPage/Privacy'));
 
 const routes = [
   {
     path: '/home',
     component: LandingPage,
+    exact: true
+  },
+  {
+    path: '/about',
+    component: About,
+    exact: true
+  },
+  {
+    path: '/privacy',
+    component: Privacy,
+    exact: true
+  },
+  {
+    path: '/terms',
+    component: Terms,
+    exact: true
+  },
+  {
+    path: '/how',
+    component: HowItWorks,
     exact: true
   },
   {

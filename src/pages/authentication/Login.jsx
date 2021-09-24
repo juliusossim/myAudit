@@ -46,7 +46,7 @@ const LoginPage = () => {
   };
   const handleClose = () => {
     setShow(false);
-    return window.location.replace('/explore');
+    return window.location.replace('/me');
   };
   const goBackAndReset = () => {
     goBack();

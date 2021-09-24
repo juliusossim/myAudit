@@ -79,7 +79,7 @@ const GeneralPage = () => {
   }, [store?.home?.popularProjects?.status]);
 
   const popularNgosTemp = (
-    <div className="">
+    <div className="row">
       {
         projects?.popularNGOs?.map(
           (item, key) => (
@@ -97,7 +97,7 @@ const GeneralPage = () => {
     </div>
   );
   const popularFundraisersTemp = (
-    <div>
+    <div className="row">
       {
         projects?.popularFundraisers?.map(
           (item, key) => (
@@ -139,7 +139,7 @@ const GeneralPage = () => {
           </div>
         </div>
       </div>
-      <div className="row bg-light">
+      <div className="row bg-light" id="how">
         <div className="content">
           <div className="w-100 margin-center ">
             <div className="center-text my-2">

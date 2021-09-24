@@ -33,6 +33,10 @@ const initialState = {
     data: {},
     status: 'initial'
   },
+  detailsSimilar: {
+    data: {},
+    status: 'initial'
+  },
   projectSummary: {
     data: {},
     status: 'initial'
@@ -83,6 +87,10 @@ const initialState = {
     status: 'initial'
   },
   comment: {
+    data: {},
+    status: 'initial'
+  },
+  commentsDonors: {
     data: {},
     status: 'initial'
   },
@@ -339,6 +347,34 @@ const projectReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       projectDetails: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.DETAILS_SIMILAR_PENDING:
+    return {
+      ...state,
+      detailsSimilar: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.DETAILS_SIMILAR_SUCCESS:
+    return {
+      ...state,
+      detailsSimilar: {
+        ...state.detailsSimilar,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.DETAILS_SIMILAR_FAILURE:
+    return {
+      ...state,
+      detailsSimilar: {
         data: error || {},
         status: 'failed'
       }
@@ -720,6 +756,34 @@ const projectReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       comment: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.COMMENTS_DONORS_PENDING:
+    return {
+      ...state,
+      commentsDonors: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.COMMENTS_DONORS_SUCCESS:
+    return {
+      ...state,
+      commentsDonors: {
+        ...state.commentsDonors,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.COMMENTS_DONORS_FAILURE:
+    return {
+      ...state,
+      commentsDonors: {
         data: error || {},
         status: 'failed'
       }

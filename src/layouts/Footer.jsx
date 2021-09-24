@@ -15,10 +15,10 @@ const Footer = () => (
           <div className="col-lg-4 col-md-6 col-sm-12">
             <h5 className="m-b-20">Wema Bank Crowdfunding</h5>
             <p className="m-b-10">
-              <Link to="#">How it Works</Link>
+              <Link to="/how">How it Works</Link>
             </p>
             <p className="m-b-10">
-              <Link to="#">About Us</Link>
+              <Link to="/about">About Us</Link>
             </p>
             <p className="m-b-10">
               <Link to="#">Contact Us</Link>
@@ -30,26 +30,26 @@ const Footer = () => (
           <div className="col-lg-4 col-md-6 col-sm-12">
             <h5 className="m-b-20">Connect</h5>
             <p className="m-b-10">
-              <Link to="#">Connect with us on social media for our latest update</Link>
+              <p>Connect with us on social media for our latest update</p>
               <div className="d-flex py-2">
                 <div className=" mt-2">
                   <a href="https://www.facebook.com/wemabankplc" target="_blank" rel="noopener noreferrer" className="social-btn-2 social-btn facebook">
-                    <GrFacebook className="social-icon" size={52} />
+                    <GrFacebook className="social-icon social-icon-2" size={52} />
                   </a>
                 </div>
                 <div className=" mt-2">
                   <a href="https://www.twitter.com/wemabank" target="_blank" rel="noopener noreferrer" className="social-btn-2 social-btn twitter">
-                    <SiTwitter className="social-icon" size={52} />
+                    <SiTwitter className="social-icon social-icon-2" size={52} />
                   </a>
                 </div>
                 <div className="mt-2">
                   <a href="https://www.instagram.com/wemabank/" target="_blank" rel="noopener noreferrer" className="social-btn-2 social-btn instagram">
-                    <AiOutlineInstagram className="social-icon" size={52} />
+                    <AiOutlineInstagram className="social-icon social-icon-2" size={52} />
                   </a>
                 </div>
                 <div className=" mt-2">
                   <a href="https://www.linkedin.com/company/wema-bank-plc" target="_blank" rel="noopener noreferrer" className="social-btn-2 social-btn linkedIn">
-                    <FaLinkedin className="social-icon" size={52} />
+                    <FaLinkedin className="social-icon social-icon-2" size={52} />
                   </a>
                 </div>
               </div>
@@ -58,10 +58,10 @@ const Footer = () => (
           <div className="col-lg-4 col-md-6 col-sm-12">
             <h5 className="m-b-20">Legal</h5>
             <p className="m-b-10">
-              <Link to="#">Terms & Conditions</Link>
+              <Link to="/terms">Terms & Conditions</Link>
             </p>
             <p className="m-b-10">
-              <Link to="#">Privacy Policy</Link>
+              <Link to="/privacy">Privacy Policy</Link>
             </p>
           </div>
         </div>
