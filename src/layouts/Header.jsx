@@ -57,6 +57,11 @@ const Header = () => {
         dispatch(notifications());
         setMenu([
           {
+            name: 'Explore',
+            icon: <MdExplore />,
+            to: '/explore'
+          },
+          {
             name: 'sign out',
             icon: <RiLogoutCircleLine />,
             action: () => logout('/', false)

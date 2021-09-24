@@ -16,7 +16,7 @@ import { positiveDiffs } from '../../../utilities/dateOperations';
  * @returns {JSX.Element}
  * @constructor
  */
-const Comments = ({
+const CommentsTab = ({
   projectId
 }) => {
   /* redux */
@@ -31,28 +31,32 @@ const Comments = ({
   const successView = (
     <div>
       {
-        store?.data?.length > 0 && (
-          store?.data?.map((item) => !stringDoesNotExist(item.comment) && (
-            <div className="d-flex">
+        store?.data?.data?.length > 0 && (
+          store?.data?.data?.map((item) => !stringDoesNotExist(item.comment) && (
+            <div className="d-flex" key={item.dateCreated}>
               <div>
                 <img src={CommentsLogo} alt="comments" />
               </div>
               <div className="ml-2">
-                <p>
+                <p className="bold">
                   <span className="">
                     {stringDoesNotExist(item.customerName) ? 'Anonymous' : sentenceCaps(item.customerName)}
                   </span>
                   <span>
                     donated
                   </span>
-                  <span className="bold">
+                  <span className="ml-1">
+                    <span>&#8358;</span>
                     {item.amount}
                   </span>
                 </p>
                 <small>{positiveDiffs(new Date(item.dateCreated))}</small>
-                <p>
-                  item.comment
-                </p>
+                <div className="mt-3">
+                  <p>
+                    { item.comment}
+                  </p>
+                </div>
+                <hr />
               </div>
             </div>
           ))
@@ -65,10 +69,10 @@ const Comments = ({
     <div className="pr-5 mt-3">
       <PageTemp
         status={store?.status}
-        noData={store?.data?.length === 0}
+        noData={store?.data?.data?.length === 0}
         view={successView}
       />
     </div>
   );
 };
-export default Comments;
+export default CommentsTab;

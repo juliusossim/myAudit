@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import {
   AiOutlineInstagram,
-  FaLinkedin, GoMail, GrFacebook, ImTelegram, IoLogoWhatsapp, SiTwitter
+  FaLinkedinIn, GoMail, FaFacebookF, ImTelegram, IoLogoWhatsapp, SiTwitter
 } from 'react-icons/all';
 import WemaLogo from '../assets/images/wema-footer-logo.png';
 import { stringCaps } from '../utilities/stringOperations';
@@ -34,22 +34,22 @@ const Footer = () => (
               <div className="d-flex py-2">
                 <div className=" mt-2">
                   <a href="https://www.facebook.com/wemabankplc" target="_blank" rel="noopener noreferrer" className="social-btn-2 social-btn facebook">
-                    <GrFacebook className="social-icon social-icon-2" size={52} />
+                    <FaFacebookF className="social-icon social-icon-2" size={25} />
                   </a>
                 </div>
                 <div className=" mt-2">
                   <a href="https://www.twitter.com/wemabank" target="_blank" rel="noopener noreferrer" className="social-btn-2 social-btn twitter">
-                    <SiTwitter className="social-icon social-icon-2" size={52} />
+                    <SiTwitter className="social-icon social-icon-2" size={25} />
                   </a>
                 </div>
                 <div className="mt-2">
                   <a href="https://www.instagram.com/wemabank/" target="_blank" rel="noopener noreferrer" className="social-btn-2 social-btn instagram">
-                    <AiOutlineInstagram className="social-icon social-icon-2" size={52} />
+                    <AiOutlineInstagram className="social-icon social-icon-2" size={25} />
                   </a>
                 </div>
                 <div className=" mt-2">
                   <a href="https://www.linkedin.com/company/wema-bank-plc" target="_blank" rel="noopener noreferrer" className="social-btn-2 social-btn linkedIn">
-                    <FaLinkedin className="social-icon social-icon-2" size={52} />
+                    <FaLinkedinIn className="social-icon social-icon-2" size={25} />
                   </a>
                 </div>
               </div>
@@ -70,9 +70,9 @@ const Footer = () => (
     <div className="bottom">
       <div className="content space-between flex-v-center">
         <div className="footer-left">
-          <div className="logo">
+          <a href="https://www.wemabank.com" target="_blank" rel="noopener noreferrer" className="logo">
             <img src={WemaLogo} alt="crowd funding logo" />
-          </div>
+          </a>
         </div>
         <div className="footer-right">
           <p>

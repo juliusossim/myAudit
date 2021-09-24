@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useState, lazy, useCallback
+  useEffect, useState, lazy, useCallback, useMemo
 } from 'react';
 import _ from 'lodash';
 import Card from '@material-ui/core/Card';
@@ -7,7 +7,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import { useDispatch, useSelector } from 'react-redux';
 import IconButton from '@material-ui/core/IconButton';
-import { useHistory, useLocation, useParams } from 'react-router-dom';
+import {
+  Link, useHistory, useLocation, useParams
+} from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
 import {
   IoArrowBackCircleOutline, IoArrowForwardCircleOutline
@@ -47,7 +49,7 @@ const Donate = () => {
 
   /* state */
   const [item, setItem] = useState({
-    ...project, country: 1, shareMyInfo: true, anonymous: false, isManual: false
+    country: 1, shareMyInfo: true, anonymous: false
   });
   const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({});
@@ -60,6 +62,15 @@ const Donate = () => {
       projectDetails(id);
     }
   }, []);
+  useEffect(() => {
+    if (project !== undefined) {
+      setItem(
+        {
+          ...item, ...project
+        }
+      );
+    }
+  }, [project]);
   useEffect(() => {
     if (store?.paymentComplete?.status === 'success') {
       setOpen(false);
@@ -95,15 +106,13 @@ const Donate = () => {
   }, [store.projectDetails?.status]);
   useEffect(() => {
     if (store.paymentInitiate?.status === 'success') {
-      console.log(item.isManual);
       setFormData(store.paymentInitiate?.data?.data);
-      if (item?.isManual) {
+      if (store.paymentInitiate?.data?.data?.isManual) {
         setOpen(true);
         setInit(false);
       } else {
         popup()?.show();
       }
-      setItem({ ...item, isManual: false });
     }
     if (store.paymentInitiate?.status === 'failed') {
       notifier({
@@ -140,10 +149,6 @@ const Donate = () => {
     }
     return result;
   };
-  const handleManuel = () => {
-    setItem({ ...item, isManual: true });
-    initiateDonation({ ...item, isManual: true });
-  };
   const customerName = (fullName) => splitFullName(fullName);
   // eslint-disable-next-line no-undef
   const popup = () => window.Alatpay !== undefined && Alatpay?.setup({
@@ -179,19 +184,21 @@ const Donate = () => {
   });
 
   const projectDetails = useCallback((theId) => {
-    dispatch(projectAction(
-      {
-        action: 'PROJECT_DETAILS',
-        routeOptions: apiOptions({
-          method: 'get',
-          param: theId,
-          endpoint: 'PROJECT_DETAILS',
-          auth: true,
-          afterParam: 'details'
-        })
-      }
-    ));
-  }, []);
+    if (project === undefined) {
+      dispatch(projectAction(
+        {
+          action: 'PROJECT_DETAILS',
+          routeOptions: apiOptions({
+            method: 'get',
+            param: theId,
+            endpoint: 'PROJECT_DETAILS',
+            auth: true,
+            afterParam: 'details'
+          })
+        }
+      ));
+    }
+  }, [project]);
   const makeDonation = useCallback((theId, body) => {
     dispatch(projectAction(
       {
@@ -212,7 +219,6 @@ const Donate = () => {
       customerLastName: splitFullName(data?.fullName)?.lastName,
       customerEmail: data?.email,
       customerPhone: data?.phone_number,
-      isManual: data?.isManual,
       projectId: id,
       amount: localStringToNumber(data?.donation),
       anonymous: data?.anonymous,
@@ -290,138 +296,151 @@ const Donate = () => {
     setItem({ ...item, paid });
     completeDonation(paid);
   };
+  const temp = useMemo(() => (
+    <div className="p-20 bg-light">
+      <div>
+        <p>
+          <small>
+            You are donating to
+          </small>
+        </p>
+        <p className="h4 bold">
+          {item?.title}
+        </p>
+      </div>
+      <div className="row">
+        <div className="col-md-7 ">
+          <div className="bg-white">
+            <div className="border p-4 mb-2">
+              <p>
+                <small className="bold">
+                  Please Enter Your Donation
+                </small>
+              </p>
+              <div>
+                <FormBuilder
+                  formItems={
+                    donationProps({
+                      formData: item,
+                      handleBlur,
+                      handleChange,
+                      errors
+                    }).amount
+                  }
+                />
+              </div>
+            </div>
+            <div className="border p-4 mb-2">
+              <p>
+                <small className="bold">
+                  Personal Details
+                </small>
+              </p>
+              <div className="row ">
+                <FormBuilder
+                  formItems={
+                    donationProps({
+                      formData: item,
+                      handleBlur,
+                      handleChange,
+                      errors
+                    }).info
+                  }
+                />
+              </div>
+              <div className="d-md-flex">
+                <div className="ml-md-2">
+                  <input className="text-wema" type="checkbox" value={item.anonymous} name="anonymous" checked={item.anonymous} onChange={handleChecked} />
+                  {' '}
+                  <span className="terms">
+                    Donate as anonymous
+                  </span>
+                </div>
+                <div className="pl-md-3 pt-2 pt-md-0">
+                  <input className="text-wema" type="checkbox" name="shareMyInfo" checked={item.shareMyInfo} onChange={handleChecked} />
+                  {' '}
+                  <span className="terms">
+                    Share My Email and Phone Number with Poster of this Project
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="mt-2">
+            <input className="text-wema border-wema" type="checkbox" disabled={stringDoesNotExist(item.donation)} title={stringDoesNotExist(item.donation) && 'enter donation amount to proceed'} name="terms" checked={item.terms} onChange={handleChecked} />
+            {' '}
+            <span className="terms">
+              I accept the
+              <Link to="/terms" className="text-wema mx-1">
+                terms
+              </Link>
+              and
+              <Link to="/privacy" className="text-wema mx-1">
+                conditions
+              </Link>
+              of Wema Bank Crowdfunding
+            </span>
+          </div>
+          <div className="d-flex mt-3">
+            {/* <button type="button" className="btn btn-sm w-25 mr-2"
+                     onClick={() => initiateDonation(item)} disabled={!item?.terms}
+                      title={item?.terms ? '' : 'Please Accept terms and conditions first!'}> */}
+            {/*  Donate */}
+            {/* </button> */}
+            <button
+              type="button"
+              className="btn btn-sm w-25"
+              onClick={() => initiateDonation(item)}
+              // onMouseEnter={handleBlur}
+              disabled={!item?.terms || stringDoesNotExist(item.donation)}
+              title={item?.terms ? '' : 'Please Accept terms and conditions first!'}
+            >
+              Donate
+            </button>
+            <button type="button" className="btn-plain btn-sm border-wema ml-2 w-25" onClick={() => goBack()}>
+              Back
+            </button>
+          </div>
+          <div>
+            {store?.paymentInitiate?.status === 'pending' && <Loader />}
+          </div>
+        </div>
+        <div className="col-md-5">
+          <div>
+            <CardMedia
+              className="h-30h"
+              image={_.head(item?.media)?.uri || Kat}
+              title={project?.title}
+            />
+          </div>
+          <div className="mt-3 border p-3">
+            <ProjectProgress project={item} />
+          </div>
+          <div className="mt-3 border p-3">
+            <Poster1 project={item} />
+          </div>
+        </div>
+        <BackdropModal
+          handleClose={handleClose}
+          content={(
+            <ManualTemp
+              data={store?.paymentInitiate?.data?.data}
+              status={store?.paymentComplete?.status}
+              handleCancel={handleClose}
+            />
+          )}
+          open={open}
+        />
+      </div>
+    </div>
+  ), [item]);
   return (
     <div className="content">
       <div className="w-100 margin-center m-t-40">
         <PageTemp
           status={store.projectDetails?.status}
-          view={(
-            <div className="p-20 bg-light">
-              <div>
-                <p>
-                  <small>
-                    You are donating to
-                  </small>
-                </p>
-                <p className="h4 bold">
-                  {item?.title}
-                </p>
-              </div>
-              <div className="row">
-                <div className="col-md-7 ">
-                  <div className="bg-white">
-                    <div className="border p-4 mb-2">
-                      <p>
-                        <small className="bold">
-                          Please Enter Your Donation
-                        </small>
-                      </p>
-                      <div>
-                        <FormBuilder
-                          formItems={
-                            donationProps({
-                              formData: item,
-                              handleBlur,
-                              handleChange,
-                              errors
-                            }).amount
-                          }
-                        />
-                      </div>
-                    </div>
-                    <div className="border p-4 mb-2">
-                      <p>
-                        <small className="bold">
-                          Personal Details
-                        </small>
-                      </p>
-                      <div className="row ">
-                        <FormBuilder
-                          formItems={
-                            donationProps({
-                              formData: item,
-                              handleBlur,
-                              handleChange,
-                              errors
-                            }).info
-                          }
-                        />
-                      </div>
-                      <div className="d-md-flex">
-                        <div className="ml-md-2">
-                          <input className="text-wema" type="checkbox" value={item.anonymous} name="anonymous" checked={item.anonymous} onChange={handleChecked} />
-                          {' '}
-                          <span className="terms">
-                            Donate as anonymous
-                          </span>
-                        </div>
-                        <div className="pl-md-3 pt-2 pt-md-0">
-                          <input className="text-wema" type="checkbox" name="shareMyInfo" checked={item.shareMyInfo} onChange={handleChecked} />
-                          {' '}
-                          <span className="terms">
-                            Share My Email and Phone Number with Poster of this Project
-                          </span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mt-2">
-                    <input className="text-wema border-wema" type="checkbox" name="terms" checked={item.terms} onChange={handleChecked} />
-                    {' '}
-                    <span className="terms">
-                      <a href="" className="text-wema mr-1">
-                        I accept
-                      </a>
-                      the terms and conditions
-                      of Wemabank Crowdfunding
-                    </span>
-                  </div>
-                  <div className="d-flex mt-3">
-                    {/* <button type="button" className="btn btn-sm w-25 mr-2"
-                     onClick={() => initiateDonation(item)} disabled={!item?.terms}
-                      title={item?.terms ? '' : 'Please Accept terms and conditions first!'}> */}
-                    {/*  Donate */}
-                    {/* </button> */}
-                    <button type="button" className="btn btn-sm w-25" onClick={handleManuel} disabled={!item?.terms} title={item?.terms ? '' : 'Please Accept terms and conditions first!'}>
-                      Donate
-                    </button>
-                    <button type="button" className="btn-plain btn-sm border-wema ml-2 w-25" onClick={() => goBack()}>
-                      Back
-                    </button>
-                  </div>
-                  <div>
-                    {store?.paymentInitiate?.status === 'pending' && <Loader />}
-                  </div>
-                </div>
-                <div className="col-md-5">
-                  <div>
-                    <CardMedia
-                      className="h-30h"
-                      image={_.head(item?.media)?.uri || Kat}
-                      title={project?.title}
-                    />
-                  </div>
-                  <div className="mt-3 border p-3">
-                    <ProjectProgress project={item} />
-                  </div>
-                  <div className="mt-3 border p-3">
-                    <Poster1 project={item} />
-                  </div>
-                </div>
-                <BackdropModal
-                  handleClose={handleClose}
-                  content={(
-                    <ManualTemp
-                      data={store?.paymentInitiate?.data?.data}
-                      status={store?.paymentComplete?.status}
-                      handleCancel={handleClose}
-                    />
-                  )}
-                  open={open}
-                />
-              </div>
-            </div>
-          )}
+          view={temp}
+          initial={temp}
         />
       </div>
     </div>

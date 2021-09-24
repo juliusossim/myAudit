@@ -15,7 +15,9 @@ import {
   errorsChecker
 } from '../../utilities/validation';
 // import { currentUser, getUser } from '../../utilities/auth';
-import { slugToString } from '../../utilities/stringOperations';
+import {
+  notifier, slugToString, stringDoesNotExist
+} from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
 import {
   register, verifyCorporate, verifyIndividual, verifyAccountOtp, sendAccountOtp
@@ -56,9 +58,10 @@ const RegisterPage = () => {
         verifyCorporate({ account_number: val })
       );
     }
+
     if (typeof val === 'object') {
       return dispatch(
-        verifyCorporate({ account_number: formData.account_number })
+        verifyIndividual({ account_number: formData.account_number })
       );
     }
     return dispatch(
@@ -261,7 +264,20 @@ const RegisterPage = () => {
   }, [file, progress]);
   useEffect(() => {
     if (store.register.status === 'success') {
+      // setShow(true);
+      notifier({
+        text: 'You profile is created successfully',
+        title: 'Success',
+        type: 'success'
+      });
+    }
+    if (store.register.status === 'failed') {
       setShow(true);
+      // notifier({
+      //   text: <div>hello this profile failed</div>,
+      //   title: 'Error',
+      //   type: 'error'
+      // });
     }
     localforage.getItem('user', (err, value) => value).then((result) => {
       let item = {
@@ -278,25 +294,27 @@ const RegisterPage = () => {
   }, [store.register]);
 
   useEffect(() => {
-    localforage.getItem('user', (err, value) => value).then((result) => {
-      let item = {
-        registered: false
-      };
-      if (result?.status === 'Inactive') {
-        item = {
-          registered: true,
-          details: {
-            ...result,
-            ...store.verifyIndividual.data?.data
-          }
+    if (store?.verifyIndividual?.status === 'success') {
+      localforage.getItem('user', (err, value) => value).then((result) => {
+        let item = {
+          registered: false
         };
-      }
+        if (result?.status === 'Inactive') {
+          item = {
+            registered: true,
+            details: {
+              ...result,
+              ...store.verifyIndividual.data?.data
+            }
+          };
+          // handleOtp(item.details.otp);
+        }
 
-      // setDisableOtp(!item.registered);
-      return setUser(item);
-    });
-
-    setFormData({ ...formData, ...store.verifyIndividual.data?.data });
+        // setDisableOtp(!item.registered);
+        return setUser(item);
+      });
+      setFormData({ ...formData, ...store.verifyIndividual.data?.data });
+    }
   }, [store.verifyIndividual]);
   useEffect(() => {
     localforage.getItem('user', (err, value) => value).then((result) => {
@@ -352,7 +370,14 @@ const RegisterPage = () => {
     }
   }, [store.sendAccountOtp]);
   useEffect(() => {
-    if (store.sendAccountOtp.status === 'success') {
+    if (store.verifyAccountOtp.status === 'failed') {
+      notifier({
+        text: 'OTP verification failed',
+        title: 'Failed',
+        type: 'error'
+      });
+    }
+    if (store.verifyAccountOtp.status === 'success') {
       localforage.getItem('user', (err, value) => value).then((result) => {
         let item = {
           registered: false
@@ -389,6 +414,9 @@ const RegisterPage = () => {
     return canContinue(errorsChecker(errors));
   },
   [user, formData, errors, store]);
+  useEffect(() => setTimeout(() => !user.details?.otp && !disableOtp && sendOtp(), 5000),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [disableOtp]);
   useEffect(() => {
     localforage.getItem('user', (err, value) => value).then((result) => {
       if (result?.status === 'Active' || result?.status === 1) {
@@ -433,8 +461,22 @@ const RegisterPage = () => {
                         />
                         <div>
                           {
-                            store.sendAccountOtp?.status === 'pending'
-                            && <Loader />
+                            !disableOtp
+                            && (
+                              <div>
+                                <p>
+                                  <small>
+                                    We are sending an OTP to your registered phone
+                                    number showing on the screen
+                                  </small>
+                                </p>
+                                <p>
+                                  <small>
+                                    OTP may take several minutes to send
+                                  </small>
+                                </p>
+                              </div>
+                            )
 
                           }
                           {
@@ -464,7 +506,7 @@ const RegisterPage = () => {
                     )
                   }
                   {
-                    user.details?.otp && typeof user.details?.otpVerified === 'undefined'
+                    (user?.details?.otp || (typeof user?.details?.otpVerified !== 'undefined' && !user?.details?.otpVerified))
                     && (
                       <div>
                         <FormBuilder
@@ -488,33 +530,13 @@ const RegisterPage = () => {
                             && <Loader />
                           }
                           {
-                            store.verifyAccountOtp?.status === 'failed'
-                            && (<div className="text-danger"><p className="text-center">OTP Verification Failed</p></div>)
+                            store?.sendAccountOtp.status === 'pending'
+                            && <Loader />
                           }
                         </div>
                       </div>
                     )
                   }
-
-                  {
-                    user.details?.otpVerified
-                    && (
-                      <div>
-                        <h1>Your Profile is Ready</h1>
-                        <div className="text-center w-50 btn mr-md-3">
-                          <Link to="#" onClick={() => window.location.replace('/create-project')} className="text-white btn-small">
-                            Start A Project
-                          </Link>
-                        </div>
-                        <div className="text-center w-25 btn-small btn">
-                          <Link to="#" onClick={() => window.location.replace('/')} className="text-white">
-                            Home
-                          </Link>
-                        </div>
-                      </div>
-                    )
-                  }
-
                   {
                     user.registered && user.details?.role === 'Manager' && typeof user.details?.otp === 'undefined'
                     && (
@@ -557,11 +579,15 @@ const RegisterPage = () => {
                           <input className="text-wema" type="checkbox" disabled={formData.profile_type === 10} name="terms" checked={formData.terms} onChange={handleChecked} />
                           {' '}
                           <span className="terms">
-                            <a href="" className="text-wema mr-1">
-                              I accept
-                            </a>
-                            the terms and conditions
-                            of Wemabank Crowdfunding
+                            I accept the
+                            <Link to="/terms" className="text-wema mx-1">
+                              terms
+                            </Link>
+                            and
+                            <Link to="/privacy" className="text-wema mx-1">
+                              conditions
+                            </Link>
+                            of Wema Bank Crowdfunding
                           </span>
                         </div>
                         {
@@ -588,25 +614,28 @@ const RegisterPage = () => {
                     )
                   }
                   {
-                    user.registered && !user?.details?.otpVerified
+                    (user?.details?.otp || (typeof user?.details?.otpVerified !== 'undefined' && !user?.details?.otpVerified))
                     && (
-                      <div>
+                      <div className="d-flex">
+                        <button
+                          className="w-100 btn-plain border-wema mr-1 btn-small"
+                          type="button"
+                          disabled={stringDoesNotExist(formData.otp)}
+                          onClick={verifyOtp}
+                        >
+                          Confirm OTP
+                        </button>
                         <button
                           className="w-100 btn btn-small"
                           type="button"
-                          disabled={disableOtp}
-                          onClick={handleOtp}
+                          onClick={sendOtp}
                         >
-                          {
-                            typeof user.details?.otp === 'undefined'
-                              ? 'Send OTP'
-                              : 'Confirm OTP'
-                          }
+                          Resend OTP
                         </button>
                         <div className="text-center w-100 ">
-                          <Link to="#" onClick={() => window.location.replace('/')} className="text-wema">
+                          <button type="button" onClick={() => window.location.replace('/')} className="w-100 btn-plain border-wema ml-1 btn-small">
                             Proceed home
-                          </Link>
+                          </button>
                         </div>
 
                       </div>
@@ -637,7 +666,7 @@ const RegisterPage = () => {
         }
       </div>
       <Modal
-        className={show ? 'max-w-400 right top' : 'max-w-400 right top off'}
+        className={show ? 'max-w-400 right mid center' : 'max-w-400 right top off'}
         content={modalTemplate}
       />
     </div>

@@ -2,6 +2,7 @@ import React, {
   useCallback, useEffect, useMemo,
   useState
 } from 'react';
+import { format } from 'date-fns';
 import { useDispatch, useSelector } from 'react-redux';
 import SvgIcon from '@material-ui/core/SvgIcon';
 import CommentsLogo from '../../../assets/images/comment.svg';
@@ -16,11 +17,12 @@ import { positiveDiffs } from '../../../utilities/dateOperations';
  * @returns {JSX.Element}
  * @constructor
  */
-const Comments = ({
+const Donors = ({
   projectId
 }) => {
   /* redux */
   const store = useSelector((state) => state.project?.commentsDonors);
+  const naira = process.env.REACT_APP_NAIRA;
 
   const CommentIcon = (props) => (
     <SvgIcon>
@@ -31,27 +33,31 @@ const Comments = ({
   const successView = (
     <div>
       {
-        store?.data?.length > 0 && (
-          store?.data?.map((item) => item.amount !== undefined && (
-            <div className="d-flex">
+        store?.data?.data?.length > 0 && (
+          store?.data?.data?.map((item) => item.amount !== undefined && (
+            <div className="d-flex border bg-light my-3 p-3" key={item.dateCreated}>
               <div>
                 <img src={CommentsLogo} alt="comments" />
               </div>
-              <div className="ml-2">
+              <div className="ml-2 row justify-content-between">
                 <p>
-                  <span className="">
+                  <p className="bold">
                     {stringDoesNotExist(item.customerName) ? 'Anonymous' : sentenceCaps(item.customerName)}
+                  </p>
+                  <span>
+                    {
+                      format(new Date(item.dateCreated), 'dd/MM/yyyy')
+                    }
                   </span>
+                </p>
+                <p className="pr-3">
                   <span>
                     donated
                   </span>
-                  <span className="bold">
+                  <p className="bold">
+                    <span>&#8358;</span>
                     {item.amount}
-                  </span>
-                </p>
-                <small>{positiveDiffs(new Date(item.dateCreated))}</small>
-                <p>
-                  item.comment
+                  </p>
                 </p>
               </div>
             </div>
@@ -65,10 +71,10 @@ const Comments = ({
     <div className="pr-5 mt-3">
       <PageTemp
         status={store?.status}
-        noData={store?.data?.length === 0}
+        noData={store?.data?.data?.length === 0}
         view={successView}
       />
     </div>
   );
 };
-export default Comments;
+export default Donors;

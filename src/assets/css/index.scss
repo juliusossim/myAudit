@@ -31,6 +31,7 @@
 
 * {
   box-sizing: border-box;
+  @extend .theme-font
 }
 .font-black {
   color: #212121;
@@ -54,10 +55,10 @@
   font-size: 1rem;
 }
 .theme-font {
-  font-family: Poppins, sans-serif;
+  font-family: Poppins, sans-serif !important;
 }
 .theme-font-2 {
-  font-family: Avenir, sans-serif;
+  font-family: Avenir, sans-serif !important;
 }
 .bg-inherit {
   background: inherit !important;
@@ -467,7 +468,7 @@ main {
 
 .terms {
    @extend .theme-font;
-  font-size: 13px;
+  font-size: 11px;
   line-height: 19.5px;
   color: #2E2E2E;
 }

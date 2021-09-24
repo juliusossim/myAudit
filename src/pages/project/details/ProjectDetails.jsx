@@ -1,5 +1,5 @@
 import React, {
-  useEffect, useState, lazy, useCallback
+  useEffect, useState, lazy, useCallback, useMemo
 } from 'react';
 import _ from 'lodash';
 import Card from '@material-ui/core/Card';
@@ -37,26 +37,30 @@ const ProjectDetails = (items) => {
   const [project, setProject] = useState({});
   const [similar, setSimilar] = useState([]);
   const [media, setMedia] = useState([]);
-  const [accordionTab, setAccordionTab] = useState(tab || 1);
+  const [accordionTab, setAccordionTab] = useState(1);
   const [slideClss, setSlideClss] = useState('');
   const [activeMedia, setActiveMedia] = useState(null);
   const [collapse, setCollapse] = useState(true);
 
-  const retrieveSimilarProjects = useCallback(() => {
-    dispatch(projectAction(
-      {
-        action: 'SIMILAR_PROJECTS',
-        routeOptions: apiOptions({
-          method: 'get',
-          param: id,
-          endpoint: 'SIMILAR_PROJECTS',
-          auth: true,
-          afterParam: 'similar'
-        })
-      }
-    ));
+  useEffect(() => {
+    projectDetails(id);
   }, []);
 
+  useEffect(() => {
+    if (store.detailsSimilar?.status === 'success') {
+      commentDonors();
+      setProject({ ...store.detailsSimilar?.data?.data?.project });
+      setSimilar([...store.detailsSimilar?.data?.data?.similar]);
+      setMedia(store.detailsSimilar?.data?.data?.project?.media);
+      setActiveMedia(store.detailsSimilar?.data?.data?.project?.media[0]);
+    }
+  }, [store.detailsSimilar?.status]);
+
+  const reOrderMedia = (nexActive) => {
+    const temp = media.filter((item) => item !== nexActive);
+    temp.push(nexActive);
+    setMedia(temp);
+  };
   const projectDetails = useCallback((theId) => {
     dispatch(projectAction(
       {
@@ -69,37 +73,21 @@ const ProjectDetails = (items) => {
         })
       }
     ));
-  }, []);
-
-  useEffect(() => {
-    projectDetails(id);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [id]);
-  useEffect(() => {
-    if (store.detailsSimilar?.status === 'success') {
-      projectComments();
-      setProject({ ...store.detailsSimilar?.data?.data?.project });
-      setSimilar({ ...store.detailsSimilar?.data?.data?.similar });
-      setMedia(store.detailsSimilar?.data?.data?.project?.media);
-      setActiveMedia(store.detailsSimilar?.data?.data?.project?.media[0]);
-    }
-  }, [store.detailsSimilar?.status]);
-
-  const reOrderMedia = (nexActive) => {
-    const temp = media.filter((item) => item !== nexActive);
-    temp.push(nexActive);
-    setMedia(temp);
-  };
-  const projectComments = () => dispatch(projectAction(
+  const commentDonors = useCallback(() => dispatch(projectAction(
     {
       action: 'COMMENTS_DONORS',
       routeOptions: apiOptions({
         method: 'get',
-        param: project.id,
+        param: id,
         afterParam: 'comments',
         endpoint: 'COMMENTS_DONORS'
       })
     }
-  ));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  )), [id]);
+
   const handleSelectSlide = (back) => {
     const activeIndex = _.findLastIndex(media, (item) => item === activeMedia);
     if (back) {
@@ -130,11 +118,14 @@ const ProjectDetails = (items) => {
   const Story = lazy(() => import('./Story'));
   const Success = lazy(() => import('../Success'));
   const Comments = lazy(() => import('./Comments'));
+  const Donors = lazy(() => import('./Donors'));
 
   const displayProject = () => {
     switch (accordionTab) {
     case 2:
       return <Comments />;
+    case 4:
+      return <Donors />;
     default:
       return <Story />;
     }
