@@ -20,6 +20,7 @@ import Kat from '../../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg';
 import { apiOptions } from '../../../services/fetch';
 import MediaSlider from '../../../components/microComponents/mediaSlider';
 import ProjectInfo from '../../../components/ui/projectInfo';
+import NoData from '../../authentication/NoData';
 
 /**
  *
@@ -135,55 +136,64 @@ const ProjectDetails = (items) => {
     <div className="content">
       <div className="w-100 margin-center m-t-40">
         <div className="p-20 bg-light">
-          <div className="d-md-flex ">
-            <div className=" max-w-750">
-              <CardMedia className="">
-                <LazyImage cls="h-400" src={activeMedia?.uri || Kat} alt="kat" />
-              </CardMedia>
-              {
-                project?.media?.length > 1
-                && (
-                  <div className="d-flex mt-lg-3">
-                    <div className="d-flex">
-                      <button type="button" className="border-radius-50 btn-small btn-plain text-wema  hover-wema bg-wema-light h-50 mt-3">
-                        <IoArrowBackCircleOutline className="" onClick={() => handleSelectSlide(true)} />
-                      </button>
-                      <button type="button" className="border-radius-50 btn-small btn-plain text-wema  hover-wema bg-wema-light top-neg-7 ml-2 h-50 mt-4">
-                        <IoArrowForwardCircleOutline onClick={() => handleSelectSlide(false)} />
-                      </button>
-                    </div>
-                    <div className="d-md-flex d-none w-600 pl-5 overflow-x-hidden h-50">
-                      <MediaSlider
-                        mediaFiles={media}
-                        selected={activeMedia}
-                        slideClass={slideClss}
-                        setSelected={setActiveMedia}
-                      />
-                    </div>
-                  </div>
-                )
-              }
-              <hr />
-            </div>
-            <div className="pl-5">
-              <ProjectInfo
-                project={project}
-                actions={[
+          <div className=" ">
+            <div className="">
+              <div className="row">
+                <div className="col-md-8">
+                  <CardMedia
+                    className="h-446"
+                    image={activeMedia?.uri || Kat}
+                    title={project?.title}
+                  />
                   {
-                    text: 'Donate',
-                    action: () => console.log('donate')
-                  },
-                  {
-                    text: 'Share',
-                    plain: true,
-                    action: () => console.log('share')
+                    project?.media?.length > 1
+                    && (
+                      <div className="d-flex mt-lg-3">
+                        <div className="d-flex">
+                          <button type="button" className="border-radius-50 btn-small btn-plain text-wema  hover-wema bg-wema-light h-50 mt-3">
+                            <IoArrowBackCircleOutline className="" onClick={() => handleSelectSlide(true)} />
+                          </button>
+                          <button type="button" className="border-radius-50 btn-small btn-plain text-wema  hover-wema bg-wema-light top-neg-7 ml-2 h-50 mt-4">
+                            <IoArrowForwardCircleOutline onClick={() => handleSelectSlide(false)} />
+                          </button>
+                        </div>
+                        <div className="d-md-flex d-none w-600 pl-5 overflow-x-hidden h-50">
+                          <MediaSlider
+                            mediaFiles={media}
+                            selected={activeMedia}
+                            slideClass={slideClss}
+                            setSelected={setActiveMedia}
+                          />
+                        </div>
+                      </div>
+                    )
                   }
-                ]}
-                logo
-                style
-                shares
-                clss="h-40"
-              />
+                  <hr />
+                </div>
+                <div className="col-md-4">
+                  <ProjectInfo
+                    project={project}
+                    actions={[
+                      {
+                        text: 'Donate',
+                        action: () => console.log('donate')
+                      },
+                      {
+                        text: 'Share',
+                        plain: true,
+                        action: () => console.log('share')
+                      }
+                    ]}
+                    logo
+                    style
+                    shares
+                    clss="h-40"
+                  />
+                </div>
+              </div>
+              {/* <CardMedia className=""> */}
+              {/*  <LazyImage cls="h-400" src={activeMedia?.uri || Kat} alt="kat" /> */}
+              {/* </CardMedia> */}
             </div>
           </div>
           <div className="max-w-750">
@@ -225,35 +235,36 @@ const ProjectDetails = (items) => {
               displayProject()
             }
           </div>
-          <div className="row projects text-left mt-5 ">
-            <div className="row justify-content-between ml-5 mr-5">
-              <p className="bold">
-                Similar Projects
-              </p>
-              <button type="button" className={similar.length > 3 ? 'text-wema float-right viewMoreBtn' : 'd-none'}>
-                View More &gt;
-              </button>
-            </div>
-            {
-              !_.isEmpty(similar)
-                ? similar.map(
-                  (tem, key) => (
-                    <div key={`project ${tem.id}`} className="col-md-4 mt-5">
-                      <ProjectInfo
-                        logo={false}
-                        styled={1}
-                        project={tem}
-                      />
+
+          {
+            !_.isEmpty(similar)
+                && (
+                  <div className="row projects text-left mt-5 ">
+                    <div className="row justify-content-between ml-5 mr-5">
+                      <p className="bold">
+                        Similar Projects
+                      </p>
+                      <button type="button" className={similar.length > 3 ? 'text-wema float-right viewMoreBtn' : 'd-none'}>
+                        View More &gt;
+                      </button>
                     </div>
-                  )
-                )
-                : (
-                  <div className="font-bold text-info">
-                    There are no similar projects to display.
+                    {
+                      similar.map(
+                        (tem, key) => (
+                          <div key={`project ${tem.id}`} className="col-md-4 mt-5">
+                            <ProjectInfo
+                              logo={false}
+                              styled={1}
+                              project={tem}
+                            />
+                          </div>
+                        )
+                      )
+                    }
                   </div>
                 )
-            }
-          </div>
+
+          }
         </div>
       </div>
     </div>

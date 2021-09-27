@@ -11,12 +11,6 @@ import ProjectInfo from '../../components/ui/projectInfo';
 import PageTemp from '../../components/temps/PageTemp';
 
 const GeneralPage = () => {
-  const startProject = () => {
-    /**
-     Todo: redirect to project page.
-     */
-    window.location.replace('/register');
-  };
   /* redux */
   const dispatch = useDispatch();
   const store = useSelector((state) => state);
@@ -78,40 +72,70 @@ const GeneralPage = () => {
     }
   }, [store?.home?.popularProjects?.status]);
 
-  const popularNgosTemp = (
-    <div className="row">
-      {
-        projects?.popularNGOs?.map(
-          (item, key) => (
-            <div key={item.id} className="col-md-3 mb-4">
-              <div className="">
-                <ProjectInfo
-                  styled
-                  project={item}
-                />
-              </div>
-            </div>
-          )
-        )
-      }
-    </div>
-  );
   const popularFundraisersTemp = (
-    <div className="row">
-      {
-        projects?.popularFundraisers?.map(
-          (item, key) => (
-            <div key={item.id} className="col-md-3 mb-4">
-              <div className="">
-                <ProjectInfo
-                  styled
-                  project={item}
-                />
-              </div>
-            </div>
-          )
-        )
-      }
+    <div className="">
+      <div className="container text-left my-4">
+        <div className="row justify-content-between ml-1 mr-5">
+          <h3 className="theme-title">
+            Most Popular Fundraisers
+          </h3>
+          {
+            projects?.popularFundraisers?.length > 4
+            && (
+              <button type="button" className="text-wema float-right viewMoreBtn">
+                View More &gt;
+              </button>
+            )
+          }
+        </div>
+        <div className="row">
+          {
+            projects?.popularFundraisers?.map(
+              (item, key) => (
+                <div key={item.id} className="col-md-3 mb-4">
+                  <div className="">
+                    <ProjectInfo
+                      styled
+                      project={item}
+                    />
+                  </div>
+                </div>
+              )
+            )
+          }
+        </div>
+      </div>
+      <div className="container  mt-5 ">
+        <div className="row justify-content-between ml-1 mr-5">
+          <h3>
+            Most Popular NGOs
+          </h3>
+          {
+            projects?.popularNGOs?.length > 4
+            && (
+              <button type="button" className="text-wema float-right viewMoreBtn">
+                View More &gt;
+              </button>
+            )
+          }
+        </div>
+        <div className="row">
+          {
+            projects?.popularNGOs?.map(
+              (item, key) => (
+                <div key={item.id} className="col-md-3 mb-4">
+                  <div className="">
+                    <ProjectInfo
+                      styled
+                      project={item}
+                    />
+                  </div>
+                </div>
+              )
+            )
+          }
+        </div>
+      </div>
     </div>
   );
 
@@ -122,7 +146,7 @@ const GeneralPage = () => {
         {/* <LazyImage src={firstImage} alt="make a difference" /> */}
         <div className="content1">
           <p className="small1">
-            Wema Bank Crowdfunding
+            Crowdfunding with Wema Bank
           </p>
           <div className="hero">
             Fundraising for projects and causes that
@@ -157,46 +181,14 @@ const GeneralPage = () => {
       <div className=" bg-wema-light">
         <div className="content">
           <div className="w-100 margin-center m-t-40 projects">
-            <div className="container text-left my-4">
-              <div className="row justify-content-between ml-5 mr-5">
-                <h3 className="theme-title">
-                  Most Popular Fundraisers
-                </h3>
-                {
-                  projects?.popularFundraisers?.length > 4
-                  && (
-                    <button type="button" className="text-wema float-right viewMoreBtn">
-                      View More &gt;
-                    </button>
-                  )
-                }
-              </div>
-              <PageTemp
-                view={popularFundraisersTemp}
-                status={store?.home?.popularProjects?.status}
-                noData={projects?.popularFundraisers?.length === 0}
-              />
-            </div>
-            <div className="container  mt-5 ">
-              <div className="row justify-content-between ml-5 mr-5">
-                <h3>
-                  Most Popular NGOs
-                </h3>
-                {
-                  projects?.popularNGOs?.length > 4
-                  && (
-                    <button type="button" className="text-wema float-right viewMoreBtn">
-                      View More &gt;
-                    </button>
-                  )
-                }
-              </div>
-              <PageTemp
-                view={popularNgosTemp}
-                status={store?.home?.popularProjects?.status}
-                noData={projects?.popularNGOs?.length === 0}
-              />
-            </div>
+            <PageTemp
+              view={popularFundraisersTemp}
+              status={store?.home?.popularProjects?.status}
+              noData={projects?.popularFundraisers?.length === 0}
+              tryAgain={() => popularProjects()}
+              home
+            />
+
           </div>
         </div>
       </div>

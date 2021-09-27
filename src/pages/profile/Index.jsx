@@ -21,7 +21,7 @@ const Profile = () => {
   const [user, setUser] = useState({});
   const [open, setOpen] = React.useState(false);
   const [show, setShow] = React.useState(false);
-  const [current, setCurrent] = React.useState('My Acount');
+  const [current, setCurrent] = React.useState('My profile');
 
   const displayPages = (tab) => {
     switch (tab) {

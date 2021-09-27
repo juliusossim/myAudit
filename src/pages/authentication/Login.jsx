@@ -3,12 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import TextInput from '../../components/form/inputs/TextInput';
-import Modal from '../../components/microComponents/modal';
 import { login } from '../../redux/actions/authenticationActions';
 import { mapBackendErrors } from '../../utilities/validation';
-import Loader from '../../components/microComponents/loader';
 import PageTemp from '../../components/temps/PageTemp';
 import { resetAction } from '../../redux/actions/projectActions';
+import { notifier } from '../../utilities/stringOperations';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ remember_me: false });
@@ -20,7 +19,16 @@ const LoginPage = () => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state.auth.login);
 
-  useEffect(() => store?.status === 'success' && setShow(true), [store.status]);
+  useEffect(() => {
+    if (store?.status === 'success') {
+      handleClose();
+      notifier({
+        title: 'Logged In',
+        text: 'Logged in successfully',
+        type: 'success'
+      });
+    }
+  }, [store.status]);
 
   const handleLogin = () => {
     // e.preventDefault();
@@ -105,26 +113,6 @@ const LoginPage = () => {
       </div>
     </div>
   );
-  /* on loggin in */
-  const successTemp = (
-    <div className="max-w-600 w-600 margin-center m-t-40 center-center">
-      <p className="bold text-wema font-22">
-        {`You are now logged in as ${store?.data?.data?.user?.email}`}
-      </p>
-      <p className="text-wema text-center">
-        if  you are not redirected in
-        <span className="text-danger px-2">
-          {
-            store?.status === 'success'
-                            && setTimeout(handleClose, 3000)
-          }
-        </span>
-        <span>seconds, Pleasee,</span>
-        <button className="btn-plain text-wema border-wema mx-2" type="button">click here</button>
-        to go to the explore page
-      </p>
-    </div>
-  );
 
   /* on failure */
   const failureTemp = (
@@ -153,9 +141,9 @@ const LoginPage = () => {
     <div className="content m-t-40">
       <PageTemp
         initial={initialTemp({ formData })}
-        view={successTemp}
+        view={initialTemp({ formData })}
         status={store?.status}
-        error={failureTemp}
+        error={initialTemp({ formData })}
       />
     </div>
   );

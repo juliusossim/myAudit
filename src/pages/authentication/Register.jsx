@@ -317,39 +317,53 @@ const RegisterPage = () => {
     }
   }, [store.verifyIndividual]);
   useEffect(() => {
-    localforage.getItem('user', (err, value) => value).then((result) => {
-      let item = {
-        registered: false
-      };
-      if (result?.status === 'Inactive') {
-        let signatories = [
-          'select signatories'
-        ];
-        store.verifyCorporate?.data?.data?.signatories.map((datum, key) => {
-          const manager = {
-            ...datum,
-            value: key + 1
-          };
-          signatories = [...signatories, manager];
-        });
-        item = {
-          registered: true,
-          details: {
-            ...result,
-            ...store.verifyCorporate.data?.data,
-            signatories
-          }
+    if (store?.verifyCorporate?.status === 'success') {
+      localforage.getItem('user', (err, value) => value).then((result) => {
+        let item = {
+          registered: false
         };
-      }
+        if (result?.status === 'Inactive') {
+          let signatories = [
+            'select signatories'
+          ];
+          store.verifyCorporate?.data?.data?.signatories.map((datum, key) => {
+            const manager = {
+              ...datum,
+              value: key + 1
+            };
+            signatories = [...signatories, manager];
+          });
+          item = {
+            registered: true,
+            details: {
+              ...result,
+              ...store.verifyCorporate.data?.data,
+              signatories
+            }
+          };
+        }
 
-      // setDisableOtp(!item.registered);
-      return setUser(item);
-    });
+        // setDisableOtp(!item.registered);
+        return setUser(item);
+      });
 
-    setFormData({ ...formData, ...store.verifyCorporate.data?.data, account_name: '' });
+      setFormData({ ...formData, ...store.verifyCorporate.data?.data, account_name: '' });
+    }
+    if (store?.verifyCorporate?.status === 'failed') {
+      notifier({
+        text: 'We could not find account information, check the number and try again',
+        title: 'Account not found',
+        type: 'error'
+      });
+    }
   }, [store.verifyCorporate]);
   useEffect(() => {
     if (store.sendAccountOtp.status === 'success') {
+      notifier({
+        text: 'OTP Sent. Note that OTP expires after 15 minutes.',
+        title: 'Success',
+        type: 'success'
+      });
       localforage.getItem('user', (err, value) => value).then((result) => {
         let item = {
           registered: false
@@ -392,18 +406,22 @@ const RegisterPage = () => {
             }
           };
           const storageUser = result;
-          console.log(result);
           storageUser.otpVerified = true;
           localforage.setItem('user', storageUser);
         }
-        // setDisableOtp(!item.registered);
-        return setUser({
+        notifier({
+          text: 'Account verification successful, You are automatically logged in',
+          title: 'Profile Verified',
+          type: 'success'
+        });
+        setUser({
           registered: true,
           details: {
             ...user.details,
             ...item.details
           }
         });
+        return window.location.replace('/');
       });
     }
   }, [store.verifyAccountOtp]);
@@ -414,9 +432,18 @@ const RegisterPage = () => {
     return canContinue(errorsChecker(errors));
   },
   [user, formData, errors, store]);
-  useEffect(() => setTimeout(() => !user.details?.otp && !disableOtp && sendOtp(), 5000),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [disableOtp]);
+  useEffect(() => {
+    if (!user.details?.otp && !disableOtp) {
+      setTimeout(() => sendOtp(), 5000);
+      notifier({
+        text: 'We are Sending OTP to the phone number registered to your bank account. Please note that OTP may take several Minutes to Send.',
+        title: 'Sending OTP',
+        type: 'info'
+      });
+    }
+  },
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  [disableOtp]);
   useEffect(() => {
     localforage.getItem('user', (err, value) => value).then((result) => {
       if (result?.status === 'Active' || result?.status === 1) {
