@@ -1,6 +1,7 @@
 import React, {
   useEffect, useCallback, useState
 } from 'react';
+import _ from 'lodash';
 import localforage from 'localforage';
 import addDays from 'date-fns/addDays';
 import Moment from 'moment';
@@ -56,14 +57,16 @@ const Project2 = (
     value: index + 1,
     name: ar
   }));
+  const indexData = { ...JSON.parse(localStorage.getItem('index')) };
+
   useEffect(() => {
-    if (store.stateLga.status === 'success') {
-      setStates(store?.stateLga?.data?.data);
-      setLgas(store?.stateLga?.data?.data?.filter(
+    if (!_.isEmpty(indexData?.states)) {
+      setStates(indexData.states);
+      setLgas(indexData.states?.filter(
         (ste) => ste.stateId === (formData.stateId || 1)
       )[0].lgas);
     }
-  }, [store.stateLga.status, formData]);
+  }, [formData, indexData.states]);
 
   useEffect(() => {
     setFormData({ ...formData, endDate: addDays(new Date(formData.startDate), 7) });

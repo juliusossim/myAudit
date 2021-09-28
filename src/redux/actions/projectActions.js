@@ -1,4 +1,4 @@
-// import localforage from 'localforage';
+import localforage from 'localforage';
 import {
   get, patch, post, del
 } from '../../services/fetch';
@@ -24,7 +24,7 @@ export const createProjectName = (payload) => {
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };
@@ -43,7 +43,7 @@ export const createProject = (payload) => {
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };
@@ -62,7 +62,7 @@ export const getProject = (payload) => {
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };
@@ -78,7 +78,7 @@ export const editProject1 = (payload) => {
       dispatch(success(response?.data));
     } else if (response) {
       dispatch(failure(response?.errors || response));
-    } else dispatch(failure('You are currently not connected to the internet!'));
+    } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -94,7 +94,7 @@ export const editProject = (payload) => {
       dispatch(success(response?.data));
     } else if (response) {
       dispatch(failure(response?.errors || response));
-    } else dispatch(failure('You are currently not connected to the internet!'));
+    } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -111,7 +111,7 @@ export const submitProject = (payload) => {
       dispatch(success(response?.data));
     } else if (response) {
       dispatch(failure(response?.errors || response));
-    } else dispatch(failure('You are currently not connected to the internet!'));
+    } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -128,7 +128,7 @@ export const projectByStatus = () => {
       dispatch(success(response?.data));
     } else if (response) {
       dispatch(failure(response?.errors || response));
-    } else dispatch(failure('You are currently not connected to the internet!'));
+    } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -148,7 +148,30 @@ export const projectCategories = () => {
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
+    });
+  };
+};
+export const index = () => {
+  const request = (req) => ({ type: constants.INDEX_PENDING, request: req });
+  const success = (response) => ({ type: constants.INDEX_SUCCESS, response });
+  const failure = (error) => ({ type: constants.INDEX_FAILURE, error });
+
+  return async (dispatch) => {
+    const res = get({ endpoint: 'INDEX' });
+
+    dispatch(request(res));
+
+    return res.then((response) => {
+      dispatch(success(response?.data));
+      if (response?.status === 200 || response?.status === 201) {
+        dispatch(success(response?.data));
+        // console.log(response?.data?.data);
+        // localforage.setItem('index', response?.data?.data);
+        // localStorage.setItem('index', JSON.stringify(response?.data?.data));
+      } else if (response) {
+        dispatch(failure(response?.errors || response));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };
@@ -176,7 +199,7 @@ export const uploadMedia = ({ payload, setProgress }) => {
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };

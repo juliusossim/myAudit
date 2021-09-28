@@ -9,7 +9,7 @@ const NoData = ({ tryAgain, home }) => {
   return (
     <div className="w-100 m-t-40">
       <div className="max-w-600 w-600 margin-center">
-        <div style={{ fontSize: '40rem', lineHeight: '0' }}>
+        <div style={{ fontSize: '5rem', lineHeight: '0' }}>
           <FcDeleteDatabase />
         </div>
         <div className="text-center">
@@ -22,7 +22,7 @@ const NoData = ({ tryAgain, home }) => {
               <div className="text-center">
                 {
                   !home
-                  && <Link to="/" className="mr-3 btn btn-small text-center" type="button">Go Home</Link>
+                  && <button className="mr-3 btn btn-small text-center" type="button" onClick={() => window.location.replace('/')}>Go Home</button>
                 }
                 {/* <button onClick={tryAgain} className="btn btn-small
                  text-center" type="button">Try Again</button> */}

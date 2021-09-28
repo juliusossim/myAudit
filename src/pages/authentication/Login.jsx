@@ -54,7 +54,7 @@ const LoginPage = () => {
   };
   const handleClose = () => {
     setShow(false);
-    return window.location.replace('/me');
+    return window.location.assign('/me');
   };
   const goBackAndReset = () => {
     goBack();

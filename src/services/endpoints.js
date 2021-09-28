@@ -76,7 +76,7 @@ const paths = {
   PROFILES: `${servers.auth}${profileEndpoints.getProfile}`,
 
   // index
-  INDEX: `${servers.auth}${profileEndpoints.getProfile}`
+  INDEX: `${servers.project}${projectEndpoints.index}`
 };
 
 export default paths;

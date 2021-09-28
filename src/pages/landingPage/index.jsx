@@ -16,6 +16,8 @@ const GeneralPage = () => {
   const store = useSelector((state) => state);
   /* state */
   const [projects, setProjects] = React.useState([]);
+  const indexData = { ...JSON.parse(localStorage.getItem('index')) };
+
   // const carouselSlides = [
   //   {
   //     content: (
@@ -188,12 +190,11 @@ const GeneralPage = () => {
               tryAgain={() => popularProjects()}
               home
             />
-
           </div>
         </div>
       </div>
 
-      <div className={store?.project?.projectCategories?.data?.data?.length > 0 ? 'row bg-light' : 'd-none'}>
+      <div className={indexData?.categories?.length > 0 ? 'row bg-light' : 'd-none'}>
         <div className="content">
           <div className="w-100 margin-center m-t-40">
             <div className="category row justify-content-center my-4">
@@ -203,7 +204,7 @@ const GeneralPage = () => {
               <div className="row ">
                 <div className="col-md-8 offset-md-2 text-center ">
                   {
-                    store?.project?.projectCategories?.data?.data?.map(
+                    indexData?.categories?.map(
                       (category) => (
                         <Link to={{ pathname: '/explore', cat: category }} key={category.name} type="button" className="px-5 m-2 pt-2 transformed-4 categoryButtons butt" data-text={category.name}>
                           <span className="">

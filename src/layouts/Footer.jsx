@@ -29,7 +29,7 @@ const Footer = () => (
           </div>
           <div className="col-lg-4 col-md-6 col-sm-12">
             <h5 className="m-b-20">Connect</h5>
-            <p className="m-b-10">
+            <div className="m-b-10">
               <p>Connect with us on social media for our latest update</p>
               <div className="d-flex py-2">
                 <div className=" mt-2">
@@ -53,7 +53,7 @@ const Footer = () => (
                   </a>
                 </div>
               </div>
-            </p>
+            </div>
           </div>
           <div className="col-lg-4 col-md-6 col-sm-12">
             <h5 className="m-b-20">Legal</h5>

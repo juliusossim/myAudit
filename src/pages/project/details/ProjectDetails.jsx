@@ -50,7 +50,10 @@ const ProjectDetails = (items) => {
   useEffect(() => {
     if (store.detailsSimilar?.status === 'success') {
       commentDonors();
-      setProject({ ...store.detailsSimilar?.data?.data?.project });
+      setProject({
+        ...store.detailsSimilar?.data?.data?.project,
+        totalProjects: store.detailsSimilar?.data?.data?.data?.totalProjects?.total
+      });
       setSimilar([...store.detailsSimilar?.data?.data?.similar]);
       setMedia(store.detailsSimilar?.data?.data?.project?.media);
       setActiveMedia(store.detailsSimilar?.data?.data?.project?.media[0]);

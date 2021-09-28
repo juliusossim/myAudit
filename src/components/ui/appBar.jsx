@@ -217,7 +217,7 @@ const SearchAppBar = ({
                         {item.icon}
                       </Badge>
                     </IconButton>
-                    {!item?.mobileName && sentenceCaps(item.name)}
+                    {!item?.mobileName && item.name}
                   </MenuItem>
                 </Link>
               ))

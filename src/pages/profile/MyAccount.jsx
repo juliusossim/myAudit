@@ -136,20 +136,21 @@ const MyAccount = ({ setCurrent }) => {
   const successTemp = (
     <div className="row">
       <div className="row">
-        <h3 className="bold text-dark">
+        <h3 className="bold text-dark mb-2 ml-2">
           My Profile
         </h3>
         <hr />
       </div>
       <div className="d-flex ">
-        <div className="">
+        {/* <div className=""> */}
 
-          <div className="">
-            <ListMat props={linkProps} clss={{ main: 'bg-black', item: 'colorful-7 mt-1' }} />
-          </div>
+        {/*  <div className=""> */}
+        {/*    <ListMat props={linkProps}
+         clss={{ main: 'bg-black', item: 'colorful-7 mt-1' }} /> */}
+        {/*  </div> */}
 
-        </div>
-        <div className="pb-5h colorful-7 px-5 bg-white inset-shadow border-radius-5 ">
+        {/* </div> */}
+        <div className="pb-5h px-5 bg-white inset-shadow border-radius-5 ">
           <CardContent>
             <div className="d-flex">
               <PageTemp

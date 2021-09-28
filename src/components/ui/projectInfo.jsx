@@ -22,6 +22,7 @@ const ProjectInfo = ({
   project, styled, logo, actions, chip, shares, clss
 }) => {
   const [open, setOpen] = React.useState(false);
+  const user = { ...JSON.parse(localStorage.getItem('user')) };
 
   const naira = process.env.REACT_APP_NAIRA;
   const handleClose = () => {
@@ -46,7 +47,7 @@ const ProjectInfo = ({
           <div>
             <div className="post-title">
               <div className="my-1">
-                <Link to={{ pathname: `/project/details/${project?.id}/1`, tab: 1, id: project?.id }}>
+                <div>
                   <span className="h5 bold">{project?.title}</span>
                   <Chip
                     className={chip ? '' : 'd-none'}
@@ -67,11 +68,11 @@ const ProjectInfo = ({
                       </small>
                     </p>
                   </div>
-                </Link>
+                </div>
               </div>
 
               <div className={logo ? 'd-flex' : 'd-none'}>
-                <Avatar src={User} alt="profile logo" />
+                <Avatar src={user?.profile_pic_url || User} alt="profile logo" />
                 <div className="">
                   <p className="text-muted theme-font-2">
                     <small>Posted By:</small>
@@ -80,8 +81,8 @@ const ProjectInfo = ({
                   </p>
                   <p>
                     <small className="text-muted theme-font-2">
-                      2 Projects |
-                      <span className="">
+                      <span className="mr-1">{project?.totalProjects > 1 ? `${project?.totalProjects} projects |` : `${project?.totalProjects} project |`}</span>
+                      <span className="mr-1">
                         {stringDoesNotExist(project?.lga?.name) ? '' : `${stringCaps(project?.lga?.name)},`}
                       </span>
                       <span>

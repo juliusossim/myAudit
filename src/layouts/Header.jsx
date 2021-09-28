@@ -35,12 +35,12 @@ const Header = () => {
       to: '/explore'
     },
     {
-      name: 'sign in',
+      name: 'Sign in',
       icon: <RiLoginCircleLine />,
       to: '/login'
     },
     {
-      name: 'sign up',
+      name: 'Sign up',
       icon: <SiGnuprivacyguard />,
       to: '/register'
     }
@@ -62,13 +62,13 @@ const Header = () => {
             to: '/explore'
           },
           {
-            name: 'sign out',
+            name: 'Sign out',
             icon: <RiLogoutCircleLine />,
             action: () => logout('/', false)
           },
           {
-            icon: <IoIosCreate />,
-            name: <button type="button" className="btn">create project</button>,
+            // icon: <IoIosCreate />,
+            name: <button type="button" className="btn">Create project</button>,
             to: '/create-project'
           }
         ]);
@@ -90,12 +90,12 @@ const Header = () => {
           to: '/explore'
         },
         {
-          name: 'sign out',
+          name: 'Sign out',
           icon: <RiLogoutCircleLine />,
           action: () => logout('/', false)
         },
         {
-          count: store?.data?.data?.length,
+          count: store?.notifications?.data?.data?.length,
           icon: <RiNotification4Line />,
           name: 'Notifications',
           mobileName: true,
@@ -103,7 +103,7 @@ const Header = () => {
         },
         {
           // icon: <IoIosCreate />,
-          name: <button type="button" className="btn">create project</button>,
+          name: <button type="button" className="btn">Create project</button>,
           to: '/create-project'
         }
       ]);

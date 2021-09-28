@@ -121,7 +121,7 @@ const Init = ({ setAccordionTab, setData }) => {
 
       <div>
         <div className="text-wema">
-          <p className="font-bold">Initiate A New Project</p>
+          <p className="font-bold">Begin a new project</p>
           <p>Give your project a befitting headline</p>
         </div>
         <hr />
@@ -146,12 +146,12 @@ const Init = ({ setAccordionTab, setData }) => {
 
       </div>
 
-      <div>
+      <div className="mb-5">
 
         <div className="float-right">
           <button
             title="save and continue"
-            className=" btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
+            className="btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
             type="button"
             disabled={!proceed || store?.status === 'pending' || store?.status === 'success'}
             onClick={handleSaveProgress}

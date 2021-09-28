@@ -7,7 +7,7 @@ import noData1 from '../../assets/images/nodata.png';
 const PageNotFound = ({ tryAgain, home }) => (
   <div className="w-100 m-t-40">
     <div className="max-w-600 w-600 margin-center">
-      <div style={{ fontSize: '20rem', lineHeight: '0', color: '#2b0c0cbf' }} className="text-center">
+      <div style={{ fontSize: '5rem', lineHeight: '0', color: '#2b0c0cbf' }} className="text-center">
         <ImSad />
       </div>
       <div className="text-center">
@@ -21,7 +21,7 @@ const PageNotFound = ({ tryAgain, home }) => (
             <div className="text-center">
               {
                 !home
-                  && <Link to="/" className="mr-3 btn btn-small text-center" type="button">Go Home</Link>
+                  && <button className="mr-3 btn btn-small text-center" type="button" onClick={() => window.location.replace('/')}>Go Home</button>
               }
               {/* <button onClick={tryAgain} className="btn btn-small
                  text-center" type="button">Try Again</button> */}

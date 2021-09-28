@@ -358,9 +358,16 @@ const RegisterPage = () => {
     }
   }, [store.verifyCorporate]);
   useEffect(() => {
+    if (store.sendAccountOtp.status === 'failed') {
+      notifier({
+        text: 'OTP failed to send',
+        title: 'Failed',
+        type: 'error'
+      });
+    }
     if (store.sendAccountOtp.status === 'success') {
       notifier({
-        text: 'OTP Sent. Note that OTP expires after 15 minutes.',
+        text: 'OTP Sent. Note that OTP expires after 5 minutes.',
         title: 'Success',
         type: 'success'
       });
@@ -465,7 +472,7 @@ const RegisterPage = () => {
                     user.registered ? `Verify ${user?.details?.otp ? 'OTP' : 'Profile'}` : 'Create Profile'
                   }
                 </h3>
-                <p className={user?.details?.otpVerified ? 'd-none' : ''}>{`To Start A Project, You Need To ${user.registered ? `Verify ${user?.details?.otp ? 'OTP...' : 'Profile...'}` : 'Create A Profile'}...`}</p>
+                <p className={user?.details?.otpVerified ? 'd-none' : ''}>{`To start a project, you need to ${user.registered ? `verify ${user?.details?.otp ? 'OTP...' : 'profile...'}` : 'Create a profile'}...`}</p>
                 <hr />
                 <div className="login-form pb-5h">
                   {
@@ -506,10 +513,12 @@ const RegisterPage = () => {
                             )
 
                           }
-                          {
-                            store.sendAccountOtp?.status === 'failed'
-                            && (<div className="text-danger"><p className="ping">OTP Could Failed To Send. Please Try Again</p></div>)
-                          }
+                          {/* { */}
+                          {/*  store.sendAccountOtp?.status === 'failed' */}
+                          {/*  && (<div className="text-danger">
+                          <p className="ping">OTP Could Failed To Send.
+                           Please Try Again</p></div>) */}
+                          {/* } */}
                         </div>
                       </div>
                     )
