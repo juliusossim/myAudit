@@ -34,15 +34,12 @@ const Select2 = (
   const [show, setShow] = React.useState(false);
   const [edit, setEdit] = React.useState(false);
 
-  useEffect(() => {
-    setSearchResults(available());
-  }, [searchTerm, options]);
+  useEffect(() => searchTerm?.length > 2 && setSearchResults(available()), [searchTerm, options]);
   useEffect(() => {
     if (searchResults?.length > 0) {
-      setSelectOptions(searchResults);
-    } else {
-      setSelectOptions(options);
+      return setSelectOptions(searchResults);
     }
+    return setSelectOptions(options);
   }, [searchResults, options]);
   useEffect(() => setSelectedOption(value), [value]);
 

@@ -20,7 +20,7 @@ import Kat from '../../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg';
 import { apiOptions } from '../../../services/fetch';
 import MediaSlider from '../../../components/microComponents/mediaSlider';
 import ProjectInfo from '../../../components/ui/projectInfo';
-import NoData from '../../authentication/NoData';
+// import NoData from '../../authentication/NoData';
 
 /**
  *

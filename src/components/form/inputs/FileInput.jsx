@@ -50,7 +50,6 @@ const FileInput = (
                               alt={upload}
                             />
                             <button onClick={() => removeItem(upload)} type="button" className="text-white btn-sm btn-danger radius50  remove-media">x</button>
-
                           </>
                         )
                     }

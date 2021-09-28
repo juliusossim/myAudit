@@ -23,8 +23,12 @@ export const createProjectName = (payload) => {
       if (response?.status === 200 || response?.status === 201) {
         dispatch(success(response?.data));
       } else if (response) {
+        console.log(response.message);
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
+      } else {
+        // console.log(response);
+        dispatch(failure(res || 'we could not connect to the server at this time, please try again later.!'));
+      }
     });
   };
 };

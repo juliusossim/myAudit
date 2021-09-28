@@ -8,8 +8,8 @@ import CardContent from '@material-ui/core/CardContent';
 import { RiNotification4Line } from 'react-icons/all';
 import Badge from '@material-ui/core/Badge';
 import { notifications } from '../../redux/actions/profileActions';
-import Loader from '../../components/microComponents/loader';
-import NoData from '../authentication/NoData';
+// import Loader from '../../components/microComponents/loader';
+// import NoData from '../authentication/NoData';
 import PageTemp from '../../components/temps/PageTemp';
 
 const user = { ...JSON.parse(localStorage.getItem('user')) };

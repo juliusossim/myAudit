@@ -66,7 +66,7 @@ const Project2 = (
         (ste) => ste.stateId === (formData.stateId || 1)
       )[0].lgas);
     }
-  }, [formData, indexData.states]);
+  }, [formData]);
 
   useEffect(() => {
     setFormData({ ...formData, endDate: addDays(new Date(formData.startDate), 7) });

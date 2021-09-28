@@ -37,7 +37,9 @@ const Init = ({ setAccordionTab, setData }) => {
       notifier({
         type: 'error',
         title: 'Initialisation Failed',
-        text: 'The project failed to initialise, try this process again below'
+        text: store?.message
+          || store?.data
+          || 'The project failed to initialise, try this process again below'
       });
     }
     if (store?.status === 'success') {
@@ -52,23 +54,11 @@ const Init = ({ setAccordionTab, setData }) => {
         title: 'Progress Saved',
         text: 'Your project has been recorded'
       });
-      setTimeout(() => handleClose(), 1000);
-    }
-  }, [show]);
-  // const text = `Your project ${formData.title} has been initialized`;
-  const handleClose = () => {
-    setData({ ...store?.data?.data, ...formData });
-    setShow(false);
-    setAccordionTab(1);
-  };
-
-  const handleSaveProgress = () => {
-    if (!stringDoesNotExist(formData.title)) {
-      dispatch(createProjectName(formData));
-      setFormData({
+      setData({
+        ...store?.data?.data,
         ...formData,
         file: [],
-        summary: `${formData.title} is a project requesting public funding to...`,
+        summary: `${store?.data?.data.title} is a project requesting public funding to...`,
         projectType: 10,
         categoryId: 10,
         state: 'Lagos',
@@ -76,6 +66,19 @@ const Init = ({ setAccordionTab, setData }) => {
         startDate: addDays(Moment.now(), 3),
         endDate: addDays(Moment.now(), 10)
       });
+      return handleClose();
+    }
+    return show;
+  }, [show]);
+  // const text = `Your project ${formData.title} has been initialized`;
+  const handleClose = () => {
+    setShow(false);
+    setAccordionTab(1);
+  };
+
+  const handleSaveProgress = () => {
+    if (!stringDoesNotExist(formData.title)) {
+      dispatch(createProjectName(formData));
     }
   };
   const handleChange = (e) => {

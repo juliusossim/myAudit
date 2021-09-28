@@ -65,8 +65,8 @@ const fetchBackend = async (
         // log the user out and return
         await logout(process.env.REACT_APP_JWT_SECRET, true);
       }
-      // console.log(err?.response?.data?.errors);
-      return err?.response?.data?.errors;
+      console.log(err?.response?.data);
+      return err?.response?.data?.errors || err?.response?.data?.message;
     });
 };
 

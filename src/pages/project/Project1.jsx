@@ -35,6 +35,7 @@ const Project1 = ({
   const [show, setShow] = useState(false);
   const [loading, setLoading] = useState(false);
 
+  const indexData = { ...JSON.parse(localStorage.getItem('index')) };
   const showUpload = (err) => notifier({
     type: 'error',
     title: 'error',
@@ -58,8 +59,16 @@ const Project1 = ({
 
   useEffect(() => {
     if (store.deleteMedia.status === 'success') {
-      removeAtIndex(formData.deleteMedia);
+      return removeAtIndex(formData.deleteMedia);
     }
+    if (store.deleteMedia.status === 'failed') {
+      return notifier({
+        title: 'error',
+        type: 'error',
+        text: store.deleteMedia?.data || store.deleteMedia?.data?.message || 'failed to delete project'
+      });
+    }
+    return 'clear';
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store.deleteMedia?.status]);
 
@@ -98,14 +107,14 @@ const Project1 = ({
       const targetAmount = () => formData.donationTarget.replace(/[^\d.]/g, '');
       tem.donationTarget = Number(targetAmount());
     }
-    const category = store?.projectCategories?.data?.data
-      !== undefined && store?.projectCategories?.data?.data.filter(
+    const category = indexData?.categories
+      !== undefined && indexData?.categories?.filter(
       (cat) => cat.id === formData.categoryId
     );
     // const authUser = JSON.parse(localStorage.getItem('loginData'));
     if (stringDoesNotExist(tem.description)) {
       tem.description = `
-  Hi my name is ${formData.creator?.fullName?.name || 'anonymous'},
+  Hi my name is ${formData.creator?.full_name?.name || 'anonymous'},
   I am appealing to the general public to join in raising funds to support our ${category?.name || formData.title}
   `;
     }
@@ -125,35 +134,6 @@ const Project1 = ({
     const {
       name, value, files, apiValue
     } = e?.target;
-    // if (name === 'media') {
-    //   const fileSize = (files[0]?.size / 1024 / 1024).toFixed(3);
-    //   if (fileSize > 1) {
-    //     return notifier({
-    //       type: 'error',
-    //       title: 'error',
-    //       text: `the media size of ${fileSize}MB is too large, size must not be larger than 1MB`
-    //     });
-    //   }
-    //   if (formData?.file && formData?.file?.indexOf(files[0] === -1)) {
-    //     setFormData({
-    //       ...formData,
-    //       file: [...formData.file, files[0]]
-    //     });
-    //   } else {
-    //     setFormData({
-    //       ...formData,
-    //       file: [files[0]]
-    //     });
-    //   }
-    //
-    //   dispatch(
-    //     uploadMedia(
-    //       {
-    //         payload: { file: files[0], id: formData.id }, setProgress
-    //       }
-    //     )
-    //   );
-    // }
     if (name === 'media' && formData?.file?.indexOf(files[0] === -1)) {
       const fileSize = (files[0]?.size / 1024 / 1024).toFixed(3);
       if (fileSize > 1) {
@@ -165,7 +145,7 @@ const Project1 = ({
       }
       setFormData({
         ...formData,
-        file: [...formData.file, files[0]]
+        media: [...formData.media, files[0]]
       });
       dispatch(
         uploadMedia(
@@ -241,7 +221,7 @@ const Project1 = ({
           formBuilderProjectsStartProps(
             {
               formData,
-              categories: store?.projectCategories?.data?.data,
+              categories: indexData.categories,
               multiple: true,
               removeItem: deleteProjectMedia,
               setFormData: cancelUpload,
@@ -268,7 +248,6 @@ const Project1 = ({
         <div className="text-wema">
           <p className="font-bold">
             <span className="pr-1">Complete your</span>
-            {/* <span className="pr-1 bold">{formData.title}</span> */}
             <span className="">project</span>
           </p>
         </div>
@@ -276,58 +255,8 @@ const Project1 = ({
       </div>
 
       <PageTemp
-        initial={(
-          <div>
-            <FormBuilder
-              formItems={
-                formBuilderProjectsStartProps(
-                  {
-                    formData,
-                    categories: store?.projectCategories?.data?.data,
-                    multiple: true,
-                    removeItem: deleteProjectMedia,
-                    setFormData: cancelUpload,
-                    progress,
-                    handleBlur,
-                    handleChange,
-                    handleDateChange,
-                    btnMethod: () => setFormData({ ...formData, title: '' }),
-                    loading: { status: store?.project?.status, text: 'initializing your project' },
-                    loadingMedia: store.media?.status,
-                    errors
-                  }
-                )
-              }
-            />
-
-          </div>
-        )}
-        view={(
-          <div>
-            <FormBuilder
-              formItems={
-                formBuilderProjectsStartProps(
-                  {
-                    formData,
-                    categories: store?.projectCategories?.data?.data,
-                    multiple: true,
-                    removeItem: deleteProjectMedia,
-                    setFormData: cancelUpload,
-                    progress,
-                    handleBlur,
-                    handleChange,
-                    handleDateChange,
-                    btnMethod: () => setFormData({ ...formData, title: '' }),
-                    loading: { status: store?.project?.status, text: 'initializing your project' },
-                    loadingMedia: store.media?.status,
-                    errors
-                  }
-                )
-              }
-            />
-
-          </div>
-        )}
+        initial={initialTemp}
+        view={initialTemp}
         isPending={loading}
         status={store?.project1?.status}
       />

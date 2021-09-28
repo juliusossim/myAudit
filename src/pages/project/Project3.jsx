@@ -68,7 +68,7 @@ const Project3 = () => {
         (ste) => ste.stateId === (formData.stateId || 1)
       )[0].lgas);
     }
-  }, [indexData, formData]);
+  }, [formData]);
 
   useEffect(() => {
     if (store.media.status === 'failed' && store?.getProject?.status !== 'pending') {

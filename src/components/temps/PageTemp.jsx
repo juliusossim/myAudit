@@ -1,7 +1,7 @@
 import React from 'react';
 import Loader from '../microComponents/loader';
-import NoData from '../../pages/authentication/NoData';
 import PageNotFound from '../../pages/authentication/PageNotFound';
+import NoData from '../../pages/authentication/NoData';
 
 const PageTemp = ({
   status, view, error, noData, initial, isPending, tryAgain, home

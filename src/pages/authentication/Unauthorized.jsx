@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import unauthorised from '../../assets/images/unauth.png';
+// import unauthorised from '../../assets/images/unauth.png';
 
 const Unauthorized = () => (
   <div className="w-100 m-t-40">

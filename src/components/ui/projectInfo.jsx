@@ -35,7 +35,7 @@ const ProjectInfo = ({
 
   return (
     <Link to={{ pathname: `/project/details/${project?.id}/1`, tab: 1, id: project?.id }}>
-      <Paper elevation={3} className={clss || 'h-52h post overflow-y-hidden'}>
+      <Paper elevation={3} className={clss || 'h-52h post overflow-y-hidden px-md-0 px-3'}>
         <div className={logo ? 'd-none' : ''}>
           <CardMedia
             className="h-18h post"
@@ -73,7 +73,7 @@ const ProjectInfo = ({
 
               <div className={logo ? 'd-flex' : 'd-none'}>
                 <Avatar src={user?.profile_pic_url || User} alt="profile logo" />
-                <div className="">
+                <div className="ml-2">
                   <p className="text-muted theme-font-2">
                     <small>Posted By:</small>
                     {' '}

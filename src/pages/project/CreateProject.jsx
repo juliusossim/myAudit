@@ -29,9 +29,9 @@ const CreateProject = () => {
   const [bread, setBread] = useState(null);
   const [accordionTab, setAccordionTab] = useState(parseInt(tab, 10) || 0);
 
-  useEffect(() => {
-    dispatch(projectCategories());
-  }, []);
+  // useEffect(() => {
+  //   dispatch(projectCategories());
+  // }, []);
 
   const Init = lazy(() => import('./Init'));
   const Project1 = lazy(() => import('./Project1'));

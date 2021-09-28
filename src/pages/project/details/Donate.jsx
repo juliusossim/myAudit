@@ -57,6 +57,7 @@ const Donate = () => {
   const [init, setInit] = useState(false);
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
+  const user = { ...JSON.parse(localStorage.getItem('user')) };
 
   useEffect(() => {
     if (project === undefined) {
@@ -67,7 +68,11 @@ const Donate = () => {
     if (project !== undefined) {
       setItem(
         {
-          ...item, ...project
+          ...item,
+          ...project,
+          fullName: `${user?.first_name} ${user?.middle_name} ${user?.last_name}`,
+          email: user?.email,
+          phone_number: user?.phone_number
         }
       );
     }
