@@ -2,31 +2,61 @@ import React, {
   Suspense, useCallback, useEffect
 } from 'react';
 import { Switch, Route } from 'react-router-dom';
+import _ from 'lodash';
 
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import MainPortal from './routes/MainPortal';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import Loader from './components/microComponents/loader';
 import { projectAction, projectCategories } from './redux/actions/projectActions';
+import { apiOptions } from './services/fetch';
 
 function App() {
   const dispatch = useDispatch();
-  const apiMethod = (
+  const store = useSelector((state) => state.project);
+  const indexData = { ...JSON.parse(localStorage.getItem('index')) };
+
+  // const cacheAvailable = 'caches' in window.self;
+  // const cacheName = 'index';
+  // const url = `${process.env.REACT_APP_BACKEND_URL}
+  // /${process.env.REACT_APP_PROJECT_SERVER}/index`;
+  // if (cacheAvailable) {
+  //   caches.open(cacheName).then((cache) => {
+  //     cache.add(url).then(() => {
+  //       console.log('Data cached ');
+  //     });
+  //   });
+  // }
+  // console.log();
+  const index = useCallback(() => dispatch(projectAction(
     {
-      method: 'get',
-      options: {
-        endpoint: 'STATE_LGAS'
-      }
+      action: 'INDEX',
+      routeOptions: apiOptions({
+        method: 'get',
+        auth: true,
+        endpoint: 'INDEX'
+      })
     }
-  );
-  const getStateLgas = useCallback(() => dispatch(projectAction(
-    { action: apiMethod.options.endpoint, routeOptions: apiMethod }
   )), []);
-  useEffect(() => {
-    getStateLgas();
-    dispatch(projectCategories());
+  const storeIndex = useCallback((data) => {
+    if (!_.isEmpty(data)) {
+      localStorage.setItem('index', JSON.stringify(data));
+    }
   }, []);
+
+  useEffect(() => {
+    if (_.isEmpty(indexData)) {
+      return index();
+    }
+    return false;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+  useEffect(() => {
+    if (store?.index?.status === 'success' && !_.isEmpty(store?.index?.data?.data?.categories)) {
+      storeIndex(store?.index?.data?.data);
+    }
+  }, [store?.index?.status]);
   return (
     <Suspense fallback={(
       <div style={{

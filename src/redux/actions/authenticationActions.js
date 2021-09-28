@@ -31,7 +31,7 @@ export const register = (payload) => {
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };
@@ -46,7 +46,7 @@ export const verifyIndividual = (payload) => {
       dispatch(success(response?.data));
     } else if (response) {
       dispatch(failure(response?.errors || response));
-    } else dispatch(failure('You are currently not connected to the internet!'));
+    } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -63,7 +63,7 @@ export const verifyCorporate = (payload) => {
       dispatch(success(response?.data));
     } else if (response) {
       dispatch(failure(response?.errors || response));
-    } else dispatch(failure('You are currently not connected to the internet!'));
+    } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -80,7 +80,7 @@ export const verifyAccountOtp = (payload) => {
       dispatch(success(response?.data));
     } else if (response) {
       dispatch(failure(response?.errors || response));
-    } else dispatch(failure('You are currently not connected to the internet!'));
+    } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -94,7 +94,7 @@ export const sendAccountOtp = (payload) => {
       dispatch(success(response?.data));
     } else if (response) {
       dispatch(failure(response?.errors || response));
-    } else dispatch(failure('You are currently not connected to the internet!'));
+    } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -117,7 +117,7 @@ export const login = (payload) => {
         localStorage.setItem('user', JSON.stringify(response?.data?.data?.user));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };
@@ -139,7 +139,7 @@ export const changePassword = (payload) => {
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };
@@ -158,7 +158,7 @@ export const forgotPassword = (payload) => {
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };
@@ -179,7 +179,7 @@ export const resetPassword = (payload) => {
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };
@@ -203,7 +203,7 @@ export const uploadLogo = ({ payload, setProgress }) => {
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };

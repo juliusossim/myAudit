@@ -12,6 +12,7 @@ import {
   MdAccountCircle, MdMenu, MdMoreVert, MdNotifications, MdSearch
 } from 'react-icons/all';
 import { Link } from 'react-router-dom';
+import { sentenceCaps } from '../../utilities/stringOperations';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -131,7 +132,7 @@ const SearchAppBar = ({
       {
         menu?.map((item) => (
           <Link key={item.name || Math.random()} to={item.to || '#'} onClick={item.action}>
-            <MenuItem onClick={handleMenuClose}>{item.name}</MenuItem>
+            <MenuItem onClick={handleMenuClose}>{sentenceCaps(item.name)}</MenuItem>
           </Link>
         ))
       }
@@ -158,7 +159,7 @@ const SearchAppBar = ({
                   {item.icon}
                 </Badge>
               </IconButton>
-              <p>{item.name}</p>
+              <p>{sentenceCaps(item.name)}</p>
             </MenuItem>
           </Link>
         ))
@@ -187,7 +188,7 @@ const SearchAppBar = ({
             </Link>
           </div>
           <Typography className={classes.title} variant="h6" noWrap>
-            {title}
+            {sentenceCaps(title)}
           </Typography>
           {/* <div className={classes.search}> */}
           {/*  <div className={classes.searchIcon}> */}

@@ -73,7 +73,10 @@ const paths = {
   CHANGE_MANAGER: `${servers.auth}${profileEndpoints.changeManager}`,
   NOTIFICATIONS: `${servers.project}${profileEndpoints.notifications}`,
   MY_PROJECTS: `${servers.project}${projectEndpoints.myProjects}`,
-  PROFILES: `${servers.auth}${profileEndpoints.getProfile}`
+  PROFILES: `${servers.auth}${profileEndpoints.getProfile}`,
+
+  // index
+  INDEX: `${servers.project}${projectEndpoints.index}`
 };
 
 export default paths;

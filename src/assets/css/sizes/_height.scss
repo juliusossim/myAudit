@@ -161,6 +161,18 @@
     height: 400px!important;
   }
 }
+.h-446 {
+  height: 223px!important;
+  @include sm {
+    height: 300px!important;
+  }
+  @include md {
+    height: 386px!important;
+  }
+  @include lg {
+    height: 446px!important;
+  }
+}
 
 .mh-25 {
   max-height: 25vh !important;

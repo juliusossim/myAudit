@@ -46,6 +46,8 @@ const Project3 = () => {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState('');
 
+  const indexData = { ...JSON.parse(localStorage.getItem('index')) };
+
   const mapIndex = (arr) => arr.map((ar, index) => ({
     value: index + 1,
     name: ar
@@ -60,13 +62,13 @@ const Project3 = () => {
   * get States and LGAs
   * */
   useEffect(() => {
-    if (store.stateLga.status === 'success') {
-      setStates(store?.stateLga?.data?.data);
-      setLgas(store?.stateLga?.data?.data?.filter(
+    if (!_.isEmpty(indexData?.states)) {
+      setStates(indexData?.states);
+      setLgas(indexData?.states?.filter(
         (ste) => ste.stateId === (formData.stateId || 1)
       )[0].lgas);
     }
-  }, [store.stateLga.status, formData]);
+  }, [indexData, formData]);
 
   useEffect(() => {
     if (store.media.status === 'failed' && store?.getProject?.status !== 'pending') {
@@ -141,7 +143,7 @@ const Project3 = () => {
       notifier({
         type: 'error',
         title: 'error',
-        text: 'this action failed to execute'
+        text: 'this action failed to execute, ensure your profile is verified'
       });
       setLoading(false);
     }

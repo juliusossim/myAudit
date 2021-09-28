@@ -9,6 +9,8 @@ import { RiNotification4Line } from 'react-icons/all';
 import Badge from '@material-ui/core/Badge';
 import { notifications } from '../../redux/actions/profileActions';
 import Loader from '../../components/microComponents/loader';
+import NoData from '../authentication/NoData';
+import PageTemp from '../../components/temps/PageTemp';
 
 const user = { ...JSON.parse(localStorage.getItem('user')) };
 
@@ -59,89 +61,79 @@ const Notifications = ({ setCurrent }) => {
     }
   }, [store.status]);
 
-  return (
-    <div className={setCurrent === undefined ? ' pb-5h' : ''}>
-      <div className="w-600 margin-center m-t-40 ">
-        <div className="login-form-container p-20 mt-5">
+  const temp = (
+    <div className="login-form-container p-20 mt-5">
+      <div className="w-600">
+        <div className="login-form pb-5h">
+          <h3 className="bold text-dark mt-2">
+            <Badge badgeContent={store?.data?.data?.length} color="secondary">
+              <span className=" border-bottom">
+                Notifications
+              </span>
+            </Badge>
+          </h3>
           {
-            store.status === 'pending'
-          && (
-            <Loader />
-          )
+            week.length > 0
+        && (
+          <div className="py-3 ">
+            <h5 className="bold text-dark mb-2">
+              <Badge badgeContent={week.length} color="secondary">
+                this week
+              </Badge>
+
+            </h5>
+            {
+              mapToView(week)
+            }
+          </div>
+        )
           }
           {
-            store.status === 'success'
-          && (
-            <div className="login-form pb-5h">
-              <h3 className="bold text-dark mt-2">
-                <Badge badgeContent={store?.data?.data?.length} color="secondary">
-                  <span className=" border-bottom">
-                    Notifications
-                  </span>
-                </Badge>
-              </h3>
-              {
-                week.length > 0
-                && (
-                  <div className="py-3 ">
-                    <h5 className="bold text-dark mb-2">
-                      <Badge badgeContent={week.length} color="secondary">
-                        this week
-                      </Badge>
+            month.length > 0
+        && (
+          <div className="py-3">
+            <h5 className="bold text-dark mb-2">
+              <Badge badgeContent={month.length} color="secondary">
+                this month
+              </Badge>
 
-                    </h5>
-                    {
-                      mapToView(week)
-                    }
-                  </div>
-                )
-              }
-              {
-                month.length > 0
-                && (
-                  <div className="py-3">
-                    <h5 className="bold text-dark mb-2">
-                      <Badge badgeContent={month.length} color="secondary">
-                        this month
-                      </Badge>
-
-                    </h5>
-                    {
-                      mapToView(month)
-                    }
-                  </div>
-                )
-              }
-              {
-                old.length > 0
-                && (
-                  <div className="py-3">
-                    <h5 className="bold text-dark mb-2">
-                      <Badge badgeContent={month.length} color="secondary">
-                        Earlier
-                      </Badge>
-
-                    </h5>
-                    {
-                      mapToView(old)
-                    }
-                  </div>
-                )
-              }
-            </div>
-          )
+            </h5>
+            {
+              mapToView(month)
+            }
+          </div>
+        )
           }
           {
-            store.status === 'Failed'
-          && (
-            <div className="login-form pb-5h">
-              <h3 className="bold text-dark">
-                we could not load your data
-              </h3>
-            </div>
-          )
+            old.length > 0
+        && (
+          <div className="py-3">
+            <h5 className="bold text-dark mb-2">
+              <Badge badgeContent={month.length} color="secondary">
+                Earlier
+              </Badge>
+
+            </h5>
+            {
+              mapToView(old)
+            }
+          </div>
+        )
           }
         </div>
+      </div>
+    </div>
+  );
+
+  return (
+    <div className={setCurrent === undefined ? ' pb-5h' : ''}>
+      <div className="w-100 margin-center m-t-40 ">
+
+        <PageTemp
+          view={temp}
+          status={store?.status}
+        />
+
       </div>
     </div>
 

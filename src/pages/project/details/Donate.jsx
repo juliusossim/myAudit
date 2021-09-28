@@ -14,6 +14,7 @@ import Chip from '@material-ui/core/Chip';
 import {
   IoArrowBackCircleOutline, IoArrowForwardCircleOutline
 } from 'react-icons/all';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import {
   projectAction, uploadMedia
 } from '../../../redux/actions/projectActions';
@@ -106,8 +107,8 @@ const Donate = () => {
   }, [store.projectDetails?.status]);
   useEffect(() => {
     if (store.paymentInitiate?.status === 'success') {
-      setFormData(store.paymentInitiate?.data?.data);
       if (store.paymentInitiate?.data?.data?.isManual) {
+        setFormData(store.paymentInitiate?.data?.data);
         setOpen(true);
         setInit(false);
       } else {
@@ -396,6 +397,7 @@ const Donate = () => {
               title={item?.terms ? '' : 'Please Accept terms and conditions first!'}
             >
               Donate
+              {store?.paymentInitiate.status === 'pending' && <CircularProgress />}
             </button>
             <button type="button" className="btn-plain btn-sm border-wema ml-2 w-25" onClick={() => goBack()}>
               Back
@@ -420,17 +422,6 @@ const Donate = () => {
             <Poster1 project={item} />
           </div>
         </div>
-        <BackdropModal
-          handleClose={handleClose}
-          content={(
-            <ManualTemp
-              data={store?.paymentInitiate?.data?.data}
-              status={store?.paymentComplete?.status}
-              handleCancel={handleClose}
-            />
-          )}
-          open={open}
-        />
       </div>
     </div>
   ), [item]);
@@ -439,10 +430,276 @@ const Donate = () => {
       <div className="w-100 margin-center m-t-40">
         <PageTemp
           status={store.projectDetails?.status}
-          view={temp}
-          initial={temp}
+          view={(
+            <div className="p-20 bg-light">
+              <div>
+                <p>
+                  <small>
+                    You are donating to
+                  </small>
+                </p>
+                <p className="h4 bold">
+                  {item?.title}
+                </p>
+              </div>
+              <div className="row">
+                <div className="col-md-7 ">
+                  <div className="bg-white">
+                    <div className="border p-4 mb-2">
+                      <p>
+                        <small className="bold">
+                          Please Enter Your Donation
+                        </small>
+                      </p>
+                      <div>
+                        <FormBuilder
+                          formItems={
+                            donationProps({
+                              formData: item,
+                              handleBlur,
+                              handleChange,
+                              errors
+                            }).amount
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="border p-4 mb-2">
+                      <p>
+                        <small className="bold">
+                          Personal Details
+                        </small>
+                      </p>
+                      <div className="row ">
+                        <FormBuilder
+                          formItems={
+                            donationProps({
+                              formData: item,
+                              handleBlur,
+                              handleChange,
+                              errors
+                            }).info
+                          }
+                        />
+                      </div>
+                      <div className="d-md-flex">
+                        <div className="ml-md-2">
+                          <input className="text-wema" type="checkbox" value={item.anonymous} name="anonymous" checked={item.anonymous} onChange={handleChecked} />
+                          {' '}
+                          <span className="terms">
+                            Donate as anonymous
+                          </span>
+                        </div>
+                        <div className="pl-md-3 pt-2 pt-md-0">
+                          <input className="text-wema" type="checkbox" name="shareMyInfo" checked={item.shareMyInfo} onChange={handleChecked} />
+                          {' '}
+                          <span className="terms">
+                            Share My Email and Phone Number with Poster of this Project
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <input className="text-wema border-wema" type="checkbox" disabled={stringDoesNotExist(item.donation)} title={stringDoesNotExist(item.donation) && 'enter donation amount to proceed'} name="terms" checked={item.terms} onChange={handleChecked} />
+                    {' '}
+                    <span className="terms">
+                      I accept the
+                      <Link to="/terms" className="text-wema mx-1">
+                        terms
+                      </Link>
+                      and
+                      <Link to="/privacy" className="text-wema mx-1">
+                        conditions
+                      </Link>
+                      of Wema Bank Crowdfunding
+                    </span>
+                  </div>
+                  <div className="d-flex mt-3">
+                    {/* <button type="button" className="btn btn-sm w-25 mr-2"
+                     onClick={() => initiateDonation(item)} disabled={!item?.terms}
+                      title={item?.terms ? '' : 'Please Accept terms and conditions first!'}> */}
+                    {/*  Donate */}
+                    {/* </button> */}
+                    <button
+                      type="button"
+                      className="btn-plain border-wema btn-sm w-25"
+                      onClick={() => initiateDonation(item)}
+                      // onMouseEnter={handleBlur}
+                      disabled={!item?.terms || stringDoesNotExist(item.donation)}
+                      title={item?.terms ? '' : 'Please Accept terms and conditions first!'}
+                    >
+                      Donate
+                      {store?.paymentInitiate.status === 'pending'
+                      && <CircularProgress className="mt-2" color="secondary" style={{ width: '20px', height: '20px' }} />}
+                    </button>
+                    <button type="button" className="btn-plain btn-sm border-wema ml-2 w-25" onClick={() => goBack()}>
+                      Back
+                    </button>
+                  </div>
+                  <div>
+                    {store?.paymentInitiate?.status === 'pending' && <Loader />}
+                  </div>
+                </div>
+                <div className="col-md-5">
+                  <div>
+                    <CardMedia
+                      className="h-30h"
+                      image={_.head(item?.media)?.uri || Kat}
+                      title={project?.title}
+                    />
+                  </div>
+                  <div className="mt-3 border p-3">
+                    <ProjectProgress project={item} />
+                  </div>
+                  <div className="mt-3 border p-3">
+                    <Poster1 project={item} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+          initial={(
+            <div className="p-20 bg-light">
+              <div>
+                <p>
+                  <small>
+                    You are donating to
+                  </small>
+                </p>
+                <p className="h4 bold">
+                  {item?.title}
+                </p>
+              </div>
+              <div className="row">
+                <div className="col-md-7 ">
+                  <div className="bg-white">
+                    <div className="border p-4 mb-2">
+                      <p>
+                        <small className="bold">
+                          Please Enter Your Donation
+                        </small>
+                      </p>
+                      <div>
+                        <FormBuilder
+                          formItems={
+                            donationProps({
+                              formData: item,
+                              handleBlur,
+                              handleChange,
+                              errors
+                            }).amount
+                          }
+                        />
+                      </div>
+                    </div>
+                    <div className="border p-4 mb-2">
+                      <p>
+                        <small className="bold">
+                          Personal Details
+                        </small>
+                      </p>
+                      <div className="row ">
+                        <FormBuilder
+                          formItems={
+                            donationProps({
+                              formData: item,
+                              handleBlur,
+                              handleChange,
+                              errors
+                            }).info
+                          }
+                        />
+                      </div>
+                      <div className="d-md-flex">
+                        <div className="ml-md-2">
+                          <input className="text-wema" type="checkbox" value={item.anonymous} name="anonymous" checked={item.anonymous} onChange={handleChecked} />
+                          {' '}
+                          <span className="terms">
+                            Donate as anonymous
+                          </span>
+                        </div>
+                        <div className="pl-md-3 pt-2 pt-md-0">
+                          <input className="text-wema" type="checkbox" name="shareMyInfo" checked={item.shareMyInfo} onChange={handleChecked} />
+                          {' '}
+                          <span className="terms">
+                            Share My Email and Phone Number with Poster of this Project
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className="mt-2">
+                    <input className="text-wema border-wema" type="checkbox" disabled={stringDoesNotExist(item.donation)} title={stringDoesNotExist(item.donation) && 'enter donation amount to proceed'} name="terms" checked={item.terms} onChange={handleChecked} />
+                    {' '}
+                    <span className="terms">
+                      I accept the
+                      <Link to="/terms" className="text-wema mx-1">
+                        terms
+                      </Link>
+                      and
+                      <Link to="/privacy" className="text-wema mx-1">
+                        conditions
+                      </Link>
+                      of Wema Bank Crowdfunding
+                    </span>
+                  </div>
+                  <div className="d-flex mt-3">
+                    {/* <button type="button" className="btn btn-sm w-25 mr-2"
+                     onClick={() => initiateDonation(item)} disabled={!item?.terms}
+                      title={item?.terms ? '' : 'Please Accept terms and conditions first!'}> */}
+                    {/*  Donate */}
+                    {/* </button> */}
+                    <button
+                      type="button"
+                      className="btn btn-sm w-25"
+                      onClick={() => initiateDonation(item)}
+                      // onMouseEnter={handleBlur}
+                      disabled={!item?.terms || stringDoesNotExist(item.donation)}
+                      title={item?.terms ? '' : 'Please Accept terms and conditions first!'}
+                    >
+                      Donate
+                      {store?.paymentInitiate.status === 'pending' && <CircularProgress />}
+                    </button>
+                    <button type="button" className="btn-plain btn-sm border-wema ml-2 w-25" onClick={() => goBack()}>
+                      Back
+                    </button>
+                  </div>
+                  <div>
+                    {store?.paymentInitiate?.status === 'pending' && <Loader />}
+                  </div>
+                </div>
+                <div className="col-md-5">
+                  <div>
+                    <CardMedia
+                      className="h-30h"
+                      image={_.head(item?.media)?.uri || Kat}
+                      title={project?.title}
+                    />
+                  </div>
+                  <div className="mt-3 border p-3">
+                    <ProjectProgress project={item} />
+                  </div>
+                  <div className="mt-3 border p-3">
+                    <Poster1 project={item} />
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         />
       </div>
+      <BackdropModal
+        handleClose={handleClose}
+        content={(
+          <ManualTemp
+            data={store?.paymentInitiate?.data?.data}
+            status={store?.paymentComplete?.status}
+            handleCancel={handleClose}
+          />
+        )}
+        open={open}
+      />
     </div>
   );
 };

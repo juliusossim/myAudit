@@ -1,8 +1,10 @@
 import React from 'react';
 import Loader from '../microComponents/loader';
+import NoData from '../../pages/authentication/NoData';
+import PageNotFound from '../../pages/authentication/PageNotFound';
 
 const PageTemp = ({
-  status, view, error, noData, initial, isPending
+  status, view, error, noData, initial, isPending, tryAgain, home
 }) => (
   <div>
     {
@@ -13,23 +15,12 @@ const PageTemp = ({
     }
     {
       status === 'failed' && (
-        <div>
-          <div className="card-body">
-            {
-              error
-              || 'We could not load the requested data at this time. You may try and refresh'
-            }
-          </div>
-        </div>
+        <PageNotFound tryAgain={tryAgain} home={home} />
       )
     }
     {
       status === 'success' && noData && (
-        <div>
-          <div className="card-body">
-            There is no data to display yet.
-          </div>
-        </div>
+        <NoData tryAgain={tryAgain} home={home} />
       )
     }
     {

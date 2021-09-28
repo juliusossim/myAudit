@@ -26,6 +26,7 @@ const Explore = () => {
   const [formData, setFormData] = useState({});
   const [sortBy, setSortBy] = useState(cat?.name);
   const [showCats, setShowCats] = useState(false);
+  const indexData = { ...JSON.parse(localStorage.getItem('index')) };
 
   useEffect(() => {
     dispatch(projectCategories());
@@ -93,9 +94,9 @@ const Explore = () => {
       </div>
       <div className={showCats ? 'pt-3 d-md-none d-lg-none d-xl-none' : 'pt-3 d-none'}>
         {
-          store?.projectCategories?.data?.data?.map((category) => (
-            <div className="categoryLink">
-              <Link to="#" onClick={() => filterCategories(category)} className="py-2" key={category.id}>
+          indexData?.categories?.map((category) => (
+            <Link to="#" onClick={() => filterCategories(category)} className="py-2" key={category.id}>
+              <div className="categoryLink">
                 <span className="font-22 font-black theme-font  ">
                   {stringCaps(category.name)}
                 </span>
@@ -103,17 +104,17 @@ const Explore = () => {
                   <AiOutlineArrowRight className="catIcon" />
                 </span>
                 <hr className="bg-black" />
-              </Link>
-            </div>
+              </div>
+            </Link>
 
           ))
         }
       </div>
       <div className="pt-3 d-md-block d-none">
         {
-          store?.projectCategories?.data?.data?.map((category) => (
-            <div className="categoryLink">
-              <Link to="#" onClick={() => filterCategories(category)} className="py-2" key={category.id}>
+          indexData?.categories?.map((category) => (
+            <Link to="#" onClick={() => filterCategories(category)} className="py-2" key={category.id}>
+              <div className="categoryLink">
                 <span className="font-22 font-black theme-font  ">
                   {stringCaps(category.name)}
                 </span>
@@ -121,8 +122,8 @@ const Explore = () => {
                   <AiOutlineArrowRight className="catIcon" />
                 </span>
                 <hr className="bg-black" />
-              </Link>
-            </div>
+              </div>
+            </Link>
 
           ))
         }
@@ -156,20 +157,20 @@ const Explore = () => {
           <div className="content">
             <div className="w-100 row  m-t-40">
               <div className="col-md-3 my-md-4">
-                <PageTemp
-                  view={catsTemp}
-                  status={store?.projectCategories?.status}
-                  error={
-                    (
-                      <div className="card-container bg-wema-light text-center projects mt-md-5 py-md-4 pl-4">
-                        <IoSadOutline />
-                        <p className="bold font-22 text-warning">
-                          Failed To Load Categories
-                        </p>
-                      </div>
-                    )
-                  }
-                />
+                {
+                  indexData?.categories?.length > 0
+                  && catsTemp
+                }
+                {
+                  store?.index?.status === 'failed'
+                  && (
+                    <div className="card-container bg-wema-light text-center projects mt-md-5 py-md-4 pl-4">
+                      <p className="bold font-22 text-warning">
+                        Failed To Load Categories
+                      </p>
+                    </div>
+                  )
+                }
               </div>
               <div className="my-md-4 col-md-9">
                 <div className="col-12  projects text-left mt-md-5 mt-2 ">

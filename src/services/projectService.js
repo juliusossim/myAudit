@@ -27,3 +27,4 @@ export const projectComments = 'Comments'; // several queries
 export const getComment = 'Comments'; // id
 export const patchComment = 'Comments'; // id
 export const postComment = 'Comments'; // id
+export const index = 'index'; // id

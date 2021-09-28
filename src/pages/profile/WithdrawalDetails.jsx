@@ -1,13 +1,9 @@
 import React, { lazy, useEffect, useState } from 'react';
-import localforage from 'localforage';
-import { useDispatch, useSelector } from 'react-redux';
-import _ from 'lodash';
-import { myProfile } from '../../redux/actions/profileActions';
+import { useDispatch } from 'react-redux';
 import FormBuilder from '../../components/form/builders/form';
 import formBuilderProps from './constants/withdrawalDetails';
-import TextInput from '../../components/form/inputs/TextInput';
 import BackdropModal from '../../components/microComponents/backdropModal';
-import { sendAccountOtp, verifyAccountOtp } from '../../redux/actions/authenticationActions';
+import { verifyAccountOtp } from '../../redux/actions/authenticationActions';
 
 const SelectManager = lazy(() => import('./editUser/manager/SelectManager'));
 const user = { ...JSON.parse(localStorage.getItem('user')) };
@@ -32,26 +28,33 @@ const WithdrawalDetails = ({ setCurrent }) => {
     }));
   };
   return (
-    <div className="w-600 margin-center m-t-40 ">
+    <div className="w-100 margin-center m-t-40 ">
       <div className="login-form-container p-20">
         <div className="login-form pb-5h">
-          <FormBuilder
-            formItems={
-              formBuilderProps(
-                {
-                  formData
-                }
+          <div className="pb-5 max-w-400 border-wema p-4 border-radius-5">
+            <FormBuilder
+              formItems={
+                formBuilderProps(
+                  {
+                    formData
+                  }
+                )
+              }
+            />
+            {
+              user?.role === 'Manager'
+              && (
+                <div className="float-right">
+                  <button
+                    className="w-100 btn  border-wema hover-wema mr-md-1 btn-small"
+                    type="button"
+                    onClick={handleShow}
+                  >
+                    Change Details
+                  </button>
+                </div>
               )
             }
-          />
-          <div className="float-right">
-            <button
-              className="w-100 btn  border-wema hover-wema mr-md-1 btn-small"
-              type="button"
-              onClick={handleShow}
-            >
-              Change Details
-            </button>
           </div>
 
         </div>

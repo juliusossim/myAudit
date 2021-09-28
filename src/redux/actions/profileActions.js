@@ -22,7 +22,7 @@ export const myProfile = () => {
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };
@@ -41,7 +41,7 @@ export const personalAccounts = () => {
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };
@@ -61,7 +61,7 @@ export const corporateManagers = () => {
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };
@@ -78,7 +78,7 @@ export const editPersonalAccount = (payload) => {
       dispatch(success(response?.data));
     } else if (response) {
       dispatch(failure(response?.errors || response));
-    } else dispatch(failure('You are currently not connected to the internet!'));
+    } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -94,7 +94,7 @@ export const changeManager = (payload) => {
       dispatch(success(response?.data));
     } else if (response) {
       dispatch(failure(response?.errors || response));
-    } else dispatch(failure('You are currently not connected to the internet!'));
+    } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -110,7 +110,7 @@ export const myProjects = () => {
       dispatch(success(response?.data));
     } else if (response) {
       dispatch(failure(response?.errors || response));
-    } else dispatch(failure('You are currently not connected to the internet!'));
+    } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
   };
   return dispatchConnection(connection, request, dispatchActions);
 };
@@ -130,7 +130,7 @@ export const profiles = () => {
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };
@@ -150,7 +150,7 @@ export const notifications = () => {
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
-      } else dispatch(failure('You are currently not connected to the internet!'));
+      } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };
 };

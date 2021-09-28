@@ -102,6 +102,10 @@ const initialState = {
     data: {},
     status: 'initial'
   },
+  index: {
+    data: {},
+    status: 'initial'
+  },
   paymentComplete: {
     data: {},
     status: 'initial'
@@ -868,6 +872,34 @@ const projectReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       paymentComplete: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.INDEX_PENDING:
+    return {
+      ...state,
+      index: {
+        data: {},
+        status: 'pending'
+      }
+    };
+
+  case constants.INDEX_SUCCESS:
+    return {
+      ...state,
+      index: {
+        ...state.index,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.INDEX_FAILURE:
+    return {
+      ...state,
+      index: {
         data: error || {},
         status: 'failed'
       }

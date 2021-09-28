@@ -32,7 +32,7 @@
   padding: 0 10px;
   color: #0000;
   font-weight: bold;
-  background: linear-gradient(90deg, #f20aff 50%,#000 0) right/200% 100% no-repeat;
+  background: linear-gradient(90deg, rgba(242, 10, 255, 0.15) 50%,#000 0) right/200% 100% no-repeat;
   -webkit-background-clip: text;
   //background-clip: text;
   transition: .3s .3s linear;
@@ -48,7 +48,7 @@
   height: 4px;
   inset:auto auto 0 0;
   opacity: 0;
-  background: #f20aff;
+  background: rgba(242, 10, 255, 0.11);
   transform-origin: left;
   transform: rotate(-90deg);
   transition: .2s .6s,inset .3s .3s,transform .3s,width .3s;

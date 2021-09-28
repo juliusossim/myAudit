@@ -159,44 +159,44 @@ const Transactions = ({ setCurrent }) => {
   }, [store?.status]);
   return (
     <div className="w-100 margin-center m-t-40 ">
-      <div className="login-form-container p-20">
-        <div className="login-form pb-5h">
-          <div className="row pb-5">
-            <div className="col-md-3 mt-2 col-6">
-              <div className=" border-wema p-2 border-radius-5">
-                <p className="transaction-text font-14">Total Number of Projects</p>
-                <p className="bold pt-3 pl-1 pb-2">{formData?.summary?.totalProjects?.total}</p>
-              </div>
+      <PageTemp
+        status={store?.status}
+        view={(
+          <div className="login-form-container p-20">
+            <div className="login-form pb-5h">
+              <div className="row pb-5">
+                <div className="col-md-3 mt-2 col-6">
+                  <div className=" border-wema p-2 border-radius-5">
+                    <p className="transaction-text font-14">Total Number of Projects</p>
+                    <p className="bold pt-3 pl-1 pb-2">{formData?.summary?.totalProjects?.total}</p>
+                  </div>
 
-            </div>
-            <div className="col-md-3 mt-2 col-6">
-              <div className=" border-wema p-2 border-radius-5">
-                <p className="transaction-text font-14">Total Number of Donors</p>
-                <p className="bold pt-3 pl-1 pb-2">{formData?.summary?.donors?.total ?? 'Nil'}</p>
-              </div>
+                </div>
+                <div className="col-md-3 mt-2 col-6">
+                  <div className=" border-wema p-2 border-radius-5">
+                    <p className="transaction-text font-14">Total Number of Donors</p>
+                    <p className="bold pt-3 pl-1 pb-2">{formData?.summary?.donors?.total ?? 'Nil'}</p>
+                  </div>
 
-            </div>
-            <div className="col-md-3 mt-2 col-6">
-              <div className=" border-wema p-2 border-radius-5">
-                <p className="transaction-text font-14">Total Number of Shares</p>
-                <p className="bold theme-font pt-3 pl-1 pb-2">{formData?.summary?.shares ?? 'NIl'}</p>
-              </div>
+                </div>
+                <div className="col-md-3 mt-2 col-6">
+                  <div className=" border-wema p-2 border-radius-5">
+                    <p className="transaction-text font-14">Total Number of Shares</p>
+                    <p className="bold theme-font pt-3 pl-1 pb-2">{formData?.summary?.shares ?? 'NIl'}</p>
+                  </div>
 
-            </div>
-            <div className="col-md-3 mt-2 col-6">
-              <div className=" border-wema p-2 border-radius-5">
-                <p className="transaction-text font-14">Total Amount of funds raised </p>
-                <p className="bold pt-3 pl-1 pb-2">
-                  {' '}
-                  <span>&#8358;</span>
-                  <span>{formData?.summary?.amountRaised?.total?.toLocaleString() ?? 0}</span>
-                </p>
+                </div>
+                <div className="col-md-3 mt-2 col-6">
+                  <div className=" border-wema p-2 border-radius-5">
+                    <p className="transaction-text font-14">Total Amount of funds raised </p>
+                    <p className="bold pt-3 pl-1 pb-2">
+                      {' '}
+                      <span>&#8358;</span>
+                      <span>{formData?.summary?.amountRaised?.total?.toLocaleString() ?? 0}</span>
+                    </p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <PageTemp
-            status={store?.status}
-            view={(
               <div className="row">
                 <div className="col-12">
                   <OrdinaryTable
@@ -217,14 +217,16 @@ const Transactions = ({ setCurrent }) => {
                   />
                 </div>
               </div>
-            )}
-          />
-        </div>
-        <Modal
-          className={show ? 'max-w-400 right mid center' : 'max-w-400 right top off'}
-          content={transactionTemp}
-        />
-      </div>
+            </div>
+          </div>
+        )}
+      />
+
+      <Modal
+        className={show ? 'max-w-400 right mid center' : 'max-w-400 right top off'}
+        content={transactionTemp}
+      />
+
     </div>
   );
 };

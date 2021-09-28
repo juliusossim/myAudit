@@ -15,12 +15,14 @@ import { apiOptions } from '../../services/fetch';
 import { notifier } from '../../utilities/stringOperations';
 import PageTemp from '../../components/temps/PageTemp';
 
+const user = { ...JSON.parse(localStorage.getItem('user')) };
+
 const MyAccount = ({ setCurrent }) => {
   /* redux */
   const dispatch = useDispatch();
   const store = useSelector((state) => state.profile);
   /* state */
-  const [formData, setFormData] = useState();
+  const [formData, setFormData] = useState({ ...user });
   const [file, setFile] = useState(null);
   const [progress, setProgress] = useState(0);
   const [errors, setErrors] = useState({});
@@ -63,19 +65,27 @@ const MyAccount = ({ setCurrent }) => {
 
   useEffect(() => {
     setCurrent('My profile');
-    dispatch(myProfile());
   }, []);
   useEffect(() => {
     if (store?.dp?.status === 'success') {
       setFormData({ ...formData, profile_pic_url: store?.dp?.data?.data?.uri });
       localforage.setItem('user', { ...formData, profile_pic_url: store?.dp?.data?.data?.uri });
+      localStorage.setItem('user', JSON.stringify({ ...formData, profile_pic_url: store?.dp?.data?.data?.uri }));
+    }
+    if (store?.dp?.status === 'failed') {
+      notifier({
+        title: 'Upload Failed',
+        text: 'Your profile picture failed to upload to the server. Please try again',
+        type: 'error'
+      });
     }
   }, [store?.dp]);
-  useEffect(() => {
-    if (store?.profile?.status === 'success') {
-      setFormData({ ...store?.profile?.data?.data?.user });
-    }
-  }, [store?.profile?.status]);
+  // useEffect(() => {
+  //   if (store?.profile?.status === 'success') {
+  //     setFormData({ ...store?.profile?.data?.data?.user });
+  //     localforage.setItem('user', { ...store?.profile?.data?.data?.user });
+  //   }
+  // }, [store?.profile?.status]);
 
   const linkProps = [
     {
@@ -83,11 +93,11 @@ const MyAccount = ({ setCurrent }) => {
       icon: <RiLockPasswordLine />,
       link: '/change-password'
     },
-    {
-      name: 'Change Withdrawal Account',
-      icon: <FcCurrencyExchange />,
-      onClick: () => setShow(true)
-    },
+    // {
+    //   name: 'Change Withdrawal Account',
+    //   icon: <FcCurrencyExchange />,
+    //   onClick: () => setShow(true)
+    // },
     {
       name: 'sign out',
       icon: <RiLogoutCircleLine />,
@@ -126,19 +136,20 @@ const MyAccount = ({ setCurrent }) => {
   const successTemp = (
     <div className="row">
       <div className="row">
-        <h3 className="bold text-dark">
+        <h3 className="bold text-dark mb-2 ml-2">
           My Profile
         </h3>
         <hr />
       </div>
       <div className="d-flex ">
-        <div className="">
+        {/* <div className=""> */}
 
-          <div className="">
-            <ListMat props={linkProps} clss={{ main: 'bg-black', item: 'colorful-7 mt-1' }} />
-          </div>
+        {/*  <div className=""> */}
+        {/*    <ListMat props={linkProps}
+         clss={{ main: 'bg-black', item: 'colorful-7 mt-1' }} /> */}
+        {/*  </div> */}
 
-        </div>
+        {/* </div> */}
         <div className="pb-5h px-5 bg-white inset-shadow border-radius-5 ">
           <CardContent>
             <div className="d-flex">
@@ -175,16 +186,16 @@ const MyAccount = ({ setCurrent }) => {
                 )
               }
             />
-            <div className="float-right">
-              <button
-                className="w-100 btn  border-wema hover-wema mr-md-1 btn-small"
-                type="button"
-                // disabled={!store?.project?.data?.data?.id?.length > 0}
-                // onClick={handleSaveProgress}
-              >
-                Save
-              </button>
-            </div>
+            {/* <div className="float-right"> */}
+            {/*  <button */}
+            {/*    className="w-100 btn  border-wema hover-wema mr-md-1 btn-small" */}
+            {/*    type="button" */}
+            {/*    // disabled={!store?.project?.data?.data?.id?.length > 0} */}
+            {/*    // onClick={handleSaveProgress} */}
+            {/*  > */}
+            {/*    Save */}
+            {/*  </button> */}
+            {/* </div> */}
           </CardContent>
         </div>
       </div>
@@ -198,7 +209,7 @@ const MyAccount = ({ setCurrent }) => {
       <div className="w-100 bg-light margin-center m-t-40 ">
         <div className=" p-20">
           <PageTemp
-            status={store?.profile?.status}
+            status="success"
             view={successTemp}
           />
         </div>

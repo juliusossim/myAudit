@@ -8,7 +8,9 @@ import Avatar from '@material-ui/core/Avatar';
 import CardMedia from '@material-ui/core/CardMedia';
 import { Link } from 'react-router-dom';
 import { approvalColors, approvalStatus } from '../../utilities/dummyData';
-import { percentCalculator, stringCaps, stringDoesNotExist } from '../../utilities/stringOperations';
+import {
+  percentCalculator, sentenceCaps, stringCaps, stringDoesNotExist
+} from '../../utilities/stringOperations';
 import { positiveDiffs } from '../../utilities/dateOperations';
 import User from '../../assets/images/User.svg';
 import Kat from '../../assets/images/kat-yukawa-K0E6E0a0R3A-unsplash 1.svg';
@@ -20,6 +22,7 @@ const ProjectInfo = ({
   project, styled, logo, actions, chip, shares, clss
 }) => {
   const [open, setOpen] = React.useState(false);
+  const user = { ...JSON.parse(localStorage.getItem('user')) };
 
   const naira = process.env.REACT_APP_NAIRA;
   const handleClose = () => {
@@ -43,8 +46,8 @@ const ProjectInfo = ({
         <CardContent>
           <div>
             <div className="post-title">
-              <div className="my-1 px-2">
-                <Link to={{ pathname: `/project/details/${project?.id}/1`, tab: 1, id: project?.id }}>
+              <div className="my-1">
+                <div>
                   <span className="h5 bold">{project?.title}</span>
                   <Chip
                     className={chip ? '' : 'd-none'}
@@ -56,21 +59,21 @@ const ProjectInfo = ({
                   <div className={logo ? 'd-none' : ''}>
                     <p className="text-muted theme-font-2">
                       <small>
-                        <span className="px-1">
-                          {`${stringDoesNotExist(project?.lga?.name) ? 'Abuja' : stringCaps(project?.lga?.name)},`}
+                        <span className="">
+                          {stringDoesNotExist(project?.lga?.name) ? '' : `${stringCaps(project?.lga?.name)},`}
                         </span>
                         <span>
-                          {stringDoesNotExist(project?.state) ? 'Nigeria' : stringCaps(project?.state)}
+                          {stringDoesNotExist(project?.state) ? '' : stringCaps(project?.state)}
                         </span>
                       </small>
                     </p>
                   </div>
-                </Link>
+                </div>
               </div>
 
               <div className={logo ? 'd-flex' : 'd-none'}>
-                <Avatar src={User} alt="profile logo" />
-                <div className="pl-1">
+                <Avatar src={user?.profile_pic_url || User} alt="profile logo" />
+                <div className="">
                   <p className="text-muted theme-font-2">
                     <small>Posted By:</small>
                     {' '}
@@ -78,19 +81,19 @@ const ProjectInfo = ({
                   </p>
                   <p>
                     <small className="text-muted theme-font-2">
-                      2 Projects |
-                      <span className="px-1">
-                        {`${stringDoesNotExist(project?.lga?.name) ? 'Abuja' : stringCaps(project?.lga?.name)},`}
+                      <span className="mr-1">{project?.totalProjects > 1 ? `${project?.totalProjects} projects |` : `${project?.totalProjects} project |`}</span>
+                      <span className="mr-1">
+                        {stringDoesNotExist(project?.lga?.name) ? '' : `${stringCaps(project?.lga?.name)},`}
                       </span>
                       <span>
-                        {stringDoesNotExist(project?.state) ? 'Nigeria' : stringCaps(project?.state)}
+                        {stringDoesNotExist(project?.state) ? '' : stringCaps(project?.state)}
                       </span>
                     </small>
                   </p>
                 </div>
               </div>
 
-              <div className="my-1 px-2 theme-font-2 font-14 h-50-m">
+              <div className="my-1  theme-font-2 font-14 h-50-m">
                 <p>
                   {project?.summary}
                 </p>
@@ -154,32 +157,32 @@ const ProjectInfo = ({
               {/*    aria-labelledby="progress_bar" */}
               {/*  /> */}
               {/* </div> */}
-              <div className="d-flex mt-1">
-                <div className={styled ? 'pr-3' : 'd-none'}>
+              <div className="row mt-1">
+                <div className={styled ? 'col-md-4' : 'd-none'}>
 
-                  <small className="font-12 d-block">Posted By:</small>
+                  <small className="font-09 d-block">Posted By:</small>
 
-                  <span className="bold font-10 text-center pl-1">
-                    {project?.creator?.fullName || 'Private User'}
-                  </span>
+                  <div className="bold font-10">
+                    {sentenceCaps(project?.creator?.fullName) || 'Private User'}
+                  </div>
                 </div>
-                <div className="pr-3">
-                  <small className={styled ? 'd-block font-12' : 'font-12'}>Fund Percent:</small>
-                  <span className="bold font-10 text-center pl-1">
+                <div className={styled ? 'col-md-3' : 'col-md-5 font-12'}>
+                  <small className={styled ? 'd-block font-09' : 'font-12'}>Funded:</small>
+                  <div className={styled ? 'bold font-09' : 'bold font-12 pl-2'}>
                     {
                       percentCalculator(
                         { den: project?.donationTarget, num: project?.amountRaised }
                       )
                     }
-                  </span>
+                  </div>
                 </div>
-                <div className="pr-3">
-                  <small className={styled ? 'd-block font-12' : 'font-12'}>Duration:</small>
-                  <span className="bold font-10 text-center pl-1">
+                <div className={styled ? 'col-md-5' : 'col-md-7'}>
+                  <small className={styled ? 'd-block font-09' : 'font-12'}>Due Date:</small>
+                  <div className={styled ? 'bold font-09' : 'bold font-12 pl-2'}>
                     {
-                      `Due ${positiveDiffs(new Date(project?.endDate))}`
+                      positiveDiffs(new Date(project?.endDate))
                     }
-                  </span>
+                  </div>
                 </div>
               </div>
             </div>

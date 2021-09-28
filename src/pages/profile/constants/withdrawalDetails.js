@@ -14,11 +14,7 @@ const formBuilderProps = (
       type: 'number',
       label: 'Account Number',
       value: formData?.account_number || '',
-      disabled: true,
-      validations: {
-        required: true,
-        pattern: validationPatterns.account_number
-      },
+      readOnly: true,
       error: errors?.account_number
       // onBlur: handleBlur,
       // onChange: handleChange
@@ -32,11 +28,7 @@ const formBuilderProps = (
       type: 'text',
       label: 'Account Name',
       value: formData?.account_name || '',
-      disabled: true,
-      validations: {
-        required: true,
-        pattern: validationPatterns.account_name
-      },
+      readOnly: true,
       error: errors?.account_name
       // onBlur: handleBlur,
       // onChange: handleChange
