@@ -125,6 +125,35 @@ const Project1 = ({
     const {
       name, value, files, apiValue
     } = e?.target;
+    // if (name === 'media') {
+    //   const fileSize = (files[0]?.size / 1024 / 1024).toFixed(3);
+    //   if (fileSize > 1) {
+    //     return notifier({
+    //       type: 'error',
+    //       title: 'error',
+    //       text: `the media size of ${fileSize}MB is too large, size must not be larger than 1MB`
+    //     });
+    //   }
+    //   if (formData?.file && formData?.file?.indexOf(files[0] === -1)) {
+    //     setFormData({
+    //       ...formData,
+    //       file: [...formData.file, files[0]]
+    //     });
+    //   } else {
+    //     setFormData({
+    //       ...formData,
+    //       file: [files[0]]
+    //     });
+    //   }
+    //
+    //   dispatch(
+    //     uploadMedia(
+    //       {
+    //         payload: { file: files[0], id: formData.id }, setProgress
+    //       }
+    //     )
+    //   );
+    // }
     if (name === 'media' && formData?.file?.indexOf(files[0] === -1)) {
       const fileSize = (files[0]?.size / 1024 / 1024).toFixed(3);
       if (fileSize > 1) {
@@ -247,8 +276,58 @@ const Project1 = ({
       </div>
 
       <PageTemp
-        initial={initialTemp}
-        view={initialTemp}
+        initial={(
+          <div>
+            <FormBuilder
+              formItems={
+                formBuilderProjectsStartProps(
+                  {
+                    formData,
+                    categories: store?.projectCategories?.data?.data,
+                    multiple: true,
+                    removeItem: deleteProjectMedia,
+                    setFormData: cancelUpload,
+                    progress,
+                    handleBlur,
+                    handleChange,
+                    handleDateChange,
+                    btnMethod: () => setFormData({ ...formData, title: '' }),
+                    loading: { status: store?.project?.status, text: 'initializing your project' },
+                    loadingMedia: store.media?.status,
+                    errors
+                  }
+                )
+              }
+            />
+
+          </div>
+        )}
+        view={(
+          <div>
+            <FormBuilder
+              formItems={
+                formBuilderProjectsStartProps(
+                  {
+                    formData,
+                    categories: store?.projectCategories?.data?.data,
+                    multiple: true,
+                    removeItem: deleteProjectMedia,
+                    setFormData: cancelUpload,
+                    progress,
+                    handleBlur,
+                    handleChange,
+                    handleDateChange,
+                    btnMethod: () => setFormData({ ...formData, title: '' }),
+                    loading: { status: store?.project?.status, text: 'initializing your project' },
+                    loadingMedia: store.media?.status,
+                    errors
+                  }
+                )
+              }
+            />
+
+          </div>
+        )}
         isPending={loading}
         status={store?.project1?.status}
       />
