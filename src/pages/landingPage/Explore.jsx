@@ -9,6 +9,7 @@ import { apiOptions } from '../../services/fetch';
 import Loader from '../../components/microComponents/loader';
 import ProjectInfo from '../../components/ui/projectInfo';
 import {
+  notifier,
   sentenceCaps, slugify, stringCaps, stringDoesNotExist
 } from '../../utilities/stringOperations';
 import SelectInput from '../../components/form/inputs/SelectInput';
@@ -29,13 +30,23 @@ const Explore = () => {
   const indexData = { ...JSON.parse(localStorage.getItem('index')) };
 
   useEffect(() => {
-    dispatch(projectCategories());
-    if (cat === undefined) {
-      searchProjects();
-    } else {
-      searchProjects({ CategoryId: cat?.id });
+    if (store?.searchProjects?.status === 'initial') {
+      if (cat === undefined) {
+        searchProjects();
+      } else {
+        searchProjects({ CategoryId: cat?.id });
+      }
     }
-  }, []);
+    if (store?.searchProjects?.status === 'failed') {
+      notifier({
+        title: 'error',
+        type: 'error',
+        text: store?.searchProjects?.data
+          || store?.searchProjects?.data?.message
+          || 'could not load your projects'
+      });
+    }
+  }, [store?.searchProjects?.status]);
 
   useEffect(() => {
     const sortParam = sortCats.filter((item) => item?.id === formData.sort)[0]?.type;
@@ -136,7 +147,7 @@ const Explore = () => {
       {
         store?.searchProjects?.data?.data?.items?.map(
           (item, key) => (
-            <div key={item.id} className="col-md-6 col-lg-4 mb-4">
+            <div key={item.id} className="col-md-6 col-lg-4 mb-4 wow fadeInBottomLeft">
               <div className="">
                 <ProjectInfo
                   styled

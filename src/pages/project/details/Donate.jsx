@@ -528,7 +528,7 @@ const Donate = () => {
                     {/* </button> */}
                     <button
                       type="button"
-                      className="btn-plain border-wema btn-sm w-25"
+                      className="btn-plain border-wema text-wema btn-sm w-25"
                       onClick={() => initiateDonation(item)}
                       // onMouseEnter={handleBlur}
                       disabled={!item?.terms || stringDoesNotExist(item.donation)}
@@ -536,14 +536,11 @@ const Donate = () => {
                     >
                       Donate
                       {store?.paymentInitiate.status === 'pending'
-                      && <CircularProgress className="mt-2" color="secondary" style={{ width: '20px', height: '20px' }} />}
+                      && <CircularProgress className="mt-2" color="secondary" style={{ width: '15px', height: '15px' }} />}
                     </button>
                     <button type="button" className="btn-plain btn-sm border-wema ml-2 w-25" onClick={() => goBack()}>
                       Back
                     </button>
-                  </div>
-                  <div>
-                    {store?.paymentInitiate?.status === 'pending' && <Loader />}
                   </div>
                 </div>
                 <div className="col-md-5">

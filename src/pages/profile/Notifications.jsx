@@ -11,6 +11,7 @@ import { notifications } from '../../redux/actions/profileActions';
 // import Loader from '../../components/microComponents/loader';
 // import NoData from '../authentication/NoData';
 import PageTemp from '../../components/temps/PageTemp';
+import { notifier } from '../../utilities/stringOperations';
 
 const user = { ...JSON.parse(localStorage.getItem('user')) };
 
@@ -22,7 +23,7 @@ const Notifications = ({ setCurrent }) => {
   const [old, setOld] = useState([]);
 
   const mapToView = (items) => items.length > 0 && items.map((item) => (
-    <Card className="mb-2">
+    <Card className="my-5 hover-wema" key={Math.random()}>
       <CardContent>
         <div className="d-flex">
           <div>
@@ -42,13 +43,12 @@ const Notifications = ({ setCurrent }) => {
   ));
 
   useEffect(() => {
-    if (setCurrent !== undefined) {
-      setCurrent('My notifications');
+    if (store.status === 'initial') {
+      if (setCurrent !== undefined) {
+        setCurrent('My notifications');
+      }
+      dispatch(notifications());
     }
-    dispatch(notifications());
-  }, []);
-
-  useEffect(() => {
     if (store.status === 'success') {
       const weekData = store.data?.data?.filter((item) => isThisWeek(new Date(item.dateCreated)));
       const monthData = store.data?.data?.filter((item) => isThisMonth(new Date(item.dateCreated))
@@ -59,11 +59,20 @@ const Notifications = ({ setCurrent }) => {
       setMonth(monthData);
       setWeek(weekData);
     }
+    if (store?.status === 'failed') {
+      notifier({
+        title: 'error',
+        type: 'error',
+        text: store?.data
+          || store?.data?.message
+          || 'could not load your projects'
+      });
+    }
   }, [store.status]);
 
   const temp = (
     <div className="login-form-container p-20 mt-5">
-      <div className="w-600">
+      <div className="w-100">
         <div className="login-form pb-5h">
           <h3 className="bold text-dark mt-2">
             <Badge badgeContent={store?.data?.data?.length} color="secondary">
@@ -72,54 +81,56 @@ const Notifications = ({ setCurrent }) => {
               </span>
             </Badge>
           </h3>
-          {
-            week.length > 0
-        && (
-          <div className="py-3 ">
-            <h5 className="bold text-dark mb-2">
-              <Badge badgeContent={week.length} color="secondary">
-                this week
-              </Badge>
-
-            </h5>
+          <div className="row">
             {
-              mapToView(week)
+              week.length > 0
+             && (
+               <div className="py-3 col-md-4">
+                 <h5 className="bold text-dark mb-2">
+                   <Badge badgeContent={week.length} color="secondary">
+                     this week
+                   </Badge>
+
+                 </h5>
+                 {
+                   mapToView(week)
+                 }
+               </div>
+             )
+            }
+            {
+              month.length > 0
+             && (
+               <div className="py-3 col-md-4">
+                 <h5 className="bold text-dark mb-2">
+                   <Badge badgeContent={month.length} color="secondary">
+                     this month
+                   </Badge>
+
+                 </h5>
+                 {
+                   mapToView(month)
+                 }
+               </div>
+             )
+            }
+            {
+              old.length > 0
+             && (
+               <div className="py-3 col-md-4">
+                 <h5 className="bold text-dark mb-2">
+                   <Badge badgeContent={month.length} color="secondary">
+                     Earlier
+                   </Badge>
+
+                 </h5>
+                 {
+                   mapToView(old)
+                 }
+               </div>
+             )
             }
           </div>
-        )
-          }
-          {
-            month.length > 0
-        && (
-          <div className="py-3">
-            <h5 className="bold text-dark mb-2">
-              <Badge badgeContent={month.length} color="secondary">
-                this month
-              </Badge>
-
-            </h5>
-            {
-              mapToView(month)
-            }
-          </div>
-        )
-          }
-          {
-            old.length > 0
-        && (
-          <div className="py-3">
-            <h5 className="bold text-dark mb-2">
-              <Badge badgeContent={month.length} color="secondary">
-                Earlier
-              </Badge>
-
-            </h5>
-            {
-              mapToView(old)
-            }
-          </div>
-        )
-          }
         </div>
       </div>
     </div>

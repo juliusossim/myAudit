@@ -12,10 +12,10 @@ export const submitProject = 'Projects'; // param = ${id} afterParam = submit
 export const projectSummary = 'Projects'; // param = ${id} afterParam = summary
 export const projectDetails = 'Projects'; // param = ${id} afterParam = details
 export const similarProjects = 'Projects'; // param = ${id} afterParam = similar
-export const updateProject = (id) => 'ProjectUpdates';
-export const showProjectUpdate = (id) => 'ProjectUpdates'; // param = ${id}
-export const editProjectUpdate = (id) => 'ProjectUpdates'; // param = ${id}
-export const projectByStatus = (id) => 'Projects/byPublishStatus';
+export const updateProject = 'ProjectUpdates';
+export const showProjectUpdate = 'ProjectUpdates'; // param = ${id}
+export const editProjectUpdate = 'ProjectUpdates';
+export const projectByStatus = 'Projects/byPublishStatus'; // param = ${publishStatus}
 export const stateLgas = 'lgas';
 export const popularProjects = 'Projects/popularNGOsAndFundraisers';
 export const popularFundraisers = 'Projects/popularFundraisers';

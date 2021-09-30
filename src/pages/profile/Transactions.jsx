@@ -8,7 +8,9 @@ import {
   GiThumbUp, FcDownload, FiFilter
 } from 'react-icons/all';
 import { myProfile } from '../../redux/actions/profileActions';
-import { stringCaps } from '../../utilities/stringOperations';
+import {
+  notifier, stringCaps
+} from '../../utilities/stringOperations';
 import OrdinaryTable from '../../components/table';
 import { projectAction } from '../../redux/actions/projectActions';
 import { apiOptions } from '../../services/fetch';
@@ -146,14 +148,22 @@ const Transactions = ({ setCurrent }) => {
     filtering: filterable,
     exportButton: downloadable
   };
-  React.useEffect(() => {
-    userTransactions();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   React.useEffect(() => {
+    if (store?.status === 'initial') {
+      userTransactions();
+    }
     if (store?.status === 'success') {
       setFormData(store?.data?.data);
+    }
+    if (store?.status === 'failed') {
+      notifier({
+        title: 'error',
+        type: 'error',
+        text: store?.data
+          || store?.data?.message
+          || 'could not load your projects'
+      });
     }
     return true;
   }, [store?.status]);

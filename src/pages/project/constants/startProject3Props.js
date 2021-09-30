@@ -80,7 +80,7 @@ const formBuilderProjectsPreviewProps = (
           label: 'Short Description',
           value: formData?.summary || '',
           validations: {
-            maxLength: 200
+            maxLength: 100
           },
           error: errors?.summary,
           onBlur: handleBlur,
@@ -301,7 +301,7 @@ const formBuilderProjectsPreviewProps = (
           label: 'Short Description',
           value: formData?.summary || '',
           validations: {
-            maxLength: 200
+            maxLength: 100
           },
           error: errors?.summary,
           onBlur: handleBlur,

@@ -6,7 +6,7 @@ import Chip from '@material-ui/core/Chip';
 import { Link } from 'react-router-dom';
 import { myProjects } from '../../redux/actions/profileActions';
 import LazyImage from '../../components/microComponents/lazyImg';
-import { stringCaps } from '../../utilities/stringOperations';
+import { notifier, stringCaps } from '../../utilities/stringOperations';
 import Loader from '../../components/microComponents/loader';
 import { approvalStatus, approvalColors } from '../../utilities/dummyData';
 import { positiveDiffs } from '../../utilities/dateOperations';
@@ -67,17 +67,25 @@ const Projects = ({ setCurrent }) => {
   };
 
   useEffect(() => {
+    if (store.profile?.projects?.status === 'initial') {
+      setCurrent('My projects');
+      dispatch(myProjects());
+    }
     if (store.profile?.projects?.status === 'success'
     && store.profile?.projects?.data?.data?.length > 0) {
       setFormData([...store.profile?.projects?.data.data]);
       setShowView(true);
     }
+    if (store.profile?.projects?.status === 'failed') {
+      notifier({
+        title: 'error',
+        type: 'error',
+        text: store.profile?.projects?.data
+          || store.profile?.projects?.data?.message
+          || 'could not load your projects'
+      });
+    }
   }, [store.profile?.projects?.status]);
-
-  useEffect(() => {
-    setCurrent('My projects');
-    dispatch(myProjects());
-  }, []);
 
   const successTemp = (data) => (
     <div className="login-form-container p-20">

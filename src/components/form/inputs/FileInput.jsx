@@ -45,8 +45,7 @@ const FileInput = (
                               src={
                                 upload.uri
                               }
-                              height="100px"
-                              width="100px"
+                              className="h-7h"
                               alt={upload}
                             />
                             <button onClick={() => removeItem(upload)} type="button" className="text-white btn-sm btn-danger radius50  remove-media">x</button>
@@ -61,8 +60,7 @@ const FileInput = (
                               src={
                                 upload.uri
                               }
-                              height="100px"
-                              width="100px"
+                              className="h-7h"
                               alt={upload}
                             />
                             <button onClick={() => removeItem(upload)} type="button" className="text-white btn-sm btn-danger radius50  remove-media">x</button>
@@ -95,8 +93,7 @@ const FileInput = (
                                                     src={
                                                       upload.uri
                                                     }
-                                                    height="100px"
-                                                    width="100px"
+                                                    className="h-7h"
                                                     alt={upload}
                                                   />
                                                   <button onClick={() => removeItem(upload)} type="button" className="text-white btn-sm btn-danger radius50  remove-media">x</button>
@@ -127,7 +124,7 @@ const FileInput = (
                     </Skeleton>
                   )
                   : (
-                    <button type="button" className="">
+                    <button type="button" className="mt-2">
                       <div className=""><FaPlus /></div>
                       <small>{text}</small>
                     </button>
@@ -206,7 +203,7 @@ const FileInput = (
                                   : file.length > 0 && (
                                     (
                                       <div>
-                                        <img src={file} alt="inserted library" height="100px" width="100px" />
+                                        <img src={file} alt="inserted library" className="h-7h" />
                                         <button type="button" className="btn btn-small float-sm-right w-25 text-danger" onClick={setFormData}>Cancel</button>
                                       </div>
                                     )
@@ -258,7 +255,7 @@ const FileInput = (
                                 : file.length > 0 && (
                                   (
                                     <div>
-                                      <img src={file} alt="inserted library" height="100px" width="100px" />
+                                      <img src={file} alt="inserted library" className="h-7h" />
                                       <button type="button" className="btn btn-small float-sm-right w-25 text-danger" onClick={setFormData}>Cancel</button>
                                     </div>
                                   )

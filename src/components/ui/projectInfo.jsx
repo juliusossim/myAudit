@@ -19,7 +19,7 @@ import ShareTemp from '../temps/modalTemps/share';
 import ProjectProgress from '../temps/projectTemps/projectProgress';
 
 const ProjectInfo = ({
-  project, styled, logo, actions, chip, shares, clss
+  project, styled, logo, actions, chip, shares, clss, force
 }) => {
   const [open, setOpen] = React.useState(false);
   const user = { ...JSON.parse(localStorage.getItem('user')) };
@@ -34,8 +34,8 @@ const ProjectInfo = ({
   };
 
   return (
-    <Link to={{ pathname: `/project/details/${project?.id}/1`, tab: 1, id: project?.id }}>
-      <Paper elevation={3} className={clss || 'h-52h post overflow-y-hidden px-md-0 px-3'}>
+    <Paper elevation={3} className={clss || 'h-52h post overflow-y-hidden px-md-0 px-3'}>
+      <Link to={force ? '#' : `/project/details/${project?.id}/1`} onClick={() => force && window.location.assign(`/project/details/${project?.id}/1`)}>
         <div className={logo ? 'd-none' : ''}>
           <CardMedia
             className="h-18h post"
@@ -43,8 +43,11 @@ const ProjectInfo = ({
             title={project?.title}
           />
         </div>
-        <CardContent>
-          <div>
+      </Link>
+      <CardContent>
+        <div>
+          <Link to={force ? '#' : `/project/details/${project?.id}/1`} onClick={() => force && window.location.assign(`/project/details/${project?.id}/1`)}>
+
             <div className="post-title">
               <div className="my-1">
                 <div>
@@ -186,9 +189,10 @@ const ProjectInfo = ({
                 </div>
               </div>
             </div>
-            <div className={actions !== undefined ? 'd-flex mt-5' : 'd-none'}>
-              {
-                actions !== undefined
+          </Link>
+          <div className={actions !== undefined ? 'd-flex mt-5' : 'd-none'}>
+            {
+              actions !== undefined
            && actions.map((action) => (action.plain
              ? (
                <button
@@ -212,17 +216,16 @@ const ProjectInfo = ({
                  {/* </button> */}
                </Link>
              )))
-              }
-            </div>
-            <BackdropModal
-              content={<ShareTemp handleClose={handleClose} project={project} />}
-              handleClose={handleClose}
-              open={open}
-            />
+            }
           </div>
-        </CardContent>
-      </Paper>
-    </Link>
+          <BackdropModal
+            content={<ShareTemp handleClose={handleClose} project={project} />}
+            handleClose={handleClose}
+            open={open}
+          />
+        </div>
+      </CardContent>
+    </Paper>
   );
 };
 export default ProjectInfo;

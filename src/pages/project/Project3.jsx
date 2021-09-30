@@ -138,7 +138,12 @@ const Project3 = () => {
       setMessage(`${formData.title} is not yet submitted. Do you wish to Submit Now?`);
     }
     if (store?.submitProject?.status === 'success' || store?.editProjectRequest?.status === 'success' || (store?.project?.status === 'success' && formData.approvalStatus !== 6)) {
-      window.location.replace('/success');
+      notifier({
+        type: 'success',
+        title: 'success',
+        text: 'project submitted, an admin will attend to it accordingly.'
+      });
+      setTimeout(() => window.location.replace('/me'), 5000);
     } else if (store?.submitProject?.status === 'failed' || store?.project?.status === 'failed' || store?.editProjectRequest?.status === 'failed') {
       notifier({
         type: 'error',
@@ -324,7 +329,41 @@ const Project3 = () => {
             </div>
 
             <div className="row">
-              <div className="col-md-7 card-container">
+              <Card className="col-md-5 px-5 ">
+                <div>
+                  <div className="text-wema py-3">
+                    <h4>
+                      <span className="pr-1">Info</span>
+                    </h4>
+                  </div>
+                </div>
+                <FormBuilder
+                  formItems={
+                    formBuilderProjectsPreviewProps({
+                      formData,
+                      states,
+                      lgas,
+                      minDate,
+                      minStartDate,
+                      categories: store.projectCategories.data.data,
+                      multiple: true,
+                      removeItem: deleteProjectMedia,
+                      skeleton: store?.project?.data?.data?.id,
+                      excuseSkeleton: 'title',
+                      setFormData: cancelUpload,
+                      progress,
+                      handleBlur,
+                      handleChange,
+                      handleDateChange,
+                      btnMethod: () => setFormData({ ...formData, title: '' }),
+                      loading: { status: store.project.status, text: 'initializing your project' },
+                      loadingMedia: store.media?.status,
+                      errors
+                    }).info
+                  }
+                />
+              </Card>
+              <div className="col-md-7">
                 <CardMedia
                   className="h-18h"
                   image={
@@ -333,7 +372,7 @@ const Project3 = () => {
                   }
                   title={formData.title}
                 />
-                <div className=" px-5">
+                <div className=" px-5 card-container border-wema pb-5">
                   <div>
                     <div className="text-wema py-3">
                       <h4>
@@ -402,40 +441,6 @@ const Project3 = () => {
                   </div>
                 </div>
               </div>
-              <Card className="col-md-5 px-5 ">
-                <div>
-                  <div className="text-wema py-3">
-                    <h4>
-                      <span className="pr-1">Info</span>
-                    </h4>
-                  </div>
-                </div>
-                <FormBuilder
-                  formItems={
-                    formBuilderProjectsPreviewProps({
-                      formData,
-                      states,
-                      lgas,
-                      minDate,
-                      minStartDate,
-                      categories: store.projectCategories.data.data,
-                      multiple: true,
-                      removeItem: deleteProjectMedia,
-                      skeleton: store?.project?.data?.data?.id,
-                      excuseSkeleton: 'title',
-                      setFormData: cancelUpload,
-                      progress,
-                      handleBlur,
-                      handleChange,
-                      handleDateChange,
-                      btnMethod: () => setFormData({ ...formData, title: '' }),
-                      loading: { status: store.project.status, text: 'initializing your project' },
-                      loadingMedia: store.media?.status,
-                      errors
-                    }).info
-                  }
-                />
-              </Card>
               <div className="col-12 ">
                 <div>
                   <div className="text-wema py-3 text-center">

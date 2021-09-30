@@ -1,6 +1,7 @@
 import React, {
   Suspense, useCallback, useEffect
 } from 'react';
+import WOW from 'wowjs';
 import { Switch, Route } from 'react-router-dom';
 import _ from 'lodash';
 
@@ -46,13 +47,15 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (_.isEmpty(indexData)) {
-      return index();
-    }
-    return false;
+    new WOW.WOW({
+      live: false
+    }).init();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
+    if (store.index?.status === 'initial' && _.isEmpty(indexData)) {
+      index();
+    }
     if (store?.index?.status === 'success' && !_.isEmpty(store?.index?.data?.data?.categories)) {
       storeIndex(store?.index?.data?.data);
     }

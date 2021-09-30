@@ -2,12 +2,18 @@ import React, {
   useEffect, useCallback, useState
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, Redirect } from 'react-router-dom';
+import {
+  Link, Redirect, useHistory, useLocation, useParams
+} from 'react-router-dom';
+import addDays from 'date-fns/addDays';
+import Moment from 'moment';
+import IconButton from '@material-ui/core/IconButton';
+import Avatar from '@material-ui/core/Avatar';
 import FormBuilder from '../../components/form/builders/form';
 import { validateField } from '../../utilities/validation';
 import { camelToString, notifier, stringDoesNotExist } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
-import { formBuilderProjectsStartProps } from './constants/startProject1Props';
+import { formBuilderProjectsStartProps, title } from './constants/startProject1Props';
 import {
   projectCategories, editProject1, uploadMedia, projectAction
 } from '../../redux/actions/projectActions';
@@ -16,20 +22,39 @@ import ModalTemplate from '../../components/temps/modalTemps/temp';
 import Loader from '../../components/microComponents/loader';
 import { apiOptions } from '../../services/fetch';
 import PageTemp from '../../components/temps/PageTemp';
+import CollapsedBreadcrumbs from '../../layouts/Breadcrumb';
+import { user } from '../../utilities/auth';
 
 /**
  *
  * @returns {JSX.Element}
  * @constructor
  */
-const Project1 = ({
-  setAccordionTab, data, setData
-}) => {
+
+const Project1 = () => {
+  const { id, projectTitle } = useParams();
+  const location = useLocation();
+  const history = useHistory();
   /* redux */
   const dispatch = useDispatch();
   const store = useSelector((state) => state.project);
   /* state */
-  const [formData, setFormData] = useState({ ...data });
+  const [formData, setFormData] = useState({
+    title: projectTitle,
+    file: [],
+    projectType: 10,
+    categoryId: 10,
+    state: 'Lagos',
+    stateId: 24,
+    startDate: addDays(Moment.now(), 3),
+    endDate: addDays(Moment.now(), 10),
+    description: `
+  Hi my name is ${user?.first_name || ''} ${user?.middle_name || ''} ${user?.last_name || ''},
+  I am appealing to the general public to join in raising funds to support our ${projectTitle}...
+  `,
+    summary: `${projectTitle} is a project requesting public funding to...`,
+    ...location.state?.data
+  });
   const [progress, setProgress] = useState(0);
   const [errors, setErrors] = useState({});
   const [show, setShow] = useState(false);
@@ -73,24 +98,34 @@ const Project1 = ({
   }, [store.deleteMedia?.status]);
 
   useEffect(() => {
-    if (store.project1?.status === 'success' && formData.from !== 2) {
-      // setShow(true);
-      setTimeout(() => window.location.replace('/'), 500);
-      return notifier({
+    if (store.project1?.status === 'success' && history.state.prevPath !== `/project/create/form-2/${id}`) {
+      setTimeout(() => handleClose(), 5000);
+      notifier({
         type: 'success',
         title: 'Progress Saved',
         text: `Your project ${formData.title} has been updated`
       });
     }
-    return true;
   }, [store.project1?.status]);
 
+  const getProject = useCallback(() => {
+    dispatch(projectAction(
+      {
+        action: 'GET_PROJECT',
+        routeOptions: apiOptions({
+          method: 'get',
+          endpoint: 'GET_PROJECT',
+          param: id
+        })
+      }
+    ));
+  }, [id]);
   const handleClose = () => {
     setShow(false);
     setLoading(false);
-    if (formData.from !== 2) {
-      window.location.replace('/');
-    }
+    // if (history?.state?.prevPath === `/project/create/form-2/${id}`) {
+    //   window.location.replace('/');
+    // }
   };
   const cancelUpload = () => {
     setFormData({ ...formData, file: '', logo_id: '' });
@@ -107,20 +142,7 @@ const Project1 = ({
       const targetAmount = () => formData.donationTarget.replace(/[^\d.]/g, '');
       tem.donationTarget = Number(targetAmount());
     }
-    const category = indexData?.categories
-      !== undefined && indexData?.categories?.filter(
-      (cat) => cat.id === formData.categoryId
-    );
-    // const authUser = JSON.parse(localStorage.getItem('loginData'));
-    if (stringDoesNotExist(tem.description)) {
-      tem.description = `
-  Hi my name is ${formData.creator?.full_name?.name || 'anonymous'},
-  I am appealing to the general public to join in raising funds to support our ${category?.name || formData.title}
-  `;
-    }
-
     setFormData(tem);
-    setData({ ...tem });
     return tem;
   };
 
@@ -132,7 +154,7 @@ const Project1 = ({
   };
   const handleChange = (e) => {
     const {
-      name, value, files, apiValue
+      name, value, files
     } = e?.target;
     if (name === 'media' && formData?.file?.indexOf(files[0] === -1)) {
       const fileSize = (files[0]?.size / 1024 / 1024).toFixed(3);
@@ -145,12 +167,12 @@ const Project1 = ({
       }
       setFormData({
         ...formData,
-        media: [...formData.media, files[0]]
+        file: [...formData.file, files[0]]
       });
       dispatch(
         uploadMedia(
           {
-            payload: { file: files[0], id: formData.id }, setProgress
+            payload: { file: files[0], id }, setProgress
           }
         )
       );
@@ -210,12 +232,36 @@ const Project1 = ({
     setLoading(false);
     const tem = populateFormData();
     dispatch(editProject1(tem));
-    setAccordionTab(2);
+    history.push({
+      pathname: `/project/create/form-2/${id}`,
+      state: { data: tem }
+    });
   };
 
   const text = () => `Your project ${formData.title} has been updated`;
   const initialTemp = (
     <div>
+      <div className="my-3">
+        <small>you can edit the name</small>
+        <div>
+          <FormBuilder
+            formItems={
+              title(
+                {
+                  formData,
+                  removeItem: removeAtIndex,
+                  handleBlur,
+                  handleChange,
+                  btnMethod: () => setFormData({ ...formData, title: '' }),
+                  loading: { status: store?.status, text: 'initializing your project' },
+                  errors
+                }
+              )
+            }
+          />
+
+        </div>
+      </div>
       <FormBuilder
         formItems={
           formBuilderProjectsStartProps(
@@ -242,69 +288,160 @@ const Project1 = ({
   );
 
   return (
-    <div className="login-form pb-5h">
-
-      <div>
-        <div className="text-wema">
-          <p className="font-bold">
-            <span className="pr-1">Complete your</span>
-            <span className="">project</span>
-          </p>
-        </div>
-        <hr />
+    <div className="content">
+      <div className="row">
+        <CollapsedBreadcrumbs max={2} current="Project information" />
       </div>
+      <div className="max-w-600 w-600 margin-center m-t-40">
+        <div className="login-form-container p-20 bg-light">
+          <h3 className="font-bold text-center text-dark border-bottom border-top-0  ">
+            {projectTitle}
+          </h3>
+          <div className="row">
+            <div className="col-4 accordion-div is-focus">
+              <IconButton
+                type="button"
+              >
+                <div className="radius50 w-2e h-2e center-items border-wema">
+                  <Avatar
+                    className="styled-mui"
+                  >
+                    1
+                  </Avatar>
+                </div>
+              </IconButton>
+            </div>
+            <div className="col-4 accordion-div is-focus">
+              <IconButton
+                disabled={!(formData.summary?.length > 0
+                      && formData.donationTarget)}
+                type="button"
+                onClick={() => history.push(`/project/create/form-2/${store?.data?.data?.id}`)}
+              >
+                <div className="radius50 w-2e h-2e center-items faint-border">
 
-      <PageTemp
-        initial={initialTemp}
-        view={initialTemp}
-        isPending={loading}
-        status={store?.project1?.status}
-      />
+                  <Avatar
+                    className="text-muted"
+                  >
+                    2
+                  </Avatar>
+                </div>
+              </IconButton>
+            </div>
+          </div>
 
-      <div>
+          <div className="login-form pb-5h">
 
-        <div className="float-md-right text-center">
-          <button
-            title="save and continue"
-            className="btn btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
-            type="button"
-            disabled={store.project1?.status === 'pending' || formData?.donationTarget?.length < 1}
-            onClick={handleSave}
-          >
-            Save and continue later
-          </button>
-        </div>
-        <div className="float-md-right text-center">
-          <button
-            className=" btn btn-small p-1 mr-1 float-md-right text-center"
-            type="button"
-            disabled={store?.project1?.status === 'pending' || formData?.donationTarget?.length < 1}
-            onClick={handleContinue}
-          >
-            Continue
-          </button>
-        </div>
+            <div>
+              <div className="text-wema">
+                <p className="font-bold">
+                  <span className="pr-1">Complete your</span>
+                  <span className="">project</span>
+                </p>
+              </div>
+              <hr />
+            </div>
 
-        <div className="row">
-          {
-            loading
-           && <Loader />
-          }
+            {/* <PageTemp */}
+            {/*  initial={initialTemp} */}
+            {/*  view={initialTemp} */}
+            {/*  isPending={loading} */}
+            {/*  status={store?.project1?.status} */}
+            {/* /> */}
+
+            <div>
+              <div className="my-3">
+                <small>you can edit the name</small>
+                <div>
+                  <FormBuilder
+                    formItems={
+                      title(
+                        {
+                          formData,
+                          removeItem: removeAtIndex,
+                          handleBlur,
+                          handleChange,
+                          btnMethod: () => setFormData({ ...formData, title: '' }),
+                          loading: { status: store?.status, text: 'initializing your project' },
+                          errors
+                        }
+                      )
+                    }
+                  />
+
+                </div>
+              </div>
+              <FormBuilder
+                formItems={
+                  formBuilderProjectsStartProps(
+                    {
+                      formData,
+                      categories: indexData.categories,
+                      multiple: true,
+                      removeItem: deleteProjectMedia,
+                      setFormData: cancelUpload,
+                      progress,
+                      handleBlur,
+                      handleChange,
+                      handleDateChange,
+                      btnMethod: () => setFormData({ ...formData, title: '' }),
+                      loading: { status: store?.project?.status, text: 'initializing your project' },
+                      loadingMedia: store.media?.status,
+                      errors
+                    }
+                  )
+                }
+              />
+
+            </div>
+
+            <div>
+
+              <div className="float-md-right text-center">
+                <button
+                  title="save and continue"
+                  className="btn btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
+                  type="button"
+                  disabled={store.project1?.status === 'pending' || formData?.donationTarget?.length < 1}
+                  onClick={handleSave}
+                >
+                  Save and continue later
+                </button>
+              </div>
+              <div className="float-md-right text-center">
+                <button
+                  className=" btn btn-small p-1 mr-1 float-md-right text-center"
+                  type="button"
+                  disabled={store?.project1?.status === 'pending' || formData?.donationTarget?.length < 1}
+                  onClick={handleContinue}
+                >
+                  Continue
+                </button>
+              </div>
+
+              <div className="row">
+                {
+                  loading
+                  && <Loader />
+                }
+              </div>
+            </div>
+
+            <Modal
+              className={show ? 'max-w-400 right top' : 'max-w-400 right top off'}
+              content={(
+                <ModalTemplate
+                  status={store?.project1?.status}
+                  data={store?.project1?.data?.data}
+                  handleClose={handleClose}
+                  setShow={setShow}
+                  text={text()}
+                />
+              )}
+            />
+          </div>
         </div>
       </div>
-
-      <Modal
-        className={show ? 'max-w-400 right top' : 'max-w-400 right top off'}
-        content={(
-          <ModalTemplate
-            status={store?.project1?.status}
-            data={store?.project1?.data?.data}
-            handleClose={handleClose}
-            setShow={setShow}
-            text={text()}
-          />
-        )}
-      />
     </div>
   );
 };

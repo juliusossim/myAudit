@@ -163,6 +163,17 @@ const GeneralPage = () => {
               Start a Project Today
             </Link>
           </div>
+          <div className="down_arrow">
+            <Link
+              activeClass="scroll_down"
+              to="howItWorks"
+              spy
+              smooth
+              offset={-70}
+              duration={800}
+              className="scroll_down"
+            />
+          </div>
         </div>
       </div>
       <div className="row bg-light" id="how">

@@ -69,6 +69,7 @@ export const doLogout = () => {
   window.location.assign(process.env.REACT_APP_INDEX_URL);
 };
 export const getToken = () => localStorage.getItem('access_token');
+
 export const currentUser = localforage.getItem('user', (err, value) => {
   let data = {};
   if (value?.status === 1) {
@@ -76,3 +77,5 @@ export const currentUser = localforage.getItem('user', (err, value) => {
   }
   return data;
 });
+
+export const user = { ...JSON.parse(localStorage.getItem('user')) };

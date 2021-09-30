@@ -9,6 +9,9 @@ const ResetPassword = lazy(() => import('../pages/authentication/ResetPassword')
 const ForgotPassword = lazy(() => import('../pages/authentication/ForgotPassword'));
 const NewPassword = lazy(() => import('../pages/authentication/NewPassword'));
 const CreateProject = lazy(() => import('../pages/project/CreateProject'));
+const Init = lazy(() => import('../pages/project/Init'));
+const Project1 = lazy(() => import('../pages/project/Project1'));
+const Project2 = lazy(() => import('../pages/project/Project2'));
 const Project3 = lazy(() => import('../pages/project/Project3'));
 const Success = lazy(() => import('../pages/project/Success'));
 const Unauthorized = lazy(() => import('../pages/authentication/Unauthorized'));
@@ -103,8 +106,23 @@ const routes = [
     exact: true
   },
   {
+    path: '/project/init',
+    component: Init,
+    exact: true
+  },
+  {
     path: '/review/project/:id',
     component: Project3,
+    exact: true
+  },
+  {
+    path: '/project/create/form-1/:id/:projectTitle',
+    component: Project1,
+    exact: true
+  },
+  {
+    path: '/project/create/form-2/:id',
+    component: Project2,
     exact: true
   },
   {

@@ -24,7 +24,7 @@ const DeleteProjectTemp = ({
     }
   }, [store?.status]);
 
-  const { projectId } = project;
+  const { projectId, id } = project;
   const dispatch = useDispatch();
 
   const takeAction = () => dispatch(projectAction(
@@ -32,7 +32,7 @@ const DeleteProjectTemp = ({
       action: 'DELETE_PROJECT',
       routeOptions: apiOptions({
         method: 'del',
-        param: projectId,
+        param: projectId || id,
         endpoint: 'DELETE_PROJECT',
         auth: true
       }),

@@ -6,15 +6,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import debounce from 'lodash/debounce';
 import addDays from 'date-fns/addDays';
 import Moment from 'moment';
+import { Redirect } from 'react-router';
+import { useHistory } from 'react-router-dom';
 import FormBuilder from '../../components/form/builders/form';
 import { validateField } from '../../utilities/validation';
 import { camelToString, notifier, stringDoesNotExist } from '../../utilities/stringOperations';
 import Modal from '../../components/microComponents/modal';
 import { title } from './constants/startProject1Props';
 import {
+  createProject,
   createProjectName
 } from '../../redux/actions/projectActions';
 import ModalTemplate from '../../components/temps/modalTemps/temp';
+import CollapsedBreadcrumbs from '../../layouts/Breadcrumb';
 
 /**
  *
@@ -22,6 +26,8 @@ import ModalTemplate from '../../components/temps/modalTemps/temp';
  * @constructor
  */
 const Init = ({ setAccordionTab, setData }) => {
+  const history = useHistory();
+
   /* redux */
   const dispatch = useDispatch();
   const store = useSelector((state) => state.project.initProject);
@@ -43,42 +49,20 @@ const Init = ({ setAccordionTab, setData }) => {
       });
     }
     if (store?.status === 'success') {
-      setShow(true);
-    }
-    return store?.status;
-  }, [store?.status]);
-  useEffect(() => {
-    if (show) {
       notifier({
         type: 'success',
         title: 'Progress Saved',
         text: 'Your project has been recorded'
       });
-      setData({
-        ...store?.data?.data,
-        ...formData,
-        file: [],
-        summary: `${store?.data?.data.title} is a project requesting public funding to...`,
-        projectType: 10,
-        categoryId: 10,
-        state: 'Lagos',
-        stateId: 24,
-        startDate: addDays(Moment.now(), 3),
-        endDate: addDays(Moment.now(), 10)
-      });
-      return handleClose();
+      history.push(`/project/create/form-1/${store?.data?.data?.id}/${store?.data?.data?.title}`);
     }
-    return show;
-  }, [show]);
-  // const text = `Your project ${formData.title} has been initialized`;
-  const handleClose = () => {
-    setShow(false);
-    setAccordionTab(1);
-  };
+  }, [store?.status]);
 
   const handleSaveProgress = () => {
     if (!stringDoesNotExist(formData.title)) {
-      dispatch(createProjectName(formData));
+      dispatch(createProjectName({
+        ...formData
+      }));
     }
   };
   const handleChange = (e) => {
@@ -120,63 +104,72 @@ const Init = ({ setAccordionTab, setData }) => {
     setFormData({ ...formData, file: [...fileCopy] });
   };
   return (
-    <div className="login-form pb-5h">
+    <div className="content">
+      <div className="row">
+        <CollapsedBreadcrumbs max={2} current="Project name" />
+      </div>
+      <div className="max-w-600 w-600 margin-center m-t-40">
+        <div className="login-form-container p-20 bg-light">
+          <div className="login-form pb-5h">
 
-      <div>
-        <div className="text-wema">
-          <p className="font-bold">Begin a new project</p>
-          <p>Give your project a befitting headline</p>
+            <div>
+              <div className="text-wema">
+                <p className="font-bold">Begin a new project</p>
+                <p>Give your project a befitting headline</p>
+              </div>
+              <hr />
+            </div>
+
+            <div>
+              <FormBuilder
+                formItems={
+                  title(
+                    {
+                      formData,
+                      removeItem: removeAtIndex,
+                      handleBlur,
+                      handleChange,
+                      btnMethod: () => setFormData({ ...formData, title: '' }),
+                      loading: { status: store?.status, text: 'initializing your project' },
+                      errors
+                    }
+                  )
+                }
+              />
+
+            </div>
+
+            <div className="mb-5">
+
+              <div className="float-right">
+                <button
+                  title="save and continue"
+                  className="btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
+                  type="button"
+                  disabled={!proceed || store?.status === 'pending' || store?.status === 'success'}
+                  onClick={handleSaveProgress}
+                >
+                  <span className="pr-1">Proceed </span>
+                  {/* { proceed && formData.title } */}
+                </button>
+              </div>
+            </div>
+
+            {/* <Modal */}
+            {/*  className={show ? 'max-w-400 right top' : 'max-w-400 right top off'} */}
+            {/*  content={( */}
+            {/*    <ModalTemplate */}
+            {/*      status={store?.status} */}
+            {/*      data={store?.data?.data} */}
+            {/*      handleClose={handleClose} */}
+            {/*      setShow={setShow} */}
+            {/*      text={text()} */}
+            {/*    /> */}
+            {/*  )} */}
+            {/* /> */}
+          </div>
         </div>
-        <hr />
       </div>
-
-      <div>
-        <FormBuilder
-          formItems={
-            title(
-              {
-                formData,
-                removeItem: removeAtIndex,
-                handleBlur,
-                handleChange,
-                btnMethod: () => setFormData({ ...formData, title: '' }),
-                loading: { status: store?.status, text: 'initializing your project' },
-                errors
-              }
-            )
-          }
-        />
-
-      </div>
-
-      <div className="mb-5">
-
-        <div className="float-right">
-          <button
-            title="save and continue"
-            className="btn-plain text-wema border-wema hover-wema mr-md-1 btn-small"
-            type="button"
-            disabled={!proceed || store?.status === 'pending' || store?.status === 'success'}
-            onClick={handleSaveProgress}
-          >
-            <span className="pr-1">Proceed </span>
-            {/* { proceed && formData.title } */}
-          </button>
-        </div>
-      </div>
-
-      {/* <Modal */}
-      {/*  className={show ? 'max-w-400 right top' : 'max-w-400 right top off'} */}
-      {/*  content={( */}
-      {/*    <ModalTemplate */}
-      {/*      status={store?.status} */}
-      {/*      data={store?.data?.data} */}
-      {/*      handleClose={handleClose} */}
-      {/*      setShow={setShow} */}
-      {/*      text={text()} */}
-      {/*    /> */}
-      {/*  )} */}
-      {/* /> */}
     </div>
   );
 };

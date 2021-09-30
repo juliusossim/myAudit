@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import SimpleSnackbar from '../../microComponents/snackBar';
 import { copyText } from '../../../utilities/stringOperations';
 import PageTemp from '../PageTemp';
@@ -66,6 +67,9 @@ const ManualTemp = ({ data, handleCancel, status }) => {
       <div className="">
         <button type="button" className="btn-plain border-wema text-wema" onClick={() => handleCancel(true)}>
           I have Donated
+          <span>
+            {status === 'pending' && <CircularProgress className="mt-2" color="secondary" style={{ width: '15px', height: '15px' }} />}
+          </span>
         </button>
         <button type="button" className="btn-plain text-danger border-wema float-right" onClick={() => handleCancel(false)}>
           cancel
