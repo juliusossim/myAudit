@@ -1,6 +1,8 @@
 import React, { useCallback, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { Fade, Flip } from 'react-reveal';
+import * as Scroll from 'react-scroll';
 import CustomCarousel from '../../components/microComponents/carousel';
 import LazyImage from '../../components/microComponents/lazyImg';
 import howItWorks from '../../assets/images/howItWorks.svg';
@@ -66,9 +68,9 @@ const GeneralPage = () => {
   }, []);
 
   useEffect(() => {
-    popularProjects();
-  }, []);
-  useEffect(() => {
+    if (store?.home?.popularProjects?.status === 'initial') {
+      popularProjects();
+    }
     if (store?.home?.popularProjects?.status === 'success') {
       setProjects(store?.home?.popularProjects?.data?.data);
     }
@@ -140,43 +142,52 @@ const GeneralPage = () => {
       </div>
     </div>
   );
+  const scrollTo = Scroll.Link;
 
   return (
     <div>
       {/* <CustomCarousel className="mh-25" content={carouselSlides} /> */}
       <div className="slide1">
         {/* <LazyImage src={firstImage} alt="make a difference" /> */}
-        <div className="content1">
-          <p className="small1">
-            Crowdfunding with Wema Bank
-          </p>
-          <div className="hero">
-            Fundraising for projects and causes that
-            matter to humanity.
-          </div>
+        <Fade left cascade>
+          <div className="content1">
+            <p className="small1">
+              Crowdfunding with Wema Bank
+            </p>
+            <div className="hero">
+              Fundraising for projects and causes that
+              matter to humanity.
+            </div>
 
-          <small className="small2">
-            Raise funds with ease and securely. get started now...
-          </small>
-          <div className="mb-sm-3">
-            <Link to="/create-project" className="btn btn-small hover-wema">
-              Start a Project Today
-            </Link>
+            <small className="small2">
+              Raise funds with ease and securely. get started now...
+            </small>
+            <div className="mb-sm-3">
+              <Link to="/create-project" className="btn btn-small hover-wema">
+                Start a Project Today
+              </Link>
+            </div>
           </div>
-          <div className="down_arrow">
-            <Link
-              activeClass="scroll_down"
-              to="howItWorks"
-              spy
-              smooth
-              offset={-70}
-              duration={800}
-              className="scroll_down"
-            />
-          </div>
+        </Fade>
+        <div className="down_arrow">
+          <Scroll.Link
+            activeClass=""
+            to="howItWorks"
+            spy
+            smooth
+            offset={-65}
+            duration={800}
+            className=""
+          >
+            <svg className="arrows">
+              <path className="a1" d="M0 0 L30 32 L60 0" />
+              <path className="a2" d="M0 20 L30 52 L60 20" />
+              <path className="a3" d="M0 40 L30 72 L60 40" />
+            </svg>
+          </Scroll.Link>
         </div>
       </div>
-      <div className="row bg-light" id="how">
+      <div className="row bg-light" id="howItWorks">
         <div className="content">
           <div className="w-100 margin-center ">
             <div className="center-text my-2">
@@ -213,19 +224,23 @@ const GeneralPage = () => {
                 Browse Fundraisers Categories
               </div>
               <div className="row ">
-                <div className="col-md-8 offset-md-2 text-center ">
-                  {
-                    indexData?.categories?.map(
-                      (category) => (
-                        <Link to={{ pathname: '/explore', cat: category }} key={category.name} type="button" className="px-5 m-2 pt-2 transformed-4 categoryButtons butt" data-text={category.name}>
-                          <span className="">
-                            {category.name}
-                          </span>
-                        </Link>
+
+                <Flip cascade top>
+                  <div className="col-md-8 offset-md-2 text-center ">
+                    {
+                      indexData?.categories?.map(
+                        (category) => (
+                          <Link to={{ pathname: '/explore', cat: category }} key={category.name} type="button" className="px-5 m-2 pt-2 transformed-4 categoryButtons butt" data-text={category.name}>
+                            <span className="">
+                              {category.name}
+                            </span>
+                          </Link>
+                        )
                       )
-                    )
-                  }
-                </div>
+                    }
+                  </div>
+                </Flip>
+
               </div>
             </div>
           </div>

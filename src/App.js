@@ -1,7 +1,6 @@
 import React, {
   Suspense, useCallback, useEffect
 } from 'react';
-import WOW from 'wowjs';
 import { Switch, Route } from 'react-router-dom';
 import _ from 'lodash';
 
@@ -12,6 +11,7 @@ import Footer from './layouts/Footer';
 import Loader from './components/microComponents/loader';
 import { projectAction, projectCategories } from './redux/actions/projectActions';
 import { apiOptions } from './services/fetch';
+import ScrollUpBtn from './layouts/ScrollUpBtn';
 
 function App() {
   const dispatch = useDispatch();
@@ -47,12 +47,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    new WOW.WOW({
-      live: false
-    }).init();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-  useEffect(() => {
     if (store.index?.status === 'initial' && _.isEmpty(indexData)) {
       index();
     }
@@ -85,6 +79,8 @@ function App() {
           <Route render={() => <h1>Error 404. Page not found.</h1>} />
         </Switch>
         <Footer />
+        {/* ScrollUpBtn: src/components/ScrollUpBtn */}
+        <ScrollUpBtn />
       </div>
       {/* </Router> */}
     </Suspense>

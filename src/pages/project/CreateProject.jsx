@@ -18,7 +18,6 @@ import Paper from '@material-ui/core/Paper';
 import CardMedia from '@material-ui/core/CardMedia';
 import _ from 'lodash';
 import CardContent from '@material-ui/core/CardContent';
-import WOW from 'wowjs';
 import {
   projectAction
 } from '../../redux/actions/projectActions';
@@ -53,7 +52,6 @@ const CreateProject = () => {
 
   const updateData = () => {
     const newData = formData.filter((item) => item.id !== project.id);
-    console.log(formData.length);
     setFormData([...newData]);
   };
   const handleClose = () => setOpen(false);
@@ -77,10 +75,6 @@ const CreateProject = () => {
       getProjectByStatus(0);
     }
     if (store.status === 'success') {
-      new WOW.WOW({
-        live: true,
-        offset: 100
-      }).init();
       if (store.data?.data?.length < 1) {
         history.push('/project/init');
       }
@@ -142,7 +136,7 @@ const CreateProject = () => {
                         <div className="row">
                           {
                             formData.map((item) => (
-                              <div className="col-md-3 mb-4 wow fadeInLeft" key={item.id}>
+                              <div className="col-md-3 mb-4" key={item.id}>
                                 <Paper elevation={3} className="h-40h overflow-y-hidden px-md-0 px-3">
                                   <div>
                                     <CardMedia
@@ -153,23 +147,21 @@ const CreateProject = () => {
                                   </div>
                                   <CardContent>
                                     <div>
-                                      <Link to={{ pathname: `/project/details/${item.projectId}/1`, tab: 1, id: item.projectId }}>
-                                        <h3>
-                                          {item.title}
-                                        </h3>
-                                      </Link>
-                                      <div className="">
-                                        <span>Target</span>
-                                        <span className="bold ml-1">&#8358;</span>
-                                        <span className="bold">{item.donationTarget?.toLocaleString() || 0}</span>
-                                      </div>
-                                      <p>
-                                        {item.summary}
+                                      <p className="font-bold">
+                                        {item.title}
                                       </p>
-                                      <div className="d-flex justify-content-between mb-2" style={{ position: 'absolute', bottom: '0' }}>
+                                      <div className="">
+                                        <span className="theme-font-2 font-italic ml-2">Target:</span>
+                                        <span className="ml-1 font-bold">&#8358;</span>
+                                        <span className="font-bold">{item.donationTarget?.toLocaleString() || 0}</span>
+                                      </div>
+                                      <small className="theme-font-2">
+                                        {item.summary}
+                                      </small>
+                                      <div className="d-flex justify-content-between my-2 " style={{ position: 'absolute', bottom: '0' }}>
                                         <div>
                                           <Link to={{ pathname: `/review/project/${item.id}` }}>
-                                            <button type="button" className=" btn-edit text-edit">
+                                            <button type="button" className="border-edit btn-edit text-edit">
                                               <FiEdit className="mt-1 mr-1" />
                                               Continue
                                             </button>
@@ -178,7 +170,7 @@ const CreateProject = () => {
                                         <div className="ml-2">
                                           <button
                                             type="button"
-                                            className="btn-delete text-danger"
+                                            className="btn-delete border-delete text-danger"
                                             onClick={() => {
                                               setProject(item);
                                               setOpen(true);

@@ -7,7 +7,9 @@ import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import { useDispatch, useSelector } from 'react-redux';
 import IconButton from '@material-ui/core/IconButton';
-import { useLocation, useParams } from 'react-router-dom';
+import {
+  useHistory, useLocation, useParams
+} from 'react-router-dom';
 import Chip from '@material-ui/core/Chip';
 import {
   IoArrowBackCircleOutline, IoArrowForwardCircleOutline
@@ -29,6 +31,7 @@ import ProjectInfo from '../../../components/ui/projectInfo';
  */
 const ProjectDetails = (items) => {
   const { id, tab } = useParams();
+  const history = useHistory();
 
   /* redux */
   const dispatch = useDispatch();
@@ -45,7 +48,7 @@ const ProjectDetails = (items) => {
 
   useEffect(() => {
     projectDetails(id);
-  }, []);
+  }, [id]);
 
   useEffect(() => {
     if (store.detailsSimilar?.status === 'success') {

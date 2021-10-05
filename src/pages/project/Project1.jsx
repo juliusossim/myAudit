@@ -231,7 +231,7 @@ const Project1 = () => {
   const handleContinue = () => {
     setLoading(false);
     const tem = populateFormData();
-    dispatch(editProject1(tem));
+    dispatch(editProject1({ ...tem, id }));
     history.push({
       pathname: `/project/create/form-2/${id}`,
       state: { data: tem }

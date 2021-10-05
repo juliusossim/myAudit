@@ -1,6 +1,6 @@
 import 'date-fns';
+import addMonths from 'date-fns/addMonths';
 import React from 'react';
-import Grid from '@material-ui/core/Grid';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
@@ -78,6 +78,7 @@ const DateInput = (props) => {
                   value={props.value}
                   helperText={show && props.helperText}
                   onChange={handleChange}
+                  maxDate={addMonths(new Date(), 3)}
                   minDate={new Date(props.minDate)}
                   KeyboardButtonProps={{
                     'aria-label': 'change date'

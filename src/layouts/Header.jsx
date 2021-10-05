@@ -28,19 +28,34 @@ const Header = () => {
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
 
-  const [menu, setMenu] = useState([
+  const [leftMenu, setLeftMenu] = useState([
     {
-      name: 'Explore',
+      name: 'Home',
       icon: <MdExplore />,
       to: '/explore'
     },
     {
-      name: 'Sign in',
+      name: 'About',
       icon: <RiLoginCircleLine />,
       to: '/login'
     },
     {
-      name: 'Sign up',
+      name: 'Services',
+      icon: <SiGnuprivacyguard />,
+      to: '/register'
+    },
+    {
+      name: 'Learning',
+      icon: <SiGnuprivacyguard />,
+      to: '/register'
+    },
+    {
+      name: 'career',
+      icon: <SiGnuprivacyguard />,
+      to: '/register'
+    },
+    {
+      name: 'Contacts',
       icon: <SiGnuprivacyguard />,
       to: '/register'
     }

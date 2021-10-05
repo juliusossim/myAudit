@@ -1,4 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import Tada from 'react-reveal/Tada';
+import Fade from 'react-reveal/Fade';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useLocation } from 'react-router-dom';
 import {
@@ -15,6 +17,7 @@ import {
 import SelectInput from '../../components/form/inputs/SelectInput';
 import { projectType, sortCats } from '../../utilities/dummyData';
 import PageTemp from '../../components/temps/PageTemp';
+import Sidebar from '../../layouts/Sidebar';
 
 const Explore = () => {
   const { cat } = useLocation();
@@ -87,67 +90,13 @@ const Explore = () => {
       [name]: val
     }));
   };
-  const catsTemp = (
-    <div className="card-container bg-wema-light projects mt-md-5 mt-2 py-1 py-md-4 pl-4">
-      <p className="bold font-22 d-none d-md-block d-lg-block">
-        Explore Categories
-      </p>
-      <div className="bold font-22 d-md-none d-lg-none">
-        <button onClick={() => setShowCats(!showCats)} className="btn-plain row justify-content-between" type="button">
-          <div>
-            Explore Categories
-          </div>
-          <div className="text-wema">
-            <ImMenu3 />
-          </div>
-
-        </button>
-      </div>
-      <div className={showCats ? 'pt-3 d-md-none d-lg-none d-xl-none' : 'pt-3 d-none'}>
-        {
-          indexData?.categories?.map((category) => (
-            <Link to="#" onClick={() => filterCategories(category)} className="py-2" key={category.id}>
-              <div className="categoryLink">
-                <span className="font-22 font-black theme-font  ">
-                  {stringCaps(category.name)}
-                </span>
-                <span className="float-right mr-3 text-muted">
-                  <AiOutlineArrowRight className="catIcon" />
-                </span>
-                <hr className="bg-black" />
-              </div>
-            </Link>
-
-          ))
-        }
-      </div>
-      <div className="pt-3 d-md-block d-none">
-        {
-          indexData?.categories?.map((category) => (
-            <Link to="#" onClick={() => filterCategories(category)} className="py-2" key={category.id}>
-              <div className="categoryLink">
-                <span className="font-22 font-black theme-font  ">
-                  {stringCaps(category.name)}
-                </span>
-                <span className="float-right mr-3 text-muted">
-                  <AiOutlineArrowRight className="catIcon" />
-                </span>
-                <hr className="bg-black" />
-              </div>
-            </Link>
-
-          ))
-        }
-      </div>
-    </div>
-  );
 
   const projectTemps = (
     <div className="row">
       {
         store?.searchProjects?.data?.data?.items?.map(
           (item, key) => (
-            <div key={item.id} className="col-md-6 col-lg-4 mb-4 wow fadeInBottomLeft">
+            <div key={item.id} className="col-md-6 col-lg-4 mb-4">
               <div className="">
                 <ProjectInfo
                   styled
@@ -170,7 +119,14 @@ const Explore = () => {
               <div className="col-md-3 my-md-4">
                 {
                   indexData?.categories?.length > 0
-                  && catsTemp
+                  && (
+                    <Sidebar
+                      showCats={showCats}
+                      setShowCats={setShowCats}
+                      filterCategories={filterCategories}
+                      cats={indexData.categories}
+                    />
+                  )
                 }
                 {
                   store?.index?.status === 'failed'

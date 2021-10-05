@@ -142,9 +142,11 @@ export const approvalStatus = [
   'none'
 ];
 export const approvalColors = {
-  deleted: 'secondary',
-  approved: 'primary',
-  paused: 'secondary'
+  deleted: 'danger',
+  approved: 'success',
+  pending: 'primary',
+  draft: 'secondary',
+  paused: 'muted'
 };
 export const popularProjects = [
   {

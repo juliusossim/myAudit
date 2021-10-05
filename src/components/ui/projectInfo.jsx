@@ -1,5 +1,7 @@
 import React from 'react';
 import _ from 'lodash';
+import Zoom from 'react-reveal/Zoom';
+
 import Paper from '@material-ui/core/Paper';
 import CardContent from '@material-ui/core/CardContent';
 import Chip from '@material-ui/core/Chip';
@@ -19,7 +21,7 @@ import ShareTemp from '../temps/modalTemps/share';
 import ProjectProgress from '../temps/projectTemps/projectProgress';
 
 const ProjectInfo = ({
-  project, styled, logo, actions, chip, shares, clss, force
+  project, styled, logo, actions, chip, shares, clss, history
 }) => {
   const [open, setOpen] = React.useState(false);
   const user = { ...JSON.parse(localStorage.getItem('user')) };
@@ -32,21 +34,22 @@ const ProjectInfo = ({
   const handleOpen = () => {
     setOpen(true);
   };
-
   return (
     <Paper elevation={3} className={clss || 'h-52h post overflow-y-hidden px-md-0 px-3'}>
-      <Link to={force ? '#' : `/project/details/${project?.id}/1`} onClick={() => force && window.location.assign(`/project/details/${project?.id}/1`)}>
+      <Link to={`/project/details/${project?.id}/1`}>
         <div className={logo ? 'd-none' : ''}>
-          <CardMedia
-            className="h-18h post"
-            image={_.head(project?.media)?.uri || project?.primaryMedia?.uri || Kat}
-            title={project?.title}
-          />
+          <Zoom>
+            <CardMedia
+              className="h-18h post"
+              image={_.head(project?.media)?.uri || project?.primaryMedia?.uri || Kat}
+              title={project?.title}
+            />
+          </Zoom>
         </div>
       </Link>
       <CardContent>
         <div>
-          <Link to={force ? '#' : `/project/details/${project?.id}/1`} onClick={() => force && window.location.assign(`/project/details/${project?.id}/1`)}>
+          <Link to={history ? '#' : `/project/details/${project?.id}/1`} onClick={() => history && history.replace(`/project/details/${project?.id}/1`)}>
 
             <div className="post-title">
               <div className="my-1">

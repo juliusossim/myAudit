@@ -18,6 +18,7 @@
 @import "lib/mat";
 @import "mixins/mediaqueries";
 @import "socials";
+@import "scroll-down";
 
 //@import "insane";
 @font-face {
@@ -543,17 +544,31 @@ main {
 }
 .btn-edit {
   background: rgba(235, 172, 11, 0.05);
-  border: 1px solid #EBAC0B;
   box-sizing: border-box;
   box-shadow: 0px 2px 4px rgba(235, 172, 11, 0.02);
   border-radius: 3px;
 }
 .btn-delete {
   background: rgba(203, 26, 15, 0.05);
-  border: 1px solid #CB1A0F;
   box-sizing: border-box;
   box-shadow: 0px 2px 4px rgba(203, 26, 15, 0.02);
-  border-radius: 3px;
+}
+.border-delete {
+ &:hover {
+   @extend .text-wema;
+   border-style: solid !important;
+   border-width: 2px !important;
+   border-radius: 5px !important;
+   border-image: linear-gradient( 45deg, #ff54a0, #a741ff, #ff5718) 1
+ }
+}
+.border-edit {
+  &:hover {
+    @extend .text-wema;
+    border-style: solid !important;
+    border-width: 2px !important;
+    border-image: linear-gradient( 45deg, #d78dff, #ff99ed, #feff4b) 1
+  }
 }
 .text-edit {
   color: #EBAC0B;
@@ -782,3 +797,69 @@ a {
 .scroll-y {
   overflow: auto;
 }
+
+.scroll_down {
+  position: absolute;
+  margin-left: auto;
+  margin-right: auto;
+  left: 0;
+  right: 0;
+  height: 50px;
+  width: 30px;
+  z-index: 5;
+  bottom: 100px;
+  background-color: transparent;
+  border: 2px solid #ffffff;
+  border-radius: 20px;
+  cursor: pointer;
+  animation: movebounce 3s linear infinite;
+  outline: none;
+  &::before {
+    position: absolute;
+    top: 10px;
+    left: 50%;
+    content: "";
+    width: 6px;
+    height: 6px;
+    margin-left: -3px;
+    background-color: #fff;
+    border-radius: 100%;
+    animation: scroll_down_btn-animation 2s infinite;
+    box-sizing: border-box;
+  }
+}
+@keyframes scroll_down_btn-animation {
+  0% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  80% {
+    transform: translate(0, 20px);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+@-webkit-keyframes scroll_down_btn-animation {
+  0% {
+    -webkit-transform: translate(0, 0);
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+  40% {
+    opacity: 1;
+  }
+  80% {
+    -webkit-transform: translate(0, 20px);
+    transform: translate(0, 20px);
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+

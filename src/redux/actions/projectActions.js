@@ -74,6 +74,7 @@ export const editProject1 = (payload) => {
   const request = (req) => ({ type: constants.EDIT_PROJECT_1_PENDING, request: req });
   const success = (response) => ({ type: constants.EDIT_PROJECT_1_SUCCESS, response });
   const failure = (error) => ({ type: constants.EDIT_PROJECT_1_FAILURE, error });
+  console.log(payload.id);
   const connection = patch({
     endpoint: 'EDIT_PROJECT', auth: true, body: payload, param: payload.id
   });

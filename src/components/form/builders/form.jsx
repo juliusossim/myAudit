@@ -6,7 +6,6 @@ import FileInput from '../inputs/FileInput';
 import DateInput from '../inputs/DateInput';
 import CurrencyInput from '../inputs/CurrencyInput';
 import Select2 from '../inputs/select2';
-import MatDatetimPickers from '../inputs/DateTimePicker';
 
 const FormBuilder = ({ formItems }) => formItems?.map(
   ({ kind, props }, key) => {
