@@ -9,3 +9,10 @@
 .MuiPickersStaticWrapper-staticWrapperRoot, .MuiPickersBasePicker-pickerView {
   min-width: 210px !important;
 }
+.quick-links.MuiListItem-gutters {
+  padding-left: 0!important;
+  padding-right: 0!important;
+}
+.MuiListItemIcon-root {
+  min-width: 1px !important;
+}

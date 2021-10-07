@@ -1,6 +1,8 @@
+import React from 'react';
 import PNotify from 'pnotify/dist/es/PNotify';
 import 'pnotify/dist/PNotifyBrightTheme.css';
 import _ from 'lodash';
+import SvgIcon from '@material-ui/core/SvgIcon';
 
 /**
  *converts slug to string
@@ -151,3 +153,9 @@ export const replacedName = (name, apiValue) => {
   }
   return {};
 };
+export const CustomIcon = ({ props, path }) => (
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <SvgIcon {...props}>
+    <path d={path} />
+  </SvgIcon>
+);

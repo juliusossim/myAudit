@@ -14,16 +14,23 @@
 @import "gradient";
 @import "insane/hover";
 @import "insane/background";
+@import "insane/custom-checkbox";
 @import "insane/shadow";
 @import "lib/mat";
 @import "mixins/mediaqueries";
 @import "socials";
 @import "scroll-down";
+@import "theme";
+@import "footer";
 
 //@import "insane";
 @font-face {
-  font-family: Poppins;
-  src: url('./poppins/Poppins-Regular.ttf');
+  font-family: Notosans-Bold;
+  src: url('./Noto_Sans/NotoSans-Bold.ttf');
+}
+@font-face {
+  font-family: Notosans-regular;
+  src: url('./Noto_Sans/NotoSans-Regular.ttf');
 }
 @font-face {
   font-family: Avenir;
@@ -52,11 +59,20 @@
     font-size: 1.4rem;
   }
 }
+.font-30 {
+  font-size: 1.3rem;
+  @include sm {
+    font-size: 1.5rem;
+  }
+  @include md {
+    font-size: 1.7rem;
+  }
+  @include lg {
+    font-size: 1.9rem;
+  }
+}
 .font-16 {
   font-size: 1rem;
-}
-.theme-font {
-  font-family: Poppins, sans-serif !important;
 }
 .theme-font-2 {
   font-family: Avenir, sans-serif !important;
@@ -80,10 +96,10 @@
 }
 body {
   @extend .theme-font;
+  @extend .text-theme-grey;
   margin: 0;
   font-size: 1rem;
   overflow-x: hidden;
-  color: #212121;
   background-color: #E5E5E5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -290,7 +306,7 @@ a.gray:hover {
   border-radius: 50%;
 }
 .border-wema {
-  border: 1px solid purple;
+  border: 1px solid $theme-color;
 }
 .faint-border {
   border: solid 1px #efefef
@@ -326,12 +342,12 @@ a.gray:hover {
   padding-bottom: 3vh;
 }
 .is-focus {
-  border-bottom: solid 3px #A01B88;
+  border-bottom: solid 3px $theme-color;
 }
 .accordion-div-2 {
   padding-bottom: 3vh;
   &.is-focus {
-    border-bottom: solid 3px #A01B88;
+    border-bottom: solid 3px $theme-color;
   }
 }
 .pb-5h{
@@ -346,13 +362,13 @@ a.gray:hover {
   justify-content: center;
 }
 .text-wema{
-  color: #A01B88 !important;
+  color: $theme-color !important;
 }
 .bg-wema{
-  background: #A01B88;
+  background: $theme-color;
 }
 .bg-wema-light {
-  background: #e7d0e394 !important;
+  background: $theme-color-light !important;
 }
 .float-right {
   float: right!important;
@@ -362,6 +378,9 @@ a.gray:hover {
 }
 .bold {
   font-weight: bold!important;
+}
+.bolder {
+  font-weight: 600!important;
 }
 
 /* SIZING */
@@ -411,7 +430,7 @@ a.gray:hover {
   margin-left: 3px;
   padding: 2.5px 45px 2.5px 2.5px;
   &:hover {
-    background: #A01B88;
+    background: $theme-color;
     color: white !important;
 
   }
@@ -425,7 +444,7 @@ a.gray:hover {
 .sign-in {
   padding: .3vw;
   &:hover {
-    background: #A01B88!important;
+    background: $theme-color!important;
     color: white !important;
     border-radius: 5px;
     transition: background-color 3s linear;
@@ -434,7 +453,9 @@ a.gray:hover {
 
 a {
     text-decoration: none !important;
-
+}
+.header-links {
+  border-bottom: solid $theme-color;
 }
 header {
   background-color: #FFFFFF;
@@ -534,9 +555,9 @@ main {
   padding-left: 14vw !important;
   padding-right: 17vw !important;
 }
-.MuiToolbar-gutters {
-  @extend .px-13vw
-}
+//.MuiToolbar-gutters {
+//  @extend .px-13vw
+//}
 .edit-picture-btn {
   border: 1px solid #D2D2D2;
   box-sizing: border-box;
@@ -608,47 +629,23 @@ main {
   border-radius: 50% !important;
 }
 
-footer {
-  margin-top: 50px;
-  .top {
-    background-color: #000000;
-    color: #ffffff;
-
-    .content {
-      padding: 50px 20px;
-    }
-  }
-
-  .bottom {
-    .footer-left {
-      .logo {
-        width: 200px;
-        display: flex;
-  
-        img {
-          width: 100%;
-          height: auto;
-        }
-      }
-    }
-  }
-}
-
 /* BUTTON STYLES */
 .btn {
-  background-color: #A01B88;
+  background-color: $theme-color;
   padding: 8px 15px;
-  border-radius: 5px;
-  color: #fff;
+  border-radius: 0;
+  @extend .theme-font-bold;
+  @extend .bold;
+  color: $theme-color-black;
   cursor: pointer;
   transition: all 0.3s ease-out;
 
   &:hover {
-    background-color: #A01B8888;
+    background-color: $theme-color-light;
   }
   svg {
     font-size: 1rem;
-    color: #A01B88;
+    color: $theme-color;
   }
   svg.right {
     margin-left: 10px;
@@ -861,5 +858,242 @@ a {
   100% {
     opacity: 0;
   }
+}
+.subscribe-btn {
+  height: 50px;
+  margin-left: -1px;
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+  background-color: $theme-color;
+  color: $theme-color-black;
+  @extend .font-regular;
+  @extend .bold;
+  &:hover {
+    background-color: $theme-color;
+    color: $theme-color-black;
+  }
+  &:disabled {
+    opacity: 1;
+    color: $theme-color-grey;
+    background-color: $theme-color;
+    &:hover {
+      background-color: $theme-color;
+      color: $theme-color-grey;
+    }
+  }
+}
+.subscribe-input {
+  input {
+    border-bottom-right-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+  }
+}
+.styled-header-btn {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+}
+.un-styled-header-btn {
+  position: relative;
+  right: 84px;
+  padding-left: 48px;
+}
+/*vertical line*/
+.vl {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: .5px;
+  background: $theme-color-light;
+}
+/*animated hover custom card*/
+.custom-card {
+  padding: 30px 20px;
+  background: #ffffff;
+  position: relative;
+  border-radius: 5px;
+  margin-bottom: 30px;
+  transition: 0.4s;
+
+  i {
+    font-size: 45px;
+    color: #999999;
+    transition: 0.4s;
+  }
+  &:hover i {
+    color: $theme-color;
+  }
+  h3 {
+    font: {
+      size: 20px;
+      weight: 500;
+    }
+    margin: {
+      bottom: 15px;
+      top: 20px;
+    }
+  }
+  p {
+    margin-bottom: 0;
+  }
+  .bg-number {
+    position: absolute;
+    right: 20px;
+    top: 10px;
+    font-size: 54px;
+    color: $theme-color;
+    opacity: 0.25;
+    transition: 0.4s;
+  }
+
+  &:hover .bg-number {
+    opacity: 1;
+  }
+
+  &:hover {
+    transform: translateY(-10px);
+    box-shadow: 7px 5px 30px rgba(72, 73, 121, 0.15);
+  }
+
+  i {
+    font-size: 30px;
+  }
+  h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    margin-top: 15px;
+  }
+  .bg-number {
+    right: 15px;
+    top: 5px;
+    font-size: 45px;
+  }
+}
+/*ANIMATED BOX*/
+.custom-box {
+  text-align: center;
+  box-shadow: 7px 5px 30px rgba(72, 73, 121, 0.15);
+  padding: 30px 20px;
+  background: #ffffff;
+  position: relative;
+  transition: 0.4s;
+
+  i {
+    font-size: 50px;
+    color: #999999;
+    transition: 0.4s;
+  }
+  &:hover i {
+    color: $theme-color;
+  }
+  h3 {
+    font: {
+      size: 20px;
+      weight: 500;
+    }
+    margin: {
+      bottom: 15px;
+      top: 20px;
+    }
+  }
+  p {
+    margin-bottom: 0;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    width: 0;
+    height: 3px;
+    border-radius: 0 0 5px 5px;
+    left: 0;
+    background: $theme-color;
+    bottom: 0;
+    transition: 0.4s;
+  }
+  &:hover::before {
+    width: 100%;
+  }
+  &:hover {
+   @extend .translate-y
+  }
+}
+.translate-y{
+  transform: translateY(-10px);
+}
+/* Oval */
+.oval-container {
+  position: relative;
+  left: 50%;
+  margin-left: -43px;
+  .oval {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    @extend .box-shadow;
+    .icon-div {
+      position: relative;
+      top: 25%;
+    }
+  }
+}
+/*SAFETY CARD*/
+.box-shadow {
+  background: #FFFFFF;
+  box-shadow: 0px 15px 45px -10px rgba(200, 203, 215, 0.499645);
+}
+
+.box-safety {
+  position: relative;
+  top: -40%;
+ @extend .box-shadow;
+  -webkit-transition: background-color 1000ms linear;
+  -moz-transition: background-color 1000ms linear;
+  -o-transition: background-color 1000ms linear;
+  -ms-transition: background-color 1000ms linear;
+  transition: background-color 1000ms linear;
+  &:hover {
+   @extend .text-theme-faint;
+    //@extend .bg-theme-grey;
+    background: $theme-color radial-gradient($theme-color-grey 25%, $theme-color-black 100%);
+
+    .font-title {
+      color: white !important;
+    }
+    .text-theme-grey {
+      color: white !important;
+    }
+  }
+}
+/*brands*/
+.brands-container {
+  background: #F7F5EF;
+}
+.whoWeAreContainer {
+  background: #FFFFFF;
+  box-shadow: 0px 15px 45px -10px rgba(200, 203, 215, 0.499645);
+}
+.howWeWork{
+  bottom: 100%;
+  left: 110%;
+  min-width: 105px;
+}
+.login {
+  background: $theme-color-black url('../images/login/loginBg.svg');
+  mix-blend-mode: normal;
+  width: 462px;
+  height: 931px;
+  .login-content {
+    margin: auto;
+    padding-top: 115%;
+    padding-left: 32%;
+  }
+  .register-content {
+    margin: auto;
+    padding-top: 100%;
+    padding-left: 22%;
+  }
+
 }
 

@@ -5,7 +5,7 @@ const ScrollUpBtn = () => (
   <>
     <ScrollUpButton
       style={{
-        backgroundColor: '#A01B88',
+        backgroundColor: '#FFA500',
         padding: 8,
         borderRadius: 50,
         width: 40,

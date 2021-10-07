@@ -65,10 +65,19 @@
 .login-form-margin {
   padding: 0;
   @include md {
-    padding: 10px 50px !important;
+    padding: 80px 50px !important;
   }
   @include lg {
-    padding: 20px 70px !important;
+    padding: 150px 20px 20px 30px !important;
+  }
+}
+.login-form-padding {
+  padding: 0;
+  @include md {
+    padding: 80px 50px !important;
+  }
+  @include lg {
+    padding: 150px 20px 20px 30px !important;
   }
 }
 .neg-m-b-50 {

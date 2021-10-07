@@ -4,6 +4,12 @@ import Modal from '../../components/microComponents/modal';
 import TextInput from '../../components/form/inputs/TextInput';
 import { forgotPassword } from '../../redux/actions/authenticationActions';
 import Loader from '../../components/microComponents/loader';
+import FormBuilder from '../../components/form/builders/form';
+import {
+  slugToString, stringDoesNotExist
+} from '../../utilities/stringOperations';
+import { validateField } from '../../utilities/validation';
+import forgotPasswordProps from './constants/forgotPassword';
 
 const ForgotPassword = () => {
   /* redux */
@@ -12,6 +18,7 @@ const ForgotPassword = () => {
   /* state */
   const [formData, setFormData] = useState({});
   const [show, setShow] = useState(false);
+  const [errors, setErrors] = useState({});
 
   useEffect(() => {
     if (store.status === 'success') {
@@ -36,6 +43,22 @@ const ForgotPassword = () => {
       [name]: value
     }));
   };
+  const handleBlur = (e, validations) => {
+    const { name, value } = e.target;
+    const field = slugToString(name);
+    // console.log(typeof field !== 'undefined');Q3';'
+    typeof field !== 'undefined'
+    && setErrors(
+      {
+        ...errors,
+        [name]: (
+          validateField(validations, field, value)
+        )
+      }
+    );
+    // setIsError(errorsChecker(errors));
+    // canContinue();
+  };
 
   const modalTemplate = (
     <div className={
@@ -56,26 +79,26 @@ const ForgotPassword = () => {
           <div className="text-warning">
             {
               store?.status === 'failed'
-                    && (
-                      <div>
-                        We cannot verify this email, try again!
-                        <button onClick={() => setShow(false)} type="button" className="btn w-25 center btn-small float-right">
-                          Ok
-                        </button>
-                      </div>
-                    )
+              && (
+                <div>
+                  We cannot verify this email, try again!
+                  <button onClick={() => setShow(false)} type="button" className="btn w-25 center btn-small float-right">
+                    Ok
+                  </button>
+                </div>
+              )
 
             }
             {
               store.status === 'success'
-                  && (
-                    <p className="text-white">
-                      we have sent the next steps to your email.
-                      {
-                        setTimeout(handleClose, 3000)
-                      }
-                    </p>
-                  )
+              && (
+                <p className="text-white">
+                  we have sent the next steps to your email.
+                  {
+                    setTimeout(handleClose, 3000)
+                  }
+                </p>
+              )
             }
           </div>
         </div>
@@ -98,17 +121,21 @@ const ForgotPassword = () => {
                 <p className="">Provide your registered email address to reset your password</p>
                 <hr />
                 <div className="login-form mb-3">
-                  <TextInput
-                    label="Email Address"
-                    name="email"
-                    value={formData?.email || ''}
-                    onChange={handleChange}
-                    className="w-100 m-b-20"
+                  <FormBuilder
+                    formItems={
+                      forgotPasswordProps(
+                        {
+                          formData,
+                          handleBlur,
+                          handleChange,
+                          errors
+                        }
+                      )
+                    }
                   />
-                  <button className="w-50 btn btn-sm float-right" type="button" onClick={handleResetPassword}>
+                  <button disabled={!(!stringDoesNotExist(formData.email) && errors.email?.length === 0)} className="w-50 btn btn-sm float-right" type="button" onClick={handleResetPassword}>
                     Reset Password
                   </button>
-                  {/* </a> */}
                 </div>
               </div>
             )

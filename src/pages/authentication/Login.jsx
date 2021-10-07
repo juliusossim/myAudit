@@ -4,14 +4,18 @@ import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import TextInput from '../../components/form/inputs/TextInput';
 import { login } from '../../redux/actions/authenticationActions';
-import { mapBackendErrors } from '../../utilities/validation';
+import { mapBackendErrors, validateField } from '../../utilities/validation';
 import PageTemp from '../../components/temps/PageTemp';
 import { resetAction } from '../../redux/actions/projectActions';
-import { notifier } from '../../utilities/stringOperations';
+import { notifier, slugToString } from '../../utilities/stringOperations';
+import { safetySvg } from '../../utilities/dummyData';
+import loginProps from './constants/loginProps';
+import FormBuilder from '../../components/form/builders/form';
 
 const LoginPage = () => {
   const [formData, setFormData] = useState({ remember_me: false });
   const [show, setShow] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const { goBack } = useHistory();
 
@@ -60,54 +64,91 @@ const LoginPage = () => {
     goBack();
     dispatch(resetAction({ action: 'LOGIN_COMPLETE' }));
   };
+  const handleBlur = (e, validations) => {
+    const { name, value } = e.target;
+    const field = slugToString(name);
+    // console.log(typeof field !== 'undefined');Q3';'
+    typeof field !== 'undefined'
+    && setErrors(
+      {
+        ...errors,
+        [name]: (
+          validateField(validations, field, value)
+        )
+      }
+    );
+    // setIsError(errorsChecker(errors));
+    // canContinue();
+  };
   /* on visiting */
   const initialTemp = ({ ...props }) => (
-    <div className="max-w-600 w-600 margin-center m-t-40">
-      <div className="login-form-container p-20">
-        <h3 className="">Login</h3>
-        <p>Fill the form below to log into your profile</p>
-        <hr />
-        <div className="login-form">
-          <TextInput
-            label="Email"
-            name="email"
-            value={formData?.email || ''}
-            onChange={handleChange}
-            className="w-100 m-b-20"
-          />
-          <TextInput
-            label="Password"
-            type="password"
-            name="password"
-            value={formData?.password || ''}
-            onChange={handleChange}
-            className="w-100 m-b-20"
-          />
-          <div className="row">
-            <div className="w-50 p-md-2">
-              <input className="text-wema" type="checkbox" name="remember_me" checked={formData.remember_me} onChange={handleChecked} />
-              {' '}
-              <span className="terms mb-3">
-                remember me
-              </span>
-            </div>
-
-            <div className="w-50">
-              <Link to="/forgot-password">
-                <button type="button" className="text-wema float-right  mb-3 viewMoreBtn">
-                  forgot password?
-                </button>
-              </Link>
+    <div className=" margin-center m-t-40">
+      <div className="box-shadow pl-2">
+        <div className="row justify-content-between">
+          <div className="login position-relative col-md-4">
+            <div className="center-center login-content max-w-400">
+              <p className="font-title-small text-theme-black bold theme-font-bold max-w-300 text-theme">
+                Fast. Secure. Safe.
+              </p>
+              <p className="font-regular text-theme-grey">
+                Find peace, life is like a water fall, you’ve gotta flow.
+                They will try to close the door on you, just open it.
+                The ladies always say Khaled you smell good
+              </p>
             </div>
           </div>
-          <button className="w-100 btn btn-large" type="button" onClick={handleLogin}>Login</button>
-          <div className="mt-3">
-            <span className="">New to Wemabank Crowdfunding?</span>
-            <Link to="/register">
-              <button type="button" className="text-wema  viewMoreBtn">
-                Sign Up
-              </button>
-            </Link>
+          <div className="login-form-padding col-md-8">
+            <div className="login-form-margin">
+              <div className="pl-3">
+                <p className="font-title-small text-theme-black bold theme-font-bold max-w-300">
+                  Welcome Back!
+                </p>
+                <p className="font-regular text-theme-grey">
+                  Fill the form below to login
+                </p>
+              </div>
+              <div className="col-md-10 mt-2">
+                <div className="row">
+                  <FormBuilder
+                    formItems={
+                      loginProps(
+                        {
+                          formData,
+                          handleBlur,
+                          handleChange,
+                          errors
+                        }
+                      )
+                    }
+                  />
+                </div>
+                <div className="row">
+                  <div className="w-50 p-md-2">
+                    <span className="terms mb-3">
+                     &nbsp;
+                    </span>
+                  </div>
+
+                  <div className="w-50">
+                    <Link to="/forgot-password">
+                      <button type="button" className="text-theme-blue float-right  mb-3 viewMoreBtn">
+                        forgot password?
+                      </button>
+                    </Link>
+                  </div>
+                </div>
+                <button className="w-100 btn btn-large" type="button" onClick={handleLogin}>Login</button>
+                <div className="mt-3">
+                  {/* eslint-disable-next-line react/no-unescaped-entities */}
+                  <span className="">Don't have an account?</span>
+                  <Link to="/register">
+                    <button type="button" className="text-theme-blue  viewMoreBtn">
+                      Sign Up
+                    </button>
+                  </Link>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

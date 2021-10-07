@@ -32,9 +32,9 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     borderRadius: theme.shape.borderRadius,
     backgroundColor: 'white',
-    color: '#A01B88',
+    color: '#FFA500',
     '&:hover': {
-      backgroundColor: 'rgba(160,27,136,0.47)',
+      backgroundColor: 'rgba(255, 165, 0, 0.22)',
       color: '#fff'
     },
     marginRight: theme.spacing(2),
@@ -48,7 +48,6 @@ const useStyles = makeStyles((theme) => ({
   searchIcon: {
     padding: theme.spacing(0, 2),
     height: '100%',
-    color: '#A01B88',
     position: 'absolute',
     pointerEvents: 'none',
     display: 'flex',
@@ -96,6 +95,7 @@ const SearchAppBar = ({
 }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = React.useState(null);
+  const [active, setActive] = React.useState('');
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = React.useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
@@ -112,6 +112,10 @@ const SearchAppBar = ({
   const handleMenuClose = () => {
     setAnchorEl(null);
     handleMobileMenuClose();
+  };
+  const handleMenuClick = (item) => {
+    setActive(item.name);
+    // item.action();
   };
 
   const handleMobileMenuOpen = (event) => {
@@ -130,7 +134,7 @@ const SearchAppBar = ({
       onClose={handleMenuClose}
     >
       {
-        menu?.map((item) => (
+        menu?.leftMenu?.map((item) => (
           <Link key={item.name || Math.random()} to={item.to || '#'} onClick={item.action}>
             <MenuItem onClick={handleMenuClose}>{sentenceCaps(item.name)}</MenuItem>
           </Link>
@@ -139,6 +143,7 @@ const SearchAppBar = ({
     </Menu>
   );
 
+  const mobileMenuItems = [...menu?.leftMenu, ...menu.rightMenu];
   const mobileMenuId = 'primary-search-account-menu-mobile';
   const renderMobileMenu = (
     <Menu
@@ -151,37 +156,37 @@ const SearchAppBar = ({
       onClose={handleMobileMenuClose}
     >
       {
-        menu?.map((item) => (
-          <Link key={item?.name || Math.random()} to={item.to || '#'} onClick={item.action}>
-            <MenuItem>
-              <IconButton color="inherit">
-                <Badge badgeContent={item.count} color="secondary">
-                  {item.icon}
-                </Badge>
-              </IconButton>
-              <p>{sentenceCaps(item.name)}</p>
-            </MenuItem>
+        mobileMenuItems?.map((item) => (
+          <Link key={item.name || Math.random()} to={item.to || '#'} onClick={item.action}>
+            <MenuItem onClick={handleMenuClose}>{sentenceCaps(item.name)}</MenuItem>
           </Link>
         ))
       }
-      <MenuItem onClick={handleProfileMenuOpen}>
-        <IconButton
-          aria-label="account of current user"
-          aria-controls="primary-search-account-menu"
-          aria-haspopup="true"
-          color="inherit"
-        >
-          {account?.icon}
-        </IconButton>
-        {dp}
-      </MenuItem>
+      {
+        dp
+      }
     </Menu>
   );
 
   return (
     <div className={classes.grow}>
-      <AppBar className="bg-light text-wema position-fixed   " style={{ position: 'fixed' }} position="sticky">
+      <AppBar className="bg-light position-fixed  text-theme-black theme-font-bold bold  " style={{ position: 'fixed' }} position="sticky">
         <Toolbar className={clss}>
+          <div className={classes.sectionDesktop}>
+            {
+              menu?.leftMenu?.map((item) => (
+                <Link key={item?.name || Math.random()} to={item.to || '#'} onClick={() => handleMenuClick(item)} className={active === item?.name ? 'header-links mx-2' : 'mx-2'}>
+                  <div>
+                    {!item?.mobileName && item.name}
+                  </div>
+                </Link>
+              ))
+            }
+            {
+              dp
+            }
+          </div>
+          <div className={classes.grow} />
           <div className="max-w-200">
             <Link to="/" className="logo">
               <img src={logo} alt="crowd funding logo" />
@@ -190,40 +195,18 @@ const SearchAppBar = ({
           <Typography className={classes.title} variant="h6" noWrap>
             {sentenceCaps(title)}
           </Typography>
-          {/* <div className={classes.search}> */}
-          {/*  <div className={classes.searchIcon}> */}
-          {/*    <MdSearch /> */}
-          {/*  </div> */}
-          {/*  <InputBase */}
-          {/*    placeholder="Search…" */}
-          {/*    classes={{ */}
-          {/*      root: classes.inputRoot, */}
-          {/*      input: classes.inputInput */}
-          {/*    }} */}
-          {/*    inputProps={{ 'aria-label': 'search' }} */}
-          {/*  /> */}
-          {/* </div> */}
+          <div className={classes.grow} />
           <div className={classes.grow} />
           <div className={classes.sectionDesktop}>
+            <div className="vl mr-5" />
             {
-              popMenu
-            }
-            {
-              menu?.map((item) => (
-                <Link key={item?.name || Math.random()} to={item.to || '#'} onClick={item.action}>
-                  <MenuItem>
-                    <IconButton color="inherit">
-                      <Badge badgeContent={item.count} color="secondary">
-                        {item.icon}
-                      </Badge>
-                    </IconButton>
-                    {!item?.mobileName && item.name}
-                  </MenuItem>
+              menu?.rightMenu?.map((item) => (
+                <Link to={item.to} type="button" className={item.styled ? 'ml-3 btn styled-header-btn text-white pt-3' : 'mr-5 ml-5 un-styled-header-btn btn-plain bold'}>
+                  <span className="px-5">
+                    {item.name}
+                  </span>
                 </Link>
               ))
-            }
-            {
-              dp
             }
           </div>
           <div className={classes.sectionMobile}>

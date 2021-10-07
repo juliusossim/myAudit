@@ -48,7 +48,8 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         excuseSkeleton,
         variant,
         stringValue,
-        accepted
+        accepted,
+        hidePasswordValidations
       } = props;
       switch (kind) {
       case 'select':
@@ -224,6 +225,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             max={maxDate}
             validations={validations}
             reveal={reveal}
+            hidePasswordValidations={hidePasswordValidations}
             handleReveal={handleReveal}
             btn={btn}
             btnMethod={btnMethod}
@@ -231,6 +233,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             skeleton={skeleton}
             excuseSkeleton={excuseSkeleton}
             helperText={helperText}
+            placeholder={placeholder}
           />
         );
       }

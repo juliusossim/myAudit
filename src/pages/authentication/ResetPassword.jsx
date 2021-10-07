@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import FormBuilder from '../../components/form/builders/form';
 import formBuilderProps from './constants/resetPassword';
 import { mapBackendErrors, validateField } from '../../utilities/validation';
@@ -9,6 +10,7 @@ import { resetPassword } from '../../redux/actions/authenticationActions';
 import Loader from '../../components/microComponents/loader';
 
 const ResetPassword = () => {
+  const history = useHistory();
   /* redux */
   const dispatch = useDispatch();
   const store = useSelector((state) => state.auth.resetPassword);
@@ -141,7 +143,7 @@ const ResetPassword = () => {
                       )
                     }
                   />
-                  <button type="button" className="text-wema float-left viewMoreBtn mt-3" onClick={() => window.location.replace('/forgot-password')}>
+                  <button type="button" className="text-wema float-left viewMoreBtn mt-3" onClick={() => history.back()}>
                     &lt; Back
                   </button>
                   <button className="w-50 btn btn-small float-right" type="button" onClick={handleRegister}>Change Password</button>

@@ -66,6 +66,15 @@
     max-width: 750px!important;
   }
 }
+.max-w-300 {
+
+  @include lg {
+    max-width: 300px!important;
+  }
+  @include xl {
+    max-width: 300px!important;
+  }
+}
 
 
 
@@ -98,6 +107,11 @@
   }
   @include xl {
     width: 750px!important;
+  }
+}
+.max-w-380 {
+  @include lg {
+    max-width: 380px!important;
   }
 }
 

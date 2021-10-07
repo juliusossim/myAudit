@@ -1,0 +1,79 @@
+@import "variables/theme";
+.logo-full {
+  color: $theme-color-black;
+  max-width: 163px;
+}
+.font-small {
+  font-size: $theme-small;
+  line-height: $theme-line-small;
+}
+.font-regular {
+  font-size: $theme-regular;
+  line-height: $theme-line-regular;
+}
+.font-title-small {
+  font-size: $theme-title-1;
+  line-height: $theme-line-title-1;
+}
+.font-title {
+  font-size: $theme-title;
+  line-height: $theme-line-title;
+}
+.font-hero {
+  font-size: $theme-hero;
+  line-height: $theme-line-hero;
+}
+.text-theme-black {
+  color: $theme-color-black !important;
+}
+.text-theme-grey {
+  color: $theme-color-grey !important;
+}
+.text-theme-faint {
+  color: $theme-color-faint !important;
+}
+.text-theme-blue {
+  color: $theme-blue;
+}
+
+.text-theme {
+  color: $theme-color !important;
+}
+.bg-theme {
+  background: $theme-color !important;
+}
+.bg-theme-black {
+  background: $theme-color-black !important;
+}
+.bg-theme-grey {
+  background: $theme-color-grey !important;
+}
+.bg-theme-faint {
+  background: $theme-color-faint !important;
+}
+.bg-theme-light {
+  background: $theme-color-light !important;
+}
+.bg-theme-off-white {
+  background: $theme-color-off-white !important;
+}
+
+.theme-font{
+  font-family: Notosans-regular sans-serif;
+}
+.theme-font-bold {
+  font-family: Notosans-Bold sans-serif;
+}
+.theme-hover {
+  &:hover {
+    @extend .bg-theme-light;
+    background: radial-gradient($theme-color-light 25%, $theme-color-off-white 100%);
+    color: $theme-color;
+    //@extend .text-theme;
+  }
+}
+svg:not(:root) {
+  overflow: hidden;
+  max-width: 65vw;
+}
+
