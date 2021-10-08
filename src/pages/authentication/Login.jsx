@@ -96,7 +96,7 @@ const LoginPage = () => {
             </p>
           </div>
         </div>
-        <div className="col-md-7">
+        <div className="col-md-7 mt-4 mt-md-0">
           <div className="login-form-margin">
             <div className="pl-3">
               <p className="font-title-small text-theme-black bold theme-font-bold max-w-300">
