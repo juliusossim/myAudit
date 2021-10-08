@@ -123,7 +123,7 @@ const RegisterPage = () => {
               <button className="w-100 btn btn-large" type="button" onClick={handleLogin}>Sign up</button>
               <div className="mt-3">
                 <span className="">Already have an account?</span>
-                <Link to="/register">
+                <Link to="/login">
                   <button type="button" className="text-theme-blue  viewMoreBtn">
                     Login
                   </button>
