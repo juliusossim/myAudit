@@ -128,7 +128,7 @@ const LoginPage = () => {
                   </span>
                 </div>
 
-                <div className="w-50">
+                <div className="">
                   <Link to="/forgot-password">
                     <button type="button" className="text-theme-blue float-right  mb-3 viewMoreBtn">
                       forgot password?
