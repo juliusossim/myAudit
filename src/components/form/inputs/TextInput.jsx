@@ -106,6 +106,7 @@ const TextInput = (props) => {
                       title={props.title}
                       readOnly={props.readOnly}
                       onMouseEnter={handleHelperText}
+                      placeholder={props.placeholder}
                       onMouseLeave={mouseOut}
                       onBlur={((e) => typeof props.onBlur === 'function'
                       && props.onBlur(e, props.validations))}
