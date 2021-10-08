@@ -172,7 +172,7 @@ const SearchAppBar = ({
     <div className={classes.grow}>
       <AppBar className="bg-light position-fixed  text-theme-black theme-font-bold bold  " style={{ position: 'fixed' }} position="sticky">
         <Toolbar className={clss}>
-          <div className={classes.sectionDesktop}>
+          <div className={`${classes.sectionDesktop} desktop-lg`}>
             {
               menu?.leftMenu?.map((item) => (
                 <Link key={item?.name || Math.random()} to={item.to || '#'} onClick={() => handleMenuClick(item)} className={active === item?.name ? 'header-links mx-2' : 'mx-2'}>
@@ -186,6 +186,7 @@ const SearchAppBar = ({
               dp
             }
           </div>
+          <div className={classes.grow} />
           <div className={classes.grow} />
           <div className="max-w-200">
             <Link to="/" className="logo">

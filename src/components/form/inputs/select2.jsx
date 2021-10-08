@@ -4,6 +4,7 @@ import Button from '@material-ui/core/Button';
 import Card from '@material-ui/core/Card';
 import TextInput from './TextInput';
 import Chip from '../../ui/chip';
+import { sentenceCaps } from '../../../utilities/stringOperations';
 
 const Select2 = (
   {
@@ -163,7 +164,7 @@ const Select2 = (
               && onBlur(e, validations))}
           >
             <div className="mb-3">
-              <input type="search" placeholder={selectedOption || `search ${label} here...`} value={searchTerm} onChange={handleChange} />
+              <input type="search" placeholder={sentenceCaps(selectedOption) || `Search ${label} here...`} value={searchTerm} onChange={handleChange} />
             </div>
             <div className="select-2 text-left col-12">
 

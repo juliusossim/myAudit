@@ -86,7 +86,11 @@ const CurrencyInput = (props) => {
                     name={props.name}
                     id={props.name}
                     value={props.value}
-                    onChange={props.onChange}
+                    onChange={((e) => {
+                      typeof props.onBlur === 'function'
+                      && props.onBlur(e, props.validations);
+                      props.onChange(e);
+                    })}
                     onFocus={props.onFocus}
                     title={props.title}
                     readOnly={props.readOnly}

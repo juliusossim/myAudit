@@ -83,70 +83,68 @@ const LoginPage = () => {
   /* on visiting */
   const initialTemp = ({ ...props }) => (
     <div className=" margin-center m-t-40">
-      <div className="box-shadow pl-2">
-        <div className="row justify-content-between">
-          <div className="login position-relative col-md-4">
-            <div className="center-center login-content max-w-400">
-              <p className="font-title-small text-theme-black bold theme-font-bold max-w-300 text-theme">
-                Fast. Secure. Safe.
+      <div className="box-shadow row">
+        <div className="login position-relative col-md-5">
+          <div className="login-content p-0 m-0 p-lg-3 ml-lg-5">
+            <p className="font-title-small text-theme-black bold theme-font-bold text-theme">
+              Fast. Secure. Safe.
+            </p>
+            <p className="font-regular text-theme-grey">
+              Find peace, life is like a water fall, you’ve gotta flow.
+              They will try to close the door on you, just open it.
+              The ladies always say Khaled you smell good
+            </p>
+          </div>
+        </div>
+        <div className="col-md-7">
+          <div className="login-form-margin">
+            <div className="pl-3">
+              <p className="font-title-small text-theme-black bold theme-font-bold max-w-300">
+                Welcome Back!
               </p>
               <p className="font-regular text-theme-grey">
-                Find peace, life is like a water fall, you’ve gotta flow.
-                They will try to close the door on you, just open it.
-                The ladies always say Khaled you smell good
+                Fill the form below to login
               </p>
             </div>
-          </div>
-          <div className="login-form-padding col-md-8">
-            <div className="login-form-margin">
-              <div className="pl-3">
-                <p className="font-title-small text-theme-black bold theme-font-bold max-w-300">
-                  Welcome Back!
-                </p>
-                <p className="font-regular text-theme-grey">
-                  Fill the form below to login
-                </p>
+            <div className="col-md-10 mt-2">
+              <div className="row">
+                <FormBuilder
+                  formItems={
+                    loginProps(
+                      {
+                        formData,
+                        handleBlur,
+                        handleChange,
+                        errors
+                      }
+                    )
+                  }
+                />
               </div>
-              <div className="col-md-10 mt-2">
-                <div className="row">
-                  <FormBuilder
-                    formItems={
-                      loginProps(
-                        {
-                          formData,
-                          handleBlur,
-                          handleChange,
-                          errors
-                        }
-                      )
-                    }
-                  />
-                </div>
-                <div className="row">
-                  <div className="w-50 p-md-2">
-                    <span className="terms mb-3">
+              <div className="row">
+                <div className="w-50 p-md-2">
+                  <span className="terms mb-3">
                      &nbsp;
-                    </span>
-                  </div>
-
-                  <div className="w-50">
-                    <Link to="/forgot-password">
-                      <button type="button" className="text-theme-blue float-right  mb-3 viewMoreBtn">
-                        forgot password?
-                      </button>
-                    </Link>
-                  </div>
+                  </span>
                 </div>
-                <button className="w-100 btn btn-large" type="button" onClick={handleLogin}>Login</button>
-                <div className="mt-3">
-                  {/* eslint-disable-next-line react/no-unescaped-entities */}
-                  <span className="">Don't have an account?</span>
-                  <Link to="/register">
-                    <button type="button" className="text-theme-blue  viewMoreBtn">
-                      Sign Up
+
+                <div className="w-50">
+                  <Link to="/forgot-password">
+                    <button type="button" className="text-theme-blue float-right  mb-3 viewMoreBtn">
+                      forgot password?
                     </button>
                   </Link>
                 </div>
+              </div>
+              <button className="w-100 btn btn-large" type="button" onClick={handleLogin}>Login</button>
+              <div className="mt-3">
+                {/* eslint-disable-next-line react/no-unescaped-entities */}
+                <span className="">Don't have an account?</span>
+                <Link to="/register">
+                  <button type="button" className="text-theme-blue  viewMoreBtn">
+                    Sign Up
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

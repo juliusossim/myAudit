@@ -25,11 +25,11 @@ const Footer = () => {
         <div className="brands-container">
           <div className="content">
             <div className="w-100 margin-center">
-              <div className="d-flex justify-content-between">
+              <div className="d-flex flex-wrap justify-content-center">
                 {brands.map((brand) => (
-                  <div key={Math.random()}>
+                  <Link to="/" key={Math.random()} className="m-2">
                     <img src={brand} alt="brand" />
-                  </div>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -40,7 +40,9 @@ const Footer = () => {
             <div className="col-lg-4 col-md-6 col-sm-12">
               <div className="m-b-20">
                 <Zoom>
-                  <img src={AuditLogoFull} alt="My Audit logo" className="logo-full" />
+                  <Link to="/">
+                    <img src={AuditLogoFull} alt="My Audit logo" className="logo-full" />
+                  </Link>
                 </Zoom>
               </div>
               <p className="m-b-10 font-small max-w-380">
@@ -53,15 +55,15 @@ const Footer = () => {
             <div className="col-lg-4 col-md-6 col-sm-12">
               <p className="font-title-small theme-font-bold text-theme-black">Quick Links</p>
               <div className="m-b-10 d-flex">
-                <div className="mr-md-5">
+                <div className="mr-5">
                   <ListMat props={footerLinksLeft} clss={{ main: 'quick-links', item: 'font-small simple-hover' }} />
                 </div>
-                <div className="ml-md-5">
+                <div className="ml-5">
                   <ListMat props={footerLinksRight} clss={{ main: 'quick-links', item: 'font-small simple-hover' }} />
                 </div>
               </div>
             </div>
-            <div className="col-lg-4 col-md-6 col-sm-12">
+            <div className="col-lg-4 col-12">
               <p className="m-b-20 font-title-small font-22 max-w-300 text-theme-black theme-font-bold">Subscribe to the best creative articles feed.</p>
               <div className="m-b-10">
                 <SubscribeBtn />

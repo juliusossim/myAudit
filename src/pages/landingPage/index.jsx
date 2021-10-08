@@ -160,17 +160,13 @@ const GeneralPage = () => {
           <div className="content1">
             <div className="font-hero text-white theme-font-bold bold">
               <span>{homePageTexts.hero1}</span>
-              <span className="text-theme mx-2">{homePageTexts.styled}</span>
+              <span className="text-theme mx-1">{homePageTexts.styled}</span>
               <span>{homePageTexts.hero2}</span>
             </div>
             <div className="font-title-small text-white">
               <p>
                 {homePageTexts.text1.first}
-              </p>
-              <p>
                 {homePageTexts.text1.second}
-              </p>
-              <p>
                 {homePageTexts.text1.third}
               </p>
             </div>
@@ -229,8 +225,8 @@ const GeneralPage = () => {
       <div className="bg-theme-black">
         <div className="content">
           <div className="w-100 margin-center m-t-40 projects">
-            <div className="d-flex justify-content-between">
-              <div className="">
+            <div className="row">
+              <div className="col-md-8">
                 <p className="font-title-small font-30 text-white">
                   Would you like to speak to one of our financial advisers?
                 </p>
@@ -239,14 +235,14 @@ const GeneralPage = () => {
                   Just submit your contact details and we'll be in touch shortly.
                 </p>
               </div>
-              <div className="mr-3">
+              <div className="col-md-4">
                 <button type="button" className="btn px-5 py-3">Get A Quote</button>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div className="bg-theme-off-white h-70h">
+      <div className="bg-theme-off-white whatWedo">
         <div className="content">
           <div className="w-100 margin-center m-t-40 projects">
             <div className="text-center">
@@ -260,7 +256,7 @@ const GeneralPage = () => {
             <div className="row mt-5">
               {
                 serviceCards.map((card) => (
-                  <div className="col-md-4" key={card.title}>
+                  <div className="col-md-4 mt-3 mt-md-0 mb-3" key={card.title}>
                     <div className="custom-box">
                       <div className="row position-relative">
                         <div className="oval-container">
@@ -291,12 +287,12 @@ const GeneralPage = () => {
           </div>
         </div>
       </div>
-      <div className="bg-white h-52h">
+      <div className="bg-white box-safety-container">
         <div className="content">
-          <div className="w-100 margin-center m-t-40 projects">
+          <div className="w-100 margin-center m-t-40">
             <div className="box-safety p-5">
-              <div className="d-flex flex-wrap justify-content-between">
-                <div className="">
+              <div className="row">
+                <div className="col-md-6">
                   <p className="font-title text-theme-black bold theme-font-bold max-w-300">
                     Safety and confidentiality guaranteed.
                   </p>
@@ -308,7 +304,7 @@ const GeneralPage = () => {
                     <button type="button" className="btn theme-hover px-5 py-3">Get A Quote</button>
                   </div>
                 </div>
-                <div className="mr-3">
+                <div className="col-md-6">
                   {safetySvg}
                 </div>
               </div>

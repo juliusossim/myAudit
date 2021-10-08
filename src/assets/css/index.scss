@@ -59,21 +59,6 @@
     font-size: 1.4rem;
   }
 }
-.font-30 {
-  font-size: 1.3rem;
-  @include sm {
-    font-size: 1.5rem;
-  }
-  @include md {
-    font-size: 1.7rem;
-  }
-  @include lg {
-    font-size: 1.9rem;
-  }
-}
-.font-16 {
-  font-size: 1rem;
-}
 .theme-font-2 {
   font-family: Avenir, sans-serif !important;
 }
@@ -398,7 +383,7 @@ a.gray:hover {
 
 /* COMMON */
 .content {
-  max-width: 1300px;
+  @include max-width-size($screen-sm-min, $screen-xl-min, 300px, 1200px);
   justify-content: center;
   margin: 0 auto;
   padding: 20px;
@@ -1044,28 +1029,6 @@ a {
   box-shadow: 0px 15px 45px -10px rgba(200, 203, 215, 0.499645);
 }
 
-.box-safety {
-  position: relative;
-  top: -40%;
- @extend .box-shadow;
-  -webkit-transition: background-color 1000ms linear;
-  -moz-transition: background-color 1000ms linear;
-  -o-transition: background-color 1000ms linear;
-  -ms-transition: background-color 1000ms linear;
-  transition: background-color 1000ms linear;
-  &:hover {
-   @extend .text-theme-faint;
-    //@extend .bg-theme-grey;
-    background: $theme-color radial-gradient($theme-color-grey 25%, $theme-color-black 100%);
-
-    .font-title {
-      color: white !important;
-    }
-    .text-theme-grey {
-      color: white !important;
-    }
-  }
-}
 /*brands*/
 .brands-container {
   background: #F7F5EF;
@@ -1080,20 +1043,18 @@ a {
   min-width: 105px;
 }
 .login {
-  background: $theme-color-black url('../images/login/loginBg.svg');
   mix-blend-mode: normal;
-  width: 462px;
-  height: 931px;
+  background: url('../images/login/loginBg.svg') no-repeat center;
+  @include height-size($screen-sm-min, $screen-xl-min, 550px, 931px);
+  @include width-size($screen-sm-min, $screen-xl-min, 300px, 931px);
   .login-content {
-    margin: auto;
-    padding-top: 115%;
-    padding-left: 32%;
-  }
-  .register-content {
-    margin: auto;
-    padding-top: 100%;
-    padding-left: 22%;
+    @extend .center-vertical;
   }
 
+}
+.desktop-lg {
+  @include lg {
+    padding-right: 52px;
+  }
 }
 

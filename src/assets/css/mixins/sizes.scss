@@ -1,0 +1,179 @@
+@function strip-unit($value) {
+  @return $value / ($value * 0 + 1);
+}
+
+@mixin font-size($min-vw, $max-vw, $min-font-size, $max-font-size, $min-line-height, $max-line-height) {
+  $u1: unit($min-vw);
+  $u2: unit($max-vw);
+  $u3: unit($min-font-size);
+  $u4: unit($max-font-size);
+  $u5: unit($min-line-height);
+  $u6: unit($max-line-height);
+
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+    & {
+      font-size: $min-font-size;
+      @media screen and (min-width: $min-vw) {
+        font-size: calc(#{$min-font-size} + #{strip-unit($max-font-size - $min-font-size)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+      }
+      @media screen and (min-width: $max-vw) {
+        font-size: $max-font-size;
+      }
+    }
+  }
+  @if $u1 == $u2 and $u1 == $u5 and $u1 == $u6 {
+    & {
+      line-height: $min-line-height;
+      @media screen and (min-width: $min-vw) {
+        line-height: calc(#{$max-line-height} + #{strip-unit($max-line-height - $max-line-height)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+      }
+      @media screen and (min-width: $max-vw) {
+        line-height: $max-line-height;
+      }
+    }
+  }
+}
+@mixin width-size($min-vw, $max-vw, $min-width, $max-width) {
+  $u1: unit($min-vw);
+  $u2: unit($max-vw);
+  $u3: unit($min-width);
+  $u4: unit($max-width);
+
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+    & {
+      width: $min-width;
+      @media screen and (min-width: $min-vw) {
+        width: calc(#{$min-width} + #{strip-unit($max-width - $min-width)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+      }
+      @media screen and (min-width: $max-vw) {
+        width: $max-width;
+      }
+    }
+  }
+}
+@mixin max-width-size($min-vw, $max-vw, $min-width, $max-width) {
+  $u1: unit($min-vw);
+  $u2: unit($max-vw);
+  $u3: unit($min-width);
+  $u4: unit($max-width);
+
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+    & {
+      max-width: $min-width;
+      @media screen and (min-width: $min-vw) {
+        max-width: calc(#{$min-width} + #{strip-unit($max-width - $min-width)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+      }
+      @media screen and (min-width: $max-vw) {
+        max-width: $max-width;
+      }
+    }
+  }
+}
+@mixin height-size($min-vw, $max-vw, $min-height, $max-height) {
+  $u1: unit($min-vw);
+  $u2: unit($max-vw);
+  $u3: unit($min-height);
+  $u4: unit($max-height);
+
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+    & {
+      height: $min-height;
+      @media screen and (min-width: $min-vw) {
+        height: calc(#{$min-height} + #{strip-unit($max-height - $min-height)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+      }
+      @media screen and (min-width: $max-vw) {
+        height: $max-height;
+      }
+    }
+  }
+}
+@mixin max-height-size($min-vw, $max-vw, $min-height, $max-height) {
+  $u1: unit($min-vw);
+  $u2: unit($max-vw);
+  $u3: unit($min-height);
+  $u4: unit($max-height);
+
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+    & {
+      max-height: $min-height;
+      @media screen and (min-width: $min-vw) {
+        max-height: calc(#{$min-height} + #{strip-unit($max-height - $min-height)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+      }
+      @media screen and (min-width: $max-vw) {
+        max-height: $max-height;
+      }
+    }
+  }
+}
+@mixin left($min-vw, $max-vw, $min-height, $max-height) {
+  $u1: unit($min-vw);
+  $u2: unit($max-vw);
+  $u3: unit($min-height);
+  $u4: unit($max-height);
+
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+    & {
+      left: $min-height;
+      @media screen and (min-width: $min-vw) {
+        left: calc(#{$min-height} + #{strip-unit($max-height - $min-height)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+      }
+      @media screen and (min-width: $max-vw) {
+        left: $max-height;
+      }
+    }
+  }
+}
+@mixin right($min-vw, $max-vw, $min-height, $max-height) {
+  $u1: unit($min-vw);
+  $u2: unit($max-vw);
+  $u3: unit($min-height);
+  $u4: unit($max-height);
+
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+    & {
+      right: $min-height;
+      @media screen and (min-width: $min-vw) {
+        right: calc(#{$min-height} + #{strip-unit($max-height - $min-height)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+      }
+      @media screen and (min-width: $max-vw) {
+        right: $max-height;
+      }
+    }
+  }
+}
+@mixin bottom($min-vw, $max-vw, $min-height, $max-height) {
+  $u1: unit($min-vw);
+  $u2: unit($max-vw);
+  $u3: unit($min-height);
+  $u4: unit($max-height);
+
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+    & {
+      bottom: $min-height;
+      @media screen and (min-width: $min-vw) {
+        bottom: calc(#{$min-height} + #{strip-unit($max-height - $min-height)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+      }
+      @media screen and (min-width: $max-vw) {
+        bottom: $max-height;
+      }
+    }
+  }
+}
+@mixin top($min-vw, $max-vw, $min-height, $max-height) {
+  $u1: unit($min-vw);
+  $u2: unit($max-vw);
+  $u3: unit($min-height);
+  $u4: unit($max-height);
+
+  @if $u1 == $u2 and $u1 == $u3 and $u1 == $u4 {
+    & {
+      top: $min-height;
+      @media screen and (min-width: $min-vw) {
+        top: calc(#{$min-height} + #{strip-unit($max-height - $min-height)} * ((100vw - #{$min-vw}) / #{strip-unit($max-vw - $min-vw)}));
+      }
+      @media screen and (min-width: $max-vw) {
+        top: $max-height;
+      }
+    }
+  }
+}

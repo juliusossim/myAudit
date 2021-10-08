@@ -82,54 +82,52 @@ const RegisterPage = () => {
   /* on visiting */
   const initialTemp = ({ ...props }) => (
     <div className=" margin-center m-t-40">
-      <div className="box-shadow pl-2">
-        <div className="row justify-content-between">
-          <div className="login position-relative col-md-4">
-            <div className="center-center register-content max-w-400">
-              <p className="font-title-small text-theme-black bold theme-font-bold max-w-300 text-theme">
-                Fast. Secure. Safe.
-              </p>
-              <p className="font-regular text-theme-grey">
-                Find peace, life is like a water fall, you’ve gotta flow.
-                They will try to close the door on you, just open it.
-                The ladies always say Khaled you smell good
-              </p>
-            </div>
+      <div className="box-shadow row">
+        <div className="login position-relative col-md-5">
+          <div className="login-content p-0 m-0 p-lg-3 ml-lg-5">
+            <p className="font-title-small text-theme-black bold theme-font-bold text-theme">
+              Fast. Secure. Safe.
+            </p>
+            <p className="font-regular text-theme-grey">
+              Find peace, life is like a water fall, you’ve gotta flow.
+              They will try to close the door on you, just open it.
+              The ladies always say Khaled you smell good
+            </p>
           </div>
-          <div className="login-form-padding pl-5 col-md-8">
-            <div className="pl-5">
-              <div className="pl-3">
-                <div className="font-title-small text-theme-black bold theme-font-bold max-w-300">
-                  Welcome
-                </div>
-                <div className="font-regular text-theme-grey">
-                  Fill the form below to sign up
-                </div>
+        </div>
+        <div className="col-md-7">
+          <div className="login-form-margin">
+            <div className="pl-3">
+              <div className="font-title-small text-theme-black bold theme-font-bold max-w-300">
+                Welcome
               </div>
-              <div className="col-md-10 mt-2">
-                <div className="row">
-                  <FormBuilder
-                    formItems={
-                      registerProps(
-                        {
-                          formData,
-                          handleBlur,
-                          handleChange,
-                          errors
-                        }
-                      )
-                    }
-                  />
-                </div>
-                <button className="w-100 btn btn-large" type="button" onClick={handleLogin}>Sign up</button>
-                <div className="mt-3">
-                  <span className="">Already have an account?</span>
-                  <Link to="/register">
-                    <button type="button" className="text-theme-blue  viewMoreBtn">
-                      Login
-                    </button>
-                  </Link>
-                </div>
+              <div className="font-regular text-theme-grey">
+                Fill the form below to sign up
+              </div>
+            </div>
+            <div className="col-md-10 mt-2">
+              <div className="row">
+                <FormBuilder
+                  formItems={
+                    registerProps(
+                      {
+                        formData,
+                        handleBlur,
+                        handleChange,
+                        errors
+                      }
+                    )
+                  }
+                />
+              </div>
+              <button className="w-100 btn btn-large" type="button" onClick={handleLogin}>Sign up</button>
+              <div className="mt-3">
+                <span className="">Already have an account?</span>
+                <Link to="/register">
+                  <button type="button" className="text-theme-blue  viewMoreBtn">
+                    Login
+                  </button>
+                </Link>
               </div>
             </div>
           </div>

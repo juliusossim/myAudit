@@ -1,20 +1,19 @@
 @import "mixins/mediaqueries";
+@import "mixins/sizes";
 @import "variables/theme";
 
 .slide1{
   @extend .theme-font-bold;
   @extend .banner;
-  height: 80vh;
-  max-width: 100vw;
+  @include height-size($screen-sm-min, $screen-xl-min, 600px, 860px);
+  max-width: 100%;
 
 
   .content1 {
     position: absolute;
-    left: 14vw !important;
-    top: 40vh;
-    width: 40vw;
-    height: 8.7vh;
-    @include sm
+    @include top($screen-sm-min, $screen-xl-min, 190px, 500px);
+    @include left($screen-sm-min, $screen-xl-min, 30px, 137.5px);
+    @include width-size($screen-sm-min, $screen-xl-min, 285px, 775.5px);
   }
 
 
@@ -175,48 +174,48 @@
 .banner{
   background: $theme-color-black url('../images/home/banner.svg');
   mix-blend-mode: normal;
-  //opacity: 0.2;
+}
+.whatWedo {
+  padding-bottom: 30px;
+  height: 100%;
+  @include lg{
+    height: 800px;
+  }
+  @include xl {
+    height: 934px;
+  }
 
 }
-//@media screen and (min-width: 320px) {
-//  .hero {
-//    font-size: calc(8px + 8 * ((100vw - 320px) / 680)) !important;
-//    //line-height: calc(100% + 8 * ((100vw - 320px) / 680)) !important;
-//    //margin-top: calc(.5vh + 8 * ((100vw - 320px) / 680)) !important;
-//  }
-//  .small1, .small2, .butt {
-//    font-size: calc(3px + 8 * ((100vw - 320px) / 680)) !important;
-//    line-height: calc(1px + 8 * ((100vw - 320px) / 680)) !important;
-//  }
-//  .content1 {
-//    left: calc(0.5vw + 8 * ((100vw - 320px) / 680)) !important;
-//  }
-//
-//}
-//@media screen and (min-width: 1000px) {
-//  .hero {
-//    font-size: 14px !important;
-//  }
-//  .small1 {
-//    font-size: 8px !important;
-//  }
-//.small2, .butt {
-//    font-size: 7px !important;
-//  }
-//
-//}
-//@media screen and (min-width: 1300px) {
-//  .hero {
-//    font-size: 20px !important;
-//    //width: 30vw;
-//    padding-right: 5vw;
-//  }
-//  .small1 {
-//    font-size: 8px !important;
-//  }
-//.small2, .butt {
-//    font-size: 7px !important;
-//  }
-//
-//}
+.box-safety {
+  position: absolute;
+    right: 0;
+  width: 100%;
+  //@include width-size($screen-sm-min, $screen-xl-min, 550px, 1170px);
+  @include height-size($screen-sm-min, $screen-xl-min, 550px, 417px);
+  //@include sm {
+  //  width: 100%;
+  //}
+  @include top($screen-sm-min, $screen-xl-min, -55px, -165px);
+  @include left($screen-sm-min, $screen-xl-min, 0, 110px);
+  @extend .box-shadow;
+  -webkit-transition: background-color 1000ms linear;
+  -moz-transition: background-color 1000ms linear;
+  -o-transition: background-color 1000ms linear;
+  -ms-transition: background-color 1000ms linear;
+  transition: background-color 1000ms linear;
+  &:hover {
+    @extend .text-theme-faint;
+    //@extend .bg-theme-grey;
+    background: $theme-color radial-gradient($theme-color-grey 25%, $theme-color-black 100%);
 
+    .font-title {
+      color: white !important;
+    }
+    .text-theme-grey {
+      color: white !important;
+    }
+  }
+}
+.box-safety-container {
+  min-height: 600px;
+}

@@ -1,4 +1,4 @@
-
+@import "../mixins/mediaqueries";
 .no-margin {
   margin: 0!important;
 }
@@ -65,20 +65,16 @@
 .login-form-margin {
   padding: 0;
   @include md {
-    padding: 80px 50px !important;
+    position: absolute;
+    top: 40px;
   }
   @include lg {
-    padding: 150px 20px 20px 30px !important;
+    position: absolute;
+    top: 120px;
   }
 }
 .login-form-padding {
   padding: 0;
-  @include md {
-    padding: 80px 50px !important;
-  }
-  @include lg {
-    padding: 150px 20px 20px 30px !important;
-  }
 }
 .neg-m-b-50 {
   margin-bottom: -50px;

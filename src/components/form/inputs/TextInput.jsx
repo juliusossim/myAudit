@@ -27,7 +27,7 @@ const TextInput = (props) => {
   };
 
   return (
-    <div className={`${props.className} form-group`}>
+    <div className={`${props.error?.length > 0 ? `${props.className} col-12` : `${props.className}`} form-group`}>
       {
         props.skeleton !== undefined && !props.skeleton && props.excuseSkeleton !== props.name
           ? (
@@ -42,7 +42,6 @@ const TextInput = (props) => {
                   value={props.type === 'number' ? props.value.toLocaleString() : props.value}
                   onChange={props.onChange}
                   onFocus={props.onFocus}
-                  placeholder={props.placeholder}
                   title={props.title}
                   readOnly={props.readOnly}
                   onMouseEnter={handleHelperText}
@@ -98,9 +97,12 @@ const TextInput = (props) => {
                       name={props.name}
                       id={props.name}
                       value={props.type === 'number' ? props.value.toLocaleString() : props.value}
-                      onChange={props.onChange}
+                      onChange={((e) => {
+                        typeof props.onBlur === 'function'
+                        && props.onBlur(e, props.validations);
+                        props.onChange(e);
+                      })}
                       onFocus={props.onFocus}
-                      placeholder={props.placeholder}
                       title={props.title}
                       readOnly={props.readOnly}
                       onMouseEnter={handleHelperText}
@@ -137,7 +139,6 @@ const TextInput = (props) => {
                       : <FaEye title="reveal" role="button" className="end-icon" onClick={handleReveal} />
                   )
               }
-              {console.log(props.hidePasswordValidations)}
               <div className={props.hidePasswordValidations ? 'd-none' : ''}>
                 {
                   props.type === 'password' && props.validations?.pattern && props.value !== '' && (
@@ -179,7 +180,6 @@ const TextInput = (props) => {
                   )
                 }
               </div>
-
             </>
           )
       }

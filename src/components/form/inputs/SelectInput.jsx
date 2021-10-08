@@ -116,7 +116,11 @@ const SelectInput = (
                       name={name}
                       id={name}
                       value={value}
-                      onChange={onChange}
+                      onChange={((e) => {
+                        typeof onBlur === 'function'
+                        && onBlur(e, validations);
+                        onChange(e);
+                      })}
                       onBlur={((e) => typeof onBlur === 'function'
                         && onBlur(e, validations))}
                       disabled={disabled}

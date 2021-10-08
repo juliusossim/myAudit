@@ -115,7 +115,7 @@ const Selectable = ({
       <input
         className="col-12 mb-2"
         name={prop.name}
-        placeholder="create or select"
+        placeholder="Create or select"
         value={content}
         type="select"
         onChange={handleChange}

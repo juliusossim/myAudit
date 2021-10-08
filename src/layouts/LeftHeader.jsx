@@ -48,7 +48,7 @@ const useLeftHeader = ({ menu }) => {
       to: '/register'
     },
     {
-      name: 'career',
+      name: 'Career',
       icon: <SiGnuprivacyguard />,
       to: '/register'
     },

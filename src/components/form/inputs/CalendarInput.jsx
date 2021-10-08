@@ -5,6 +5,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { DatePicker, MuiPickersUtilsProvider } from '@material-ui/pickers';
 import Skeleton from '@material-ui/lab/Skeleton';
 import Loader from '../../microComponents/loader';
+import { sentenceCaps } from '../../../utilities/stringOperations';
 
 const CalendarInput = (props) => {
   const [reveal, setReveal] = useState(false);
@@ -44,10 +45,14 @@ const CalendarInput = (props) => {
                       variant="static"
                       openTo="date"
                       name={props.name}
-                      placeholder={props.placeholder}
+                      placeholder={sentenceCaps(props.placeholder)}
                       clearable={props.clearable}
                       value={props.value || new Date()}
-                      onChange={props.onChange}
+                      onChange={((e) => {
+                        typeof props.onBlur === 'function'
+                        && props.onBlur(e, props.validations);
+                        props.onChange(e);
+                      })}
                       disablePast={props.disablePast}
                       onFocus={props.onFocus}
                       title={props.title}

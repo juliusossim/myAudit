@@ -2,6 +2,7 @@
 import React from 'react';
 import Skeleton from '@material-ui/lab/Skeleton';
 import TextField from '@material-ui/core/TextField';
+import { sentenceCaps } from '../../../utilities/stringOperations';
 
 const TextareaInput = (
   {
@@ -38,9 +39,13 @@ const TextareaInput = (
                 name={name}
                 id={name}
                 value={value}
-                placeholder={placeholder}
+                placeholder={sentenceCaps(placeholder)}
                 rows={rows}
-                onChange={onChange}
+                onChange={((e) => {
+                  typeof onBlur === 'function'
+                  && onBlur(e, validations);
+                  onChange(e);
+                })}
                 onBlur={((e) => typeof onBlur === 'function'
                 && onBlur(e, validations))}
                 disabled={disabled}

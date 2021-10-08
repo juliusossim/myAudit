@@ -1,4 +1,6 @@
 @import "variables/theme";
+@import "variables/breakpoints";
+@import "mixins/sizes";
 .logo-full {
   color: $theme-color-black;
   max-width: 163px;
@@ -6,22 +8,24 @@
 .font-small {
   font-size: $theme-small;
   line-height: $theme-line-small;
+  @include font-size($screen-sm-min, $screen-xl-min, 12, $theme-small, 15, $theme-line-small);
 }
 .font-regular {
   font-size: $theme-regular;
   line-height: $theme-line-regular;
+  @include font-size($screen-sm-min, $screen-xl-min, $theme-small, $theme-regular, 20, $theme-line-regular);
 }
 .font-title-small {
-  font-size: $theme-title-1;
-  line-height: $theme-line-title-1;
+  @include font-size($screen-sm-min, $screen-xl-min, $theme-regular, $theme-title-1, 23, $theme-line-title-1);
 }
 .font-title {
-  font-size: $theme-title;
-  line-height: $theme-line-title;
+  @include font-size($screen-sm-min, $screen-xl-min, $theme-title-1, $theme-title, 25, $theme-line-title);
 }
 .font-hero {
-  font-size: $theme-hero;
-  line-height: $theme-line-hero;
+  @include font-size($screen-sm-min, $screen-xl-min, $theme-line-title-1, $theme-hero, 25, $theme-line-hero);
+}
+.font-30 {
+  @include font-size($screen-sm-min, $screen-xl-min, 20, 30, 20, 45);
 }
 .text-theme-black {
   color: $theme-color-black !important;
@@ -74,6 +78,18 @@
 }
 svg:not(:root) {
   overflow: hidden;
-  max-width: 65vw;
+  @include max-width-size($screen-sm-min, $screen-xl-min, 211px, 500px);
 }
+
+.center-horizontal {
+  margin: auto;
+  width: fit-content;
+}
+.center-vertical {
+  position: absolute;
+  top: 50%;
+  transform: translate(0, -50%);
+}
+
+
 
