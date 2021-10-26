@@ -32,10 +32,6 @@
   font-family: Notosans-regular;
   src: url('./Noto_Sans/NotoSans-Regular.ttf');
 }
-@font-face {
-  font-family: Avenir;
-  src: url('./avenir/AvenirLTStd-Book.otf');
-}
 
 * {
   box-sizing: border-box;
@@ -624,9 +620,13 @@ main {
   color: $theme-color-black;
   cursor: pointer;
   transition: all 0.3s ease-out;
+  outline: none;
 
   &:hover {
     background-color: $theme-color-light;
+  }
+  &:focus {
+    box-shadow: none;
   }
   svg {
     font-size: 1rem;
@@ -1007,6 +1007,7 @@ a {
 .translate-y{
   transform: translateY(-10px);
 }
+
 /* Oval */
 .oval-container {
   position: relative;
@@ -1052,9 +1053,28 @@ a {
   }
 
 }
+.complete-profile-1 {
+  mix-blend-mode: normal;
+  background-color: $theme-color-black;;
+  @include height-size($screen-sm-min, $screen-xl-min, 550px, 931px);
+  @include width-size($screen-sm-min, $screen-xl-min, 300px, 931px);
+  .login-content {
+    @extend .center-vertical;
+  }
+
+}
 .desktop-lg {
   @include lg {
     padding-right: 52px;
   }
 }
 
+.dp {
+  //background: url();
+  border: 1px solid #FFFFFF;
+  border-radius: 14.4643px;
+}
+.dp-app {
+  position: relative;
+  left: 33%;
+}

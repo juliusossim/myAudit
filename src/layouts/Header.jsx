@@ -10,34 +10,43 @@ import Avatar from '@material-ui/core/Avatar';
 import { useDispatch, useSelector } from 'react-redux';
 import AuditLogoFull from '../assets/images/auditlogoFull.svg';
 import User from '../assets/images/User.svg';
-import { currentUser, logout } from '../utilities/auth';
+import { currentUser, logout, user } from '../utilities/auth';
 import { notifications } from '../redux/actions/profileActions';
 import SearchAppBar from '../components/ui/appBar';
 import FadeMenu from '../components/microComponents/menu';
 import useLeftHeader from './LeftHeader';
+import MiniDrawer from '../components/ui/swipeableDrawer';
 
-const Header = () => {
+const Header = (setWidth) => {
   const { pathname } = useLocation();
-
-  const Notifications = lazy(() => import('../pages/profile/Notifications'));
-
-  const dispatch = useDispatch();
-  const store = useSelector((state) => state.profile);
-  const [show, setShow] = useState(false);
-  const [dp, setDp] = useState(false);
-  const [selected, setSelected] = useState({ name: 'Explore', to: '/explore' });
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
   const menu = useLeftHeader({ menu: [] });
-
+  const miniMenu = [];
+  const frontMenu = [
+    '/home',
+    '/login',
+    '/register'
+  ];
+  const showSearch = frontMenu.includes(pathname);
   return (
     <div>
-      <SearchAppBar
-        className="position-fixed"
-        logo={menu.logo && AuditLogoFull}
-        clss="px-5"
-        menu={menu}
-      />
+      {
+        !showSearch
+          ? (
+            <SearchAppBar
+              className="position-fixed"
+              logo={menu.logo && AuditLogoFull}
+              clss="px-5"
+              menu={menu}
+            />
+          )
+          : (
+            <MiniDrawer
+              menu={miniMenu}
+              dp={user.profile_pic_url}
+              setDrawerWidth={setWidth}
+            />
+          )
+      }
     </div>
   );
 };

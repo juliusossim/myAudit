@@ -2,8 +2,9 @@ import { lazy } from 'react';
 
 const Login = lazy(() => import('../pages/authentication/Login'));
 const Register = lazy(() => import('../pages/authentication/Register'));
+const CompleteProfile1 = lazy(() => import('../pages/authentication/CompleteProfile-1'));
 const LandingPage = lazy(() => import('../pages/landingPage'));
-const Explore = lazy(() => import('../pages/landingPage/Explore'));
+const Dashboard = lazy(() => import('../pages/Dashboard/Dashboard'));
 const ChangePassword = lazy(() => import('../pages/authentication/ChangePassword'));
 const ResetPassword = lazy(() => import('../pages/authentication/ResetPassword'));
 const ForgotPassword = lazy(() => import('../pages/authentication/ForgotPassword'));
@@ -51,13 +52,13 @@ const routes = [
     exact: true
   },
   {
-    path: '/explore',
-    component: Explore,
+    path: '/dashboard',
+    component: Dashboard,
     exact: true
   },
   {
-    path: '/explore/:param',
-    component: Explore,
+    path: '/dashboard/:param',
+    component: Dashboard,
     exact: true
   },
   {
@@ -75,6 +76,11 @@ const routes = [
   {
     path: '/register',
     component: Register,
+    exact: true
+  },
+  {
+    path: '/complete-profile',
+    component: CompleteProfile1,
     exact: true
   },
 

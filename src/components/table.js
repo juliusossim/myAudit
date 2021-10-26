@@ -14,6 +14,7 @@ const OrdinaryTable = ({
   return (
     <>
       <MaterialTable
+        className="custom-table"
         columns={columnsDef}
         data={data}
         title={title}

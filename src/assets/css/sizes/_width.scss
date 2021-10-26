@@ -75,6 +75,15 @@
     max-width: 300px!important;
   }
 }
+.max-w-350 {
+
+  @include lg {
+    max-width: 350px!important;
+  }
+  @include xl {
+    max-width: 350px!important;
+  }
+}
 
 
 

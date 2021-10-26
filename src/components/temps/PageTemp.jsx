@@ -1,6 +1,6 @@
 import React from 'react';
 import Loader from '../microComponents/loader';
-import PageNotFound from '../../pages/authentication/PageNotFound';
+import CompleteProfile from '../../pages/authentication/CompleteProfile';
 import NoData from '../../pages/authentication/NoData';
 
 const PageTemp = ({
@@ -15,7 +15,7 @@ const PageTemp = ({
     }
     {
       status === 'failed' && (
-        <PageNotFound tryAgain={tryAgain} home={home} />
+        <CompleteProfile tryAgain={tryAgain} home={home} />
       )
     }
     {

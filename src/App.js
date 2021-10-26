@@ -9,7 +9,7 @@ import MainPortal from './routes/MainPortal';
 import Header from './layouts/Header';
 import Footer from './layouts/Footer';
 import Loader from './components/microComponents/loader';
-import { projectAction, projectCategories } from './redux/actions/projectActions';
+import { projectAction } from './redux/actions/projectActions';
 import { apiOptions } from './services/fetch';
 import ScrollUpBtn from './layouts/ScrollUpBtn';
 
@@ -17,6 +17,7 @@ function App() {
   const dispatch = useDispatch();
   const store = useSelector((state) => state.project);
   const indexData = { ...JSON.parse(localStorage.getItem('index')) };
+  const [pad, setPad] = React.useState(null);
 
   // const cacheAvailable = 'caches' in window.self;
   // const cacheName = 'index';
@@ -69,12 +70,13 @@ function App() {
     >
 
       {/* <Router history={history}> */}
-      <div className="w-full bg-white">
-        <Header />
+
+      <div className="w-full bg-theme-faint-1">
+        {/* <Header setWidth={setPad} /> */}
         <Switch>
 
           {/* <Route path="/" component={HomePortal} /> */}
-          <Route path="/" component={MainPortal} />
+          <Route path="/" component={() => MainPortal({ pad })} />
 
           <Route render={() => <h1>Error 404. Page not found.</h1>} />
         </Switch>

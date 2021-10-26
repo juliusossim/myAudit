@@ -16,3 +16,16 @@
 .MuiListItemIcon-root {
   min-width: 1px !important;
 }
+
+.black-drawer .MuiDrawer-paper {
+    background: $theme-color-black !important;
+}
+.white-header .css-1t29gy6-MuiToolbar-root {
+  background: white !important;
+}
+.MuiPaper-elevation2 {
+  box-shadow: none!important;
+}
+.MuiTableCell-root{
+  border-bottom: none !important;
+}

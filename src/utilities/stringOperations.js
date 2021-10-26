@@ -4,6 +4,13 @@ import 'pnotify/dist/PNotifyBrightTheme.css';
 import _ from 'lodash';
 import SvgIcon from '@material-ui/core/SvgIcon';
 
+export const CustomIcon = ({ props, path }) => (
+  // eslint-disable-next-line react/jsx-props-no-spreading
+  <SvgIcon {...props}>
+    <path d={path} />
+  </SvgIcon>
+);
+
 /**
  *converts slug to string
  * @param slug the slug to convert to normal string
@@ -56,9 +63,9 @@ export const getOneName = (fullName, first = true) => {
 
 /**
  * @param {number} den :
-  * denominator, full amount
+ * denominator, full amount
  * @param {number} num :
-  * numerator, current amount.
+ * numerator, current amount.
  * @param {number} percent: optional percent value
  * @param {boolean} complete: should show complete instead of value above 100%
  * @returns {string} percentage || complete || num || 0.
@@ -74,7 +81,7 @@ export const percentCalculator = ({
   if (_.isNumber(num) && _.isNumber(den)) {
     value = (num / den) * 100;
     if (complete) {
-      value = value > 101 ? 'complete' : `${value.toFixed(0)}%`;
+      value = value > 101 ? 'Fully' : `${value.toFixed(0)}%`;
     } else {
       value = `${value}%`;
     }
@@ -121,13 +128,12 @@ export const notifier = ({
 }) => {
   PNotify[type]({
     title,
-    text,
-    color: 'red'
+    text
   });
 };
 
 export const stringCaps = (string) => {
-  if (typeof string !== 'undefined') {
+  if (!stringDoesNotExist(string)) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
   return string;
@@ -138,7 +144,7 @@ export const sentenceCaps = (text) => {
     text.replace(/[ ]{2,}/gi, ' ');
     text.replace(/\n /, '\n');
     const words = text.split(' ');
-    return words.map((word) => `${stringCaps(word)} `);
+    return words.map((word) => stringCaps(word).toString()).join(' ');
   }
   return false;
 };
@@ -153,9 +159,3 @@ export const replacedName = (name, apiValue) => {
   }
   return {};
 };
-export const CustomIcon = ({ props, path }) => (
-  // eslint-disable-next-line react/jsx-props-no-spreading
-  <SvgIcon {...props}>
-    <path d={path} />
-  </SvgIcon>
-);

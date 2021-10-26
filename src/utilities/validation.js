@@ -1,3 +1,6 @@
+import _ from 'lodash';
+import { sentenceCaps, stringDoesNotExist } from './stringOperations';
+
 /**
  *
  * @param validation  the validations object
@@ -14,28 +17,28 @@ export const validateField = (validation, field, value) => {
   /*
     validate required fields
   */
-  validation?.required && (value?.length < 1 || value === ' ') && errors.push(` ${field} is required`);
+  validation?.required && stringDoesNotExist(value) && errors.push(`${sentenceCaps(field)} is required`);
   /*
     validate maximum characters
   */
   validation?.maxLength && (value?.length > validation?.maxLength)
-  && errors.push(`${field} is too long, it must not exceed ${validation.maxLength} characters`);
+  && errors.push(`${sentenceCaps(field)} is too long, it must not exceed ${validation.maxLength} characters`);
   /*
     validate minimum characters
   */
   validation?.minLength && (value?.length < validation?.minLength && value !== '')
-  && errors.push(`${field} is too short, it must exceed ${validation.minLength} characters`);
+  && errors.push(`${sentenceCaps(field)} is too short, it must exceed ${validation.minLength} characters`);
   /*
     validate maximum digits
   */
   validation?.max && value?.length > validation?.max
-  && errors.push(`${field} is too long, it must not exceed ${validation?.max} digits`);
+  && errors.push(`${sentenceCaps(field)} is too long, it must not exceed ${validation?.max} digits`);
 
   /*
     validate minimum digits
   */
   validation?.min && value?.length < validation?.min && value !== ''
-  && errors.push(`${field} is too short, it must exceed ${validation?.min} digits`);
+  && errors.push(`${sentenceCaps(field)} is too short, it must exceed ${validation?.min} digits`);
   /*
   confirm password
   */
@@ -45,7 +48,7 @@ export const validateField = (validation, field, value) => {
     validate patterns
    */
   validation?.pattern && !validation?.pattern?.test(value) && value !== ''
-  && errors.push(`${field} is invalid`);
+  && errors.push(`${sentenceCaps(field)} is invalid`);
   /*
     return errors
   */
@@ -100,6 +103,42 @@ export const canSubmit = (obj, error, setSubmittable, dataLength) => {
     }
   }
 };
+/**
+ * disables a button or notify of an error
+ * @param stringFields {array}
+ * @param amount {number}
+ * @param numbFields {array}
+ * @param errors {object}
+ * @param less {boolean}
+ */
+export const shouldDisable = ({
+  stringFields, amount, numbFields, errors, less
+}) => {
+  let errorTest; let amtTest;
+  if (_.isEmpty(errors)) {
+    errorTest = stringFields.some((item) => _.isEmpty(item));
+  } else if (!_.isEmpty(stringFields)) {
+    errorTest = stringFields.some((item) => Object.keys(errors).includes(item));
+  }
+  if (!_.isEmpty(numbFields)) {
+    const thresholdTest = (amt) => (less
+      ? amt < amount
+      : amt > amount);
+    amtTest = numbFields.every(thresholdTest);
+  }
+  return !!(errorTest || amtTest);
+};
+
+export const noErrors = (errors) => {
+  const threshold = (amt) => _.isEmpty(amt);
+  return _.every(errors, threshold);
+};
+
+export const checkRequiredFields = (data) => {
+  const threshold = (str) => _.isNumber(str) || !_.isEmpty(str);
+  return !_.isEmpty(data) ? _.every(data, threshold) : true;
+};
+
 export const errorsChecker = (errors) => {
   const err = [];
   if (errors.constructor === Object) {
@@ -135,6 +174,23 @@ export const mapBackendErrors = (storeData) => {
     backErrors.push(storeData);
   }
 
+  return backErrors;
+};
+export const mapErrorsToFields = (storeData) => {
+  let backErrors = [];
+  if (storeData?.constructor === Object) {
+    if (!_.isEmpty(storeData.errors)) {
+      backErrors = storeData.errors.map((item) => {
+        const index = item.code || item.Title;
+        if (!_.isNull(index)) {
+          return ({
+            [index]: item.message
+          });
+        }
+        return null;
+      });
+    }
+  }
   return backErrors;
 };
 

@@ -2,17 +2,17 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
-import TextInput from '../../components/form/inputs/TextInput';
 import { login } from '../../redux/actions/authenticationActions';
 import { mapBackendErrors, validateField } from '../../utilities/validation';
 import PageTemp from '../../components/temps/PageTemp';
 import { resetAction } from '../../redux/actions/projectActions';
 import { notifier, slugToString } from '../../utilities/stringOperations';
-import { safetySvg } from '../../utilities/dummyData';
-import loginProps from './constants/loginProps';
-import FormBuilder from '../../components/form/builders/form';
 
-const LoginPage = () => {
+import FormBuilder from '../../components/form/builders/form';
+import registerProps from './constants/register';
+import ListMat from '../../components/ui/listMat';
+
+const RegisterPage = () => {
   const [formData, setFormData] = useState({ remember_me: false });
   const [show, setShow] = useState(false);
   const [errors, setErrors] = useState({});
@@ -80,37 +80,46 @@ const LoginPage = () => {
     // setIsError(errorsChecker(errors));
     // canContinue();
   };
+  const listMatProps = [
+    `they don't want us to win. The key is to enjoy life becuse they don't want us to enjoy life. ${console.log('')}`,
+    `they don't want us to win. The key is to enjoy life becuse they don't want us to enjoy life. ${console.log('')}`,
+    `they don't want us to win. The key is to enjoy life becuse they don't want us to enjoy life. ${console.log('')}`,
+    `they don't want us to win. The key is to enjoy life becuse they don't want us to enjoy life. ${console.log('')}`,
+    `they don't want us to win. The key is to enjoy life becuse they don't want us to enjoy life. ${console.log('')}`,
+    `they don't want us to win. The key is to enjoy life becuse they don't want us to enjoy life. ${console.log('')}`,
+    `they don't want us to win. The key is to enjoy life becuse they don't want us to enjoy life. ${console.log('')}`
+  ];
   /* on visiting */
   const initialTemp = ({ ...props }) => (
     <div className=" margin-center m-t-40">
       <div className="box-shadow row">
-        <div className="login position-relative col-md-5">
-          <div className="login-content p-0 m-0 p-lg-3 ml-lg-5">
+        <div className="complete-profile-1 position-relative col-md-5">
+          <div className=" p-0 m-0 p-lg-3 ml-lg-5">
             <p className="font-title-small text-theme-black bold theme-font-bold text-theme">
-              Fast. Secure. Safe.
+              Minimum Requirements to Register as an Auditor
             </p>
-            <p className="font-regular text-theme-grey">
-              Find peace, life is like a water fall, you’ve gotta flow.
-              They will try to close the door on you, just open it.
-              The ladies always say Khaled you smell good
-            </p>
+            <ul>
+              {
+                listMatProps.map((item) => (<li className="py-2">{item}</li>))
+              }
+            </ul>
           </div>
         </div>
-        <div className="col-md-7 mt-4 mt-md-0">
+        <div className="col-md-7">
           <div className="login-form-margin">
             <div className="pl-3">
-              <p className="font-title-small text-theme-black bold theme-font-bold max-w-300">
-                Welcome Back!
-              </p>
-              <p className="font-regular text-theme-grey">
-                Fill the form below to login
-              </p>
+              <div className="font-title-small text-theme-black bold theme-font-bold max-w-300">
+                Welcome
+              </div>
+              <div className="font-regular text-theme-grey">
+                Fill the form below to sign up
+              </div>
             </div>
             <div className="col-md-10 mt-2">
               <div className="row">
                 <FormBuilder
                   formItems={
-                    loginProps(
+                    registerProps(
                       {
                         formData,
                         handleBlur,
@@ -121,28 +130,12 @@ const LoginPage = () => {
                   }
                 />
               </div>
-              <div className="row">
-                <div className="w-50 p-md-2">
-                  <span className="terms mb-3">
-                     &nbsp;
-                  </span>
-                </div>
-
-                <div className="">
-                  <Link to="/forgot-password">
-                    <button type="button" className="text-theme-blue float-right  mb-3 viewMoreBtn">
-                      forgot password?
-                    </button>
-                  </Link>
-                </div>
-              </div>
-              <button className="w-100 btn btn-large" type="button" onClick={handleLogin}>Login</button>
+              <button className="w-100 btn btn-large" type="button" onClick={handleLogin}>Sign up</button>
               <div className="mt-3">
-                {/* eslint-disable-next-line react/no-unescaped-entities */}
-                <span className="text-theme-faint font-tiny">Don't have an account?</span>
-                <Link to="/register">
+                <span className="">Already have an account?</span>
+                <Link to="/login">
                   <button type="button" className="text-theme-blue  viewMoreBtn">
-                    Sign Up
+                    Login
                   </button>
                 </Link>
               </div>
@@ -188,4 +181,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default RegisterPage;

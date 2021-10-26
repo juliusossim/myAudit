@@ -10,8 +10,8 @@ import { Link } from 'react-router-dom';
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    maxWidth: 420,
-    backgroundColor: theme.palette.background.paper
+    maxWidth: 420
+    // backgroundColor: theme.palette.background.paper
   }
 }));
 function ListItemLink(props) {

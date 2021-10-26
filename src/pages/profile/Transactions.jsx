@@ -21,7 +21,7 @@ import SpeedMatDial from '../../components/microComponents/speedDial';
 
 const userscol = ['name', 'role', 'department', 'joined'];
 
-const Transactions = ({ setCurrent }) => {
+const Transactions = () => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state.project?.userTransactions);
   const [formData, setFormData] = useState({});
@@ -31,16 +31,6 @@ const Transactions = ({ setCurrent }) => {
   const [filterable, setFilterable] = useState(false);
   const [user, setUser] = useState({});
 
-  useEffect(() => {
-    setCurrent('My transactions');
-  }, []);
-
-  const getUser = React.useCallback(() => {
-    localforage.getItem('user', (err, value) => value).then((result) => {
-      setUser(result);
-      userTransactions(result.id);
-    });
-  }, [user]);
   const userTransactions = () => dispatch(projectAction(
     {
       action: 'USER_TRANSACTIONS',
@@ -52,27 +42,43 @@ const Transactions = ({ setCurrent }) => {
     }
   ));
   // const refreshUser = setUser(store.data);
-  const createColumnDef = (arr) => arr.map((ar) => ({ title: stringCaps(ar), field: ar }));
+  const tableOption = {
+    sorting: false,
+    rowStyle: (x) => {
+      if (x.tableData.id % 2) {
+        return { backgroundColor: '#f2f2f2', borderBottom: 'none' };
+      }
+      return '';
+    },
+    search: false,
+    filtering: filterable,
+    exportButton: downloadable
+  };
   const prepareColumns = [
     {
-      title: 'Project Name',
+      title: 'Name',
       field: 'projectName'
     },
 
     {
-      title: <span className="text-wema">Amount</span>,
-      field: 'amount',
-      render: (rowData) => (
-        <span>
-          <span>&#8358;</span>
-          <span>
-            {parseFloat(rowData?.amount).toLocaleString()}
-          </span>
-        </span>
-      )
+      title: 'Date Created',
+      field: 'date',
+      type: 'date'
     },
     {
-      title: 'Date',
+      title: 'Company',
+      field: 'projectName'
+    },
+    {
+      title: 'No. of Member',
+      field: 'projectName'
+    },
+    {
+      title: 'Status',
+      field: 'status'
+    },
+    {
+      title: 'Actions',
       field: 'date',
       type: 'date'
     }
@@ -144,10 +150,6 @@ const Transactions = ({ setCurrent }) => {
     { icon: <FiFilter />, name: 'filterable' },
     { icon: <FcDownload />, name: 'exportable' }
   ];
-  const tableOptions = {
-    filtering: filterable,
-    exportButton: downloadable
-  };
 
   React.useEffect(() => {
     if (store?.status === 'initial') {
@@ -168,36 +170,36 @@ const Transactions = ({ setCurrent }) => {
     return true;
   }, [store?.status]);
   return (
-    <div className="w-100 margin-center m-t-40 ">
+    <div className="w-100 ">
       <PageTemp
         status={store?.status}
         view={(
-          <div className="login-form-container p-20">
-            <div className="login-form pb-5h">
+          <div className="mx-5">
+            <div className="">
               <div className="row pb-5">
                 <div className="col-md-3 mt-2 col-6">
-                  <div className=" border-wema p-2 border-radius-5">
+                  <div className=" bg-white p-2 border-radius-5">
                     <p className="transaction-text font-14">Total Number of Projects</p>
                     <p className="bold pt-3 pl-1 pb-2">{formData?.summary?.totalProjects?.total}</p>
                   </div>
 
                 </div>
                 <div className="col-md-3 mt-2 col-6">
-                  <div className=" border-wema p-2 border-radius-5">
+                  <div className=" bg-white p-2 border-radius-5">
                     <p className="transaction-text font-14">Total Number of Donors</p>
                     <p className="bold pt-3 pl-1 pb-2">{formData?.summary?.donors?.total ?? 'Nil'}</p>
                   </div>
 
                 </div>
                 <div className="col-md-3 mt-2 col-6">
-                  <div className=" border-wema p-2 border-radius-5">
+                  <div className=" bg-white p-2 border-radius-5">
                     <p className="transaction-text font-14">Total Number of Shares</p>
                     <p className="bold theme-font pt-3 pl-1 pb-2">{formData?.summary?.shares ?? 'NIl'}</p>
                   </div>
 
                 </div>
                 <div className="col-md-3 mt-2 col-6">
-                  <div className=" border-wema p-2 border-radius-5">
+                  <div className=" bg-white p-2 border-radius-5">
                     <p className="transaction-text font-14">Total Amount of funds raised </p>
                     <p className="bold pt-3 pl-1 pb-2">
                       {' '}
@@ -208,24 +210,24 @@ const Transactions = ({ setCurrent }) => {
                 </div>
               </div>
               <div className="row">
-                <div className="col-12">
+                <div className="col-12 custom-table">
                   <OrdinaryTable
                     columnsDef={prepareColumns}
-                    title="Transactions"
+                    title="Recent Engagements"
                     data={formData.donations}
                     handleRowClick={handleRowClick}
-                    tableOptions={tableOptions}
+                    tableOptions={tableOption}
                   />
                 </div>
-                <div className="row">
-                  <SpeedMatDial
-                    actions={speedActions}
-                    props={{
-                      filterable: () => setFilterable(!filterable),
-                      exportable: () => setDownloadable(!downloadable)
-                    }}
-                  />
-                </div>
+                {/* <div className="row"> */}
+                {/*  <SpeedMatDial */}
+                {/*    actions={speedActions} */}
+                {/*    props={{ */}
+                {/*      filterable: () => setFilterable(!filterable), */}
+                {/*      exportable: () => setDownloadable(!downloadable) */}
+                {/*    }} */}
+                {/*  /> */}
+                {/* </div> */}
               </div>
             </div>
           </div>
