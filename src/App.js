@@ -80,7 +80,7 @@ function App() {
 
           <Route render={() => <h1>Error 404. Page not found.</h1>} />
         </Switch>
-        <Footer />
+        {/* <Footer /> */}
         {/* ScrollUpBtn: src/components/ScrollUpBtn */}
         <ScrollUpBtn />
       </div>

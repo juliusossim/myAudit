@@ -1,4 +1,5 @@
 import * as React from 'react';
+import _ from 'lodash';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
 import MuiDrawer from '@mui/material/Drawer';
@@ -11,9 +12,9 @@ import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import { HiChevronLeft, HiChevronRight, IoMenuOutline } from 'react-icons/all';
 import { useHistory } from 'react-router-dom';
 import ListItem from '@mui/material/ListItem';
+import { HiChevronLeft, HiChevronRight, IoMenuOutline } from 'react-icons/all';
 import { user } from '../../utilities/auth';
 
 /**
@@ -104,19 +105,19 @@ const MiniDrawer = ({
 }) => {
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-  const [active, setActive] = React.useState('Dashboard');
+  const [active, setActive] = React.useState({ name: 'Dashboard' });
   const history = useHistory();
   const handleClick = (item) => {
     history.push(item.to);
     typeof item.action === 'function' && item.action();
-    setActive(item.name);
+    setActive(item);
   };
   const handleDrawerOpen = () => {
     setOpen(true);
   };
 
   const handleDrawerClose = () => {
-    setOpen(false);
+    setOpen(!open);
   };
 
   return (
@@ -124,50 +125,77 @@ const MiniDrawer = ({
       <CssBaseline />
       <AppBar position="fixed" open={open} className="white-header text-theme-faint">
         <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            sx={{
-              marginRight: '36px',
-              ...(open && { display: 'none' })
-            }}
-          >
-            <IoMenuOutline />
-          </IconButton>
+          {/* <IconButton */}
+          {/*  color="inherit" */}
+          {/*  aria-label="open drawer" */}
+          {/*  onClick={handleDrawerOpen} */}
+          {/*  edge="start" */}
+          {/*  sx={{ */}
+          {/*    marginRight: '36px', */}
+          {/*    ...(open && { display: 'none' }) */}
+          {/*  }} */}
+          {/* > */}
+          {/*  <IoMenuOutline /> */}
+          {/* </IconButton> */}
+          <DrawerHeader className="position-relative">
+            <IconButton onClick={handleDrawerClose} className="text-theme">
+              {open ? <HiChevronLeft /> : <HiChevronRight />}
+            </IconButton>
+          </DrawerHeader>
           <Typography className="font-title theme-font text-theme-black" noWrap component="div">
-            {active.toUpperCase()}
+            {active.name.toUpperCase()}
           </Typography>
         </Toolbar>
       </AppBar>
+
       <Drawer variant={variant || 'permanent'} open={open} className="black-drawer">
-        <DrawerHeader>
-          <IconButton onClick={handleDrawerClose} className={open ? 'text-white' : 'd-none'}>
-            {theme.direction === 'rtl' ? <HiChevronRight /> : <HiChevronLeft />}
-          </IconButton>
-        </DrawerHeader>
-        <div className="">
-          {dp}
-        </div>
-        <div className={open ? 'wrap text-center text-white' : 'd-none'}>
-          {`${user?.first_name} ${user?.middle_name} ${user?.last_name}`}
+        <div className={_.isEmpty(user) ? 'd-none' : ''}>
+          <div className="">
+            {dp}
+          </div>
+          <div className={open ? 'wrap text-center text-white' : 'd-none'}>
+            {user?.first_name || ''}
+          </div>
         </div>
         <Divider />
-        <List>
+        <List className="position-relative">
           {menu.map((item) => (
-            <ListItem button key={item.name} onClick={() => handleClick(item)}>
+            <ListItem button key={item.name} className="my-5">
               {
                 item.icon
                 && (
-                  <ListItemIcon className={item.to === history.location.pathname ? 'text-theme' : 'text-theme-faint'}>
+                  <ListItemIcon className={item.name === active.parent ? 'text-theme' : 'text-theme-faint'}>
                     <div className="font-title">
                       {item.icon}
                     </div>
                   </ListItemIcon>
                 )
               }
-              <ListItemText className={open ? `${item.to === history.location.pathname ? 'text-white' : 'text-pale'} theme-font bold font-regular ml-2` : 'd-none'} primary={item.name} />
+              <ListItemText className={open ? `${item.name === active.name ? 'text-white' : 'text-pale'} theme-font bold font-title ml-2` : 'd-none'} primary={item.name} />
+              {/* <List className={open ? 'position-relative mt-5'
+               : 'd-none'} style={{ top: '53px', left: '-25px' }}> */}
+              {/*  { */}
+              {/*    item.children.map((child) => ( */}
+              {/*      <ListItem button key={child.name} onClick={() => handleClick(child)}> */}
+              {/*        { */}
+              {/*          child.icon */}
+              {/*          && ( */}
+              {/*            <ListItemIcon className={child.to ===
+               history.location.pathname ? 'text-theme' : 'text-theme-faint'}> */}
+              {/*              <div className="font-regular"> */}
+              {/*                {child.icon} */}
+              {/*              </div> */}
+              {/*            </ListItemIcon> */}
+              {/*          ) */}
+              {/*        } */}
+              {/*        <ListItemText className={open ? `${child.to ===
+               history.location.pathname
+               ? 'text-theme-blue' : 'text-pale'} theme-font bold font-small ml-2` :
+                'd-none'} primary={child.name} /> */}
+              {/*      </ListItem> */}
+              {/*    )) */}
+              {/*  } */}
+              {/* </List> */}
             </ListItem>
           ))}
         </List>

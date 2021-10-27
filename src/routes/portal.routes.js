@@ -3,8 +3,13 @@ import { lazy } from 'react';
 const Login = lazy(() => import('../pages/authentication/Login'));
 const Register = lazy(() => import('../pages/authentication/Register'));
 const CompleteProfile1 = lazy(() => import('../pages/authentication/CompleteProfile-1'));
+const NewEngagement = lazy(() => import('../pages/Engagements/NewEngagement'));
 const LandingPage = lazy(() => import('../pages/landingPage'));
+/* dashboard */
 const Dashboard = lazy(() => import('../pages/Dashboard/Dashboard'));
+const CompleteRegistration = lazy(() => import('../pages/authentication/CompleteProfile'));
+const CompleteProfile = lazy(() => import('../pages/authentication/CompleteProfile-1'));
+
 const ChangePassword = lazy(() => import('../pages/authentication/ChangePassword'));
 const ResetPassword = lazy(() => import('../pages/authentication/ResetPassword'));
 const ForgotPassword = lazy(() => import('../pages/authentication/ForgotPassword'));
@@ -52,15 +57,31 @@ const routes = [
     exact: true
   },
   {
+    path: '/new-engagement',
+    component: NewEngagement,
+    exact: true
+  },
+  {
     path: '/dashboard',
     component: Dashboard,
     exact: true
   },
   {
-    path: '/dashboard/:param',
-    component: Dashboard,
+    path: '/complete-registration',
+    component: CompleteRegistration,
     exact: true
   },
+  {
+    path: '/complete-profile',
+    component: CompleteProfile,
+    exact: true
+  },
+
+  // {
+  //   path: '/dashboard/:param',
+  //   component: Dashboard,
+  //   exact: true
+  // },
   {
     path: '/me',
     component: Profile,

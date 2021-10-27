@@ -9,13 +9,12 @@ import { resetAction } from '../../redux/actions/projectActions';
 import { notifier, slugToString } from '../../utilities/stringOperations';
 
 import FormBuilder from '../../components/form/builders/form';
-import registerProps from './constants/register';
 import ListMat from '../../components/ui/listMat';
 import CustomCheckbox from '../../components/form/inputs/CustomCheckbox';
 import CheckboxComp from '../../components/ui/CheckboxComp';
-import completeProfile1Props from './constants/completeProfile1';
+import newEngagementProps from './constants/newEngagement';
 
-const CompleteProfile1 = () => {
+const NewEngagement = () => {
   const [formData, setFormData] = useState({ remember_me: false });
   const [terms, setTerms] = useState(false);
   const [show, setShow] = useState(false);
@@ -90,45 +89,23 @@ const CompleteProfile1 = () => {
     // setIsError(errorsChecker(errors));
     // canContinue();
   };
-  const listMatProps = [
-    'they don\'t want us to win. The key is to enjoy life because they don\'t want us to enjoy life. ',
-    'they don\'t want us to win. The key is to enjoy life because they don\'t want us to enjoy life. ',
-    'they don\'t want us to win. The key is to enjoy life because they don\'t want us to enjoy life. ',
-    'they don\'t want us to win. The key is to enjoy life because they don\'t want us to enjoy life. ',
-    'they don\'t want us to win. The key is to enjoy life because they don\'t want us to enjoy life. ',
-    'they don\'t want us to win. The key is to enjoy life because they don\'t want us to enjoy life. ',
-    'they don\'t want us to win. The key is to enjoy life because they don\'t want us to enjoy life. '
-  ];
   /* on visiting */
   const initialTemp = ({ ...props }) => (
-    <div className=" ">
-      <div className="box-shadow row ">
-        <div className="complete-profile-1 position-relative col-md-5 pt-5">
-          <div className="p-3 ml-5">
-            <div className="row">
-              <p className="font-header text-theme-black bold theme-font-bold text-theme">
-                Minimum Requirements to Register as an Auditor
-              </p>
-              <ul className="neg-m-l-28 mt-5">
-                {
-                  listMatProps.map((item) => (<li className="py-3 list-style-disc text-white">{item}</li>))
-                }
-              </ul>
-            </div>
-          </div>
+    <div className="w-600 ">
+      <div className="px-3">
+        <div className="font-regular text-theme-grey text-center">
+          Fill the form below to start the engagement process
         </div>
-        <div className="col-md-7 pt-5">
+      </div>
+
+      <div className="box-shadow row ">
+        <div className="pt-5">
           <div className="row">
-            <div className="pl-3">
-              <div className="font-regular text-theme-grey">
-                Fill the application form below to register
-              </div>
-            </div>
-            <div className="col-md-10 mt-2">
+            <div className="col-md-10 offset-1 mt-2">
               <div className="row">
                 <FormBuilder
                   formItems={
-                    completeProfile1Props(
+                    newEngagementProps(
                       {
                         formData,
                         handleBlur,
@@ -189,4 +166,4 @@ const CompleteProfile1 = () => {
   );
 };
 
-export default CompleteProfile1;
+export default NewEngagement;

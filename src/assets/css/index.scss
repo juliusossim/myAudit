@@ -460,7 +460,11 @@ header {
 
 main {
   @extend .theme-bg;
-  padding-top: 20px;
+  //@include lg {
+  //
+  //}
+  margin-top: -12px;
+  margin-left: -12px;
 }
 .end-icon {
   position: absolute;
@@ -744,6 +748,7 @@ button:focus {
     font-size: .9rem;
     height: 50px;
     color: #777;
+    @extend .bg-theme-faint-1;
 
     &:focus {
       outline: none;
@@ -1055,12 +1060,13 @@ a {
 }
 .complete-profile-1 {
   mix-blend-mode: normal;
-  background-color: $theme-color-black;;
-  @include height-size($screen-sm-min, $screen-xl-min, 550px, 931px);
-  @include width-size($screen-sm-min, $screen-xl-min, 300px, 931px);
-  .login-content {
-    @extend .center-vertical;
+  background-color: $theme-color-black;
+  @include lg {
+    min-height: 990px;
+    max-height: 1200px;
   }
+  //@include height-size($screen-sm-min, $screen-xl-min, 550px, 931px);
+  //@include width-size($screen-sm-min, $screen-xl-min, 300px, 931px);
 
 }
 .desktop-lg {
@@ -1077,4 +1083,7 @@ a {
 .dp-app {
   position: relative;
   left: 33%;
+}
+.list-style-disc {
+  list-style: disc;
 }

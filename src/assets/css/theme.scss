@@ -18,6 +18,9 @@
 .font-title-small {
   @include font-size($screen-sm-min, $screen-xl-min, $theme-regular, $theme-title-1, 23, $theme-line-title-1);
 }
+.font-header {
+  @include font-size($screen-sm-min, $screen-xl-min, $theme-regular, $theme-header, 25, $theme-line-header);
+}
 .font-title {
   @include font-size($screen-sm-min, $screen-xl-min, $theme-title-1, $theme-title, 25, $theme-line-title);
 }
