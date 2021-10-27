@@ -31,7 +31,7 @@ const RouteTemplate = ({ redirect, routes, pad }) => {
   return (
     <MiniDrawer
       app={(
-        <main className="min-h-100 p-t-40">
+        <main className="min-h-100">
           <Suspense
             fallback={(
               <div className="loader-container loader-container2">

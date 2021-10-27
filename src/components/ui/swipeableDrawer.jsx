@@ -123,8 +123,8 @@ const MiniDrawer = ({
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
-      <AppBar position="fixed" open={open} className="white-header text-theme-faint">
-        <Toolbar>
+      <Box position="fixed" open={open} className="white-header text-theme-faint">
+        <Toolbar className="position-relative">
           {/* <IconButton */}
           {/*  color="inherit" */}
           {/*  aria-label="open drawer" */}
@@ -137,16 +137,13 @@ const MiniDrawer = ({
           {/* > */}
           {/*  <IoMenuOutline /> */}
           {/* </IconButton> */}
-          <DrawerHeader className="position-relative">
+          <DrawerHeader className="">
             <IconButton onClick={handleDrawerClose} className="text-theme">
-              {open ? <HiChevronLeft /> : <HiChevronRight />}
+              {open ? <HiChevronLeft style={{ position: 'absolute', left: '200px' }} /> : <HiChevronRight style={{ position: 'absolute', left: '36px' }} />}
             </IconButton>
           </DrawerHeader>
-          <Typography className="font-title theme-font text-theme-black" noWrap component="div">
-            {active.name.toUpperCase()}
-          </Typography>
         </Toolbar>
-      </AppBar>
+      </Box>
 
       <Drawer variant={variant || 'permanent'} open={open} className="black-drawer">
         <div className={_.isEmpty(user) ? 'd-none' : ''}>

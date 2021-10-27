@@ -43,7 +43,6 @@ const Header = (setWidth) => {
             <MiniDrawer
               menu={miniMenu}
               dp={user.profile_pic_url}
-              setDrawerWidth={setWidth}
             />
           )
       }

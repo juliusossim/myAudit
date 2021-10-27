@@ -96,6 +96,13 @@ svg:not(:root) {
   top: 50%;
   transform: translate(0, -50%);
 }
+.custom-top-bar {
+  position: relative !important;
+  top: -60px;
+  padding: .3rem;
+  z-index: 1000000001;
+@extend .bg-theme-faint-1
+}
 
 
 

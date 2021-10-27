@@ -79,7 +79,7 @@ const Project3 = () => {
 
   useEffect(() => {
     dispatch(getProject(formData.id));
-    dispatch(projectCategories());
+    // dispatch(projectCategories());
   }, []);
 
   useEffect(() => {

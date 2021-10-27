@@ -1,0 +1,121 @@
+
+:root {
+  --bg: #e3e4e8;
+  --fg: $theme-color;
+  --dur: 1s;
+}
+.fancy-input {
+  @extend .theme-font;
+  @extend .font-regular;
+}
+.fancy-form, .fancy-input, .caret {
+  margin: auto;
+}
+.fancy-form {
+  position: relative;
+  width: 100%;
+  max-width: 17em;
+}
+.fancy-input, .caret {
+  display: block;
+  transition: all calc(var(--dur) * 0.5) linear;
+}
+.fancy-input {
+  background: transparent;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0.25em inset $theme-color;
+  caret-color: $theme-color;
+  width: 2em;
+  height: 2em;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+}
+.fancy-input:focus, .fancy-input:valid {
+  background: white;
+  border-radius: 0.25em;
+  box-shadow: none;
+  padding: 0.75em 1em;
+  transition-duration: calc(var(--dur) * 0.25);
+  transition-delay: calc(var(--dur) * 0.25);
+  width: 100%;
+  height: 3em;
+}
+.fancy-input:focus {
+  animation: showCaret var(--dur) steps(1);
+  outline: transparent;
+}
+.fancy-input:focus + .caret, .fancy-input:valid + .caret {
+  animation: handleToCaret var(--dur) linear;
+  background: transparent;
+  width: 1px;
+  height: 1.5em;
+  transform: translate(0,-1em) rotate(-180deg) translate(7.5em,-0.25em);
+}
+.fancy-input::-webkit-search-decoration {
+  -webkit-appearance: none;
+}
+.fancy-label {
+  color: #e3e4e8;
+  overflow: hidden;
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.caret {
+  background: $theme-blue;
+  border-radius: 0 0 0.125em 0.125em;
+  margin-bottom: -0.6em;
+  width: 0.25em;
+  height: 1em;
+  transform: translate(0,-1em) rotate(-45deg) translate(0,0.875em);
+  transform-origin: 50% 0;
+}
+
+/* Animations */
+@keyframes showCaret {
+  from {
+    caret-color: transparent;
+  }
+  to {
+    caret-color: $theme-color;
+  }
+}
+@keyframes handleToCaret {
+  from {
+    background: $theme-blue;
+    width: 0.25em;
+    height: 1em;
+    transform: translate(0,-1em) rotate(-45deg) translate(0,0.875em);
+  }
+  25% {
+    background: $theme-blue;
+    width: 0.25em;
+    height: 1em;
+    transform: translate(0,-1em) rotate(-180deg) translate(0,0.875em);
+  }
+  50%, 62.5% {
+    background: $theme-color;
+    width: 1px;
+    height: 1.5em;
+    transform: translate(0,-1em) rotate(-180deg) translate(7.5em,2.5em);
+  }
+  75%, 99% {
+    background: $theme-color;
+    width: 1px;
+    height: 1.5em;
+    transform: translate(0,-1em) rotate(-180deg) translate(7.5em,-0.25em);
+  }
+  87.5% {
+    background: $theme-color;
+    width: 1px;
+    height: 1.5em;
+    transform: translate(0,-1em) rotate(-180deg) translate(7.5em,0.125em);
+  }
+  to {
+    background: transparent;
+    width: 1px;
+    height: 1.5em;
+    transform: translate(0,-1em) rotate(-180deg) translate(7.5em,-0.25em);
+  }
+}

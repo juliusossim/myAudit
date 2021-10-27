@@ -32,7 +32,7 @@ const SearchInput = ({
               onKeyPress={onKeyPress}
               onKeyDown={onKeyDown}
             />
-            <button type="button" className="searchBtn text-wema">
+            <button type="button" className="searchBtn text-theme">
               <FaSearch />
             </button>
           </>
