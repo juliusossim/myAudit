@@ -79,6 +79,7 @@
     @extend .bg-theme-light;
     background: radial-gradient($theme-color-light 25%, $theme-color-off-white 100%);
     color: $theme-color;
+    background: currentColor;
     //@extend .text-theme;
   }
 }
@@ -99,9 +100,11 @@ svg:not(:root) {
 .custom-top-bar {
   position: relative !important;
   top: -60px;
-  padding: .3rem;
+  padding: 1.5rem 1.5rem .2rem;
   z-index: 1000000001;
-@extend .bg-theme-faint-1
+  border-bottom: solid .5px $theme-color-faint;
+  //box-shadow: 0px 15px 45px -10px rgba(200, 203, 215, 0.499645);
+
 }
 
 

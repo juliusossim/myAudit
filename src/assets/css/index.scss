@@ -1063,7 +1063,7 @@ a {
   mix-blend-mode: normal;
   background-color: $theme-color-black;
   @include lg {
-    min-height: 990px;
+    min-height: 800px;
     max-height: 1200px;
   }
   //@include height-size($screen-sm-min, $screen-xl-min, 550px, 931px);

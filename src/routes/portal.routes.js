@@ -3,12 +3,18 @@ import { lazy } from 'react';
 const Login = lazy(() => import('../pages/authentication/Login'));
 const Register = lazy(() => import('../pages/authentication/Register'));
 const CompleteProfile1 = lazy(() => import('../pages/authentication/CompleteProfile-1'));
-const NewEngagement = lazy(() => import('../pages/Engagements/NewEngagement'));
 const LandingPage = lazy(() => import('../pages/landingPage'));
 /* dashboard */
 const Dashboard = lazy(() => import('../pages/Dashboard/Dashboard'));
 const CompleteRegistration = lazy(() => import('../pages/authentication/CompleteProfile'));
 const CompleteProfile = lazy(() => import('../pages/authentication/CompleteProfile-1'));
+
+/* engagement */
+const Engagement = lazy(() => import('../pages/Engagements/EngagementIndex'));
+const NewEngagement = lazy(() => import('../pages/Engagements/NewEngagement'));
+
+/* no data */
+const NoData = lazy(() => import('../pages/authentication/NoData'));
 
 const ChangePassword = lazy(() => import('../pages/authentication/ChangePassword'));
 const ResetPassword = lazy(() => import('../pages/authentication/ResetPassword'));
@@ -56,25 +62,47 @@ const routes = [
     component: HowItWorks,
     exact: true
   },
+  /* working */
   {
-    path: '/new-engagement',
+    path: '/app/new-engagement',
     component: NewEngagement,
-    exact: true
+    exact: true,
+    name: 'engagement'
   },
   {
-    path: '/dashboard',
+    path: '/app/no-data/:name',
+    component: NoData,
+    exact: true,
+    name: 'engagement'
+  },
+  {
+    path: '/app/view/:name/:id',
+    component: NewEngagement,
+    exact: true,
+    name: 'engagement'
+  },
+  {
+    path: '/app/engagement',
+    component: Engagement,
+    exact: true,
+    name: 'engagement'
+  },
+  {
+    path: '/app/dashboard',
     component: Dashboard,
     exact: true
   },
   {
-    path: '/complete-registration',
+    path: '/app/complete-registration',
     component: CompleteRegistration,
-    exact: true
+    exact: true,
+    name: 'dashboard'
   },
   {
-    path: '/complete-profile',
+    path: '/app/complete-profile',
     component: CompleteProfile,
-    exact: true
+    exact: true,
+    name: 'dashboard'
   },
 
   // {
@@ -99,12 +127,6 @@ const routes = [
     component: Register,
     exact: true
   },
-  {
-    path: '/complete-profile',
-    component: CompleteProfile1,
-    exact: true
-  },
-
   {
     path: '/change-password',
     component: ChangePassword,

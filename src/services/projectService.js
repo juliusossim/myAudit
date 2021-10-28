@@ -1,13 +1,14 @@
 export const createProjectName = 'Projects/createbyname';
-export const createProject = 'Projects';
-export const viewProjects = 'Projects';
-export const myProjects = 'Projects/me';
-export const viewProject = (id) => `Projects/${id}`;
+export const createEngagement = 'Engagements';
+export const viewEngagements = 'engagements';
+export const dashboard = 'dashboard';
+export const myEngagements = 'Engagements/me';
+export const viewEngagement = 'engagements'; // param id
 export const projectCategories = 'categories';
-export const deleteProject = 'Projects'; // param id
-export const editProject = 'Projects'; // param = id
+export const deleteEngagement = 'Engagements'; // param id
+export const editEngagement = 'Engagements'; // param = id
 export const editProjectRequest = 'BackOffice/approveProject'; // param = id
-export const getProject = 'Projects'; // param = id
+export const getEngagement = 'Engagements'; // param = id
 export const submitProject = 'Projects'; // param = ${id} afterParam = submit
 export const projectSummary = 'Projects'; // param = ${id} afterParam = summary
 export const projectDetails = 'Projects'; // param = ${id} afterParam = details

@@ -24,10 +24,10 @@ export const register = (payload) => {
 
     return res.then((response) => {
       if (response?.status === 200 || response?.status === 201) {
-        localforage.setItem('user', response?.data?.data?.user);
-        localStorage.setItem('token', response?.data?.data?.user?.token);
-        localStorage.setItem('emailToken', response?.data?.data?.token);
-        localStorage.setItem('user', JSON.stringify(response?.data?.data?.user));
+        // localforage.setItem('user', response?.data?.data?.user);
+        // localStorage.setItem('token', response?.data?.data?.user?.token);
+        // localStorage.setItem('emailToken', response?.data?.data?.token);
+        // localStorage.setItem('user', JSON.stringify(response?.data?.data?.user));
         dispatch(success(response?.data));
       } else if (response) {
         dispatch(failure(response?.errors || response));
@@ -105,15 +105,17 @@ export const login = (payload) => {
   const failure = (error) => ({ type: constants.LOGIN_FAILURE, error });
 
   return async (dispatch) => {
-    const res = post({ endpoint: 'LOGIN', auth: true, body: payload });
+    const res = post({ endpoint: 'LOGIN', body: payload, auth: false });
 
     dispatch(request(res));
 
     return res.then((response) => {
       if (response?.status === 200) {
+        // console.log(response);
         dispatch(success(response?.data));
         localforage.setItem('user', response?.data?.data?.user);
-        localStorage.setItem('token', response?.data?.data?.user?.token);
+        localforage.setItem('role', response?.data?.data?.user?.role_id);
+        localStorage.setItem('token', response?.data?.data?.access_token);
         localStorage.setItem('user', JSON.stringify(response?.data?.data?.user));
       } else if (response) {
         dispatch(failure(response?.errors || response));

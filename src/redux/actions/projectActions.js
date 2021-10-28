@@ -211,9 +211,12 @@ export const uploadMedia = ({ payload, setProgress }) => {
 export const resetAction = ({ action }) => async (
   dispatch
 ) => {
-  console.log(action);
-  console.log(constants[action]);
   dispatch({ type: constants[action] });
+};
+export const updateSuccess = ({ action, response }) => async (
+  dispatch
+) => {
+  dispatch({ type: constants[action], response });
 };
 
 /* almighty action function */

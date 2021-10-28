@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useCallback, useEffect } from 'react';
 import _ from 'lodash';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -14,8 +14,13 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
 import { useHistory } from 'react-router-dom';
 import ListItem from '@mui/material/ListItem';
-import { HiChevronLeft, HiChevronRight, IoMenuOutline } from 'react-icons/all';
-import { user } from '../../utilities/auth';
+import { AiOutlineLogout, HiChevronLeft, HiChevronRight } from 'react-icons/all';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, user } from '../../utilities/auth';
+import { projectAction } from '../../redux/actions/projectActions';
+import { apiOptions } from '../../services/fetch';
+import { notifier, sentenceCaps } from '../../utilities/stringOperations';
+import useUpdateStore from '../hooks/useUpdateStore';
 
 /**
  * @param {object} account
@@ -104,11 +109,22 @@ const MiniDrawer = ({
   menu, dp, variant, app
 }) => {
   const theme = useTheme();
+
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const store = useSelector((state) => state);
+
   const [open, setOpen] = React.useState(false);
   const [active, setActive] = React.useState({ name: 'Dashboard' });
-  const history = useHistory();
+
+  const pushUpdates = useUpdateStore;
+
   const handleClick = (item) => {
-    history.push(item.to);
+    history.push({
+      pathname: item.to,
+      name: item.name
+    });
     typeof item.action === 'function' && item.action();
     setActive(item);
   };
@@ -119,6 +135,43 @@ const MiniDrawer = ({
   const handleDrawerClose = () => {
     setOpen(!open);
   };
+  const logoutNow = useCallback((slug) => {
+    dispatch(projectAction(
+      {
+        action: 'LOGOUT',
+        routeOptions: apiOptions({
+          method: 'post',
+          endpoint: 'LOGOUT',
+          auth: true
+        })
+      }
+    ));
+  }, []);
+
+  useEffect(() => {
+    if (store?.auth?.logout?.status === 'success') {
+      notifier({
+        type: 'success',
+        text: store?.auth?.logout?.data?.message,
+        title: 'Goodbye...'
+      });
+      setTimeout(() => logout()
+        . then((resp) => {
+          history.push('/');
+          pushUpdates([
+            {
+              data: store?.auth?.logout?.data,
+              action: 'LOGOUT_COMPLETE'
+            },
+            {
+              data: store?.auth?.logout?.data,
+              action: 'LOGIN_COMPLETE'
+            }
+
+          ], dispatch);
+        }), 500);
+    }
+  }, [store?.auth?.logout?.status]);
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -146,18 +199,27 @@ const MiniDrawer = ({
       </Box>
 
       <Drawer variant={variant || 'permanent'} open={open} className="black-drawer">
-        <div className={_.isEmpty(user) ? 'd-none' : ''}>
+        <div className={_.isEmpty(user) ? 'd-none' : 'mb-3'}>
           <div className="">
             {dp}
           </div>
-          <div className={open ? 'wrap text-center text-white' : 'd-none'}>
-            {user?.first_name || ''}
+          <div className={open ? 'wrap text-center text-white mt-4' : 'd-none'}>
+            <div style={{ marginLeft: '-35px' }}>
+              <div>
+                {' '}
+                {sentenceCaps(user?.first_name) || ''}
+              </div>
+              <div className="text-theme">
+                {' '}
+                {sentenceCaps(user?.role_id[0]?.name || user?.role_id.name) || ''}
+              </div>
+            </div>
           </div>
         </div>
-        <Divider />
+        <Divider color="white" />
         <List className="position-relative">
           {menu.map((item) => (
-            <ListItem button key={item.name} className="my-5">
+            <ListItem button key={item.name} className="my-3" onClick={() => handleClick(item)}>
               {
                 item.icon
                 && (
@@ -168,7 +230,7 @@ const MiniDrawer = ({
                   </ListItemIcon>
                 )
               }
-              <ListItemText className={open ? `${item.name === active.name ? 'text-white' : 'text-pale'} theme-font bold font-title ml-2` : 'd-none'} primary={item.name} />
+              <ListItemText className={open ? `${item.name === history.location.name ? 'text-white' : 'text-pale'} theme-font bold font-title ml-2` : 'd-none'} primary={sentenceCaps(item.name)} />
               {/* <List className={open ? 'position-relative mt-5'
                : 'd-none'} style={{ top: '53px', left: '-25px' }}> */}
               {/*  { */}
@@ -195,6 +257,13 @@ const MiniDrawer = ({
               {/* </List> */}
             </ListItem>
           ))}
+          <Divider color="white" />
+          <ListItem button onClick={logoutNow}>
+            <ListItemIcon className="text-white">
+              <div className="font-title"><AiOutlineLogout /></div>
+            </ListItemIcon>
+            <ListItemText className={open ? 'text-theme-blue theme-font bold font-title ml-2' : 'd-none'} primary="Logout" />
+          </ListItem>
         </List>
       </Drawer>
       <Box component="main" sx={{ flexGrow: 1, p: 3 }}>

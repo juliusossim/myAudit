@@ -1,11 +1,7 @@
 import axios from 'axios';
-import localforage from 'localforage';
 import paths from './endpoints';
-import constants from '../redux/constants';
-
-import {
-  currentUser, decodeToken, getToken, logout
-} from '../utilities/auth';
+import { notifier } from '../utilities/stringOperations';
+import { logout } from '../utilities/auth';
 
 // const getToken = () => {
 //   const t = decodeToken('t');
@@ -19,6 +15,7 @@ const fetchBackend = async (
 ) => {
   const headers = {
     'Content-Type': multipart ? 'multipart/form-data' : 'application/json'
+    // 'Ocp-Apim-Subscription-Key': process.env.REACT_APP_APIM_KEY
   };
   // console.log(headers);
 
@@ -61,11 +58,21 @@ const fetchBackend = async (
 
   return axios(options)
     .then((res) => res, async (err) => {
-      if (err?.response?.status === 401) {
-        // log the user out and return
+      // console.log(err.response?.data);
+      // || err?.response?.status === 403
+      if ((err?.response?.status === 401) && window.location.pathname !== '/login') {
+        // notifiy user
+        notifier({
+          type: 'info',
+          title: 'Protected Route',
+          text: 'You need to be authenticated to access this content'
+        });
+        //
+        //   // log the user out and return
         await logout(process.env.REACT_APP_JWT_SECRET, true);
+        window.location.replace('/login');
       }
-      return err?.response?.data?.errors || err?.response?.data?.message;
+      return err?.response?.data;
     });
 };
 

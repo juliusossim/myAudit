@@ -1,6 +1,7 @@
 export const loginApi = 'auth/login';
 export const logoutApi = 'auth/logout';
 export const registerApi = 'auth/register/admin';
+export const completeRgistrationApi = 'auth/register/company';
 export const registerInvitedUserApi = 'auth/register'; /* param = code */
 export const inviteUser = 'auth/users/invite';
 export const changePasswordApi = 'auth/forgot-password';

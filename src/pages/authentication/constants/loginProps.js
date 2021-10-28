@@ -13,16 +13,16 @@ const loginProps = (
     kind: 'input',
     props: {
       className: 'w-100 m-b-20 col-12',
-      name: 'email',
+      name: 'email_or_phone',
       type: 'email',
       label: 'Email Address',
       placeholder: 'Enter email address',
-      value: formData?.email || '',
+      value: formData?.email_or_phone || '',
       validations: {
-        required: true,
-        pattern: validationPatterns.email
+        required: true
+        // pattern: validationPatterns.email
       },
-      error: errors?.email,
+      error: errors?.email_or_phone,
       onBlur: handleBlur,
       onChange: handleChange
     }

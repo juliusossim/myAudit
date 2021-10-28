@@ -36,6 +36,14 @@ const initialState = {
   resetPassword: {
     data: {},
     status: 'initial'
+  },
+  logout: {
+    data: {},
+    status: 'initial'
+  },
+  completeRegistration: {
+    data: {},
+    status: 'initial'
   }
 };
 
@@ -49,7 +57,6 @@ const authenticationReducer = (state = initialState, { type, response, error }) 
         status: 'pending'
       }
     };
-
   case constants.REGISTER_SUCCESS:
     return {
       ...state,
@@ -59,11 +66,80 @@ const authenticationReducer = (state = initialState, { type, response, error }) 
         status: 'success'
       }
     };
-
   case constants.REGISTER_FAILURE:
     return {
       ...state,
       register: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.COMPLETE_REGISTRATION_PENDING:
+    return {
+      ...state,
+      completeRegistration: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.COMPLETE_REGISTRATION_COMPLETE:
+    return {
+      ...state,
+      completeRegistration: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.COMPLETE_REGISTRATION_SUCCESS:
+    return {
+      ...state,
+      completeRegistration: {
+        ...state.completeRegistration,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.COMPLETE_REGISTRATION_FAILURE:
+    return {
+      ...state,
+      completeRegistration: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.LOGOUT_PENDING:
+    return {
+      ...state,
+      logout: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.LOGOUT_COMPLETE:
+    return {
+      ...state,
+      logout: {
+        data: {},
+        status: 'initial'
+      }
+    };
+
+  case constants.LOGOUT_SUCCESS:
+    return {
+      ...state,
+      logout: {
+        ...state.logout,
+        data: response,
+        status: 'success'
+      }
+    };
+
+  case constants.LOGOUT_FAILURE:
+    return {
+      ...state,
+      logout: {
         data: error || {},
         status: 'failed'
       }

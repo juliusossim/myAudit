@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { Link, useHistory } from 'react-router-dom';
 import _ from 'lodash';
-import { user } from '../../utilities/auth';
+import { useDispatch, useSelector } from 'react-redux';
+import { Link, useParams } from 'react-router-dom';
+import { company } from '../../utilities/auth';
 import PageTemp from '../../components/temps/PageTemp';
 import OrdinaryTable from '../../components/table';
 import Modal from '../../components/microComponents/modal';
@@ -12,37 +12,32 @@ import { projectAction } from '../../redux/actions/projectActions';
 import { apiOptions } from '../../services/fetch';
 
 const DashboardIndex = () => {
-  const { push } = useHistory();
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.engagement.engagements);
+  const { id, name } = useParams();
+  const store = useSelector((state) => state.engagement?.engagement);
   const [formData, setFormData] = useState({});
   const [transaction, setTransaction] = useState({});
   const [show, setShow] = useState(false);
   const [downloadable, setDownloadable] = useState(false);
   const [filterable, setFilterable] = useState(false);
 
-  const handleRowClick = (item) => {
-    setShow(true);
-    setTransaction(item);
-  };
   useEffect(() => {
     if (store.status === 'initial') {
       index();
     }
     if (store.status === 'success') {
-      !_.isEmpty(store?.data?.data)
-        ? setFormData(store.data.data)
-        : push({ pathname: '/app/no-data', name: 'dashboard' });
+      !_.isEmpty(store?.data?.data) && setFormData(store.data.data);
     }
   }, [store?.status]);
 
   const index = useCallback(() => {
     dispatch(projectAction(
       {
-        action: 'ENGAGEMENTS',
+        action: 'ENGAGEMENT',
         routeOptions: apiOptions({
           method: 'get',
-          endpoint: 'ENGAGEMENTS',
+          endpoint: 'ENGAGEMENT',
+          param: id,
           auth: true
         })
       }
@@ -50,15 +45,20 @@ const DashboardIndex = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  const handleRowClick = (item) => {
+    setShow(true);
+    setTransaction(item);
+  };
+
   return (
     <PageTemp
       store={store}
       view={(
         <div className="row ">
           <div className="col-md-10 offset-1">
-            <div className="d-flex custom-top-bar justify-content-between">
-              <div className=" p-3">
-                Dashboard
+            <div className="d-flex ml-4 custom-top-bar justify-content-between">
+              <div className="text-theme-black bold">
+                {`${formData?.company_name} ${formData?.name}`}
               </div>
               <div className="mr-3">
                 <FancySearch />
@@ -96,12 +96,12 @@ const DashboardIndex = () => {
             </div>
             <div className="">
               <div className="d-flex justify-content-between">
-                <div className="text-theme-black font-regular bold">Recent Engagement</div>
+                <div className="text-theme-black font-regular bold">Engagement Team</div>
                 <div>
                   <Link to="#" onClick={() => console.log('all')} className="font-regular text-theme-blue">See All</Link>
                 </div>
               </div>
-              <DashboardTable data={formData.engagements} />
+              <DashboardTable />
             </div>
           </div>
           {/* <Modal */}
@@ -111,10 +111,8 @@ const DashboardIndex = () => {
 
         </div>
       )}
-      action="ENGAGEMENTS_COMPLETE"
+      action="ENGAGEMENT_COMPLETE"
       retry={index}
-      noData={_.isEmpty(store?.data?.data?.engagements)}
-      redirect={{ pathname: '/app/no-data/dashboard', name: 'dashboard' }}
     />
   );
 };

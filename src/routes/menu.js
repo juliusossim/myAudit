@@ -9,23 +9,24 @@ import React from 'react';
 
 const miniMenu = [
   {
-    name: 'Dashboard',
+    name: 'dashboard',
     icon: <RiDashboardLine />,
+    to: '/app/dashboard',
     children: [
       {
-        parent: 'Dashboard',
-        name: 'Dashboard',
+        parent: 'dashboard',
+        name: 'dashboard',
         icon: <RiDashboardLine />,
         to: '/dashboard'
       },
       {
-        parent: 'Dashboard',
+        parent: 'dashboard',
         name: 'Complete Profile',
         icon: <RiDashboardLine />,
         to: '/complete-registration'
       },
       {
-        parent: 'Dashboard',
+        parent: 'dashboard',
         name: 'Send Invite',
         icon: <RiDashboardLine />,
         to: '/send-invite'
@@ -33,12 +34,13 @@ const miniMenu = [
     ]
   },
   {
-    name: 'Engagement',
+    name: 'engagement',
     icon: <BsFolder />,
+    to: '/app/engagement',
     children: [
       {
-        parent: 'Engagement',
-        name: 'New Engagement',
+        parent: 'engagement',
+        name: 'New engagement',
         icon: <BsFolder />,
         to: '/new-engagement'
       }
@@ -47,34 +49,37 @@ const miniMenu = [
   {
     name: 'Team Members',
     icon: <MdPersonOutline />,
+    to: '/app/team-members',
     children: [
       {
         parent: 'Team Members',
-        name: 'New Engagement',
+        name: 'New engagement',
         icon: <BsFolder />,
         to: '/new-engagement'
       }
     ]
   },
   {
-    name: 'Settings',
+    name: 'settings',
     icon: <RiSettings2Line />,
+    to: '/app/settings',
     children: [
       {
         parent: 'Settings',
-        name: 'New Engagement',
+        name: 'New engagement',
         icon: <BsFolder />,
         to: '/new-engagement'
       }
     ]
   },
   {
-    name: 'Notifications',
+    name: 'notifications',
     icon: <MdNotificationsNone />,
+    to: '/app/notifications',
     children: [
       {
         parent: 'Notifications',
-        name: 'New Engagement',
+        name: 'New engagement',
         icon: <BsFolder />,
         to: '/new-engagement'
       }

@@ -6,8 +6,8 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import { Box } from '@mui/material';
+import User from '../../assets/images/User.svg';
 import { sentenceCaps } from '../../utilities/stringOperations';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -31,32 +31,27 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   }
 }));
 
-function createData(name, date, company, members, status, action) {
-  return {
-    name, date, company, members, status, action
-  };
-}
-
-const rows = [
-  createData('spring 2019', new Date().getFullYear(), 6.0, 24, 4.0),
-  createData('summer 2018', 237, 9.0, 37, 4.3),
-  createData('fall 2020', 262, 16.0, 24, 6.0),
-  createData('autumn 2021', 305, 3.7, 67, 4.3),
-  createData('summer 2020', 356, 16.0, 49, 3.9)
-];
 const handleRow = (row) => console.log(row);
 
-export default function CustomizedTables({ heads }) {
+export default function EngagementTable({ data }) {
+  function createData(name, position, date, type, action) {
+    return {
+      name, position, date, type, action
+    };
+  }
+
+  const rows = data.map((item) => createData(item.full_name,
+    item.designation, new Date(item.date_created), item.role_id.name));
+
   return (
     <TableContainer component={Box}>
       <Table sx={{ minWidth: 700 }} aria-label="customized table">
         <TableHead>
           <TableRow>
             <StyledTableCell>Name</StyledTableCell>
+            <StyledTableCell align="right">Partner</StyledTableCell>
             <StyledTableCell align="right">Date Created</StyledTableCell>
-            <StyledTableCell align="right">Company</StyledTableCell>
-            <StyledTableCell align="right">No. of Member</StyledTableCell>
-            <StyledTableCell align="right">Status</StyledTableCell>
+            <StyledTableCell align="right">Type</StyledTableCell>
             <StyledTableCell align="right">Action</StyledTableCell>
           </TableRow>
         </TableHead>
@@ -66,10 +61,9 @@ export default function CustomizedTables({ heads }) {
               <StyledTableCell component="th" scope="row">
                 <div className="bold theme-font font-small">{sentenceCaps(row.name)}</div>
               </StyledTableCell>
+              <StyledTableCell align="right"><div className="theme-font-2">{row.position}</div></StyledTableCell>
               <StyledTableCell align="right"><div className="theme-font-2">{row.date}</div></StyledTableCell>
-              <StyledTableCell align="right"><div className="theme-font-2">{row.company}</div></StyledTableCell>
-              <StyledTableCell align="right"><div className="theme-font-2">{row.members}</div></StyledTableCell>
-              <StyledTableCell align="right"><div className="theme-font-2">{row.status}</div></StyledTableCell>
+              <StyledTableCell align="right"><div className="theme-font-2">{row.type}</div></StyledTableCell>
               <StyledTableCell align="right">
                 <div className="theme-font-2"><button type="button" className="btn-small btn text-white" onClick={() => handleRow(row)}>view</button></div>
               </StyledTableCell>

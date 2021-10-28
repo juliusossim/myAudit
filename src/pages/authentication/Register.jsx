@@ -2,8 +2,13 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
-import { login } from '../../redux/actions/authenticationActions';
-import { mapBackendErrors, validateField } from '../../utilities/validation';
+import { login, register } from '../../redux/actions/authenticationActions';
+import {
+  checkRequiredFields,
+  mapBackendErrors,
+  noErrors,
+  validateField
+} from '../../utilities/validation';
 import PageTemp from '../../components/temps/PageTemp';
 import { resetAction } from '../../redux/actions/projectActions';
 import { notifier, slugToString } from '../../utilities/stringOperations';
@@ -12,32 +17,39 @@ import FormBuilder from '../../components/form/builders/form';
 import registerProps from './constants/register';
 
 const RegisterPage = () => {
-  const [formData, setFormData] = useState({ remember_me: false });
+  const [formData, setFormData] = useState({ });
   const [show, setShow] = useState(false);
   const [errors, setErrors] = useState({});
+  const [errorFree, setErrorFree] = useState(false);
+  const [requiredFields, setRequiredFields] = useState(false);
 
-  const { goBack } = useHistory();
+  const { goBack, push } = useHistory();
 
   /* redux */
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.auth.login);
+  const store = useSelector((state) => state.auth.register);
 
   useEffect(() => {
+    setErrorFree(noErrors(errors));
+    setRequiredFields(checkRequiredFields([
+      formData.email, formData.password,
+      formData.confirm_password, formData.first_name, formData.last_name
+    ]));
+  }, [errors]);
+  useEffect(() => { window.scrollTo(0, 0); }, []);
+  useEffect(() => {
     if (store?.status === 'success') {
-      handleClose();
       notifier({
-        title: 'Logged In',
-        text: 'Logged in successfully',
+        title: 'Registered',
+        text: 'Signed up successfully',
         type: 'success'
       });
+      setTimeout(handleClose, 500);
     }
   }, [store.status]);
-
-  const handleLogin = () => {
-    // e.preventDefault();
-    // window.location.replace('/home');
-    // const payload = { ...formData };
-    dispatch(login(formData));
+  const handleRegister = () => {
+    setShow(true);
+    dispatch(register(formData));
   };
 
   const handleChange = (e) => {
@@ -57,7 +69,7 @@ const RegisterPage = () => {
   };
   const handleClose = () => {
     setShow(false);
-    return window.location.assign('/me');
+    return push('/login');
   };
   const goBackAndReset = () => {
     goBack();
@@ -120,11 +132,22 @@ const RegisterPage = () => {
                   }
                 />
               </div>
-              <button className="w-100 btn btn-large" type="button" onClick={handleLogin}>Sign up</button>
+              <button
+                className="w-100 btn btn-large"
+                type="button"
+                onClick={handleRegister}
+                disabled={!(requiredFields && errorFree && store.status !== 'loading')}
+
+              >
+                Sign up
+              </button>
               <div className="mt-3">
                 <span className="">Already have an account?</span>
                 <Link to="/login">
-                  <button type="button" className="text-theme-blue  viewMoreBtn">
+                  <button
+                    type="button"
+                    className="text-theme-blue  viewMoreBtn"
+                  >
                     Login
                   </button>
                 </Link>
@@ -136,35 +159,13 @@ const RegisterPage = () => {
     </div>
   );
 
-  /* on failure */
-  const failureTemp = (
-    <div>
-      <ul>
-
-        {
-          mapBackendErrors(store?.data).map(
-            (err) => (
-              typeof err !== 'undefined' && (
-                <li key={`${err}`} className="text-warning">
-                  {err}
-                </li>
-              )
-            )
-          )
-        }
-      </ul>
-      <button onClick={goBackAndReset} type="button" className="btn w-25 center btn-small float-right">
-        BACK
-      </button>
-    </div>
-  );
-
   return (
     <div className="content m-t-40">
       <PageTemp
         initial={initialTemp({ formData })}
         view={initialTemp({ formData })}
-        status={store?.status}
+        store={store}
+        action="REGISTER_COMPLETE"
         error={initialTemp({ formData })}
       />
     </div>

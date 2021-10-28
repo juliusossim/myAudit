@@ -1,7 +1,7 @@
 import React, {
   Suspense, useCallback, useEffect
 } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 import _ from 'lodash';
 
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,6 +14,8 @@ import { apiOptions } from './services/fetch';
 import ScrollUpBtn from './layouts/ScrollUpBtn';
 
 function App() {
+  const { pathname } = useLocation();
+
   const dispatch = useDispatch();
   const store = useSelector((state) => state.project);
   const indexData = { ...JSON.parse(localStorage.getItem('index')) };
@@ -31,30 +33,7 @@ function App() {
   //   });
   // }
   // console.log();
-  const index = useCallback(() => dispatch(projectAction(
-    {
-      action: 'INDEX',
-      routeOptions: apiOptions({
-        method: 'get',
-        auth: true,
-        endpoint: 'INDEX'
-      })
-    }
-  )), []);
-  const storeIndex = useCallback((data) => {
-    if (!_.isEmpty(data)) {
-      localStorage.setItem('index', JSON.stringify(data));
-    }
-  }, []);
-
-  useEffect(() => {
-    if (store.index?.status === 'initial' && _.isEmpty(indexData)) {
-      index();
-    }
-    if (store?.index?.status === 'success' && !_.isEmpty(store?.index?.data?.data?.categories)) {
-      storeIndex(store?.index?.data?.data);
-    }
-  }, [store?.index?.status]);
+  const path = (route) => pathname.startsWith(route);
   return (
     <Suspense fallback={(
       <div style={{
@@ -72,7 +51,9 @@ function App() {
       {/* <Router history={history}> */}
 
       <div className="w-full bg-theme-faint-1">
-        {/* <Header setWidth={setPad} /> */}
+        {
+          !path('/app') && <Header />
+        }
         <Switch>
 
           {/* <Route path="/" component={HomePortal} /> */}

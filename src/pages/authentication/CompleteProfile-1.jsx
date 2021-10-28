@@ -1,11 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
+import localforage from 'localforage';
 import { login } from '../../redux/actions/authenticationActions';
 import { mapBackendErrors, validateField } from '../../utilities/validation';
 import PageTemp from '../../components/temps/PageTemp';
-import { resetAction } from '../../redux/actions/projectActions';
+import { projectAction, resetAction } from '../../redux/actions/projectActions';
 import { notifier, slugToString } from '../../utilities/stringOperations';
 
 import FormBuilder from '../../components/form/builders/form';
@@ -14,35 +15,50 @@ import ListMat from '../../components/ui/listMat';
 import CustomCheckbox from '../../components/form/inputs/CustomCheckbox';
 import CheckboxComp from '../../components/ui/CheckboxComp';
 import completeProfile1Props from './constants/completeProfile1';
+import { apiOptions } from '../../services/fetch';
+import { user } from '../../utilities/auth';
 
 const CompleteProfile1 = () => {
-  const [formData, setFormData] = useState({ remember_me: false });
+  const [formData, setFormData] = useState({ ...user, designation: user.role_id[0]?.name });
   const [terms, setTerms] = useState(false);
   const [show, setShow] = useState(false);
   const [errors, setErrors] = useState({});
 
-  const { goBack } = useHistory();
+  const { goBack, push } = useHistory();
 
   /* redux */
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.auth.login);
+  const store = useSelector((state) => state.auth.completeRegistration);
 
   useEffect(() => {
     if (store?.status === 'success') {
-      handleClose();
+      localforage.setItem('user', store?.data?.data?.user);
+      localStorage.setItem('company', store?.data?.data?.company);
+      localStorage.setItem('user', JSON.stringify(store?.data?.data?.user));
       notifier({
         title: 'Logged In',
         text: 'Logged in successfully',
         type: 'success'
       });
+      setTimeout(() => push({ pathname: '/app/dashboard', name: 'dashboard' }), 500);
     }
   }, [store.status]);
+  const completeRegistration = useCallback((data) => {
+    dispatch(projectAction(
+      {
+        action: 'COMPLETE_REGISTRATION',
+        routeOptions: apiOptions({
+          method: 'post',
+          body: data,
+          endpoint: 'COMPLETE_REGISTRATION',
+          auth: true
+        })
+      }
+    ));
+  }, []);
 
   const handleLogin = () => {
-    // e.preventDefault();
-    // window.location.replace('/home');
-    // const payload = { ...formData };
-    dispatch(login(formData));
+    completeRegistration(formData);
   };
 
   const handleChange = (e) => {
@@ -101,7 +117,7 @@ const CompleteProfile1 = () => {
   ];
   /* on visiting */
   const initialTemp = ({ ...props }) => (
-    <div className=" ">
+    <div className="">
       <div className="box-shadow row ">
         <div className="complete-profile-1 position-relative col-md-5 pt-5">
           <div className="p-3 ml-5">
@@ -178,13 +194,20 @@ const CompleteProfile1 = () => {
   );
 
   return (
-    <div className="content m-t-40">
-      <PageTemp
-        initial={initialTemp({ formData })}
-        view={initialTemp({ formData })}
-        status={store?.status}
-        error={initialTemp({ formData })}
-      />
+    <div>
+      <div className="d-flex ml-4 custom-top-bar justify-content-between">
+        <div className="text-theme-black bold">
+          COMPLETE PROFILE
+        </div>
+      </div>
+      <div className="content">
+        <PageTemp
+          initial={initialTemp({ formData })}
+          view={initialTemp({ formData })}
+          status={store?.status}
+          error={initialTemp({ formData })}
+        />
+      </div>
     </div>
   );
 };

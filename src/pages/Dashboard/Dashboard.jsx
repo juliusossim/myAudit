@@ -1,19 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useHistory } from 'react-router';
 import { user } from '../../utilities/auth';
 
 const Dashboard = () => {
+  const { push } = useHistory();
   const CompleteProfile = React.lazy(() => import('../authentication/CompleteProfile'));
   const NewEngagement = React.lazy(() => import('../authentication/NewEngagement'));
-  const Engagements = React.lazy(() => import('./DashboardIndex'));
+  const DashIndex = React.lazy(() => import('./DashboardIndex'));
 
-  const template = user.status === 'active'
-    ? 'you are done'
-    : <Engagements />;
-
+  useEffect(() => user?.is_verified < 1 && push('/app/complete-registration'));
   return (
-    <div className="">
-      {template}
-    </div>
+    <DashIndex />
   );
 };
 

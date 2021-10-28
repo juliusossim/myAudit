@@ -3,11 +3,17 @@ import { Link, useHistory, useLocation } from 'react-router-dom';
 import { ImSad } from 'react-icons/all';
 import pageNotFound from '../../assets/images/pageNotFound.jpeg';
 import noData1 from '../../assets/images/nodata.png';
+import FancySearch from '../../components/form/fancySearch';
 
 const CompleteProfile = ({ tryAgain, home }) => {
   const history = useHistory();
   return (
-    <div className="w-100 m-t-40">
+    <div className="w-100">
+      <div className="d-flex ml-4 custom-top-bar justify-content-between">
+        <div className="text-theme-black bold">
+          Dashboard
+        </div>
+      </div>
       <div className="max-w-350 margin-center">
         <div className="text-center">
           <svg width="150" height="140" viewBox="0 0 150 140" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -51,7 +57,7 @@ const CompleteProfile = ({ tryAgain, home }) => {
           <div className="text-theme-faint text-center">
             Complete your profile and select plan to to start creating engagement
           </div>
-          <button className="btn" type="button" onClick={() => history.push('/complete-profile')}>
+          <button className="btn" type="button" onClick={() => history.push({ pathname: '/app/complete-profile', name: 'dashboard' })}>
             Complete Profile
           </button>
         </div>

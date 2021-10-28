@@ -4,7 +4,12 @@ import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import TextInput from '../../components/form/inputs/TextInput';
 import { login } from '../../redux/actions/authenticationActions';
-import { mapBackendErrors, validateField } from '../../utilities/validation';
+import {
+  checkRequiredFields,
+  mapBackendErrors,
+  noErrors,
+  validateField
+} from '../../utilities/validation';
 import PageTemp from '../../components/temps/PageTemp';
 import { resetAction } from '../../redux/actions/projectActions';
 import { notifier, slugToString } from '../../utilities/stringOperations';
@@ -13,26 +18,38 @@ import loginProps from './constants/loginProps';
 import FormBuilder from '../../components/form/builders/form';
 
 const LoginPage = () => {
-  const [formData, setFormData] = useState({ remember_me: false });
+  const [formData, setFormData] = useState({ });
   const [show, setShow] = useState(false);
   const [errors, setErrors] = useState({});
+  const [errorFree, setErrorFree] = useState(false);
+  const [requiredFields, setRequiredFields] = useState(false);
 
-  const { goBack } = useHistory();
+  const { goBack, push } = useHistory();
 
   /* redux */
   const dispatch = useDispatch();
   const store = useSelector((state) => state.auth.login);
+  // let handler;
+
+  useEffect(() => { window.scrollTo(0, 0); }, []);
 
   useEffect(() => {
     if (store?.status === 'success') {
-      handleClose();
       notifier({
         title: 'Logged In',
         text: 'Logged in successfully',
         type: 'success'
       });
+      setTimeout(handleClose, 500);
     }
   }, [store.status]);
+
+  useEffect(() => {
+    setErrorFree(noErrors(errors));
+    setRequiredFields(checkRequiredFields([formData.email_or_phone, formData.password]));
+  }, [errors]);
+
+  // useEffect(() => () => handler && clearTimeout(handler), [handler]);
 
   const handleLogin = () => {
     // e.preventDefault();
@@ -58,7 +75,7 @@ const LoginPage = () => {
   };
   const handleClose = () => {
     setShow(false);
-    return window.location.assign('/me');
+    return push('/app/dashboard');
   };
   const goBackAndReset = () => {
     goBack();
@@ -136,7 +153,14 @@ const LoginPage = () => {
                   </Link>
                 </div>
               </div>
-              <button className="w-100 btn btn-large" type="button" onClick={handleLogin}>Login</button>
+              <button
+                className="w-100 btn btn-large"
+                type="button"
+                onClick={handleLogin}
+                disabled={!(requiredFields && errorFree && store.status !== 'loading')}
+              >
+                Login
+              </button>
               <div className="mt-3">
                 {/* eslint-disable-next-line react/no-unescaped-entities */}
                 <span className="text-theme-faint font-tiny">Don't have an account?</span>
@@ -181,8 +205,9 @@ const LoginPage = () => {
       <PageTemp
         initial={initialTemp({ formData })}
         view={initialTemp({ formData })}
-        status={store?.status}
-        error={initialTemp({ formData })}
+        setErrors={setErrors}
+        action="LOGIN_COMPLETE"
+        store={store}
       />
     </div>
   );

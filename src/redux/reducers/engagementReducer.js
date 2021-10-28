@@ -1,11 +1,11 @@
 import constants from '../constants';
 
 const initialState = {
-  projects: {
+  engagements: {
     data: {},
     status: 'initial'
   },
-  project: {
+  engagement: {
     data: {},
     status: 'initial'
   },
@@ -112,35 +112,77 @@ const initialState = {
   }
 };
 
-const projectReducer = (state = initialState, { type, response, error }) => {
+const engagementReducer = (state = initialState, { type, response, error }) => {
   switch (type) {
-  case constants.PROJECT_PENDING:
+  case constants.ENGAGEMENT_PENDING:
     return {
       ...state,
-      project: {
+      engagement: {
         data: {},
         status: 'pending'
       }
     };
-  case constants.PROJECT_SUCCESS:
+  case constants.ENGAGEMENT_COMPLETE:
     return {
       ...state,
-      project: {
-        ...state.project,
+      engagement: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.ENGAGEMENT_SUCCESS:
+    return {
+      ...state,
+      engagement: {
+        ...state.engagement,
         data: response,
         status: 'success'
       }
     };
-  case constants.PROJECT_FAILURE:
+  case constants.ENGAGEMENT_FAILURE:
     return {
       ...state,
-      project: {
+      engagement: {
         data: error || {},
         status: 'failed'
       }
     };
 
-  case constants.GET_PROJECT_PENDING:
+  case constants.ENGAGEMENTS_PENDING:
+    return {
+      ...state,
+      engagements: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.ENGAGEMENTS_COMPLETE:
+    return {
+      ...state,
+      engagements: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.ENGAGEMENTS_SUCCESS:
+    return {
+      ...state,
+      engagements: {
+        ...state.engagements,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.ENGAGEMENTS_FAILURE:
+    return {
+      ...state,
+      engagements: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.GET_ENGAGEMENT_PENDING:
     return {
       ...state,
       getProject: {
@@ -148,7 +190,7 @@ const projectReducer = (state = initialState, { type, response, error }) => {
         status: 'pending'
       }
     };
-  case constants.GET_PROJECT_SUCCESS:
+  case constants.GET_ENGAGEMENT_SUCCESS:
     return {
       ...state,
       getProject: {
@@ -157,7 +199,7 @@ const projectReducer = (state = initialState, { type, response, error }) => {
         status: 'success'
       }
     };
-  case constants.GET_PROJECT_FAILURE:
+  case constants.GET_ENGAGEMENT_FAILURE:
     return {
       ...state,
       getProject: {
@@ -247,7 +289,7 @@ const projectReducer = (state = initialState, { type, response, error }) => {
   case constants.EDIT_PROJECT_PENDING:
     return {
       ...state,
-      project: {
+      engagement: {
         data: {},
         status: 'pending'
       }
@@ -256,8 +298,8 @@ const projectReducer = (state = initialState, { type, response, error }) => {
   case constants.EDIT_PROJECT_SUCCESS:
     return {
       ...state,
-      project: {
-        ...state.project,
+      engagement: {
+        ...state.engagement,
         data: response,
         status: 'success'
       }
@@ -266,7 +308,7 @@ const projectReducer = (state = initialState, { type, response, error }) => {
   case constants.EDIT_PROJECT_FAILURE:
     return {
       ...state,
-      project: {
+      engagement: {
         data: error || {},
         status: 'failed'
       }
@@ -909,4 +951,4 @@ const projectReducer = (state = initialState, { type, response, error }) => {
   }
 };
 
-export default projectReducer;
+export default engagementReducer;

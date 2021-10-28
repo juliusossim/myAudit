@@ -30,7 +30,6 @@ export const decodeToken = (tokenName,
     }
     return jwt.verify(item, process.env.REACT_APP_JWT_SECRET);
   } catch (err) {
-    console.log(err);
     logoutUser && logout(index);
   }
   return null;
@@ -61,7 +60,7 @@ export const logout = async (landingPath = process.env.REACT_APP_INDEX_URL,
   await localforage.clear();
   localStorage.clear();
   isExpiredSession && localStorage.setItem('se', true);
-  window.location.assign(landingPath);
+  // window.location.assign(landingPath);
 };
 export const doLogout = () => {
   localforage.clear();
@@ -79,3 +78,4 @@ export const currentUser = localforage.getItem('user', (err, value) => {
 });
 
 export const user = { ...JSON.parse(localStorage.getItem('user')) };
+export const company = { ...JSON.parse(localStorage.getItem('company')) };
