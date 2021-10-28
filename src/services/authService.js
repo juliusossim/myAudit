@@ -1,11 +1,8 @@
-export const loginApi = 'Account/authenticate';
-export const registerApi = 'Account/register';
-export const registerIndividualApi = 'Account/register/individual';
-export const verifyIndividualApi = 'Verification/personal';
-export const verifyCorporateApi = 'Verification/corporate';
-export const verifyAccountOtpApi = 'Verification/verifyotp';
-export const sendAccountOtpApi = 'Verification/request';
-export const registerCorporateApi = 'Account/register/corporate';
-export const changePasswordApi = 'Account/change_password';
-export const resetPassword = 'Account/reset_password';
-export const forgotPasswordApi = 'Account/forgot_password';
+export const loginApi = 'auth/login';
+export const logoutApi = 'auth/logout';
+export const registerApi = 'auth/register/admin';
+export const registerInvitedUserApi = 'auth/register'; /* param = code */
+export const inviteUser = 'auth/users/invite';
+export const changePasswordApi = 'auth/forgot-password';
+export const resetPassword = 'auth/reset_password';
+export const forgotPasswordApi = 'auth/forgot-password';
