@@ -9,7 +9,7 @@ const initialState = {
     data: {},
     status: 'initial'
   },
-  project1: {
+  newEngagement: {
     data: {},
     status: 'initial'
   },
@@ -314,29 +314,38 @@ const engagementReducer = (state = initialState, { type, response, error }) => {
       }
     };
 
-  case constants.EDIT_PROJECT_1_PENDING:
+  case constants.CREATE_ENGAGEMENT_PENDING:
     return {
       ...state,
-      project1: {
+      newEngagement: {
         data: {},
         status: 'pending'
       }
     };
 
-  case constants.EDIT_PROJECT_1_SUCCESS:
+  case constants.CREATE_ENGAGEMENT_COMPLETE:
     return {
       ...state,
-      project1: {
-        ...state.project1,
+      newEngagement: {
+        data: {},
+        status: 'initial'
+      }
+    };
+
+  case constants.CREATE_ENGAGEMENT_SUCCESS:
+    return {
+      ...state,
+      newEngagement: {
+        ...state.newEngagement,
         data: response,
         status: 'success'
       }
     };
 
-  case constants.EDIT_PROJECT_1_FAILURE:
+  case constants.CREATE_ENGAGEMENT_FAILURE:
     return {
       ...state,
-      project1: {
+      newEngagement: {
         data: error || {},
         status: 'failed'
       }

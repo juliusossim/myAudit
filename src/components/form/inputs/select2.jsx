@@ -123,7 +123,7 @@ const Select2 = (
 
   return (
     <div
-      className={`${error?.length > 0 ? `${className} col-12 ` : `${className}`} form-group`}
+      className={`${className} form-group`}
       onMouseEnter={() => {
         setShow(true);
         setEdit(true);

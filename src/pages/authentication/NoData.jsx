@@ -1,17 +1,12 @@
 import React from 'react';
 import {
-  Link, useHistory, useLocation, useParams
+  useHistory
 } from 'react-router-dom';
 
-import { ImSad } from 'react-icons/all';
-import pageNotFound from '../../assets/images/pageNotFound.jpeg';
-import noData1 from '../../assets/images/nodata.png';
-import FancySearch from '../../components/form/fancySearch';
-
-const NoData = ({ tryAgain, home }) => {
-  const history = useHistory();
-  const { name } = useParams();
-
+const NoData = ({
+  link, name, text, title, btnName
+}) => {
+  const { push } = useHistory();
   return (
     <div className="w-100">
       <div className="d-flex ml-4 custom-top-bar justify-content-between">
@@ -112,13 +107,13 @@ const NoData = ({ tryAgain, home }) => {
           </svg>
 
           <div className="text-theme-black font-title-small bold">
-            No Data
+            {title || ''}
           </div>
           <div className="text-theme-faint text-center">
-            Create engagement to see activities
+            {text || ''}
           </div>
-          <button className="btn" type="button" onClick={() => history.push({ pathname: '/app/new-engagement', name: 'engagement' })}>
-            New Engagement
+          <button className="btn" type="button" onClick={() => push(link)}>
+            {btnName}
           </button>
         </div>
       </div>

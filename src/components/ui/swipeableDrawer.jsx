@@ -118,6 +118,8 @@ const MiniDrawer = ({
   const [open, setOpen] = React.useState(false);
   const [active, setActive] = React.useState({ name: 'Dashboard' });
 
+  const path = (item) => history.location.pathname.startsWith(item);
+
   const pushUpdates = useUpdateStore;
 
   const handleClick = (item) => {
@@ -223,14 +225,14 @@ const MiniDrawer = ({
               {
                 item.icon
                 && (
-                  <ListItemIcon className={item.name === active.parent ? 'text-theme' : 'text-theme-faint'}>
+                  <ListItemIcon className={path(`/app/${item.name}`) ? 'text-theme' : 'text-theme-faint'}>
                     <div className="font-title">
                       {item.icon}
                     </div>
                   </ListItemIcon>
                 )
               }
-              <ListItemText className={open ? `${item.name === history.location.name ? 'text-white' : 'text-pale'} theme-font bold font-title ml-2` : 'd-none'} primary={sentenceCaps(item.name)} />
+              <ListItemText className={open ? `${path(`/app/${item.name}`) ? 'text-white' : 'text-pale'} theme-font bold font-title ml-2` : 'd-none'} primary={sentenceCaps(item.name)} />
               {/* <List className={open ? 'position-relative mt-5'
                : 'd-none'} style={{ top: '53px', left: '-25px' }}> */}
               {/*  { */}

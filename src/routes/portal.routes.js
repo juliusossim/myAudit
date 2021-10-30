@@ -13,6 +13,10 @@ const CompleteProfile = lazy(() => import('../pages/authentication/CompleteProfi
 const Engagement = lazy(() => import('../pages/Engagements/EngagementIndex'));
 const NewEngagement = lazy(() => import('../pages/Engagements/NewEngagement'));
 
+/* clients */
+const Client = lazy(() => import('../pages/Clients/ClientsIndex'));
+const NewClient = lazy(() => import('../pages/Clients/NewClients'));
+
 /* no data */
 const NoData = lazy(() => import('../pages/authentication/NoData'));
 
@@ -64,7 +68,7 @@ const routes = [
   },
   /* working */
   {
-    path: '/app/new-engagement',
+    path: '/app/engagement/new-engagement',
     component: NewEngagement,
     exact: true,
     name: 'engagement'
@@ -75,12 +79,12 @@ const routes = [
     exact: true,
     name: 'engagement'
   },
-  {
-    path: '/app/view/:name/:id',
-    component: NewEngagement,
-    exact: true,
-    name: 'engagement'
-  },
+  // {
+  //   path: '/app/engagement/view/:name/:id',
+  //   component: EngagementDetails,
+  //   exact: true,
+  //   name: 'engagement'
+  // },
   {
     path: '/app/engagement',
     component: Engagement,
@@ -93,23 +97,32 @@ const routes = [
     exact: true
   },
   {
-    path: '/app/complete-registration',
+    path: '/app/dashboard/complete-registration',
     component: CompleteRegistration,
     exact: true,
     name: 'dashboard'
   },
   {
-    path: '/app/complete-profile',
+    path: '/app/dashboard/complete-profile',
     component: CompleteProfile,
     exact: true,
     name: 'dashboard'
   },
 
-  // {
-  //   path: '/dashboard/:param',
-  //   component: Dashboard,
-  //   exact: true
-  // },
+  {
+    path: '/app/clients',
+    component: Client,
+    exact: true,
+    name: 'clients'
+  },
+
+  {
+    path: '/app/clients/new-client',
+    component: NewClient,
+    exact: true,
+    name: 'clients'
+  },
+
   {
     path: '/me',
     component: Profile,

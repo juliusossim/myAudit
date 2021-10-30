@@ -1,16 +1,16 @@
 import React from 'react';
 import { validationPatterns } from '../../../utilities/validation';
 import { projectType } from '../../../utilities/dummyData';
-import { CheckboxField, RadioButtonField } from '../../../components/form/inputs/Checkbox';
+import { CheckboxField } from '../../../components/form/inputs/Checkbox';
 
-const newEngagementProps = (
+const newClientProps = (
   {
     formData,
+    setFormData,
     handleBlur,
     handleChange,
     errors,
     btnMethod,
-    selectDisabled,
     handleChecked
   }
 ) => ([
@@ -108,30 +108,13 @@ const newEngagementProps = (
     }
   },
   {
-    kind: 'input',
-    props: {
-      className: 'w-100 m-b-20 col-12',
-      name: 'director_name',
-      type: 'text',
-      label: 'Director Name',
-      placeholder: 'Director\'s Full Name',
-      value: formData?.director_name || '',
-      validations: {
-        required: true
-      },
-      error: errors?.director_name,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
     kind: 'text_area',
     props: {
       className: 'w-100 m-b-20 col-12',
       name: 'address',
       type: 'text',
-      label: 'Home Address',
-      placeholder: 'Diretor\'s Home Address',
+      label: 'Alternative Address',
+      placeholder: 'Second Address',
       value: formData?.address || '',
       validations: {
         required: true,
@@ -143,36 +126,55 @@ const newEngagementProps = (
     }
   },
   {
-    kind: 'input',
+    kind: 'tags',
+    props: {
+      className: 'w-100 m-b-20 col-12',
+      name: 'director_name',
+      type: 'text',
+      label: 'Director Name',
+      placeholder: 'Directors\' Full Names',
+      formData,
+      setFormData
+    }
+  },
+  {
+    kind: 'tags',
     props: {
       className: 'w-100 m-b-20 col-12 col-md-6',
       name: 'director_units_held',
       type: 'number',
-      label: 'Director\'s Units',
+      label: 'Director\'s Units (%)',
       placeholder: 'Director\'s Company Shares',
-      value: formData?.director_units_held || '',
-      validations: {
-        required: true
-      },
-      error: errors?.director_units_held,
-      onBlur: handleBlur,
-      onChange: handleChange
+      formData,
+      setFormData
     }
   },
   {
-    kind: 'select',
+    kind: 'tags',
     props: {
       className: 'w-100 m-b-20 col-12 col-md-6',
       name: 'director_designation',
-      label: 'Director Designation',
-      optionIndex: 'type',
-      valueIndex: 'value',
-      value: formData?.director_designation || '',
-      options: projectType,
+      type: 'text',
+      label: 'Directors\' Designations',
+      placeholder: 'Directors\' Designations',
+      formData,
+      setFormData
+    }
+  },
+  {
+    kind: 'text_area',
+    props: {
+      className: 'w-100 m-b-20 col-12',
+      name: 'doubts',
+      type: 'text',
+      label: 'Doubts',
+      placeholder: 'State your doubts',
+      value: formData?.doubts || '',
       validations: {
-        required: true
+        required: true,
+        maxLength: 100
       },
-      error: errors?.director_designation,
+      error: errors?.doubts,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -181,23 +183,11 @@ const newEngagementProps = (
     kind: 'custom',
     props: {
       element: <CheckboxField
-        label="It's a Plc"
+        label="It's a Public Company"
         name="is_public_entity"
         handleChecked={handleChecked}
-        className="w-100 m-b-20 col-12 col-md-4"
+        className="w-100 m-b-20 col-12 col-md-6"
         checked={formData?.is_public_entity}
-      />
-    }
-  },
-  {
-    kind: 'custom',
-    props: {
-      element: <CheckboxField
-        label="It's Doubtful"
-        name="doubts"
-        handleChecked={handleChecked}
-        className="w-100 m-b-20 col-12 col-md-4"
-        checked={formData?.doubts}
       />
     }
   },
@@ -208,61 +198,58 @@ const newEngagementProps = (
         label="It's part of a group"
         name="is_part_of_group"
         handleChecked={handleChecked}
-        className="w-100 m-b-20 col-12 col-md-4"
+        className="w-100 m-b-20 col-12 col-md-6"
         checked={formData?.is_part_of_group}
       />
     }
   },
   {
-    kind: 'input',
+    kind: 'tags',
     props: {
       className: formData?.is_part_of_group ? 'w-100 m-b-20 col-12' : 'd-none',
       name: 'subsidiary_name',
       type: 'text',
       label: 'Subsidiary Name',
       placeholder: 'Enter Subsidiary Name',
-      value: formData?.subsidiary_name || '',
-      validations: {
-        required: true
-      },
-      error: errors?.subsidiary_name,
-      onBlur: handleBlur,
-      onChange: handleChange
+      formData,
+      setFormData
     }
   },
   {
-    kind: 'input',
+    kind: 'tags',
     props: {
-      className: formData?.is_part_of_group ? ' w-100 m-b-20 col-6 ' : 'd-none',
+      className: formData?.is_part_of_group ? ' w-100 m-b-20 col-12 ' : 'd-none',
       name: 'subsidiary_nature_of_business',
       type: 'text',
       label: 'Subsidiary Business Nature',
       placeholder: 'E.G: Housing',
-      value: formData?.subsidiary_nature_of_business || '',
-      validations: {
-        required: true
-      },
-      error: errors?.subsidiary_nature_of_business,
-      onBlur: handleBlur,
-      onChange: handleChange
+      formData,
+      setFormData
     }
   },
   {
-    kind: 'input',
+    kind: 'tags',
     props: {
-      className: formData?.is_part_of_group ? 'w-100 m-b-20 col-6 ' : 'd-none',
-      name: 'subsidiary_percentage_holding',
+      className: formData?.is_part_of_group ? ' w-100 m-b-20 col-12 col-md-6 ' : 'd-none',
+      name: 'subsidiary_nature',
       type: 'text',
+      label: 'Subsidiary Nature',
+      placeholder: 'E.G: LTD',
+      formData,
+      setFormData
+    }
+  },
+  {
+    kind: 'tags',
+    props: {
+      className: formData?.is_part_of_group ? 'w-100 m-b-20 col-12 col-md-6 ' : 'd-none',
+      name: 'subsidiary_percentage_holding',
+      type: 'number',
       label: 'Subsidiary Percentage Holding',
       placeholder: 'E.G: 5%',
-      value: formData?.subsidiary_percentage_holding || '',
-      validations: {
-        required: true
-      },
-      error: errors?.subsidiary_percentage_holding,
-      onBlur: handleBlur,
-      onChange: handleChange
+      formData,
+      setFormData
     }
   }
 ]);
-export default newEngagementProps;
+export default newClientProps;

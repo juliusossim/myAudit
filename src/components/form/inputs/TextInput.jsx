@@ -27,7 +27,7 @@ const TextInput = (props) => {
   };
 
   return (
-    <div className={`${props.error?.length > 0 ? `${props.className} col-12` : `${props.className}`} form-group`}>
+    <div className={`${props.className} form-group`}>
       {
         props.skeleton !== undefined && !props.skeleton && props.excuseSkeleton !== props.name
           ? (

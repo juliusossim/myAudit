@@ -1,4 +1,5 @@
 import {
+  AiOutlineUsergroupAdd,
   BsFolder,
   MdNotificationsNone,
   MdPersonOutline,
@@ -47,9 +48,9 @@ const miniMenu = [
     ]
   },
   {
-    name: 'Team Members',
+    name: 'team',
     icon: <MdPersonOutline />,
-    to: '/app/team-members',
+    to: '/app/team',
     children: [
       {
         parent: 'Team Members',
@@ -71,6 +72,11 @@ const miniMenu = [
         to: '/new-engagement'
       }
     ]
+  },
+  {
+    name: 'clients',
+    icon: <AiOutlineUsergroupAdd />,
+    to: '/app/clients'
   },
   {
     name: 'notifications',

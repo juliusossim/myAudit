@@ -236,13 +236,13 @@ export const projectAction = ({
     const res = methods[routeOptions.method]();
     dispatch(request(res));
     return res.then((response) => {
-      if (response?.status === 200) {
+      if (response?.status === 200 || response?.status === 201) {
         dispatch(success(response?.data));
         // if (onSuccess !== undefined) {
         //   setTimeout(() => dispatch(constants[`${action}_${onSuccess}`]), 2000);
         // }
       } else if (response) {
-        dispatch(failure(response?.errors || response));
+        dispatch(failure(response));
       } else dispatch(failure('connection failed, you are probably not connected to the internet!'));
     });
   };

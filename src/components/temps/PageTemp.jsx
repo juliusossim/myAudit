@@ -5,11 +5,11 @@ import { useDispatch } from 'react-redux';
 import Loader from '../microComponents/loader';
 import { notifier, stringDoesNotExist } from '../../utilities/stringOperations';
 import { resetAction } from '../../redux/actions/projectActions';
-import NoData1 from '../../pages/authentication/NoData1';
+import NoData from '../../pages/authentication/NoData';
 import useRefresh from '../hooks/useRefresh';
 
 const PageTemp = ({
-  store, view, setErrors, noData, action, initial, isPending, retry, redirect
+  status, data, message, errors, view, setErrors, action, initial, isPending, retry, redirect
 }) => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -21,15 +21,15 @@ const PageTemp = ({
   const path = (route) => history.location.pathname.startsWith(route);
 
   useEffect(() => {
-    if (store?.status === 'failed') {
+    if (status === 'failed') {
       /* reset the state to initial; this reloads the
        initial view and allows for fresh api interactions if necessary */
       !stringDoesNotExist(action)
       && dispatch(resetAction({ action }));
 
       /* push errors to page for mapping agianst form fields or any rendering */
-      if (!_.isEmpty(store?.data.errors) && _.isArray(store?.data?.errors) && setErrors) {
-        setErrors(store?.data?.errors);
+      if (!_.isEmpty(errors) && _.isArray(errors) && setErrors) {
+        setErrors(errors);
       }
 
       /* conditionally render notifiers and page refresh */
@@ -39,7 +39,7 @@ const PageTemp = ({
       case '/explore':
         notifier({
           title: 'Error Occurred',
-          text: store?.data?.message || store?.data,
+          text: message,
           type: 'error'
         });
         break;
@@ -50,16 +50,16 @@ const PageTemp = ({
         }
         return notifier({
           title: 'Error Occurred',
-          text: store?.data?.message,
+          text: message,
           type: 'error'
         });
       }
     }
-    if (store?.status === 'success') {
-      if (noData) {
+    if (status === 'success') {
+      if (!_.isEmpty(data)) {
         notifier({
           title: 'No content',
-          text: store?.data?.message || 'There is no data to display yet',
+          text: message || 'There is no data to display yet',
           type: 'info'
         });
         // history.goBack();
@@ -67,26 +67,45 @@ const PageTemp = ({
     }
     return false;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store?.status]);
+  }, [status]);
   return (
     <>
-      { store
+      { status
         ? (
           <div>
             {
-              store?.status === 'initial' && initial
+              status === 'initial' && initial
             }
             {
-              (store?.status === 'pending' || isPending) && <div className="min-w-300-w"><Loader /></div>
+              (status === 'pending' || isPending) && <div className="min-w-300-w"><Loader /></div>
             }
             {
-              store?.status === 'success' && view
+              status === 'success' && !_.isEmpty(data) && view
             }
             {
-              store?.status === 'success' && (_.isEmpty(store?.data?.data) || noData) && redirect && <NoData1 redirect={redirect} />
+              status === 'success' && (_.isEmpty(data)) && redirect && (
+                <NoData
+                  link={redirect.link}
+                  name={redirect.name}
+                  title={redirect.title}
+                  text={redirect.text}
+                  btnName={redirect.btnName}
+                />
+              )
             }
             {
-              store?.status === 'failed' && retry && (
+              status === 'success' && _.isEmpty(data) && redirect && (
+                <NoData
+                  link={redirect.link}
+                  name={redirect.name}
+                  title={redirect.title}
+                  text={redirect.text}
+                  btnName={redirect.btnName}
+                />
+              )
+            }
+            {
+              status === 'failed' && retry && (
                 <div className="content">
                   <div className="theme-font mr-3">
                     <p className="font-title text-danger">

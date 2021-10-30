@@ -29,7 +29,7 @@ const FileInput = (
 ) => {
   const data = [...new Set(file)];
   return (
-    <div className={`${error?.length > 0 ? `${className} col-12` : `${className}`} light-border form-group`}>
+    <div className={`${className} form-group`}>
       <>
         {
           multiple ? (

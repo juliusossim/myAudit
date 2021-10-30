@@ -10,6 +10,7 @@ import DashboardTable from '../../components/tables/dashboardTable';
 import FancySearch from '../../components/form/fancySearch';
 import { projectAction } from '../../redux/actions/projectActions';
 import { apiOptions } from '../../services/fetch';
+import { dashboard } from '../../services/projectService';
 
 const DashboardIndex = () => {
   const { push } = useHistory();
@@ -114,7 +115,15 @@ const DashboardIndex = () => {
       action="ENGAGEMENTS_COMPLETE"
       retry={index}
       noData={_.isEmpty(store?.data?.data?.engagements)}
-      redirect={{ pathname: '/app/no-data/dashboard', name: 'dashboard' }}
+      redirect={
+        {
+          link: '/app/engagement/new-engagement',
+          name: 'dashboard',
+          text: 'Create engagement to see activities',
+          title: 'No Data',
+          btnName: 'Create Engagement'
+        }
+      }
     />
   );
 };

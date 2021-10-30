@@ -15,6 +15,10 @@ const paths = {
   CHANGE_PASSWORD: authEndpoints.changePasswordApi,
   RESET_PASSWORD: authEndpoints.resetPassword,
   FORGOT_PASSWORD: authEndpoints.forgotPasswordApi,
+
+  // clients
+  CREATE_CLIENT: projectEndpoints.createClient,
+  CLIENTS: projectEndpoints.createClient,
   // uploads
   DP: fileUploads.profilePic,
   PROJECT_MEDIA: fileUploads.project,

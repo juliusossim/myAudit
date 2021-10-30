@@ -6,6 +6,7 @@ import FileInput from '../inputs/FileInput';
 import DateInput from '../inputs/DateInput';
 import CurrencyInput from '../inputs/CurrencyInput';
 import Select2 from '../inputs/select2';
+import TagsInput from '../inputs/ArrayInput';
 
 const FormBuilder = ({ formItems }) => formItems?.map(
   ({ kind, props }, key) => {
@@ -49,7 +50,9 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         variant,
         stringValue,
         accepted,
-        hidePasswordValidations
+        hidePasswordValidations,
+        element,
+        formData
       } = props;
       switch (kind) {
       case 'select':
@@ -75,6 +78,22 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             excuseSkeleton={excuseSkeleton}
             btnMethod={btnMethod}
             stringValue={stringValue}
+          />
+        );
+      case 'custom':
+        return (
+          element
+        );
+      case 'tags':
+        return (
+          <TagsInput
+            formData={formData}
+            setFormData={setFormData}
+            className={className}
+            placeholder={placeholder}
+            type={type}
+            name={name}
+            label={label}
           />
         );
       case 'select2':

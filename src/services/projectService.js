@@ -1,9 +1,9 @@
-export const createProjectName = 'Projects/createbyname';
 export const createEngagement = 'Engagements';
 export const viewEngagements = 'engagements';
 export const dashboard = 'dashboard';
 export const myEngagements = 'Engagements/me';
 export const viewEngagement = 'engagements'; // param id
+export const createClient = 'clients';
 export const projectCategories = 'categories';
 export const deleteEngagement = 'Engagements'; // param id
 export const editEngagement = 'Engagements'; // param = id

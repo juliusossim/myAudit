@@ -25,7 +25,7 @@ const TextareaInput = (
     max
   }
 ) => (
-  <div className={`${error?.length > 0 ? `${className} col-12` : `${className}`}`}>
+  <div className={`${className}`}>
     {
       skeleton !== undefined && !skeleton && excuseSkeleton !== name
         ? (

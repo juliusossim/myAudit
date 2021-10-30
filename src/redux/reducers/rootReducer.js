@@ -2,12 +2,12 @@ import { combineReducers } from 'redux';
 import authenticationReducer from './authenticationReducer';
 import engagementReducer from './engagementReducer';
 import profileReducer from './profileReducer';
-import homeReducer from './homeReducer';
+import usersReducer from './usersReducer';
 
 const rootReducer = combineReducers({
   auth: authenticationReducer,
   engagement: engagementReducer,
-  home: homeReducer,
+  users: usersReducer,
   profile: profileReducer
 });
 
