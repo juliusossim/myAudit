@@ -1,6 +1,6 @@
 import * as authEndpoints from './authService';
 import * as fileUploads from './fileUploadService';
-import * as projectEndpoints from './projectService';
+import * as engagementEnpoints from './engagementService';
 import * as profileEndpoints from './profileService';
 import * as paymentEndpoints from './paymentService';
 
@@ -17,42 +17,22 @@ const paths = {
   FORGOT_PASSWORD: authEndpoints.forgotPasswordApi,
 
   // clients
-  CREATE_CLIENT: projectEndpoints.createClient,
-  CLIENTS: projectEndpoints.createClient,
+  CREATE_CLIENT: engagementEnpoints.clients,
+  DELETE_CLIENT: engagementEnpoints.clients,
+  EDIT_CLIENT: engagementEnpoints.clients,
+  CLIENTS: engagementEnpoints.clients,
   // uploads
   DP: fileUploads.profilePic,
   PROJECT_MEDIA: fileUploads.project,
   DELETE_PROJECT_MEDIA: fileUploads.deleteProjectMedia,
   LOGO: fileUploads.logo,
   // engagements
-  CREATE_ENGAGEMENT: projectEndpoints.createEngagement,
-  ENGAGEMENT: projectEndpoints.getEngagement,
-  ENGAGEMENTS: projectEndpoints.dashboard,
-  VIEW_ENGAGEMENTs: projectEndpoints.viewEngagements,
-  VIEW_ENGAGEMENT: projectEndpoints.viewEngagement,
-  EDIT_ENGAGEMENT: projectEndpoints.editEngagement,
-  DELETE_ENGAGEMENT: projectEndpoints.deleteEngagement,
-  EDIT_PROJECT_UPDATES: projectEndpoints.editProjectUpdate,
-  PROJECT_UPDATES: projectEndpoints.showProjectUpdate,
-  UPDATE_PROJECT: projectEndpoints.updateProject,
-  PROJECT_DETAILS: projectEndpoints.projectDetails,
-  SIMILAR_PROJECTS: projectEndpoints.similarProjects,
-  PROJECT_SUMMARY: projectEndpoints.projectSummary,
-  PROJECT_BY_STATUS: projectEndpoints.projectByStatus,
-  SUBMIT_PROJECT: projectEndpoints.submitProject,
-  PROJECT_CATEGORIES: projectEndpoints.projectCategories,
-  STATE_LGAS: projectEndpoints.stateLgas,
-  EDIT_PROJECT_REQUEST: projectEndpoints.editProjectRequest,
-  POPULAR_FUNDRAISERS: projectEndpoints.popularFundraisers,
-  POPULAR_PROJECTS: projectEndpoints.popularProjects,
-  POPULAR_NGOS: projectEndpoints.popularNGOs,
-  SEARCH_PROJECTS: projectEndpoints.searchProject,
-  POST_COMMENT: projectEndpoints.postComment,
-  PROJECT_COMMENTS: projectEndpoints.projectComments,
-  GET_COMMENT: projectEndpoints.getComment,
-  PATCH_COMMENT: projectEndpoints.patchComment,
-  DETAILS_SIMILAR: projectEndpoints.detailsSimilar,
-  COMMENTS_DONORS: projectEndpoints.commentsDonors,
+  CREATE_ENGAGEMENT: engagementEnpoints.engagements,
+  ENGAGEMENT: engagementEnpoints.engagements,
+  DASHBOARD: engagementEnpoints.dashboard,
+  ENGAGEMENTS: engagementEnpoints.engagements,
+  EDIT_ENGAGEMENT: engagementEnpoints.engagements,
+  DELETE_ENGAGEMENT: engagementEnpoints.engagements,
 
   // payment
   STOP_PROJECT: paymentEndpoints.stopProject,
@@ -69,11 +49,8 @@ const paths = {
   EDIT_PERSONAL_ACCOUNT: profileEndpoints.editPersonalAccount,
   CHANGE_MANAGER: profileEndpoints.changeManager,
   NOTIFICATIONS: profileEndpoints.notifications,
-  MY_PROJECTS: projectEndpoints.myEngagements,
-  PROFILES: profileEndpoints.getProfile,
-
-  // index
-  INDEX: projectEndpoints.index
+  MY_PROJECTS: engagementEnpoints.myEngagements,
+  PROFILES: profileEndpoints.getProfile
 };
 
 export default paths;

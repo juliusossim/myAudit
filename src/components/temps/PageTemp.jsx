@@ -62,7 +62,6 @@ const PageTemp = ({
           text: message || 'There is no data to display yet',
           type: 'info'
         });
-        // history.goBack();
       }
     }
     return false;
@@ -70,61 +69,48 @@ const PageTemp = ({
   }, [status]);
   return (
     <>
-      { status
-        ? (
-          <div>
-            {
-              status === 'initial' && initial
-            }
-            {
-              (status === 'pending' || isPending) && <div className="min-w-300-w"><Loader /></div>
-            }
-            {
-              status === 'success' && !_.isEmpty(data) && view
-            }
-            {
-              status === 'success' && (_.isEmpty(data)) && redirect && (
-                <NoData
-                  link={redirect.link}
-                  name={redirect.name}
-                  title={redirect.title}
-                  text={redirect.text}
-                  btnName={redirect.btnName}
-                />
-              )
-            }
-            {
-              status === 'success' && _.isEmpty(data) && redirect && (
-                <NoData
-                  link={redirect.link}
-                  name={redirect.name}
-                  title={redirect.title}
-                  text={redirect.text}
-                  btnName={redirect.btnName}
-                />
-              )
-            }
-            {
-              status === 'failed' && retry && (
-                <div className="content">
-                  <div className="theme-font mr-3">
-                    <p className="font-title text-danger">
-                      Failed to load content.
-                    </p>
-                  </div>
-                  <button className="btn" type="button" onClick={retry}>Try again</button>
-                  <div className="row">
-                    <small className="text-theme-sub wrap">
-                      The network resources failed to connect.
-                      Click on the Try Again button above to retry loading this content.
-                    </small>
-                  </div>
-                </div>
-              )
-            }
-          </div>
-        )
-        : view}
+
+      <div>
+        {
+          status === 'initial' && initial
+        }
+        {
+          (status === 'pending' || isPending) && <div className="min-w-300-w"><Loader /></div>
+        }
+        {
+          status === 'success' && (_.isEmpty(data)) && redirect && (
+            <NoData
+              link={redirect.link}
+              name={redirect.name}
+              title={redirect.title}
+              text={redirect.text}
+              btnName={redirect.btnName}
+            />
+          )
+        }
+        {
+          status === 'success' && !_.isEmpty(data) && view
+        }
+        {
+          status === 'failed' && retry && (
+            <div className="content">
+              <div className="theme-font mr-3">
+                <p className="font-title text-danger">
+                  Failed to load content.
+                </p>
+              </div>
+              <button className="btn" type="button" onClick={retry}>Try again</button>
+              <div className="row">
+                <small className="text-theme-sub wrap">
+                  The network resources failed to connect.
+                  Click on the Try Again button above to retry loading this content.
+                </small>
+              </div>
+            </div>
+          )
+        }
+      </div>
+
     </>
   );
 };

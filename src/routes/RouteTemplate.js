@@ -1,8 +1,9 @@
-import React, { Suspense } from 'react';
+import React, { Suspense, useEffect } from 'react';
 import {
   Route, Switch, Redirect, useLocation
 } from 'react-router-dom';
 import Avatar from '@material-ui/core/Avatar';
+import { useHistory } from 'react-router';
 import MiniDrawer from '../components/ui/swipeableDrawer';
 import User from '../assets/images/User.svg';
 import { user } from '../utilities/auth';
@@ -10,6 +11,9 @@ import miniMenu from './menu';
 
 const RouteTemplate = ({ redirect, routes, pad }) => {
   const { pathname } = useLocation();
+  const { push } = useHistory();
+
+  useEffect(() => user?.is_verified < 1 && push('/app/complete-registration'));
 
   const path = (route) => pathname.startsWith(route);
   const profilePicTemp = (

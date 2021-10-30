@@ -1,15 +1,19 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
 import useBoilerPlate from './useBoilerPlate';
 
 const useViewBoilerPlate = ({
-  store, formData, setFormData, dispatch,
+  store, formData, setFormData,
   successCallback, options
 }) => {
+  const dispatch = useDispatch();
+
   const {
     handleChange, handleChecked, handleBlur, message, data, status, callback
   } = useBoilerPlate({
     store, formData, setFormData, dispatch
   });
+
   React.useEffect(() => {
     if (status === 'initial') {
       view();

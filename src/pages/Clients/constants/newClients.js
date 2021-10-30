@@ -1,6 +1,5 @@
 import React from 'react';
 import { validationPatterns } from '../../../utilities/validation';
-import { projectType } from '../../../utilities/dummyData';
 import { CheckboxField } from '../../../components/form/inputs/Checkbox';
 
 const newClientProps = (

@@ -1,15 +1,17 @@
-import React, { useCallback, useEffect } from 'react';
+import React from 'react';
 import _ from 'lodash';
-import { notifier, slugToString, stringDoesNotExist } from '../../utilities/stringOperations';
-import { projectAction } from '../../redux/actions/projectActions';
-import { apiOptions } from '../../services/fetch';
-import { blurHandler, changeHandler, checkHandler } from '../../utilities/handlers';
+import { useDispatch } from 'react-redux';
+import { useHistory } from 'react-router';
+import { notifier } from '../../utilities/stringOperations';
 import useStoreParams from './useStoreParams';
 import useBoilerPlate from './useBoilerPlate';
 
 const useCreateBoilerPlate = ({
-  store, formData, setFormData, dispatch, setErrors, push, options, errors, redirect
+  store, formData, setFormData, setErrors, options, errors, redirect
 }) => {
+  const { push } = useHistory();
+  const dispatch = useDispatch();
+
   const {
     backErrors, message
   } = useStoreParams(store);
@@ -19,7 +21,7 @@ const useCreateBoilerPlate = ({
   } = useBoilerPlate({
     store, formData, setFormData, dispatch, setErrors, errors
   });
-  useEffect(() => {
+  React.useEffect(() => {
     if (status === 'success') {
       notifier({
         type: 'success',

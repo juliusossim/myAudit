@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
 import FancySearch from '../../../components/form/fancySearch';
-import DashboardTable from '../../../components/tables/dashboardTable';
+import ClientsTable from '../../../components/tables/clientsTable';
 
 const ClientsTemp = ({
   formData
@@ -10,7 +10,7 @@ const ClientsTemp = ({
     <div className="col-md-10 offset-1">
       <div className="d-flex ml-4 custom-top-bar justify-content-between">
         <div className="text-theme-black bold">
-          {`${formData?.company_name} ${formData?.name}`}
+          CLIENTS
         </div>
         <div className="mr-3">
           <FancySearch />
@@ -48,12 +48,12 @@ const ClientsTemp = ({
       </div>
       <div className="">
         <div className="d-flex justify-content-between">
-          <div className="text-theme-black font-regular bold">Engagement Team</div>
+          <div className="text-theme-black font-regular bold">All Clients</div>
           <div>
             <Link to="#" onClick={() => console.log('all')} className="font-regular text-theme-blue">See All</Link>
           </div>
         </div>
-        <DashboardTable />
+        <ClientsTable data={formData} />
       </div>
     </div>
     {/* <Modal */}

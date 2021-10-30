@@ -1,14 +1,13 @@
 import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import PageTemp from '../../components/temps/PageTemp';
 import { apiOptions } from '../../services/fetch';
-
-import ClientsTemp from './Temps/ClientsTemp';
 import useViewBoilerPlate from '../../components/hooks/useViewBoilerPlate';
+import ClientsTemp from './temps/ClientsTemp';
 
-const DashboardIndex = () => {
-  const dispatch = useDispatch();
-  const store = useSelector((state) => state.engagement?.engagement);
+const ClientIndex = () => {
+  const store = useSelector((state) => state.users?.clients);
+  /* state */
   const [formData, setFormData] = useState({});
 
   const options = {
@@ -24,22 +23,20 @@ const DashboardIndex = () => {
   } = useViewBoilerPlate({
     setFormData,
     formData,
-    dispatch,
     store,
     options
   });
-
   return (
     <PageTemp
       data={formData.clients}
       status={status}
       view={(
-        <ClientsTemp formData={formData} />
+        <ClientsTemp formData={formData.clients} />
       )}
-      action="ENGAGEMENT_COMPLETE"
+      action="CLIENTS_COMPLETE"
       retry={view}
     />
   );
 };
 
-export default DashboardIndex;
+export default ClientIndex;
