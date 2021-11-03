@@ -11,10 +11,6 @@ import miniMenu from './menu';
 
 const RouteTemplate = ({ redirect, routes, pad }) => {
   const { pathname } = useLocation();
-  const { push } = useHistory();
-
-  useEffect(() => user?.is_verified < 1 && push('/app/complete-registration'));
-
   const path = (route) => pathname.startsWith(route);
   const profilePicTemp = (
     <div>

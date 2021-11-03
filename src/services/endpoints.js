@@ -23,7 +23,7 @@ const paths = {
   CLIENTS: engagementEnpoints.clients,
   // uploads
   DP: fileUploads.profilePic,
-  PROJECT_MEDIA: fileUploads.project,
+  PROJECT_MEDIA: fileUploads.upload,
   DELETE_PROJECT_MEDIA: fileUploads.deleteProjectMedia,
   LOGO: fileUploads.logo,
   // engagements

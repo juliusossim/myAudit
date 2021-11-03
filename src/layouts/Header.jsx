@@ -20,6 +20,7 @@ const Header = (setWidth) => {
         logo={menu.logo && AuditLogoFull}
         clss="px-5"
         menu={menu}
+        key="header-search"
       />
     </div>
   );

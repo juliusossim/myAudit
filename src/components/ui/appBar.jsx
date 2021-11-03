@@ -135,7 +135,7 @@ const SearchAppBar = ({
     >
       {
         menu?.leftMenu?.map((item) => (
-          <Link key={item.name || Math.random()} to={item.to || '#'} onClick={item.action}>
+          <Link key={item.name || item.to} to={item.to || '#'} onClick={item.action}>
             <MenuItem onClick={handleMenuClose}>{sentenceCaps(item.name)}</MenuItem>
           </Link>
         ))
@@ -157,7 +157,7 @@ const SearchAppBar = ({
     >
       {
         mobileMenuItems?.map((item) => (
-          <Link key={item.name || Math.random()} to={item.to || '#'} onClick={item.action}>
+          <Link key={item.name || item.to} to={item.to || '#'} onClick={item.action}>
             <MenuItem onClick={handleMenuClose}>{sentenceCaps(item.name)}</MenuItem>
           </Link>
         ))
@@ -175,7 +175,7 @@ const SearchAppBar = ({
           <div className={`${classes.sectionDesktop} desktop-lg`}>
             {
               menu?.leftMenu?.map((item) => (
-                <Link key={item?.name || Math.random()} to={item.to || '#'} onClick={() => handleMenuClick(item)} className={active === item?.name ? 'header-links mx-2' : 'mx-2'}>
+                <Link key={item?.name || item.to} to={item.to || '#'} onClick={() => handleMenuClick(item)} className={active === item?.name ? 'header-links mx-2' : 'mx-2'}>
                   <div>
                     {!item?.mobileName && item.name}
                   </div>
@@ -202,7 +202,7 @@ const SearchAppBar = ({
             <div className="vl mr-5" />
             {
               menu?.rightMenu?.map((item) => (
-                <Link to={item.to} type="button" className={item.styled ? 'ml-3 btn styled-header-btn text-white pt-3' : 'mr-5 ml-5 un-styled-header-btn btn-plain bold'}>
+                <Link key={item?.name || item?.to} to={item.to} type="button" className={item.styled ? 'ml-3 btn styled-header-btn text-white pt-3' : 'mr-5 ml-5 un-styled-header-btn btn-plain bold'}>
                   <span className="px-5">
                     {item.name}
                   </span>

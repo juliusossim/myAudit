@@ -7,11 +7,10 @@ import useStoreParams from './useStoreParams';
 import useBoilerPlate from './useBoilerPlate';
 
 const useCreateBoilerPlate = ({
-  store, formData, setFormData, setErrors, options, errors, redirect
+  store, formData, setFormData, setErrors, options, errors, redirect, setProgress, setCurrentName
 }) => {
   const { push } = useHistory();
   const dispatch = useDispatch();
-
   const {
     backErrors, message
   } = useStoreParams(store);
@@ -19,7 +18,7 @@ const useCreateBoilerPlate = ({
   const {
     handleChange, handleChecked, handleBlur, data, status, callback
   } = useBoilerPlate({
-    store, formData, setFormData, dispatch, setErrors, errors
+    store, formData, setFormData, dispatch, setErrors, errors, setProgress, setCurrentName
   });
   React.useEffect(() => {
     if (status === 'success') {
@@ -50,7 +49,9 @@ const useCreateBoilerPlate = ({
     create,
     handleBlur,
     data,
-    status
+    status,
+    message,
+    backErrors
   });
 };
 export default useCreateBoilerPlate;

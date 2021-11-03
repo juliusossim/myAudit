@@ -44,6 +44,10 @@ const initialState = {
   editNote: {
     data: {},
     status: 'initial'
+  },
+  uploads: {
+    data: {},
+    status: 'initial'
   }
 };
 
@@ -350,6 +354,40 @@ const engagementReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       deleteNote: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.UPLOAD_MEDIA_PENDING:
+    return {
+      ...state,
+      uploads: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.UPLOAD_MEDIA_COMPLETE:
+    return {
+      ...state,
+      uploads: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.UPLOAD_MEDIA_SUCCESS:
+    return {
+      ...state,
+      uploads: {
+        ...state.uploads,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.UPLOAD_MEDIA_FAILURE:
+    return {
+      ...state,
+      uploads: {
         data: error || {},
         status: 'failed'
       }

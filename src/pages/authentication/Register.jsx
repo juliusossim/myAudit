@@ -15,6 +15,7 @@ import { notifier, slugToString } from '../../utilities/stringOperations';
 
 import FormBuilder from '../../components/form/builders/form';
 import registerProps from './constants/register';
+import Loader from '../../components/microComponents/loader';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({ });
@@ -164,9 +165,11 @@ const RegisterPage = () => {
       <PageTemp
         initial={initialTemp({ formData })}
         view={initialTemp({ formData })}
-        store={store}
+        setErrors={setErrors}
         action="REGISTER_COMPLETE"
-        error={initialTemp({ formData })}
+        data={store?.data?.data}
+        status={store?.status}
+        message={store?.data?.message}
       />
     </div>
   );

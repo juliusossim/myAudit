@@ -3,7 +3,8 @@ import FormBuilder from '../../../components/form/builders/form';
 import newEngagementProps from '../constants/newEngagement';
 
 const NewEngagementTemp = ({
-  formData, handleChange, errors, handleBlur, handleChecked, create
+  formData, handleChange, errors, handleBlur, handleChecked,
+  create, removeItem, loadingMedia, progress, uploads, clients, handleDateChange
 }) => (
   <div className="w-600 ">
     <div className="px-3">
@@ -25,7 +26,14 @@ const NewEngagementTemp = ({
                       handleBlur,
                       handleChange,
                       errors,
-                      handleChecked
+                      multiple: true,
+                      removeItem,
+                      progress,
+                      loadingMedia,
+                      handleChecked,
+                      uploads,
+                      handleDateChange,
+                      clients
                     }
                   )
                 }
@@ -35,8 +43,9 @@ const NewEngagementTemp = ({
               <div className="mt-md-1 font-small">
                 &nbsp;
               </div>
+              {console.log({ ...uploads })}
               <div>
-                <button className=" btn" type="button" onClick={() => create(formData)}>Continue</button>
+                <button className=" btn" type="button" onClick={create}>Continue</button>
               </div>
             </div>
           </div>

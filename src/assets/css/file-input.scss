@@ -15,8 +15,7 @@
     margin-bottom: 5px;
 
   }
-  button {
-    border: 1.5px dashed gray;
+  .button {
     background-color: white;
     padding: 15px;
     border-radius: 5px;
@@ -48,4 +47,7 @@
 
 }
 
+.drop-box {
+  border: 1.5px dashed gray;
 
+}

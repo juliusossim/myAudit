@@ -14,7 +14,7 @@ const ControlledAccordions = ({ data }) => {
   return (
     <div>
       {
-        data.map((item) => (
+        data?.map((item) => (
           <Accordion expanded={expanded === item.panel} onChange={handleChange(item.panel)}>
             <AccordionSummary
               expandIcon={<FcExpand />}

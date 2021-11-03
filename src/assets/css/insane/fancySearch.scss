@@ -63,7 +63,7 @@
   height: 0;
 }
 .caret {
-  background: $theme-blue;
+  background: $theme-color-black;
   border-radius: 0 0 0.125em 0.125em;
   margin-bottom: -0.6em;
   width: 0.25em;
@@ -83,13 +83,13 @@
 }
 @keyframes handleToCaret {
   from {
-    background: $theme-blue;
+    background: $theme-color-black;
     width: 0.25em;
     height: 1em;
     transform: translate(0,-1em) rotate(-45deg) translate(0,0.875em);
   }
   25% {
-    background: $theme-blue;
+    background: $theme-color-black;
     width: 0.25em;
     height: 1em;
     transform: translate(0,-1em) rotate(-180deg) translate(0,0.875em);

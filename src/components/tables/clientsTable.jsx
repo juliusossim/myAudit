@@ -6,9 +6,10 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import { Box } from '@mui/material';
 import { useHistory } from 'react-router';
+import Button from '@mui/material/Button';
+import { CgArrowsExpandUpRight } from 'react-icons/all';
 import { sentenceCaps } from '../../utilities/stringOperations';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -68,7 +69,11 @@ export default function ClientsTable({ data }) {
               <StyledTableCell align="right"><div className="theme-font-2">{row.business}</div></StyledTableCell>
               <StyledTableCell align="right"><div className="theme-font-2">{row.email}</div></StyledTableCell>
               <StyledTableCell align="right">
-                <div className="theme-font-2"><button type="button" className="btn-small btn text-white" onClick={() => handleRow(row)}>view</button></div>
+                <div className="theme-font-2">
+                  <Button type="button" className="btn-small btn text-white" onClick={() => handleRow(row)}>
+                    <CgArrowsExpandUpRight />
+                  </Button>
+                </div>
               </StyledTableCell>
             </StyledTableRow>
           ))}

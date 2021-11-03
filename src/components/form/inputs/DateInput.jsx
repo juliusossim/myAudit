@@ -4,39 +4,42 @@ import React from 'react';
 import DateFnsUtils from '@date-io/date-fns';
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker, DatePicker
 } from '@material-ui/pickers';
-import { FaCheck, FaEye, FaEyeSlash } from 'react-icons/all';
 import Skeleton from '@material-ui/lab/Skeleton';
 import { capitalize } from '@material-ui/core';
 
 const DateInput = (props) => {
+  const {
+    className, skeleton, excuseSkeleton, helperText, minDate, label,
+    onChange, variant, name, error, value, format
+  } = props;
   const [show, setShow] = React.useState(true);
   const handleChange = (date) => {
-    props.onChange({ date, name: props.name });
+    onChange({ date, name });
     setShow(false);
   };
+
   return (
-    <div className={`${props.className} form-group`}>
+    <div className={error?.length > 0 ? `${className} col-12` : className}>
       {
-        props.skeleton !== undefined && !props.skeleton && props.excuseSkeleton !== props.name
+        skeleton !== undefined && !skeleton && excuseSkeleton !== name
           ? (
             <Skeleton animation="wave">
               <>
                 <MuiPickersUtilsProvider utils={DateFnsUtils}>
                   <DatePicker
                     autoOk
-                    // minDate={props.value}
+                    // minDate={value}
                     // variant="inline"
                     // openTo="date"
                     // margin="normal"
                     id="date-picker-dialog"
-                    label={props.label}
-                    name={props.name}
+                    label={label}
+                    name={name}
                     format="MM/dd/yyyy"
-                    value={props.value}
-                    helperText={props.helperText}
+                    value={value}
+                    helperText={helperText}
                     onChange={handleChange}
                     KeyboardButtonProps={{
                       'aria-label': 'change date'
@@ -44,54 +47,55 @@ const DateInput = (props) => {
                   />
                 </MuiPickersUtilsProvider>
                 {
-                  props.error?.length > 0
-                && (
-                  <ul className="error-msg">
-                    {
-                      props.error.map(
-                        (error) => <li key={error}>{error}</li>
-                      )
-                    }
-                  </ul>
-                )
+                  error?.length > 0
+                  && (
+                    <ul className="error-msg">
+                      {
+                        error.map(
+                          (err) => <li key={err}>{err}</li>
+                        )
+                      }
+                    </ul>
+                  )
                 }
               </>
             </Skeleton>
           )
           : (
             <>
-              {props.variant === 'static'
+              {variant === 'static'
               && (
-                <label htmlFor={props.name} className={props.value?.length ? 'active-field' : ''}>
-                  {capitalize(props.label)}
+                <label htmlFor={name} className={value?.length ? 'active-field' : ''}>
+                  {capitalize(label)}
                 </label>
               ) }
               <MuiPickersUtilsProvider utils={DateFnsUtils}>
                 <KeyboardDatePicker
                   autoOk
                   margin="normal"
-                  variant={props.variant}
+                  variant={variant}
                   id="date-picker-dialog"
-                  label={props.label}
-                  name={props.name}
-                  format={props.format || 'dd/MM/yyyy'}
-                  value={props.value}
-                  helperText={show && props.helperText}
+                  label={label}
+                  name={name}
+                  openTo="year"
+                  format={format || 'yyyy'}
+                  value={value}
+                  helperText={show && helperText}
                   onChange={handleChange}
                   maxDate={addMonths(new Date(), 3)}
-                  minDate={new Date(props.minDate)}
+                  minDate={new Date(minDate)}
                   KeyboardButtonProps={{
                     'aria-label': 'change date'
                   }}
                 />
               </MuiPickersUtilsProvider>
               {
-                props.error?.length > 0
+                error?.length > 0
                 && (
                   <ul className="error-msg">
                     {
-                      props.error.map(
-                        (error) => <li key={error}>{error}</li>
+                      error.map(
+                        (err) => <li key={error}>{err}</li>
                       )
                     }
                   </ul>

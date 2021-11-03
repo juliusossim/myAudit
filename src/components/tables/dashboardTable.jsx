@@ -6,9 +6,10 @@ import TableCell, { tableCellClasses } from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 import { Box } from '@mui/material';
 import { useHistory } from 'react-router';
+import { CgArrowsExpandUpRight } from 'react-icons/all';
+import Button from '@mui/material/Button';
 import { sentenceCaps } from '../../utilities/stringOperations';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -33,14 +34,14 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 }));
 export default function DashboardTable({ data }) {
   const { push } = useHistory();
-  function createData(name, date, company, members, status, action) {
+  function createData(name, date, client, members, status, action) {
     return {
-      name, date, company, members, status, action
+      name, date, client, members, status, action
     };
   }
-
+  console.log(data);
   const rows = data?.map((item) => createData(
-    item.name, item.date_created, item.company_name, item.members, item.status
+    item?.name, item?.year, item?.client?.name, item?.staff_power, item?.status
   ));
   const handleRow = (row) => push({ pathname: `/app/view/${row.name}/${row.id}` });
 
@@ -50,8 +51,8 @@ export default function DashboardTable({ data }) {
         <TableHead>
           <TableRow>
             <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell align="right">Date Created</StyledTableCell>
-            <StyledTableCell align="right">Company</StyledTableCell>
+            <StyledTableCell align="right">Year</StyledTableCell>
+            <StyledTableCell align="right">Client</StyledTableCell>
             <StyledTableCell align="right">No. of Member</StyledTableCell>
             <StyledTableCell align="right">Status</StyledTableCell>
             <StyledTableCell align="right">Action</StyledTableCell>
@@ -59,16 +60,20 @@ export default function DashboardTable({ data }) {
         </TableHead>
         <TableBody>
           {rows?.map((row) => (
-            <StyledTableRow key={row.name}>
+            <StyledTableRow key={sentenceCaps(row.name)}>
               <StyledTableCell component="th" scope="row">
                 <div className="bold theme-font font-small">{sentenceCaps(row.name)}</div>
               </StyledTableCell>
               <StyledTableCell align="right"><div className="theme-font-2">{row.date}</div></StyledTableCell>
-              <StyledTableCell align="right"><div className="theme-font-2">{row.company}</div></StyledTableCell>
-              <StyledTableCell align="right"><div className="theme-font-2">{row.members}</div></StyledTableCell>
-              <StyledTableCell align="right"><div className="theme-font-2">{row.status}</div></StyledTableCell>
+              <StyledTableCell align="right"><div className="theme-font-2">{sentenceCaps(row.client)}</div></StyledTableCell>
+              <StyledTableCell align="right"><div className="theme-font-2">{sentenceCaps(row.members)}</div></StyledTableCell>
+              <StyledTableCell align="right"><div className="theme-font-2">{sentenceCaps(row.status)}</div></StyledTableCell>
               <StyledTableCell align="right">
-                <div className="theme-font-2"><button type="button" className="btn-small btn text-white" onClick={() => handleRow(row)}>view</button></div>
+                <div className="theme-font-2">
+                  <Button type="button" className="btn-small btn text-white" onClick={() => handleRow(row)}>
+                    <CgArrowsExpandUpRight />
+                  </Button>
+                </div>
               </StyledTableCell>
             </StyledTableRow>
           ))}

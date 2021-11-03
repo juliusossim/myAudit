@@ -5,18 +5,25 @@
   color: $theme-color-black;
   max-width: 163px;
 }
+.font-tinier {
+  font-size: $theme-tinier !important;
+  line-height: $theme-line-tinier;
+}
+.font-tiny {
+  @include font-size($screen-sm-min, $screen-xl-min, $theme-tinier, $theme-tiny, $theme-line-tinier, $theme-line-tiny);
+}
+
+.font-smaller {
+  @include font-size($screen-sm-min, $screen-xl-min, $theme-tiny, $theme-smaller, $theme-line-tiny, $theme-line-smaller);
+}
 .font-small {
-  font-size: $theme-small;
-  line-height: $theme-line-small;
-  @include font-size($screen-sm-min, $screen-xl-min, 12, $theme-small, 15, $theme-line-small);
+  @include font-size($screen-sm-min, $screen-xl-min, $theme-smaller, $theme-small, $theme-line-smaller, $theme-line-small);
 }
 .font-regular {
-  font-size: $theme-regular;
-  line-height: $theme-line-regular;
-  @include font-size($screen-sm-min, $screen-xl-min, $theme-small, $theme-regular, 20, $theme-line-regular);
+  @include font-size($screen-sm-min, $screen-xl-min, $theme-small, $theme-regular, $theme-line-small, $theme-line-regular);
 }
 .font-title-small {
-  @include font-size($screen-sm-min, $screen-xl-min, $theme-regular, $theme-title-1, 23, $theme-line-title-1);
+  @include font-size($screen-sm-min, $screen-xl-min, $theme-regular, $theme-title-1, $theme-line-regular, $theme-line-title-1);
 }
 .font-header {
   @include font-size($screen-sm-min, $screen-xl-min, $theme-regular, $theme-header, 25, $theme-line-header);
@@ -69,10 +76,13 @@
 }
 
 .theme-font{
-  font-family: Notosans-regular sans-serif;
+  font-family: 'Notosans-Bold', sans-serif;
 }
-.theme-font-bold {
-  font-family: Notosans-Bold sans-serif;
+.theme-font-bold{
+  font-family: 'Notosans-Bold', sans-serif;
+}
+.theme-font-2 {
+  font-family: 'Nunito', sans-serif;
 }
 .theme-hover {
   &:hover {
@@ -97,6 +107,12 @@ svg:not(:root) {
   top: 50%;
   transform: translate(0, -50%);
 }
+.center-vertical-2 {
+  position: relative;
+  top: 33.3vh;
+  transform: translate(0, -50%);
+}
+
 .custom-top-bar {
   position: relative !important;
   top: -60px;
@@ -105,6 +121,9 @@ svg:not(:root) {
   border-bottom: solid .5px $theme-color-faint;
   //box-shadow: 0px 15px 45px -10px rgba(200, 203, 215, 0.499645);
 
+}
+.border-faint {
+  border: solid 1px $theme-color-faint;
 }
 
 

@@ -186,7 +186,7 @@ export const uploadMedia = ({ payload, setProgress }) => {
   const success = (response) => ({ type: constants.UPLOAD_MEDIA_SUCCESS, response });
   const failure = (error) => ({ type: constants.UPLOAD_MEDIA_FAILURE, error });
   const data = new FormData();
-  data.append('file', payload.file);
+  data.append('document', payload);
   return async (dispatch) => {
     const res = post({
       endpoint: 'PROJECT_MEDIA',
@@ -203,7 +203,7 @@ export const uploadMedia = ({ payload, setProgress }) => {
       if (response?.status === 200) {
         dispatch(success(response?.data));
       } else if (response) {
-        dispatch(failure(response?.errors || response));
+        dispatch(failure(response));
       } else dispatch(failure('we could not connect to the server at this time, please try again later.!'));
     });
   };

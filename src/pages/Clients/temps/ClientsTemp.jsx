@@ -16,41 +16,12 @@ const ClientsTemp = ({
           <FancySearch />
         </div>
       </div>
-      <div className="row">
-        <div className="col-md-3 mt-2 col-6">
-          <div className=" bg-white p-2 border-radius-5">
-            <p className="font-small theme-font text-theme-faint">Total Engagements</p>
-            <p className="bold theme-font pt-3 pl-1 pb-2">{formData?.total_projects || 'NIL'}</p>
-          </div>
 
-        </div>
-        <div className="col-md-3 mt-2 col-6">
-          <div className=" bg-white p-2 border-radius-5">
-            <p className="font-small theme-font text-theme-faint">Pending Conclusion</p>
-            <p className="bold pt-3 pl-1 pb-2">{formData?.pending_conclusion || 'NIL'}</p>
-          </div>
-
-        </div>
-        <div className="col-md-3 mt-2 col-6">
-          <div className=" bg-white p-2 border-radius-5">
-            <p className="font-small theme-font text-theme-faint">Concluded & Closed</p>
-            <p className="bold pt-3 pl-1 pb-2">{formData?.concluded || 'NIL'}</p>
-          </div>
-
-        </div>
-        <div className="col-md-3 mt-2 col-6">
-          <div className=" bg-white p-2 border-radius-5">
-            <p className="font-small theme-font text-theme-faint">Total Company</p>
-            <p className="bold pt-3 pl-1 pb-2">{formData?.total_company || 'NIL'}</p>
-          </div>
-
-        </div>
-      </div>
       <div className="">
         <div className="d-flex justify-content-between">
           <div className="text-theme-black font-regular bold">All Clients</div>
           <div>
-            <Link to="#" onClick={() => console.log('all')} className="font-regular text-theme-blue">See All</Link>
+            <Link to="/app/clients/new-client" className="font-regular text-theme-blue">Create Client</Link>
           </div>
         </div>
         <ClientsTable data={formData} />

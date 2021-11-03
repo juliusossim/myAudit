@@ -75,6 +75,7 @@ const LoginPage = () => {
   };
   const handleClose = () => {
     setShow(false);
+    window.location.replace('/app/dashboard');
     return push('/app/dashboard');
   };
   const goBackAndReset = () => {
@@ -207,7 +208,9 @@ const LoginPage = () => {
         view={initialTemp({ formData })}
         setErrors={setErrors}
         action="LOGIN_COMPLETE"
-        store={store}
+        data={store?.data?.data}
+        status={store?.status}
+        message={store?.data?.message}
       />
     </div>
   );

@@ -1,7 +1,9 @@
 import React from 'react';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 import { validationPatterns } from '../../../utilities/validation';
-import { projectType } from '../../../utilities/dummyData';
-import { CheckboxField, RadioButtonField } from '../../../components/form/inputs/Checkbox';
+import { profileType } from '../../../utilities/dummyData';
+import { CheckboxField } from '../../../components/form/inputs/Checkbox';
 
 const newEngagementProps = (
   {
@@ -9,19 +11,63 @@ const newEngagementProps = (
     handleBlur,
     handleChange,
     errors,
-    btnMethod,
+    multiple,
+    removeItem,
     setFormData,
-    handleChecked
+    progress,
+    loadingMedia,
+    handleChecked,
+    uploads,
+    handleDateChange,
+    clients
   }
 ) => ([
+  {
+    kind: 'select2',
+    props: {
+      className: 'w-100 m-b-20 pr-3 col-12 col-md-8',
+      name: 'client',
+      label: 'Select Client',
+      options: clients,
+      optionIndex: 'name',
+      valueIndex: 'id',
+      value: formData?.client || '',
+      validations: {
+        required: false
+      },
+      error: errors?.client,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'custom',
+    props: {
+      element: (
+        <div key="year" className="w-100 col-12 col-md-4 mt-2">
+          <p className="theme-font text-theme-black">Select Year</p>
+          <DatePicker
+            selected={formData.year}
+            className="border-faint p-2 border-radius-5"
+            name="year"
+            onChange={(date) => handleDateChange({ date, name: 'year' })}
+            showYearPicker
+            dateFormat="yyyy"
+            yearItemNumber={9}
+            dropdownMode="select"
+          />
+        </div>
+      )
+    }
+  },
   {
     kind: 'input',
     props: {
       className: 'w-100 m-b-20 col-12 col-md-8',
       name: 'name',
       type: 'text',
-      label: 'Company Name',
-      placeholder: 'Enter Company Name',
+      label: 'Engagement Name',
+      placeholder: 'Enter Engagement Name',
       value: formData?.name || '',
       validations: {
         required: true
@@ -35,15 +81,66 @@ const newEngagementProps = (
     kind: 'input',
     props: {
       className: 'w-100 m-b-20 col-12 col-md-4',
-      name: 'nature_of_business',
-      type: 'text',
-      label: 'Business Nature',
-      placeholder: 'E.G: Oil Shipment',
-      value: formData?.nature_of_business || '',
+      name: 'staff_power',
+      type: 'number',
+      label: 'Staff Power',
+      placeholder: 'Enter Staff Power',
+      value: formData?.staff_power || '',
+      error: errors?.staff_power,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'select',
+    props: {
+      className: 'w-100 m-b-20 col-12 col-md-6',
+      name: 'auditing_standard',
+      label: 'Select Auditing Standard',
+      value: formData?.auditing_standard || '',
+      options: profileType,
       validations: {
         required: true
       },
-      error: errors?.nature_of_business,
+      error: errors?.auditing_standard,
+      optionIndex: 'type',
+      valueIndex: 'value',
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'select',
+    props: {
+      className: 'w-100 m-b-20 col-12 col-md-6',
+      name: 'accounting_standard',
+      label: 'Select Accounting Standard',
+      value: formData?.accounting_standard || '',
+      options: profileType,
+      validations: {
+        required: true
+      },
+      error: errors?.accounting_standard,
+      optionIndex: 'type',
+      valueIndex: 'value',
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'text_area',
+    props: {
+      className: 'w-100 m-b-20 col-12',
+      name: 'members_dependence',
+      type: 'text',
+      label: 'Explain Member Dependence',
+      placeholder: 'Explain Team affiliation ',
+      value: formData?.members_dependence || '',
+      validations: {
+        required: true,
+        maxLength: 100
+      },
+      error: errors?.members_dependence,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -51,16 +148,13 @@ const newEngagementProps = (
   {
     kind: 'input',
     props: {
-      className: 'w-100 m-b-20 col-12 col-md-5',
-      name: 'phone',
-      type: 'tel',
-      label: 'Phone Number',
-      placeholder: 'Enter Phone Number',
-      value: formData?.phone || '',
-      validations: {
-        original: formData?.phone
-      },
-      error: errors?.phone,
+      className: 'w-100 m-b-20 col-12 col-md-6',
+      name: 'external_expert',
+      type: 'text',
+      label: 'External Expert',
+      placeholder: 'Enter External Expert',
+      value: formData?.external_expert || '',
+      error: errors?.external_expert,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -68,113 +162,13 @@ const newEngagementProps = (
   {
     kind: 'input',
     props: {
-      className: 'w-100 m-b-20 col-12 col-md-7',
-      name: 'email',
-      type: 'email',
-      label: 'Email Address',
-      placeholder: 'Enter Email Address',
-      value: formData?.email || '',
-      validations: {
-        required: true,
-        pattern: validationPatterns.email
-      },
-      btn: {
-        class: 'ml-18w bg-transparent text-wema',
-        text: 'Try Again',
-        success: 'Project initialized'
-      },
-      btnMethod,
-      error: errors?.email,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
-    kind: 'text_area',
-    props: {
-      className: 'w-100 m-b-20 col-12',
-      name: 'registered_address',
-      type: 'text',
-      label: 'Company Address',
-      placeholder: 'Enter Company Registered  Address',
-      value: formData?.registered_address || '',
-      validations: {
-        required: true,
-        maxLength: 100
-      },
-      error: errors?.registered_address,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
-    kind: 'text_area',
-    props: {
-      className: 'w-100 m-b-20 col-12',
-      name: 'address',
-      type: 'text',
-      label: 'Alternative Address',
-      placeholder: 'Second Address',
-      value: formData?.address || '',
-      validations: {
-        required: true,
-        maxLength: 100
-      },
-      error: errors?.address,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
-    kind: 'tags',
-    props: {
-      className: 'w-100 m-b-20 col-12',
-      name: 'director_name',
-      type: 'text',
-      label: 'Director Name',
-      placeholder: 'Directors\' Full Names',
-      formData,
-      setFormData
-    }
-  },
-  {
-    kind: 'tags',
-    props: {
       className: 'w-100 m-b-20 col-12 col-md-6',
-      name: 'director_units_held',
-      type: 'number',
-      label: 'Director\'s Units (%)',
-      placeholder: 'Director\'s Company Shares',
-      formData,
-      setFormData
-    }
-  },
-  {
-    kind: 'tags',
-    props: {
-      className: 'w-100 m-b-20 col-12 col-md-6',
-      name: 'director_designation',
+      name: 'partner_skill',
       type: 'text',
-      label: 'Directors\' Designations',
-      placeholder: 'Directors\' Designations',
-      formData,
-      setFormData
-    }
-  },
-  {
-    kind: 'text_area',
-    props: {
-      className: 'w-100 m-b-20 col-12',
-      name: 'doubts',
-      type: 'text',
-      label: 'Doubts',
-      placeholder: 'State your doubts',
-      value: formData?.doubts || '',
-      validations: {
-        required: true,
-        maxLength: 100
-      },
-      error: errors?.doubts,
+      label: 'Partner Skill',
+      placeholder: 'Enter Partner Skill',
+      value: formData?.partner_skill || '',
+      error: errors?.partner_skill,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -183,8 +177,9 @@ const newEngagementProps = (
     kind: 'custom',
     props: {
       element: <CheckboxField
-        label="It's a Public Company"
-        name="is_public_entity"
+        key="have"
+        label="Have contacted "
+        name="first_time"
         handleChecked={handleChecked}
         className="w-100 m-b-20 col-12 col-md-6"
         checked={formData?.is_public_entity}
@@ -192,64 +187,223 @@ const newEngagementProps = (
     }
   },
   {
-    kind: 'custom',
+    kind: 'file_input',
     props: {
-      element: <CheckboxField
-        label="It's part of a group"
-        name="is_part_of_group"
-        handleChecked={handleChecked}
-        className="w-100 m-b-20 col-12 col-md-6"
-        checked={formData?.is_part_of_group}
-      />
+      className: 'w-100 m-b-20',
+      name: 'appointment_letter',
+      label: 'Appointment Letter',
+      text: 'Add Media',
+      value: formData?.appointment_letter || '',
+      file: formData?.file || '',
+      multiple,
+      removeItem,
+      setFormData,
+      progress,
+      uploads: uploads.appointment_letter,
+      loading: loadingMedia,
+      validations: {
+        required: true,
+        pattern: validationPatterns.image
+      },
+      error: errors?.appointment_letter,
+      onBlur: handleBlur,
+      onChange: handleChange
     }
   },
   {
-    kind: 'tags',
+    kind: 'file_input',
     props: {
-      className: formData?.is_part_of_group ? 'w-100 m-b-20 col-12' : 'd-none',
-      name: 'subsidiary_name',
-      type: 'text',
-      label: 'Subsidiary Name',
-      placeholder: 'Enter Subsidiary Name',
-      formData,
-      setFormData
+      className: 'w-100 m-b-20',
+      name: 'contacted_previous_auditor',
+      label: 'Contacted Previous Auditor',
+      text: 'Add Media',
+      value: formData?.contacted_previous_auditor || '',
+      file: formData?.file || '',
+      multiple,
+      removeItem,
+      setFormData,
+      progress,
+      uploads: uploads.contacted_previous_auditor,
+      loading: loadingMedia,
+      validations: {
+        required: true,
+        pattern: validationPatterns.image
+      },
+      error: errors?.contacted_previous_auditor,
+      onBlur: handleBlur,
+      onChange: handleChange
     }
   },
   {
-    kind: 'tags',
+    kind: 'file_input',
     props: {
-      className: formData?.is_part_of_group ? ' w-100 m-b-20 col-12 ' : 'd-none',
-      name: 'subsidiary_nature_of_business',
-      type: 'text',
-      label: 'Subsidiary Business Nature',
-      placeholder: 'E.G: Housing',
-      formData,
-      setFormData
+      className: 'w-100 m-b-20',
+      name: 'previous_auditor_response',
+      label: 'Previous Auditor Response',
+      text: 'Add Media',
+      value: formData?.previous_auditor_response || '',
+      file: formData?.file || '',
+      multiple,
+      removeItem,
+      setFormData,
+      progress,
+      uploads: uploads.previous_auditor_response,
+      loading: loadingMedia,
+      validations: {
+        required: true,
+        pattern: validationPatterns.image
+      },
+      error: errors?.previous_auditor_response,
+      onBlur: handleBlur,
+      onChange: handleChange
     }
   },
   {
-    kind: 'tags',
+    kind: 'file_input',
     props: {
-      className: formData?.is_part_of_group ? ' w-100 m-b-20 col-12 col-md-6 ' : 'd-none',
-      name: 'subsidiary_nature',
-      type: 'text',
-      label: 'Subsidiary Nature',
-      placeholder: 'E.G: LTD',
-      formData,
-      setFormData
+      className: 'w-100 m-b-20',
+      name: 'engagement_letter',
+      label: 'Engagement Letter',
+      text: 'Add Media',
+      value: formData?.engagement_letter || '',
+      file: formData?.engagement_letter || '',
+      multiple,
+      removeItem,
+      setFormData,
+      progress,
+      uploads: uploads.engagement_letter,
+      loading: loadingMedia,
+      validations: {
+        required: true,
+        pattern: validationPatterns.image
+      },
+      error: errors?.engagement_letter,
+      onBlur: handleBlur,
+      onChange: handleChange
     }
   },
   {
-    kind: 'tags',
+    kind: 'file_input',
     props: {
-      className: formData?.is_part_of_group ? 'w-100 m-b-20 col-12 col-md-6 ' : 'd-none',
-      name: 'subsidiary_percentage_holding',
-      type: 'number',
-      label: 'Subsidiary Percentage Holding',
-      placeholder: 'E.G: 5%',
-      formData,
-      setFormData
+      className: 'w-100 m-b-20',
+      name: 'other_audit_opinion',
+      label: 'Other Audit Opinion',
+      text: 'Add Media',
+      value: formData?.other_audit_opinion || '',
+      file: formData?.file || '',
+      multiple,
+      removeItem,
+      setFormData,
+      progress,
+      uploads: uploads.other_audit_opinion,
+      loading: loadingMedia,
+      validations: {
+        required: true,
+        pattern: validationPatterns.image
+      },
+      error: errors?.other_audit_opinion,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+
+  {
+    kind: 'file_input',
+    props: {
+      className: 'w-100 m-b-20',
+      name: 'previous_year_management_letter',
+      label: 'Previous Year Management',
+      text: 'Add Media',
+      value: formData?.previous_year_management_letter || '',
+      file: formData?.file || '',
+      multiple,
+      removeItem,
+      setFormData,
+      progress,
+      uploads: uploads.previous_year_management_letter,
+      loading: loadingMedia,
+      validations: {
+        required: true,
+        pattern: validationPatterns.image
+      },
+      error: errors?.previous_year_management_letter,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+
+  {
+    kind: 'file_input',
+    props: {
+      className: 'w-100 m-b-20',
+      name: 'previous_year_asf',
+      label: 'Previous Year ASF',
+      text: 'Add Media',
+      value: formData?.previous_year_asf || '',
+      file: formData?.file || '',
+      multiple,
+      removeItem,
+      setFormData,
+      progress,
+      uploads: uploads.previous_year_asf,
+      loading: loadingMedia,
+      validations: {
+        required: true,
+        pattern: validationPatterns.image
+      },
+      error: errors?.previous_year_asf,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'file_input',
+    props: {
+      className: 'w-100 m-b-20',
+      name: 'previous_audit_review',
+      label: 'Previous Audit Review',
+      text: 'Add Media',
+      value: formData?.previous_audit_review || '',
+      file: formData?.file || '',
+      multiple,
+      removeItem,
+      setFormData,
+      progress,
+      uploads: uploads.previous_audit_review,
+      loading: loadingMedia,
+      validations: {
+        required: true,
+        pattern: validationPatterns.image
+      },
+      error: errors?.previous_audit_review,
+      // onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'file_input',
+    props: {
+      className: 'w-100 m-b-20',
+      name: 'previous_audit_opinion',
+      label: 'Previous Audit Opinion',
+      text: 'Add Media',
+      value: formData?.previous_audit_opinion || '',
+      file: formData?.file || '',
+      multiple,
+      removeItem,
+      setFormData,
+      progress,
+      uploads: uploads.previous_audit_opinion,
+      loading: loadingMedia,
+      validations: {
+        required: true,
+        pattern: validationPatterns.image
+      },
+      error: errors?.previous_audit_opinion,
+      onBlur: handleBlur,
+      onChange: handleChange
     }
   }
+
 ]);
 export default newEngagementProps;

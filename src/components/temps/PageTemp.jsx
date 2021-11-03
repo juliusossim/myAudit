@@ -75,7 +75,7 @@ const PageTemp = ({
           status === 'initial' && initial
         }
         {
-          (status === 'pending' || isPending) && <div className="min-w-300-w"><Loader /></div>
+          (status === 'pending' || isPending) && <div className="min-w-300-w center-vertical-2"><Loader /></div>
         }
         {
           status === 'success' && (_.isEmpty(data)) && redirect && (

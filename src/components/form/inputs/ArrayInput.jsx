@@ -5,7 +5,7 @@ import { AiOutlineDelete } from 'react-icons/all';
 import { tagsHandler } from '../../../utilities/handlers';
 
 const TagsInput = ({
-  formData, setFormData, className, placeholder, type, label, name
+  formData, setFormData, className, placeholder, type, label, name, helperText
 }) => {
   const [val, setVal] = useState('');
   const handleClick = () => {
@@ -45,6 +45,7 @@ const TagsInput = ({
         }
         <input id="id" type={type} placeholder={placeholder} name={name} onKeyDown={handleKeyUp} value={val.replace(/,/g, '')} onChange={handleChange} />
       </div>
+      <p className="font-tinier text-theme-blue">{helperText}</p>
     </div>
   );
 };

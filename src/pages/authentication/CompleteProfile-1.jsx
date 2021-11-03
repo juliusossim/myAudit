@@ -36,11 +36,11 @@ const CompleteProfile1 = () => {
       localStorage.setItem('company', store?.data?.data?.company);
       localStorage.setItem('user', JSON.stringify(store?.data?.data?.user));
       notifier({
-        title: 'Logged In',
-        text: 'Logged in successfully',
+        title: 'Logged In As an Auditor',
+        text: 'Profile updated successfully',
         type: 'success'
       });
-      setTimeout(() => push({ pathname: '/app/dashboard', name: 'dashboard' }), 500);
+      setTimeout(() => push('/app/dashboard'), 500);
     }
   }, [store.status]);
   const completeRegistration = useCallback((data) => {
