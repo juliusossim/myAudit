@@ -1,18 +1,18 @@
 import React from 'react';
+import _ from 'lodash';
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import InputBase from '@material-ui/core/InputBase';
-import Badge from '@material-ui/core/Badge';
 import MenuItem from '@material-ui/core/MenuItem';
 import Menu from '@material-ui/core/Menu';
 import {
-  MdAccountCircle, MdMenu, MdMoreVert, MdNotifications, MdSearch
+  MdMoreVert
 } from 'react-icons/all';
 import { Link } from 'react-router-dom';
 import { sentenceCaps } from '../../utilities/stringOperations';
+import { user } from '../../utilities/auth';
 
 const useStyles = makeStyles((theme) => ({
   grow: {
@@ -182,9 +182,6 @@ const SearchAppBar = ({
                 </Link>
               ))
             }
-            {
-              dp
-            }
           </div>
           <div className={classes.grow} />
           <div className={classes.grow} />
@@ -201,13 +198,21 @@ const SearchAppBar = ({
           <div className={classes.sectionDesktop}>
             <div className="vl mr-5" />
             {
-              menu?.rightMenu?.map((item) => (
-                <Link key={item?.name || item?.to} to={item.to} type="button" className={item.styled ? 'ml-3 btn styled-header-btn text-white pt-3' : 'mr-5 ml-5 un-styled-header-btn btn-plain bold'}>
-                  <span className="px-5">
-                    {item.name}
-                  </span>
-                </Link>
-              ))
+              _.isEmpty(user)
+                ? (
+                  <div>
+                    {
+                      menu?.rightMenu?.map((item) => (
+                        <Link key={item?.name || item?.to} to={item.to} type="button" className={item.styled ? 'ml-3 btn styled-header-btn text-white pt-3' : 'mr-5 ml-5 un-styled-header-btn btn-plain bold'}>
+                          <span className="px-5">
+                            {item.name}
+                          </span>
+                        </Link>
+                      ))
+                    }
+                  </div>
+                )
+                : <div className="ml-3">{dp}</div>
             }
           </div>
           <div className={classes.sectionMobile}>

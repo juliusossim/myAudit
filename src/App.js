@@ -9,6 +9,7 @@ import MainPortal from './routes/MainPortal';
 import Header from './layouts/Header';
 import Loader from './components/microComponents/loader';
 import ScrollUpBtn from './layouts/ScrollUpBtn';
+import Footer from './layouts/Footer';
 
 function App() {
   const { pathname } = useLocation();
@@ -54,7 +55,9 @@ function App() {
 
           <Route render={() => <h1>Error 404. Page not found.</h1>} />
         </Switch>
-        {/* <Footer /> */}
+        {
+          !path('/app') && <Footer />
+        }
         {/* ScrollUpBtn: src/components/ScrollUpBtn */}
         <ScrollUpBtn />
       </div>

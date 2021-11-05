@@ -49,8 +49,7 @@ const LoginPage = () => {
         text: 'Logged in successfully',
         type: 'success'
       });
-      localStorage.removeItem('authMsg');
-      setTimeout(handleClose, 500);
+      setTimeout(handleClose, 1000);
     }
   }, [store.status]);
 
@@ -62,9 +61,6 @@ const LoginPage = () => {
   // useEffect(() => () => handler && clearTimeout(handler), [handler]);
 
   const handleLogin = () => {
-    // e.preventDefault();
-    // window.location.replace('/home');
-    // const payload = { ...formData };
     dispatch(login(formData));
   };
 
@@ -86,7 +82,6 @@ const LoginPage = () => {
   const handleClose = () => {
     setShow(false);
     window.location.replace('/app/dashboard');
-    return push('/app/dashboard');
   };
   const goBackAndReset = () => {
     goBack();

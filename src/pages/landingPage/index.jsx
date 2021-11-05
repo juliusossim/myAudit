@@ -3,20 +3,9 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { Fade, Flip } from 'react-reveal';
 import * as Scroll from 'react-scroll';
-import { HiOutlineArrowNarrowRight } from 'react-icons/all';
-import CustomCarousel from '../../components/microComponents/carousel';
-import LazyImage from '../../components/microComponents/lazyImg';
-import howItWorks from '../../assets/images/howItWorks.svg';
-import { projectAction } from '../../redux/actions/projectActions';
-import { apiOptions } from '../../services/fetch';
-import Loader from '../../components/microComponents/loader';
-import ProjectInfo from '../../components/ui/projectInfo';
-import PageTemp from '../../components/temps/PageTemp';
 import {
-  brands,
   homeLinks, homePageTexts, playDownIcon, safetySvg, serviceCards, whoWeAre
 } from '../../utilities/dummyData';
-import { CustomIcon } from '../../utilities/stringOperations';
 import ListMat from '../../components/ui/listMat';
 
 const GeneralPage = () => (
@@ -41,7 +30,7 @@ const GeneralPage = () => (
           <div className="mb-sm-3 mt-5">
             <Link to="/create-project" className="position-relative">
               <span>{playDownIcon}</span>
-              <span className="text-white font-regular bold theme-font-bold position-absolute howWeWork">How we work</span>
+              <span className="text-white font-small bold theme-font-bold position-absolute howWeWork">How we work</span>
             </Link>
           </div>
         </div>

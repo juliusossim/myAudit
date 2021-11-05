@@ -61,10 +61,10 @@ export const logout = async (landingPath = process.env.REACT_APP_INDEX_URL,
   await localforage.clear();
   localStorage.clear();
   isExpiredSession && localStorage.setItem('se', true);
+  window.location.assign('/');
   // window.location.assign(landingPath);
 };
 export const doLogin = () => {
-  localStorage.setItem('authMsg', 'yes');
   window.location.assign('/login');
 };
 export const getToken = () => localStorage.getItem('access_token');

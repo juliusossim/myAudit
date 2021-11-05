@@ -1,4 +1,5 @@
 import {
+  AiOutlineHome,
   AiOutlineUsergroupAdd,
   BsFolder,
   MdNotificationsNone,
@@ -90,6 +91,11 @@ const miniMenu = [
         to: '/new-engagement'
       }
     ]
+  },
+  {
+    name: 'home',
+    icon: <AiOutlineHome />,
+    to: '/home'
   }
 ];
 export default miniMenu;

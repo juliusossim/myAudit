@@ -1,11 +1,7 @@
 import React, { useState } from 'react';
 import FormBuilder from '../../../../components/form/builders/form';
-import newClientProps from '../../constants/newClients';
 import newClientProps3 from '../../constants/newClients3';
-import ControlledAccordions from '../../../../components/ui/accordion';
 import CustomAccordion from '../../../../components/ui/customAccordion';
-import { slugToString } from '../../../../utilities/stringOperations';
-import CustomCheckbox from '../../../../components/form/inputs/CustomCheckbox';
 
 const NewClientTemp2 = ({
   formData, setFormData, handleChange, errors, handleBlur, currentPanel, setCurrentPanel
@@ -83,6 +79,9 @@ const NewClientTemp2 = ({
                     )
                   }
                 />
+                <div>
+                  <button type="button" onClick={addSub} className="simple-hover">Add Subsidiary</button>
+                </div>
               </div>
             )
           }
@@ -91,9 +90,6 @@ const NewClientTemp2 = ({
         currentPanel={currentPanel}
         setCurrentPanel={setCurrentPanel}
       />
-      <div>
-        <button type="button" onClick={addSub} className="simple-hover">Add Subsidiary</button>
-      </div>
     </div>
   );
 };
