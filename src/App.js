@@ -1,25 +1,18 @@
 import React, {
-  Suspense, useCallback, useEffect
+  Suspense
 } from 'react';
-import { Switch, Route, useLocation } from 'react-router-dom';
-import _ from 'lodash';
-
+import {
+  Switch, Route, useLocation
+} from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import MainPortal from './routes/MainPortal';
 import Header from './layouts/Header';
-import Footer from './layouts/Footer';
 import Loader from './components/microComponents/loader';
-import { projectAction } from './redux/actions/projectActions';
-import { apiOptions } from './services/fetch';
 import ScrollUpBtn from './layouts/ScrollUpBtn';
 
 function App() {
   const { pathname } = useLocation();
-
-  const dispatch = useDispatch();
-  const store = useSelector((state) => state.project);
-  const indexData = { ...JSON.parse(localStorage.getItem('index')) };
-  const [pad, setPad] = React.useState(null);
+  const [pad] = React.useState(null);
 
   // const cacheAvailable = 'caches' in window.self;
   // const cacheName = 'index';

@@ -190,7 +190,7 @@ const SearchAppBar = ({
           <div className={classes.grow} />
           <div className="max-w-200">
             <Link to="/" className="logo">
-              <img src={logo} alt="crowd funding logo" />
+              <img src={logo || ''} alt="crowd funding logo" />
             </Link>
           </div>
           <Typography className={classes.title} variant="h6" noWrap>

@@ -92,6 +92,7 @@ const TextareaInput = (
                 maxLength: validations.maxLength
               }}
             />
+            <p className="font-tinier text-theme-blue">{helperText}</p>
             <div className="float-right text-wema pr-1">
               {
                 validations.maxLength - value.length

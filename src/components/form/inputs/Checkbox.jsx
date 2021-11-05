@@ -8,7 +8,7 @@ export const RadioButtonField = ({
 }) => (
   <div className={className}>
     <label className="radio-container">
-      <input type="radio" name={name} className="mr-1" checked={checked} onClick={handleChecked} />
+      <input type="radio" name={name} onChange={() => name} className="mr-1" checked={checked} onClick={handleChecked} />
       <span className="radio-checkmark" />
       {label}
     </label>
@@ -20,7 +20,7 @@ export const CheckboxField = ({
 }) => (
   <div className={className}>
     <label className="checkbox-container">
-      <input type="checkbox" className="mr-1" name={name} checked={checked} onClick={handleChecked} />
+      <input type="checkbox" className="mr-1" name={name} checked={checked} onChange={() => name} onClick={handleChecked} />
       <span className="checkbox-checkmark" />
       {label}
     </label>

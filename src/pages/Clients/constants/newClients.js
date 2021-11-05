@@ -1,16 +1,12 @@
 import React from 'react';
 import { validationPatterns } from '../../../utilities/validation';
-import { CheckboxField } from '../../../components/form/inputs/Checkbox';
 
 const newClientProps = (
   {
     formData,
-    setFormData,
     handleBlur,
     handleChange,
-    errors,
-    btnMethod,
-    handleChecked
+    errors
   }
 ) => ([
   {
@@ -78,11 +74,10 @@ const newClientProps = (
         pattern: validationPatterns.email
       },
       btn: {
-        class: 'ml-18w bg-transparent text-wema',
+        class: 'ml-18w bg-transparent theme-text',
         text: 'Try Again',
         success: 'Project initialized'
       },
-      btnMethod,
       error: errors?.email,
       onBlur: handleBlur,
       onChange: handleChange
@@ -120,6 +115,25 @@ const newClientProps = (
         maxLength: 100
       },
       error: errors?.registered_address,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'text_area',
+    props: {
+      className: 'w-100 m-b-20 col-12',
+      name: 'doubts',
+      type: 'text',
+      label: 'Doubts',
+      helperText: 'Are there doubts about the going concern of the entity?',
+      placeholder: 'State your doubts',
+      value: formData?.doubts || '',
+      validations: {
+        required: true,
+        maxLength: 100
+      },
+      error: errors?.doubts,
       onBlur: handleBlur,
       onChange: handleChange
     }

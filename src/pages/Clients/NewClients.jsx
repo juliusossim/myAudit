@@ -1,139 +1,87 @@
-import React, { useEffect, useState } from 'react';
-import { useSelector } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import { IoIosAdd } from 'react-icons/all';
+import React, { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import _ from 'lodash';
+import { Link } from 'react-router-dom';
 import Loader from '../../components/microComponents/loader';
-import { apiOptions } from '../../services/fetch';
 import useCreateBoilerPlate from '../../components/hooks/useCreateBoilerPlate';
-import NewClientTemp from './temps/NewClient';
-import newClientProps from './constants/newClients';
-import FormBuilder from '../../components/form/builders/form';
-import newClientProps1 from './constants/newClients1';
-import ControlledAccordions from '../../components/ui/accordion';
+import { apiOptions } from '../../services/fetch';
+import { projectAction } from '../../redux/actions/projectActions';
+import NewClientTemp from './temps/newClients/NewClientTemp';
 
-const NewClients = () => {
-  const [formData, setFormData] = useState(
-    {
-      is_part_of_group: 0,
-      is_public_entity: 0,
-      subsidiary_nature: [],
-      director_name: [],
-      director_units_held: [],
-      subsidiary_name: [],
-      subsidiary_nature_of_business: [],
-      director_designation: [],
-      subsidiary_percentage_holding: []
-    }
-  );
-  const [panel, setPanel] = useState(1);
+const NewClient = () => {
+  const dispatch = useDispatch();
+  /* state */
+  const [formData, setFormData] = useState({
+    year: new Date(),
+    subsidiary_name_main: [],
+    subsidiary_nature_of_business_main: [],
+    subsidiary_nature_main: [],
+    subsidiary_percentage_holding_main: []
+  });
   const [errors, setErrors] = useState({});
+  const [progress, setProgress] = useState(0);
+  const [currentName, setCurrentName] = useState(0);
+  const [clients, setClients] = useState([]);
+  const [uploads, setUploads] = useState({});
 
   /* redux */
-  const store = useSelector((state) => state.users.newClient);
-
+  const store = useSelector((state) => state.engagement);
+  const store2 = useSelector((state) => state.users);
   const options = {
-    action: 'CREATE_CLIENT',
+    action: 'CREATE_ENGAGEMENT',
     apiOpts: apiOptions({
-      body: formData,
-      endpoint: 'CREATE_CLIENT',
+      body: { ...formData, ...uploads, year: new Date(formData.year).getFullYear().toString() },
+      endpoint: 'CREATE_ENGAGEMENT',
       auth: true,
       method: 'post'
     })
   };
   const {
-    handleBlur, handleChange, create, status, handleChecked
+    handleBlur, handleChange, status, handleChecked, create, data, backErrors, message
   } = useCreateBoilerPlate({
     setFormData,
     formData,
     setErrors,
     errors,
-    store,
     options,
-    redirect: '/app/clients'
+    store: store.engagement,
+    setProgress,
+    setCurrentName,
+    action: 'CREATE_ENGAGEMENT',
+    redirect: '/app/engagements'
   });
-  useEffect(() => {
-    if (!formData.is_public_entity) {
-      setFormData({
-        ...formData,
-        subsidiary_nature_of_business: [],
-        subsidiary_percentage_holding: [],
-        subsidiary_name: []
-      });
-    }
-  }, [formData.is_public_entity]);
-  const temp = (
-    <div>
-      <FormBuilder formItems={
-        newClientProps1(
-          {
-            formData,
-            handleBlur,
-            handleChange,
-            errors,
-            handleChecked,
-            setFormData
-          }
-        )
-      }
-      />
-    </div>
-  );
-  const [accordionData, setAccordionData] = useState(
-    [
-      {
-        panel,
-        name: 'Managing Director Info',
-        details: temp
-      }
-    ]
-  );
-  const addAccordion = () => {
-    setPanel(panel + 1);
-    setAccordionData(
-      [...accordionData,
-        {
-          panel: panel + 1,
-          name: `Director ${panel} Info`,
-          details: temp
-        }]
-    );
-  };
+
   return (
-    status === 'pending'
-      ? <Loader />
-      : (
-        <div>
-          <NewClientTemp
-            formData={formData}
-            create={create}
-            link="/app/clients/new-client/directors"
-            table={(
-              <div>
-                <div>
-                  <FormBuilder formItems={
-                    newClientProps(
-                      {
-                        formData,
-                        handleBlur,
-                        handleChange,
-                        errors,
-                        handleChecked,
-                        setFormData
-                      }
-                    )
-                  }
-                  />
-                </div>
-                <ControlledAccordions data={accordionData} />
-                <div>
-                  <Button startIcon={<IoIosAdd />} onClick={addAccordion}>director</Button>
-                </div>
-              </div>
-            )}
-          />
+    <div className="">
+      <div className="d-flex ml-4 custom-top-bar justify-content-between">
+        <div className="text-theme-black bold">
+          CLIENTS
         </div>
-      )
+        <div>
+          <Link to="/app/clients/" className="text-theme-blue mr-1">Clients</Link>
+          <span className="text-theme-black">/ New Client</span>
+        </div>
+      </div>
+      <div className="content">
+        {
+          status === 'pending'
+            ? <Loader />
+            : (
+              <NewClientTemp
+                formData={formData}
+                setFormData={setFormData}
+                errors={errors}
+                handleBlur={handleBlur}
+                handleChange={handleChange}
+                handleChecked={handleChecked}
+                create={create}
+                clients={clients}
+              />
+            )
+        }
+      </div>
+    </div>
   );
 };
 
-export default NewClients;
+export default NewClient;

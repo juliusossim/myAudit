@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import localforage from 'localforage';
+import { notifier } from './stringOperations';
 
 /**
  * This function encodes its payload into a token
@@ -62,10 +63,9 @@ export const logout = async (landingPath = process.env.REACT_APP_INDEX_URL,
   isExpiredSession && localStorage.setItem('se', true);
   // window.location.assign(landingPath);
 };
-export const doLogout = () => {
-  localforage.clear();
-  localStorage.clear();
-  window.location.assign(process.env.REACT_APP_INDEX_URL);
+export const doLogin = () => {
+  localStorage.setItem('authMsg', 'yes');
+  window.location.assign('/login');
 };
 export const getToken = () => localStorage.getItem('access_token');
 

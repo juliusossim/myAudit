@@ -281,6 +281,27 @@ export const projectType = [
     value: 3
   }
 ];
+export const designations = [
+  'select designation',
+  {
+    id: 1,
+    type: 'ceo',
+    desc: 'corporate project',
+    value: 1
+  },
+  {
+    id: 2,
+    type: 'md',
+    desc: 'organisational project',
+    value: 2
+  },
+  {
+    id: 3,
+    type: 'chairman',
+    desc: 'organisational project',
+    value: 3
+  }
+];
 export const countries = [
   'select your country',
   {

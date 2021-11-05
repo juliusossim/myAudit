@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
+import _ from 'lodash';
 import PageTemp from '../../components/temps/PageTemp';
 import { apiOptions } from '../../services/fetch';
 import useViewBoilerPlate from '../../components/hooks/useViewBoilerPlate';
-import ClientsTemp from './temps/ClientsTemp';
 import IndexTemp from '../Dashboard/temp/IndexTemp';
-import DashboardTable from '../../components/tables/dashboardTable';
 import ClientsTable from '../../components/tables/clientsTable';
+import Loader from '../../components/microComponents/loader';
+import NoData from '../authentication/NoData';
 
 const ClientIndex = () => {
   const store = useSelector((state) => state.users?.clients);
@@ -48,22 +49,63 @@ const ClientIndex = () => {
     }
   ];
   return (
-    <PageTemp
-      data={formData.clients}
-      status={status}
-      view={(
-        <IndexTemp
-          formData={formData}
-          infoBarData={infoBarData}
-          header="clients list"
-          link={{ name: '+ new client', to: '/app/clients/new-client' }}
-          parent="clients"
-          table={<ClientsTable data={formData.clients} />}
-        />
-      )}
-      action="CLIENTS_COMPLETE"
-      retry={view}
-    />
+    <div>
+      {
+        _.isEmpty(formData.clients)
+          ? (
+            <div>
+              <NoData
+                link="/app/clients/new-client"
+                name="dashboard"
+                title="No Client"
+                text="Create Clients to begin"
+                btnName="Create Client"
+              />
+            </div>
+          )
+          : (
+            <div>
+              {status === 'loading'
+                ? <Loader />
+                : (
+                  <IndexTemp
+                    formData={formData}
+                    infoBarData={infoBarData}
+                    header="clients list"
+                    link={{ name: '+ new client', to: '/app/clients/new-client' }}
+                    parent="clients"
+                    table={<ClientsTable data={formData.clients} />}
+                  />
+                )}
+            </div>
+          )
+      }
+    </div>
+    // <PageTemp
+    //   data={formData.clients}
+    //   status={status}
+    //   view={(
+    //     <IndexTemp
+    //       formData={formData}
+    //       infoBarData={infoBarData}
+    //       header="clients list"
+    //       link={{ name: '+ new client', to: '/app/clients/new-client' }}
+    //       parent="clients"
+    //       table={<ClientsTable data={formData.clients} />}
+    //     />
+    //   )}
+    //   action="CLIENTS_COMPLETE"
+    //   retry={view}
+    //   redirect={
+    //     {
+    //       link: '/app/clients/new-client',
+    //       name: 'dashboard',
+    //       text: 'Create engagement to see activities',
+    //       title: 'No Data',
+    //       btnName: 'Create Engagement'
+    //     }
+    //   }
+    // />
   );
 };
 

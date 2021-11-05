@@ -32,54 +32,6 @@ const newClientProps2 = (
         checked={formData?.is_part_of_group}
       />
     }
-  },
-  {
-    kind: 'tags',
-    props: {
-      className: formData?.is_part_of_group ? 'w-100 m-b-20 col-12' : 'd-none',
-      name: 'subsidiary_name',
-      type: 'text',
-      label: 'Subsidiary Name',
-      placeholder: 'Enter Subsidiary Name',
-      formData,
-      setFormData
-    }
-  },
-  {
-    kind: 'tags',
-    props: {
-      className: formData?.is_part_of_group ? ' w-100 m-b-20 col-12 ' : 'd-none',
-      name: 'subsidiary_nature_of_business',
-      type: 'text',
-      label: 'Subsidiary Business Nature',
-      placeholder: 'E.G: Housing',
-      formData,
-      setFormData
-    }
-  },
-  {
-    kind: 'tags',
-    props: {
-      className: formData?.is_part_of_group ? ' w-100 m-b-20 col-12 col-md-6 ' : 'd-none',
-      name: 'subsidiary_nature',
-      type: 'text',
-      label: 'Subsidiary Nature',
-      placeholder: 'E.G: LTD',
-      formData,
-      setFormData
-    }
-  },
-  {
-    kind: 'tags',
-    props: {
-      className: formData?.is_part_of_group ? 'w-100 m-b-20 col-12 col-md-6 ' : 'd-none',
-      name: 'subsidiary_percentage_holding',
-      type: 'number',
-      label: 'Subsidiary Percentage Holding',
-      placeholder: 'E.G: 5%',
-      formData,
-      setFormData
-    }
   }
 ]);
 export default newClientProps2;

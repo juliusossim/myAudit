@@ -367,6 +367,8 @@
   }
 &:hover{
   left: 0;
+  color: $theme-color !important;
+
   right: auto;
   width: 100%;
 }

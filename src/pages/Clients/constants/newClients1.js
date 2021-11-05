@@ -1,69 +1,62 @@
 import React from 'react';
-import { validationPatterns } from '../../../utilities/validation';
-import { CheckboxField } from '../../../components/form/inputs/Checkbox';
+import { designations } from '../../../utilities/dummyData';
 
 const newClientProps1 = (
   {
     formData,
-    setFormData,
     handleBlur,
     handleChange,
-    errors,
-    btnMethod,
-    handleChecked
+    errors
   }
 ) => ([
   {
-    kind: 'tags',
+    kind: 'input',
     props: {
       className: 'w-100 m-b-20 col-12',
-      name: 'director_name',
+      name: 'director_name_alt',
       type: 'text',
-      label: 'List Of Directors Name',
-      helperText: 'Enter each name separated by a comma (,)',
-      placeholder: 'Directors\' Full Names',
-      formData,
-      setFormData
-    }
-  },
-  {
-    kind: 'tags',
-    props: {
-      className: 'w-100 m-b-20 col-12 col-md-6',
-      name: 'director_units_held',
-      type: 'number',
-      label: 'Director\'s Units (%)',
-      placeholder: 'Director\'s Company Shares',
-      formData,
-      setFormData
-    }
-  },
-  {
-    kind: 'tags',
-    props: {
-      className: 'w-100 m-b-20 col-12 col-md-6',
-      name: 'director_designation',
-      type: 'text',
-      label: 'Directors\' Designations',
-      placeholder: 'Directors\' Designations',
-      formData,
-      setFormData
-    }
-  },
-  {
-    kind: 'text_area',
-    props: {
-      className: 'w-100 m-b-20 col-12',
-      name: 'doubts',
-      type: 'text',
-      label: 'Doubts',
-      placeholder: 'State your doubts',
-      value: formData?.doubts || '',
+      label: 'Director Name',
+      placeholder: 'Enter Director Name',
+      value: formData?.director_name || '',
       validations: {
-        required: true,
-        maxLength: 100
+        required: true
       },
-      error: errors?.doubts,
+      error: errors?.director_name,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'input',
+    props: {
+      className: 'w-100 m-b-20 col-12 col-md-6',
+      name: 'director_units_held_alt',
+      metaName: 'direct',
+      meta: { name: 'director_units_held', kind: 'array' },
+      type: 'number',
+      label: 'Director Shares (%)',
+      placeholder: 'Enter Director\'s shares units in percentage',
+      value: formData?.director_units_held_alt || '',
+      validations: {
+        required: true
+      },
+      error: errors?.director_units_held_alt,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'select',
+    props: {
+      className: 'w-100 m-b-20 col-md-6 col-6',
+      name: 'director_designation_alt',
+      meta: { name: 'director_designation', kind: 'array' },
+      label: 'Directors Designation / Position',
+      value: formData?.director_designation_alt || '',
+      options: designations,
+      error: errors?.director_designation_alt,
+      optionIndex: 'type',
+      valueIndex: 'value',
       onBlur: handleBlur,
       onChange: handleChange
     }

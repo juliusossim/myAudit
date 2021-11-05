@@ -43,7 +43,6 @@ const NewEngagementTemp = ({
               <div className="mt-md-1 font-small">
                 &nbsp;
               </div>
-              {console.log({ ...uploads })}
               <div>
                 <button className=" btn" type="button" onClick={create}>Continue</button>
               </div>

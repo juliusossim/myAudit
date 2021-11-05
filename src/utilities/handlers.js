@@ -9,6 +9,7 @@ export const changeHandler = ({
   const {
     name, value, files, apiValue
   } = e?.target;
+  console.log(name);
   if (!_.isEmpty(files)) {
     setCurrentName(name);
     fileUploadMultiple({

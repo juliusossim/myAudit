@@ -1,4 +1,5 @@
 import React from 'react';
+// import uuid from 'react-uuid';
 import TextInput from '../inputs/TextInput';
 import SelectInput from '../inputs/SelectInput';
 import TextareaInput from '../inputs/TextareaInput';
@@ -11,7 +12,6 @@ import FileInputDrop from '../inputs/FileInputDrop';
 
 const FormBuilder = ({ formItems }) => formItems?.map(
   ({ kind, props }, key) => {
-    const uniqueKey = Math.random();
     if (typeof kind !== 'undefined' && typeof kind === 'string') {
       const {
         label,
@@ -55,13 +55,14 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         hidePasswordValidations,
         element,
         formData,
-        uploads
+        uploads,
+        meta
       } = props;
       switch (kind) {
       case 'select':
         return (
           <SelectInput
-            key={label}
+            key={name}
             value={value}
             onChange={onChange}
             onBlur={onBlur}
@@ -85,7 +86,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         );
       case 'custom':
         return (
-          <React.Fragment key={element.name}>
+          <React.Fragment key={name}>
             {
               element
             }
@@ -94,7 +95,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
       case 'tags':
         return (
           <TagsInput
-            key={label}
+            key={name}
             formData={formData}
             setFormData={setFormData}
             className={className}
@@ -108,7 +109,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
       case 'select2':
         return (
           <Select2
-            key={label}
+            key={name}
             value={value}
             onChange={onChange}
             onBlur={onBlur}
@@ -132,7 +133,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
       case 'currency':
         return (
           <CurrencyInput
-            key={label}
+            key={name}
             label={label}
             name={name}
             value={value}
@@ -161,7 +162,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
       case 'date':
         return (
           <DateInput
-            key={label}
+            key={name}
             onChange={onChange}
             onBlur={onBlur}
             disabled={disabled}
@@ -187,7 +188,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
       case 'file_input':
         return (
           <FileInput
-            key={label}
+            key={name}
             value={value}
             file={file}
             removeItem={removeItem}
@@ -209,12 +210,13 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             loading={loading}
             onBlur={onBlur}
             uploads={uploads}
+            helperText={helperText}
           />
         );
       case 'text_area':
         return (
           <TextareaInput
-            key={label}
+            key={name}
             onChange={onChange}
             onBlur={onBlur}
             disabled={disabled}
@@ -232,12 +234,13 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             btnMethod={btnMethod}
             skeleton={skeleton}
             excuseSkeleton={excuseSkeleton}
+            helperText={helperText}
           />
         );
       default:
         return (
           <TextInput
-            key={label}
+            key={name}
             label={label}
             name={name}
             value={value}
@@ -264,6 +267,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
             excuseSkeleton={excuseSkeleton}
             helperText={helperText}
             placeholder={placeholder}
+            meta={meta}
           />
         );
       }

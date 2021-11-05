@@ -31,7 +31,16 @@ const LoginPage = () => {
   const store = useSelector((state) => state.auth.login);
   // let handler;
 
-  useEffect(() => { window.scrollTo(0, 0); }, []);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (localStorage.getItem('authMsg') === 'yes') {
+      notifier({
+        title: 'Locked!',
+        text: 'Authentication Required',
+        type: 'info'
+      });
+    }
+  }, []);
 
   useEffect(() => {
     if (store?.status === 'success') {
@@ -40,6 +49,7 @@ const LoginPage = () => {
         text: 'Logged in successfully',
         type: 'success'
       });
+      localStorage.removeItem('authMsg');
       setTimeout(handleClose, 500);
     }
   }, [store.status]);

@@ -16,10 +16,10 @@ import { useHistory } from 'react-router-dom';
 import ListItem from '@mui/material/ListItem';
 import { AiOutlineLogout, HiChevronLeft, HiChevronRight } from 'react-icons/all';
 import { useDispatch, useSelector } from 'react-redux';
-import { logout, user } from '../../utilities/auth';
+import { doLogin, logout, user } from '../../utilities/auth';
 import { projectAction } from '../../redux/actions/projectActions';
 import { apiOptions } from '../../services/fetch';
-import { notifier, sentenceCaps } from '../../utilities/stringOperations';
+import { notifier, sentenceCaps, stringDoesNotExist } from '../../utilities/stringOperations';
 import useUpdateStore from '../hooks/useUpdateStore';
 
 /**
@@ -177,6 +177,9 @@ const MiniDrawer = ({
 
   return (
     <Box sx={{ display: 'flex' }}>
+      {
+        _.isEmpty(user) && doLogin()
+      }
       <CssBaseline />
       <Box position="fixed" open={open} className="white-header text-theme-faint">
         <Toolbar className="position-relative">

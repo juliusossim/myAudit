@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router';
 import PageTemp from '../../components/temps/PageTemp';
 import { apiOptions } from '../../services/fetch';
 import IndexTemp from './temp/IndexTemp';
 import useViewBoilerPlate from '../../components/hooks/useViewBoilerPlate';
 import DashboardTable from '../../components/tables/dashboardTable';
+import { user } from '../../utilities/auth';
 
 const DashboardIndex = () => {
   const store = useSelector((state) => state.engagement.dashboard);
   const [formData, setFormData] = React.useState({});
+  const { push } = useHistory();
 
   const options = {
     action: 'DASHBOARD',
@@ -18,6 +21,11 @@ const DashboardIndex = () => {
       method: 'get'
     })
   };
+  // useEffect(() => {
+  //   if (user?.is_verified === 0) {
+  //     push('/app/dashboard/complete-registration');
+  //   }
+  // }, []);
   const {
     view, status
   } = useViewBoilerPlate({
