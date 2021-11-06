@@ -139,7 +139,7 @@ const CompleteProfile1 = () => {
                 </div>
               </div>
               <div className="col-md-10 mt-2">
-                <div className="row">
+                <div className="d-flex justify-content-between wrap">
                   <FormBuilder
                     formItems={
                       completeProfile1Props(

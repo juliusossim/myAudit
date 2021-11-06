@@ -81,7 +81,12 @@ const completeProfile1Props = (
       type: 'text',
       label: 'Managing Partner Name',
       placeholder: 'Enter Managing Partner Name',
+      validations: {
+        required: true
+      },
       value: formData?.managing_partner_name || '',
+      error: errors?.managing_partner_name,
+      onBlur: handleBlur,
       onChange: handleChange
     }
   },

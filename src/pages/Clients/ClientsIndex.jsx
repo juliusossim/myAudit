@@ -56,7 +56,7 @@ const ClientIndex = () => {
             <div>
               <NoData
                 link="/app/clients/new-client"
-                name="dashboard"
+                name="clients"
                 title="No Client"
                 text="Create Clients to begin"
                 btnName="Create Client"
