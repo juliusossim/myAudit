@@ -53,7 +53,7 @@
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build && mv build/index.html build/200.html",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -78,10 +78,5 @@
     "eslint-plugin-react-hooks": "^4.1.0",
     "git-scripts": "^0.4.3",
     "surge": "^0.21.7"
-  },
-  "git": {
-    "scripts": {
-      "pre-push": "npm run build && surge --build ./ --domain myaudit.surge.sh"
-    }
   }
 }
