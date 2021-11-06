@@ -225,7 +225,7 @@ const MiniDrawer = ({
         <Divider color="white" />
         <List className="position-relative">
           {menu.map((item) => (
-            <ListItem button key={item.name} className="my-5" onClick={() => handleClick(item)}>
+            <ListItem button key={item.name} className="my-3" onClick={() => handleClick(item)}>
               {
                 item.icon
                 && (
