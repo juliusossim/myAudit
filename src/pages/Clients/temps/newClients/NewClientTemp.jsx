@@ -1,9 +1,13 @@
 import React, { useState } from 'react';
 import NewClientTemp1 from './NewClientTemp1';
+import NewClientTemp3 from './NewClientTemp3';
 import NewClientTemp2 from './NewClientTemp2';
+import FormBuilder from '../../../../components/form/builders/form';
+import newClientProps1 from '../../constants/newClients1';
+import newClientProps2 from '../../constants/newClients2';
 
 const NewClientTemp = ({
-  formData, setFormData, handleChange, errors, handleBlur, create
+  formData, setFormData, handleChange, errors, handleBlur, create, handleChecked
 }) => {
   const [currentPanel, setCurrentPanel] = useState(1);
   return (
@@ -31,6 +35,31 @@ const NewClientTemp = ({
               </div>
               <div className="">
                 <NewClientTemp2
+                  formData={formData}
+                  setFormData={setFormData}
+                  handleChange={handleChange}
+                  errors={errors}
+                  handleBlur={handleBlur}
+                  currentPanel={currentPanel}
+                  setCurrentPanel={setCurrentPanel}
+                />
+              </div>
+              <div className="">
+                <FormBuilder
+                  formItems={
+                    newClientProps2(
+                      {
+                        formData,
+                        handleBlur,
+                        handleChecked,
+                        errors
+                      }
+                    )
+                  }
+                />
+              </div>
+              <div className={formData.is_part_of_group === 1 ? '' : 'd-none'}>
+                <NewClientTemp3
                   formData={formData}
                   setFormData={setFormData}
                   handleChange={handleChange}

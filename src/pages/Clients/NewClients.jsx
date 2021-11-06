@@ -13,10 +13,13 @@ const NewClient = () => {
   /* state */
   const [formData, setFormData] = useState({
     year: new Date(),
-    subsidiary_name_main: [],
-    subsidiary_nature_of_business_main: [],
-    subsidiary_nature_main: [],
-    subsidiary_percentage_holding_main: []
+    subsidiary_name: [],
+    subsidiary_nature_of_business: [],
+    subsidiary_nature: [],
+    subsidiary_percentage_holding: [],
+    director_name: [],
+    director_units_held: [],
+    director_designation: []
   });
   const [errors, setErrors] = useState({});
   const [progress, setProgress] = useState(0);
@@ -28,10 +31,10 @@ const NewClient = () => {
   const store = useSelector((state) => state.engagement);
   const store2 = useSelector((state) => state.users);
   const options = {
-    action: 'CREATE_ENGAGEMENT',
+    action: 'CREATE_CLIENT',
     apiOpts: apiOptions({
-      body: { ...formData, ...uploads, year: new Date(formData.year).getFullYear().toString() },
-      endpoint: 'CREATE_ENGAGEMENT',
+      body: { ...formData },
+      endpoint: 'CREATE_CLIENT',
       auth: true,
       method: 'post'
     })
@@ -75,7 +78,6 @@ const NewClient = () => {
                 handleChange={handleChange}
                 handleChecked={handleChecked}
                 create={create}
-                clients={clients}
               />
             )
         }

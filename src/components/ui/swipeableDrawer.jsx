@@ -49,6 +49,7 @@ const closedMixin = (theme) => ({
     duration: theme.transitions.duration.leavingScreen
   }),
   overflowX: 'hidden',
+  overflowY: 'hidden',
   width: `calc(${theme.spacing(7)} + 1px)`,
   [theme.breakpoints.up('sm')]: {
     width: `calc(${theme.spacing(9)} + 1px)`
@@ -204,7 +205,7 @@ const MiniDrawer = ({
       </Box>
 
       <Drawer variant={variant || 'permanent'} open={open} className="black-drawer">
-        <div className={_.isEmpty(user) ? 'd-none' : 'mb-3'}>
+        <div className={_.isEmpty(user) ? 'd-none' : 'mb-5 pt-2'}>
           <div className="">
             {dp}
           </div>
@@ -224,18 +225,18 @@ const MiniDrawer = ({
         <Divider color="white" />
         <List className="position-relative">
           {menu.map((item) => (
-            <ListItem button key={item.name} className="my-3" onClick={() => handleClick(item)}>
+            <ListItem button key={item.name} className="my-5" onClick={() => handleClick(item)}>
               {
                 item.icon
                 && (
                   <ListItemIcon className={path(`/app/${item.name}`) ? 'text-theme' : 'text-theme-faint'}>
-                    <div className="font-title">
+                    <div className="font-title-small">
                       {item.icon}
                     </div>
                   </ListItemIcon>
                 )
               }
-              <ListItemText className={open ? `${path(`/app/${item.name}`) ? 'text-white' : 'text-pale'} theme-font bold font-title ml-2` : 'd-none'} primary={sentenceCaps(item.name)} />
+              <ListItemText className={open ? `${path(`/app/${item.name}`) ? 'text-white' : 'text-pale'} theme-font font-title ml-2` : 'd-none'} primary={sentenceCaps(item.name)} />
               {/* <List className={open ? 'position-relative mt-5'
                : 'd-none'} style={{ top: '53px', left: '-25px' }}> */}
               {/*  { */}
@@ -265,7 +266,7 @@ const MiniDrawer = ({
           <Divider color="white" />
           <ListItem button onClick={logoutNow}>
             <ListItemIcon className="text-white">
-              <div className="font-title"><AiOutlineLogout /></div>
+              <div className="font-title-small"><AiOutlineLogout /></div>
             </ListItemIcon>
             <ListItemText className={open ? 'text-theme-blue theme-font bold font-title ml-2' : 'd-none'} primary="Logout" />
           </ListItem>

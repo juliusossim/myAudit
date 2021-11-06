@@ -3,16 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { useHistory } from 'react-router';
 import localforage from 'localforage';
-import { login } from '../../redux/actions/authenticationActions';
+import uuid from 'react-uuid';
 import { mapBackendErrors, validateField } from '../../utilities/validation';
 import PageTemp from '../../components/temps/PageTemp';
 import { projectAction, resetAction } from '../../redux/actions/projectActions';
 import { notifier, slugToString } from '../../utilities/stringOperations';
 
 import FormBuilder from '../../components/form/builders/form';
-import registerProps from './constants/register';
-import ListMat from '../../components/ui/listMat';
-import CustomCheckbox from '../../components/form/inputs/CustomCheckbox';
 import CheckboxComp from '../../components/ui/CheckboxComp';
 import completeProfile1Props from './constants/completeProfile1';
 import { apiOptions } from '../../services/fetch';
@@ -40,7 +37,7 @@ const CompleteProfile1 = () => {
         text: 'Profile updated successfully',
         type: 'success'
       });
-      setTimeout(() => push('/app/dashboard'), 500);
+      setTimeout(() => window.location.assign('/app/dashboard'), 500);
     }
   }, [store.status]);
   const completeRegistration = useCallback((data) => {
@@ -122,45 +119,47 @@ const CompleteProfile1 = () => {
         <div className="complete-profile-1 position-relative col-md-5 pt-5">
           <div className="p-3 ml-5">
             <div className="row">
-              <p className="font-header text-theme-black bold theme-font-bold text-theme">
+              <p className="font-header theme-font text-theme">
                 Minimum Requirements to Register as an Auditor
               </p>
               <ul className="neg-m-l-28 mt-5">
                 {
-                  listMatProps.map((item) => (<li className="py-3 list-style-disc text-white">{item}</li>))
+                  listMatProps.map((item) => (<li key={uuid()} className="py-3 font-small list-style-disc text-white">{item}</li>))
                 }
               </ul>
             </div>
           </div>
         </div>
         <div className="col-md-7 pt-5">
-          <div className="row">
-            <div className="pl-3">
-              <div className="font-regular text-theme-grey">
-                Fill the application form below to register
-              </div>
-            </div>
-            <div className="col-md-10 mt-2">
-              <div className="row">
-                <FormBuilder
-                  formItems={
-                    completeProfile1Props(
-                      {
-                        formData,
-                        handleBlur,
-                        handleChange,
-                        errors
-                      }
-                    )
-                  }
-                />
-              </div>
-              <div className="row justify-content-between">
-                <div className="mt-md-1">
-                  <CheckboxComp text={checkboxText} checkboxName="terms" checkboxCallBack={setTerms} clss="font-small" />
+          <div className="offset-1">
+            <div className="row">
+              <div className="pl-3">
+                <div className="font-regular text-theme-grey">
+                  Fill the application form below to register
                 </div>
-                <div>
-                  <button className="w-100 btn btn-small" type="button" onClick={handleLogin}>Continue</button>
+              </div>
+              <div className="col-md-10 mt-2">
+                <div className="row">
+                  <FormBuilder
+                    formItems={
+                      completeProfile1Props(
+                        {
+                          formData,
+                          handleBlur,
+                          handleChange,
+                          errors
+                        }
+                      )
+                    }
+                  />
+                </div>
+                <div className="row justify-content-between">
+                  <div className="mt-md-1 pl-2">
+                    <CheckboxComp text={checkboxText} checkboxName="terms" checkboxCallBack={setTerms} clss="font-small" />
+                  </div>
+                  <div>
+                    <button className="w-100 btn btn-small" type="button" onClick={handleLogin}>Continue</button>
+                  </div>
                 </div>
               </div>
             </div>

@@ -45,9 +45,9 @@ const PageTemp = ({
         break;
 
       default:
-        if (!path('/login') && !path('/register')) {
-          refresh();
-        }
+        // if (!path('/login') && !path('/app/')) {
+        //   refresh();
+        // }
         return notifier({
           title: 'Error Occurred',
           text: message,
@@ -56,7 +56,7 @@ const PageTemp = ({
       }
     }
     if (status === 'success') {
-      if (!_.isEmpty(data)) {
+      if (_.isEmpty(data)) {
         notifier({
           title: 'No content',
           text: message || 'There is no data to display yet',

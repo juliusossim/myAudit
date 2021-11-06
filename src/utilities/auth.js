@@ -78,4 +78,4 @@ export const currentUser = localforage.getItem('user', (err, value) => {
 });
 
 export const user = { ...JSON.parse(localStorage.getItem('user')) };
-export const company = { ...JSON.parse(localStorage.getItem('company')) };
+// export const company = { ...JSON.parse(localStorage.getItem('company')) };

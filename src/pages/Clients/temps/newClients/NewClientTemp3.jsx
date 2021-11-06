@@ -1,35 +1,41 @@
 import React, { useState } from 'react';
 import FormBuilder from '../../../../components/form/builders/form';
-import newClientProps1 from '../../constants/newClients1';
+import newClientProps3 from '../../constants/newClients3';
 import CustomAccordion from '../../../../components/ui/customAccordion';
 
-const NewClientTemp2 = ({
+const NewClientTemp3 = ({
   formData, setFormData, handleChange, errors, handleBlur, currentPanel, setCurrentPanel
 }) => {
   const [subsidiaries, setSubsidiaries] = useState([]);
-  const [currPan, setCurrPan] = useState(0);
+  const [currPan, setCurrPan] = useState(1);
   const addSub = () => {
     setSubsidiaries([
       ...subsidiaries,
       {
-        director_name_main: formData.director_name_alt,
-        director_units_held_main: formData.director_units_held_alt,
-        director_designation_main: formData.director_designation_alt
+        subsidiary_name_main: formData.subsidiary_name_alt,
+        subsidiary_nature_of_business_main: formData.subsidiary_nature_of_business_alt,
+        subsidiary_nature_main: formData.subsidiary_nature_alt,
+        subsidiary_percentage_holding_main: formData.subsidiary_percentage_holding_alt
       }
     ]);
     setFormData({
       ...formData,
-      director_name: [...formData.director_name, formData.director_name_alt],
-      director_units_held:
+      subsidiary_name: [...formData.subsidiary_name, formData.subsidiary_name_alt],
+      subsidiary_nature_of_business:
         [
-          ...formData.director_units_held,
-          formData.director_units_held_alt
+          ...formData.subsidiary_nature_of_business,
+          formData.subsidiary_nature_of_business_alt
         ],
-      director_designation:
-        [...formData.director_designation, formData.director_designation_alt],
-      director_name_alt: '',
-      director_units_held_alt: '',
-      director_designation_alt: ''
+      subsidiary_nature: [...formData.subsidiary_nature, formData.subsidiary_nature_alt],
+      subsidiary_percentage_holding:
+        [
+          ...formData.subsidiary_percentage_holding,
+          formData.subsidiary_percentage_holding_alt
+        ],
+      subsidiary_name_alt: '',
+      subsidiary_nature_of_business_alt: '',
+      subsidiary_nature_alt: '',
+      subsidiary_percentage_holding_alt: ''
     });
   };
   return (
@@ -37,7 +43,7 @@ const NewClientTemp2 = ({
       <CustomAccordion
         data={
           {
-            name: 'Directors',
+            name: 'Subsidiaries',
             details: (
               <div className="">
                 {
@@ -45,11 +51,12 @@ const NewClientTemp2 = ({
                     <div className="px-5">
                       <CustomAccordion
                         data={{
-                          name: <div className="text-theme-blue">{item.director_name_main}</div>,
+                          name: <div className="text-theme-blue">{item.subsidiary_name_main}</div>,
                           details: (
                             <div>
-                              <p>{`Shares: ${item.director_units_held_main} %`}</p>
-                              <p>{`Designation: ${item.director_designation_main}`}</p>
+                              <p>{`Nature: ${item.subsidiary_nature_main}`}</p>
+                              <p>{`Business Nature: ${item.subsidiary_nature_of_business_main}`}</p>
+                              <p>{`Percentage Holding: ${item.subsidiary_percentage_holding_main}`}</p>
                             </div>
                           )
                         }}
@@ -62,7 +69,7 @@ const NewClientTemp2 = ({
                 }
                 <FormBuilder
                   formItems={
-                    newClientProps1(
+                    newClientProps3(
                       {
                         formData,
                         handleBlur,
@@ -73,17 +80,17 @@ const NewClientTemp2 = ({
                   }
                 />
                 <div>
-                  <button type="button" onClick={addSub} className="simple-hover btn text-white">Add Director</button>
+                  <button type="button" onClick={addSub} className="simple-hover btn text-white">Add Subsidiary</button>
                 </div>
               </div>
             )
           }
         }
-        panel={2}
+        panel={3}
         currentPanel={currentPanel}
         setCurrentPanel={setCurrentPanel}
       />
     </div>
   );
 };
-export default NewClientTemp2;
+export default NewClientTemp3;

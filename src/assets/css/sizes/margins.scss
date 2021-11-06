@@ -69,8 +69,8 @@
     top: 40px;
   }
   @include lg {
-    position: absolute;
-    top: 120px;
+    margin: auto;
+    padding-top: 33.3%;
   }
 }
 .login-form-padding {

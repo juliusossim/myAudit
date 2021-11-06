@@ -1053,7 +1053,7 @@ a {
   mix-blend-mode: normal;
   background: url('../images/login/loginBg.svg') no-repeat center;
   @include height-size($screen-sm-min, $screen-xl-min, 550px, 931px);
-  @include width-size($screen-sm-min, $screen-xl-min, 300px, 931px);
+  @include width-size($screen-sm-min, $screen-xl-min, 300px, 950px);
   .login-content {
     @extend .center-vertical;
   }

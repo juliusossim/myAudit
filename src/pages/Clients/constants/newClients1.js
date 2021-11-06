@@ -17,11 +17,11 @@ const newClientProps1 = (
       type: 'text',
       label: 'Director Name',
       placeholder: 'Enter Director Name',
-      value: formData?.director_name || '',
+      value: formData?.director_name_alt || '',
       validations: {
         required: true
       },
-      error: errors?.director_name,
+      error: errors?.director_name_alt,
       onBlur: handleBlur,
       onChange: handleChange
     }

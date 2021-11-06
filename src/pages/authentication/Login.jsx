@@ -33,13 +33,6 @@ const LoginPage = () => {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    if (localStorage.getItem('authMsg') === 'yes') {
-      notifier({
-        title: 'Locked!',
-        text: 'Authentication Required',
-        type: 'info'
-      });
-    }
   }, []);
 
   useEffect(() => {
@@ -108,11 +101,11 @@ const LoginPage = () => {
     <div className=" margin-center m-t-40">
       <div className="box-shadow row">
         <div className="login position-relative col-md-5">
-          <div className="login-content p-0 m-0 p-lg-3 ml-lg-5">
+          <div className="login-content text-center mr-4 p-0 m-0 p-lg-3 ml-lg-5">
             <p className="font-title-small text-theme-black bold theme-font-bold text-theme">
               Fast. Secure. Safe.
             </p>
-            <p className="font-regular text-theme-grey">
+            <p className="font-regular text-white">
               Find peace, life is like a water fall, you’ve gotta flow.
               They will try to close the door on you, just open it.
               The ladies always say Khaled you smell good
@@ -210,7 +203,6 @@ const LoginPage = () => {
     <div className="content m-t-40">
       <PageTemp
         initial={initialTemp({ formData })}
-        view={initialTemp({ formData })}
         setErrors={setErrors}
         action="LOGIN_COMPLETE"
         data={store?.data?.data}

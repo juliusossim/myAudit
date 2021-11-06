@@ -1,10 +1,6 @@
 import React from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { ImSad } from 'react-icons/all';
-import pageNotFound from '../../assets/images/pageNotFound.jpeg';
-import noData1 from '../../assets/images/nodata.png';
 
-const CompletProfile = ({ tryAgain, home }) => (
+const CompletProfile = () => (
   <div className="w-100 m-t-40">
     <div className="max-w-350 margin-center">
       <div className="text-center">
