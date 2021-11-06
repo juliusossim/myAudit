@@ -1,13 +1,28 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { filter } from 'lodash';
+import uuid from 'react-uuid';
+import { AiOutlineDelete, AiOutlineExpandAlt, BsArrowsAngleContract } from 'react-icons/all';
 import FormBuilder from '../../../../components/form/builders/form';
-import newClientProps3 from '../../constants/newClients3';
+import newClientSubsidiariesProps from '../../constants/subsidiaries';
 import CustomAccordion from '../../../../components/ui/customAccordion';
+import { checkRequiredFields } from '../../../../utilities/validation';
 
-const NewClientTemp3 = ({
+const NewClientSubsidiaries = ({
   formData, setFormData, handleChange, errors, handleBlur, currentPanel, setCurrentPanel
 }) => {
   const [subsidiaries, setSubsidiaries] = useState([]);
   const [currPan, setCurrPan] = useState(1);
+  const [submittable, setSubmittable] = useState(false);
+
+  useEffect(() => {
+    setSubmittable(checkRequiredFields([
+      formData.subsidiary_name_alt,
+      formData.subsidiary_nature_of_business_alt,
+      formData.subsidiary_nature_alt,
+      formData.subsidiary_percentage_holding_alt
+    ]));
+  }, [formData]);
+
   const addSub = () => {
     setSubsidiaries([
       ...subsidiaries,
@@ -38,6 +53,30 @@ const NewClientTemp3 = ({
       subsidiary_percentage_holding_alt: ''
     });
   };
+  const removeSub = (e, item) => {
+    e.stopPropagation();
+    const newArr = filter(subsidiaries, (sub) => sub !== item);
+    const nam = [];
+    const natB = [];
+    const nat = [];
+    const uni = [];
+    newArr.map((arr) => {
+      nam.push(arr.subsidiary_name_main);
+      natB.push(arr.subsidiary_nature_of_business_main);
+      nat.push(arr.subsidiary_nature_main);
+      uni.push(arr.subsidiary_percentage_holding_main);
+      return arr;
+    });
+    setFormData({
+      ...formData,
+      subsidiary_name: nam,
+      subsidiary_nature_of_business: natB,
+      subsidiary_nature: nat,
+      subsidiary_percentage_holding: uni
+    });
+    setSubsidiaries(newArr);
+  };
+
   return (
     <div className="">
       <CustomAccordion
@@ -48,7 +87,7 @@ const NewClientTemp3 = ({
               <div className="">
                 {
                   subsidiaries.map((item, index) => (
-                    <div className="px-5">
+                    <div className="px-5" key={uuid()}>
                       <CustomAccordion
                         data={{
                           name: <div className="text-theme-blue">{item.subsidiary_name_main}</div>,
@@ -63,24 +102,33 @@ const NewClientTemp3 = ({
                         panel={index}
                         currentPanel={currPan}
                         setCurrentPanel={setCurrPan}
+                        removeAccordion={(
+                          <button type="button" onClick={(e) => removeSub(e, item)} className="btn-del border-radius-5 text-white">
+                            <AiOutlineDelete />
+                          </button>
+                        )}
+                        expand={<AiOutlineExpandAlt />}
+                        collapse={<BsArrowsAngleContract />}
                       />
                     </div>
                   ))
                 }
-                <FormBuilder
-                  formItems={
-                    newClientProps3(
-                      {
-                        formData,
-                        handleBlur,
-                        handleChange,
-                        errors
-                      }
-                    )
-                  }
-                />
+                <div className="d-flex wrap justify-content-between">
+                  <FormBuilder
+                    formItems={
+                      newClientSubsidiariesProps(
+                        {
+                          formData,
+                          handleBlur,
+                          handleChange,
+                          errors
+                        }
+                      )
+                    }
+                  />
+                </div>
                 <div>
-                  <button type="button" onClick={addSub} className="simple-hover btn text-white">Add Subsidiary</button>
+                  <button type="button" disabled={!submittable} onClick={addSub} className="simple-hover btn text-white">Ok</button>
                 </div>
               </div>
             )
@@ -93,4 +141,4 @@ const NewClientTemp3 = ({
     </div>
   );
 };
-export default NewClientTemp3;
+export default NewClientSubsidiaries;

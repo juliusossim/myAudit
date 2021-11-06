@@ -35,10 +35,9 @@ const newClientProps3 = (
     props: {
       className: 'w-100 m-b-20 col-12 col-md-6',
       name: 'subsidiary_nature_of_business_alt',
-      metaName: 'subsidiary_nature_of_business',
       kind: 'array',
       type: 'text',
-      label: 'Subsidiary Business Nature',
+      label: 'Subsidiary Industry',
       placeholder: 'E.G: Oil & Gas',
       value: formData?.subsidiary_nature_of_business_alt || '',
       validations: {

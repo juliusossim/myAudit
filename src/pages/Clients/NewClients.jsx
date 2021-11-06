@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import _ from 'lodash';
 import { Link } from 'react-router-dom';
 import Loader from '../../components/microComponents/loader';
 import useCreateBoilerPlate from '../../components/hooks/useCreateBoilerPlate';
 import { apiOptions } from '../../services/fetch';
-import { projectAction } from '../../redux/actions/projectActions';
 import NewClientTemp from './temps/newClients/NewClientTemp';
+import { checkRequiredFields } from '../../utilities/validation';
 
 const NewClient = () => {
-  const dispatch = useDispatch();
   /* state */
   const [formData, setFormData] = useState({
-    year: new Date(),
+    is_part_of_group: 0,
+    is_public_entity: 0,
     subsidiary_name: [],
     subsidiary_nature_of_business: [],
     subsidiary_nature: [],
@@ -22,22 +22,59 @@ const NewClient = () => {
     director_designation: []
   });
   const [errors, setErrors] = useState({});
-  const [progress, setProgress] = useState(0);
-  const [currentName, setCurrentName] = useState(0);
-  const [clients, setClients] = useState([]);
-  const [uploads, setUploads] = useState({});
+  const [submittable, setSubmittable] = useState(false);
 
+  useEffect(() => {
+    if (formData.is_part_of_group === 0) {
+      setSubmittable(checkRequiredFields([
+        formData.director_name,
+        formData.director_units_held,
+        formData.director_designation,
+        formData.nature_of_business,
+        formData.phone,
+        formData.email,
+        formData.address,
+        formData.registered_address,
+        formData.doubts
+      ]));
+    } else {
+      setSubmittable(checkRequiredFields([
+        formData.director_name,
+        formData.director_units_held,
+        formData.director_designation,
+        formData.nature_of_business,
+        formData.phone,
+        formData.email,
+        formData.address,
+        formData.registered_address,
+        formData.doubts,
+        formData.subsidiary_nature_of_business,
+        formData.subsidiary_nature,
+        formData.subsidiary_percentage_holding
+      ]));
+    }
+  }, [formData]);
   /* redux */
-  const store = useSelector((state) => state.engagement);
-  const store2 = useSelector((state) => state.users);
-  const options = {
-    action: 'CREATE_CLIENT',
-    apiOpts: apiOptions({
-      body: { ...formData },
-      endpoint: 'CREATE_CLIENT',
-      auth: true,
-      method: 'post'
-    })
+  const store = useSelector((state) => state.users.newClient);
+
+  const options = () => {
+    const opt = {};
+    if (formData.is_part_of_group === 0) {
+      opt.subsidiary_nature_of_business = [];
+      opt.subsidiary_nature = [];
+      opt.subsidiary_percentage_holding = [];
+    }
+    return (
+      {
+        action: 'CREATE_CLIENT',
+        apiOpts: apiOptions({
+          body: { ...formData, ...opt },
+          endpoint: 'CREATE_CLIENT',
+          auth: true,
+          method: 'post'
+        })
+      }
+    );
   };
   const {
     handleBlur, handleChange, status, handleChecked, create, data, backErrors, message
@@ -46,12 +83,10 @@ const NewClient = () => {
     formData,
     setErrors,
     errors,
-    options,
-    store: store.engagement,
-    setProgress,
-    setCurrentName,
-    action: 'CREATE_ENGAGEMENT',
-    redirect: '/app/engagements'
+    options: options(),
+    store,
+    action: 'CREATE_CLIENT_COMPLETE',
+    redirect: '/app/clients'
   });
 
   return (
@@ -78,6 +113,7 @@ const NewClient = () => {
                 handleChange={handleChange}
                 handleChecked={handleChecked}
                 create={create}
+                disabled={submittable}
               />
             )
         }

@@ -9,7 +9,7 @@ import useBoilerPlate from './useBoilerPlate';
 const useCreateBoilerPlate = ({
   store, formData, setFormData, setErrors, options, errors, redirect, setProgress, setCurrentName
 }) => {
-  const { push } = useHistory();
+  const { goBack, push } = useHistory();
   const dispatch = useDispatch();
   const {
     backErrors, message
@@ -28,7 +28,7 @@ const useCreateBoilerPlate = ({
         title: 'Success'
       });
       !_.isEmpty(data)
-      && push(redirect);
+      && (goBack() || push(redirect));
     }
     if (status === 'failed') {
       notifier({

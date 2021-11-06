@@ -51,7 +51,7 @@ const newClientProps1 = (
       className: 'w-100 m-b-20 col-md-6 col-6',
       name: 'director_designation_alt',
       meta: { name: 'director_designation', kind: 'array' },
-      label: 'Directors Designation / Position',
+      label: 'Directors Designation',
       value: formData?.director_designation_alt || '',
       options: designations,
       error: errors?.director_designation_alt,

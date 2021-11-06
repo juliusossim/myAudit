@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import NewClientTemp1 from './NewClientTemp1';
-import NewClientTemp3 from './NewClientTemp3';
-import NewClientTemp2 from './NewClientTemp2';
+import NewClientBasicData from './NewClientBasicData';
+import NewClientSubsidiaries from './NewClientSubsidiaries';
+import NewClientDirectors from './NewClientDirectors';
 import FormBuilder from '../../../../components/form/builders/form';
-import newClientProps1 from '../../constants/newClients1';
-import newClientProps2 from '../../constants/newClients2';
+import newClientProps1 from '../../constants/directors';
+import newClientProps2 from '../../constants/checkBoxes';
 
 const NewClientTemp = ({
-  formData, setFormData, handleChange, errors, handleBlur, create, handleChecked
+  formData, setFormData, handleChange, errors, handleBlur, create, handleChecked, disabled
 }) => {
   const [currentPanel, setCurrentPanel] = useState(1);
   return (
@@ -23,7 +23,7 @@ const NewClientTemp = ({
           <div className="row">
             <div className="col-md-10 offset-1 mt-2">
               <div className="">
-                <NewClientTemp1
+                <NewClientBasicData
                   formData={formData}
                   setFormData={setFormData}
                   handleChange={handleChange}
@@ -34,7 +34,7 @@ const NewClientTemp = ({
                 />
               </div>
               <div className="">
-                <NewClientTemp2
+                <NewClientDirectors
                   formData={formData}
                   setFormData={setFormData}
                   handleChange={handleChange}
@@ -59,7 +59,7 @@ const NewClientTemp = ({
                 />
               </div>
               <div className={formData.is_part_of_group === 1 ? '' : 'd-none'}>
-                <NewClientTemp3
+                <NewClientSubsidiaries
                   formData={formData}
                   setFormData={setFormData}
                   handleChange={handleChange}
@@ -74,7 +74,7 @@ const NewClientTemp = ({
                   &nbsp;
                 </div>
                 <div className="my-3">
-                  <button className=" btn" type="button" onClick={create}>Create Client</button>
+                  <button className="text-white btn" type="button" disabled={!disabled} onClick={create}>Create Client</button>
                 </div>
               </div>
             </div>

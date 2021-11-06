@@ -103,31 +103,6 @@ export const canSubmit = (obj, error, setSubmittable, dataLength) => {
     }
   }
 };
-/**
- * disables a button or notify of an error
- * @param stringFields {array}
- * @param amount {number}
- * @param numbFields {array}
- * @param errors {object}
- * @param less {boolean}
- */
-export const shouldDisable = ({
-  stringFields, amount, numbFields, errors, less
-}) => {
-  let errorTest; let amtTest;
-  if (_.isEmpty(errors)) {
-    errorTest = stringFields.some((item) => _.isEmpty(item));
-  } else if (!_.isEmpty(stringFields)) {
-    errorTest = stringFields.some((item) => Object.keys(errors).includes(item));
-  }
-  if (!_.isEmpty(numbFields)) {
-    const thresholdTest = (amt) => (less
-      ? amt < amount
-      : amt > amount);
-    amtTest = numbFields.every(thresholdTest);
-  }
-  return !!(errorTest || amtTest);
-};
 
 export const noErrors = (errors) => {
   const threshold = (amt) => _.isEmpty(amt);
