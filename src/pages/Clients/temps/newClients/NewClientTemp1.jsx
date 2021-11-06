@@ -16,18 +16,20 @@ const NewClientTemp1 = ({
           {
             name: 'Client Basic Info',
             details: (
-              <FormBuilder
-                formItems={
-                  newClientProps(
-                    {
-                      formData,
-                      handleBlur,
-                      handleChange,
-                      errors
-                    }
-                  )
-                }
-              />
+              <div className="d-flex justify-content-between wrap">
+                <FormBuilder
+                  formItems={
+                    newClientProps(
+                      {
+                        formData,
+                        handleBlur,
+                        handleChange,
+                        errors
+                      }
+                    )
+                  }
+                />
+              </div>
             )
           }
         }

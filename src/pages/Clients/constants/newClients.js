@@ -12,7 +12,7 @@ const newClientProps = (
   {
     kind: 'input',
     props: {
-      className: 'w-100 m-b-20 col-12 col-md-8',
+      className: 'w-100 m-b-20 col-12 col-md-6',
       name: 'name',
       type: 'text',
       label: 'Client Name',
@@ -29,7 +29,7 @@ const newClientProps = (
   {
     kind: 'input',
     props: {
-      className: 'w-100 m-b-20 col-12 col-md-4',
+      className: 'w-100 m-b-20 col-12 col-md-6',
       name: 'nature_of_business',
       type: 'text',
       label: 'Business Nature',
