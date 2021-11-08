@@ -23,9 +23,26 @@ const newEngagementProps = (
   }
 ) => ([
   {
+    kind: 'input',
+    props: {
+      className: 'w-100 m-b-20 col-8',
+      name: 'name',
+      type: 'text',
+      label: 'Engagement Name',
+      placeholder: 'Enter Engagement Name',
+      value: formData?.name || '',
+      validations: {
+        required: true
+      },
+      error: errors?.name,
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
     kind: 'select2',
     props: {
-      className: 'w-100 m-b-20 pr-3 col-12 col-md-8',
+      className: 'w-100 m-b-20 pr-3 col-4',
       name: 'client',
       label: 'Select Client',
       options: clients,
@@ -48,7 +65,7 @@ const newEngagementProps = (
           <p className="theme-font text-theme-black">Select Year</p>
           <DatePicker
             selected={formData.year}
-            className="border-faint p-2 border-radius-5"
+            className="border-faint border-radius-5 theme-padding"
             name="year"
             onChange={(date) => handleDateChange({ date, name: 'year' })}
             showYearPicker
@@ -63,24 +80,7 @@ const newEngagementProps = (
   {
     kind: 'input',
     props: {
-      className: 'w-100 m-b-20 col-12 col-md-8',
-      name: 'name',
-      type: 'text',
-      label: 'Engagement Name',
-      placeholder: 'Enter Engagement Name',
-      value: formData?.name || '',
-      validations: {
-        required: true
-      },
-      error: errors?.name,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
-    kind: 'input',
-    props: {
-      className: 'w-100 m-b-20 col-12 col-md-4',
+      className: 'w-100 m-b-20 col-12 col-md-7',
       name: 'staff_power',
       type: 'number',
       label: 'Staff Power',
@@ -181,227 +181,9 @@ const newEngagementProps = (
         label="Have contacted "
         name="first_time"
         handleChecked={handleChecked}
-        className="w-100 m-b-20 col-12 col-md-6"
+        className="w-100 m-b-20 col-12 col-md-6 "
         checked={formData?.is_public_entity}
       />
-    }
-  },
-  {
-    kind: 'file_input',
-    props: {
-      className: 'w-100 m-b-20',
-      name: 'appointment_letter',
-      label: 'Appointment Letter',
-      text: 'Add Media',
-      value: formData?.appointment_letter || '',
-      file: formData?.file || '',
-      multiple,
-      removeItem,
-      setFormData,
-      progress,
-      uploads: uploads.appointment_letter,
-      loading: loadingMedia,
-      validations: {
-        required: true,
-        pattern: validationPatterns.image
-      },
-      error: errors?.appointment_letter,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
-    kind: 'file_input',
-    props: {
-      className: 'w-100 m-b-20',
-      name: 'contacted_previous_auditor',
-      label: 'Contacted Previous Auditor',
-      text: 'Add Media',
-      value: formData?.contacted_previous_auditor || '',
-      file: formData?.file || '',
-      multiple,
-      removeItem,
-      setFormData,
-      progress,
-      uploads: uploads.contacted_previous_auditor,
-      loading: loadingMedia,
-      validations: {
-        required: true,
-        pattern: validationPatterns.image
-      },
-      error: errors?.contacted_previous_auditor,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
-    kind: 'file_input',
-    props: {
-      className: 'w-100 m-b-20',
-      name: 'previous_auditor_response',
-      label: 'Previous Auditor Response',
-      text: 'Add Media',
-      value: formData?.previous_auditor_response || '',
-      file: formData?.file || '',
-      multiple,
-      removeItem,
-      setFormData,
-      progress,
-      uploads: uploads.previous_auditor_response,
-      loading: loadingMedia,
-      validations: {
-        required: true,
-        pattern: validationPatterns.image
-      },
-      error: errors?.previous_auditor_response,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
-    kind: 'file_input',
-    props: {
-      className: 'w-100 m-b-20',
-      name: 'engagement_letter',
-      label: 'Engagement Letter',
-      text: 'Add Media',
-      value: formData?.engagement_letter || '',
-      file: formData?.engagement_letter || '',
-      multiple,
-      removeItem,
-      setFormData,
-      progress,
-      uploads: uploads.engagement_letter,
-      loading: loadingMedia,
-      validations: {
-        required: true,
-        pattern: validationPatterns.image
-      },
-      error: errors?.engagement_letter,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
-    kind: 'file_input',
-    props: {
-      className: 'w-100 m-b-20',
-      name: 'other_audit_opinion',
-      label: 'Other Audit Opinion',
-      text: 'Add Media',
-      value: formData?.other_audit_opinion || '',
-      file: formData?.file || '',
-      multiple,
-      removeItem,
-      setFormData,
-      progress,
-      uploads: uploads.other_audit_opinion,
-      loading: loadingMedia,
-      validations: {
-        required: true,
-        pattern: validationPatterns.image
-      },
-      error: errors?.other_audit_opinion,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-
-  {
-    kind: 'file_input',
-    props: {
-      className: 'w-100 m-b-20',
-      name: 'previous_year_management_letter',
-      label: 'Previous Year Management',
-      text: 'Add Media',
-      value: formData?.previous_year_management_letter || '',
-      file: formData?.file || '',
-      multiple,
-      removeItem,
-      setFormData,
-      progress,
-      uploads: uploads.previous_year_management_letter,
-      loading: loadingMedia,
-      validations: {
-        required: true,
-        pattern: validationPatterns.image
-      },
-      error: errors?.previous_year_management_letter,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-
-  {
-    kind: 'file_input',
-    props: {
-      className: 'w-100 m-b-20',
-      name: 'previous_year_asf',
-      label: 'Previous Year ASF',
-      text: 'Add Media',
-      value: formData?.previous_year_asf || '',
-      file: formData?.file || '',
-      multiple,
-      removeItem,
-      setFormData,
-      progress,
-      uploads: uploads.previous_year_asf,
-      loading: loadingMedia,
-      validations: {
-        required: true,
-        pattern: validationPatterns.image
-      },
-      error: errors?.previous_year_asf,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
-    kind: 'file_input',
-    props: {
-      className: 'w-100 m-b-20',
-      name: 'previous_audit_review',
-      label: 'Previous Audit Review',
-      text: 'Add Media',
-      value: formData?.previous_audit_review || '',
-      file: formData?.file || '',
-      multiple,
-      removeItem,
-      setFormData,
-      progress,
-      uploads: uploads.previous_audit_review,
-      loading: loadingMedia,
-      validations: {
-        required: true,
-        pattern: validationPatterns.image
-      },
-      error: errors?.previous_audit_review,
-      // onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
-    kind: 'file_input',
-    props: {
-      className: 'w-100 m-b-20',
-      name: 'previous_audit_opinion',
-      label: 'Previous Audit Opinion',
-      text: 'Add Media',
-      value: formData?.previous_audit_opinion || '',
-      file: formData?.file || '',
-      multiple,
-      removeItem,
-      setFormData,
-      progress,
-      uploads: uploads.previous_audit_opinion,
-      loading: loadingMedia,
-      validations: {
-        required: true,
-        pattern: validationPatterns.image
-      },
-      error: errors?.previous_audit_opinion,
-      onBlur: handleBlur,
-      onChange: handleChange
     }
   }
 

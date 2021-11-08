@@ -4,7 +4,7 @@ import { isEmpty } from 'lodash';
 import { Link, useHistory } from 'react-router-dom';
 import Loader from '../../components/microComponents/loader';
 import useCreateBoilerPlate from '../../components/hooks/useCreateBoilerPlate';
-import NewEngagementTemp from './temps/NewEngagementTemp';
+import NewEngagementTemp from './temps/newEngagement/NewEngagementTemp';
 import { notifier } from '../../utilities/stringOperations';
 import useUpdateStore from '../../components/hooks/useUpdateStore';
 import useStoreParams from '../../components/hooks/useStoreParams';
@@ -15,7 +15,7 @@ const NewEngagement = () => {
   const dispatch = useDispatch();
   const { push } = useHistory();
   /* state */
-  const [formData, setFormData] = useState({ first_year: false, year: new Date() });
+  const [formData, setFormData] = useState({ first_time: 0, year: new Date() });
   const [errors, setErrors] = useState({});
   const [progress, setProgress] = useState(0);
   const [currentName, setCurrentName] = useState(0);
@@ -163,6 +163,7 @@ const NewEngagement = () => {
             : (
               <NewEngagementTemp
                 formData={formData}
+                setFormData={setFormData}
                 errors={errors}
                 handleBlur={handleBlur}
                 handleChange={handleChange}
@@ -172,6 +173,7 @@ const NewEngagement = () => {
                 loadingMedia={uploadsStore.status}
                 // removeItem={removeItem}
                 progress={progress}
+                setProgress={setProgress}
                 clients={clients}
                 handleDateChange={handleDateChange}
               />

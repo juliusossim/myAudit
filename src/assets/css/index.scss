@@ -1099,3 +1099,20 @@ a {
     border: 2px solid #3f51b5;
   }
 }
+.dropzone {
+  text-align: center;
+  padding: 20px;
+  border: 3px dashed #eeeeee;
+  background-color: #fafafa;
+  color: #bdbdbd;
+
+  margin-bottom: 20px;
+}
+.margin-auto {
+  margin: auto;
+}
+.check-displace {
+  position: absolute;
+  bottom: 0;
+  right: -23%;
+}

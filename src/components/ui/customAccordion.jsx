@@ -6,7 +6,7 @@ const CustomAccordion = ({
   data, removeAccordion, panel, currentPanel, setCurrentPanel, className, collapse, expand
 }) => {
   const handleClick = () => {
-    setCurrentPanel(panel === currentPanel ? 1 : panel);
+    setCurrentPanel(panel === currentPanel ? 0 : panel);
   };
   return (
     <Box className={`${className} custom-card`}>
