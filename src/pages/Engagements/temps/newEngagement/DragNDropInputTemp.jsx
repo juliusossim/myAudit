@@ -6,6 +6,7 @@ import DragNDropFileInput from '../../../../components/form/inputs/fileInput/Dra
 import useStoreParams from '../../../../components/hooks/useStoreParams';
 import { uploadMedia } from '../../../../redux/actions/projectActions';
 import { QuillEditorBubble } from '../../../../components/ui/richText';
+import { notifier } from '../../../../utilities/stringOperations';
 
 const DragNDropTemp = ({
   formData, setFormData, name, label, setProgress
@@ -14,12 +15,11 @@ const DragNDropTemp = ({
   const store = useSelector((state) => state.engagement.uploads);
   const { status, data, backErrors } = useStoreParams(store);
   const [isFile, setIsFile] = useState(false);
-
   const handleData = (files) => {
     files.map((file) => dispatch(
       uploadMedia(
         {
-          file, setProgress
+          file, setProgress, name
         }
       )
     ));
@@ -28,7 +28,7 @@ const DragNDropTemp = ({
     if (status === 'success') {
       setFormData({
         ...formData,
-        [name]: data.url
+        [data.name]: data.url
       });
     }
   }, [status]);
@@ -36,7 +36,7 @@ const DragNDropTemp = ({
     <div className="">
       <label htmlFor={name}>{label}</label>
       <div className={isFile ? '' : 'd-none'}>
-        <DragNDropFileInput handleData={handleData} label={label} />
+        <DragNDropFileInput name={name} handleData={handleData} label={label} />
       </div>
       <div className={isFile ? 'd-none' : ''}>
         <QuillEditorBubble

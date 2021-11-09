@@ -5,6 +5,7 @@ import Card from '@material-ui/core/Card';
 import TextInput from './TextInput';
 import Chip from '../../ui/chip';
 import { sentenceCaps } from '../../../utilities/stringOperations';
+import { available } from '../../../utilities/arrayOperations';
 
 const Select2 = (
   {
@@ -14,16 +15,13 @@ const Select2 = (
     className,
     onChange,
     onBlur,
-    disabled,
     validations,
     error,
     options,
     optionIndex,
     valueIndex,
     titleIndex,
-    multi,
-    skeleton,
-    excuseSkeleton
+    multi
   }
 ) => {
   const [searchTerm, setSearchterm] = React.useState('');
@@ -33,15 +31,17 @@ const Select2 = (
   const [selectedOptions, setSelectedOptions] = React.useState([]);
   const [multiOptions, setMultiOptions] = React.useState([]);
   const [show, setShow] = React.useState(false);
-  const [edit, setEdit] = React.useState(false);
+  // const [edit, setEdit] = React.useState(false);
 
-  useEffect(() => searchTerm?.length > 2 && setSearchResults(available()), [searchTerm, options]);
+  useEffect(() => searchTerm?.length > 2
+    && setSearchResults(available(options, searchTerm, optionIndex)),
+  [searchTerm, options]);
   useEffect(() => {
     if (searchResults?.length > 0) {
       return setSelectOptions(searchResults);
     }
     return setSelectOptions(options);
-  }, [searchResults, options]);
+  }, [searchResults, options, searchTerm]);
   useEffect(() => setSelectedOption(value), [value]);
 
   const handleChange = (e) => {
@@ -72,7 +72,8 @@ const Select2 = (
     setSelectedOptions([...temp]);
     setMultiOptions(basket);
     setSearchterm('');
-    setEdit(false);
+    setSearchResults([]);
+    // setEdit(false);
     onChange({
       target: {
         name,
@@ -81,11 +82,6 @@ const Select2 = (
       }
     });
   };
-
-  const available = () => options?.filter((option) => {
-    const temp = option.constructor === Object ? option[optionIndex] : option;
-    return temp?.toLowerCase()?.includes(searchTerm?.toLowerCase());
-  });
 
   const optionsProp = selectOptions?.map((option) => (
     typeof option === 'object'
@@ -111,7 +107,7 @@ const Select2 = (
           key={option}
           title={option}
         >
-          <Button name={name} className="font-09 text-wema btn-plain text-success no-border text-hover-white" onClick={() => handleSelect(option)}>
+          <Button name={name} className="font-tiny text-theme btn-plain text-success no-border text-hover-white" onClick={() => handleSelect(option)}>
             {
               selectedOption === option
               && <IoCheckmark />
@@ -123,10 +119,10 @@ const Select2 = (
 
   return (
     <div
-      className={`${className} form-group`}
+      className={`${error?.length > 0 ? `${className}` : `${className}`} `}
       onMouseEnter={() => {
         setShow(true);
-        setEdit(true);
+        // setEdit(true);
       }}
       onMouseLeave={() => setShow(false)}
     >
@@ -145,12 +141,14 @@ const Select2 = (
             </div>
           )
           : (
-            <TextInput
-              name={name}
-              value={selectedOption}
-              readOnly
-              onChange={() => value}
-            />
+            <div className="">
+              <TextInput
+                name={name}
+                value={selectedOption}
+                readOnly
+                onChange={() => value}
+              />
+            </div>
           )
       }
 

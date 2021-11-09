@@ -1,9 +1,7 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { validationPatterns } from '../../../utilities/validation';
-import { profileType } from '../../../utilities/dummyData';
-import { CheckboxField } from '../../../components/form/inputs/Checkbox';
+import { accountingStandards, auditingStandards } from '../../../utilities/dummyData';
 
 const newEngagementProps = (
   {
@@ -40,7 +38,7 @@ const newEngagementProps = (
     }
   },
   {
-    kind: 'select2',
+    kind: 'select',
     props: {
       className: 'w-100 m-b-20 pr-3 col-4',
       name: 'client',
@@ -48,7 +46,7 @@ const newEngagementProps = (
       options: clients,
       optionIndex: 'name',
       valueIndex: 'id',
-      value: formData?.client || '',
+      value: formData?.client || [],
       validations: {
         required: false
       },
@@ -60,8 +58,9 @@ const newEngagementProps = (
   {
     kind: 'custom',
     props: {
+      key: 'year_key',
       element: (
-        <div key="year" className="w-100 col-12 col-md-4 mt-2">
+        <div className="w-100 col-12 col-md-4 mt-2">
           <p className="theme-font text-theme-black">Select Year</p>
           <DatePicker
             selected={formData.year}
@@ -98,7 +97,7 @@ const newEngagementProps = (
       name: 'auditing_standard',
       label: 'Select Auditing Standard',
       value: formData?.auditing_standard || '',
-      options: profileType,
+      options: auditingStandards,
       validations: {
         required: true
       },
@@ -116,7 +115,7 @@ const newEngagementProps = (
       name: 'accounting_standard',
       label: 'Select Accounting Standard',
       value: formData?.accounting_standard || '',
-      options: profileType,
+      options: accountingStandards,
       validations: {
         required: true
       },
@@ -171,19 +170,6 @@ const newEngagementProps = (
       error: errors?.partner_skill,
       onBlur: handleBlur,
       onChange: handleChange
-    }
-  },
-  {
-    kind: 'custom',
-    props: {
-      element: <CheckboxField
-        key="have"
-        label="Have contacted "
-        name="first_time"
-        handleChecked={handleChecked}
-        className="w-100 m-b-20 col-12 col-md-6 "
-        checked={formData?.is_public_entity}
-      />
     }
   }
 

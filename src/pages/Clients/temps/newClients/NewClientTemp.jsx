@@ -18,9 +18,9 @@ const NewClientTemp = ({
         </div>
       </div>
 
-      <div className="box-shadow row ">
+      <div className="box-shadow ">
         <div className="pt-5">
-          <div className="row">
+          <div className="d-flex wrap justify-content-between">
             <div className="col-md-10 offset-1 mt-2">
               <div className="">
                 <NewClientBasicData

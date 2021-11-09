@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
+import uuid from 'react-uuid';
 import _ from 'lodash';
 import { styled, useTheme } from '@mui/material/styles';
 import Box from '@mui/material/Box';
@@ -184,18 +185,6 @@ const MiniDrawer = ({
       <CssBaseline />
       <Box position="fixed" open={open} className="white-header text-theme-faint">
         <Toolbar className="position-relative">
-          {/* <IconButton */}
-          {/*  color="inherit" */}
-          {/*  aria-label="open drawer" */}
-          {/*  onClick={handleDrawerOpen} */}
-          {/*  edge="start" */}
-          {/*  sx={{ */}
-          {/*    marginRight: '36px', */}
-          {/*    ...(open && { display: 'none' }) */}
-          {/*  }} */}
-          {/* > */}
-          {/*  <IoMenuOutline /> */}
-          {/* </IconButton> */}
           <DrawerHeader className="">
             <IconButton onClick={handleDrawerClose} className="text-theme">
               {open ? <HiChevronLeft style={{ position: 'absolute', left: '200px' }} /> : <HiChevronRight style={{ position: 'absolute', left: '36px' }} />}
@@ -225,7 +214,7 @@ const MiniDrawer = ({
         <Divider color="white" />
         <List className="position-relative">
           {menu.map((item) => (
-            <ListItem button key={item.name} className="my-2" onClick={() => handleClick(item)}>
+            <ListItem button key={uuid()} className="my-2" onClick={() => handleClick(item)}>
               {
                 item.icon
                 && (
@@ -237,30 +226,6 @@ const MiniDrawer = ({
                 )
               }
               <ListItemText className={open ? `${path(`/app/${item.name}`) ? 'text-white' : 'text-pale'} theme-font font-title ml-2` : 'd-none'} primary={sentenceCaps(item.name)} />
-              {/* <List className={open ? 'position-relative mt-5'
-               : 'd-none'} style={{ top: '53px', left: '-25px' }}> */}
-              {/*  { */}
-              {/*    item.children.map((child) => ( */}
-              {/*      <ListItem button key={child.name} onClick={() => handleClick(child)}> */}
-              {/*        { */}
-              {/*          child.icon */}
-              {/*          && ( */}
-              {/*            <ListItemIcon className={child.to ===
-               history.location.pathname ? 'text-theme' : 'text-theme-faint'}> */}
-              {/*              <div className="font-regular"> */}
-              {/*                {child.icon} */}
-              {/*              </div> */}
-              {/*            </ListItemIcon> */}
-              {/*          ) */}
-              {/*        } */}
-              {/*        <ListItemText className={open ? `${child.to ===
-               history.location.pathname
-               ? 'text-theme-blue' : 'text-pale'} theme-font bold font-small ml-2` :
-                'd-none'} primary={child.name} /> */}
-              {/*      </ListItem> */}
-              {/*    )) */}
-              {/*  } */}
-              {/* </List> */}
             </ListItem>
           ))}
           <Divider color="white" />

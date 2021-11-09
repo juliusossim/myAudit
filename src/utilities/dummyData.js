@@ -401,6 +401,36 @@ export const profileType = [
     value: 1
   }
 ];
+export const accountingStandards = [
+  'select item...',
+  {
+    id: 1,
+    type: 'standard',
+    desc: 'corporate project',
+    value: 2
+  },
+  {
+    id: 3,
+    type: 'advance',
+    desc: 'individual project',
+    value: 1
+  }
+];
+export const auditingStandards = [
+  'select item...',
+  {
+    id: 1,
+    type: 'routine',
+    desc: 'corporate project',
+    value: 2
+  },
+  {
+    id: 3,
+    type: 'intensive',
+    desc: 'individual project',
+    value: 1
+  }
+];
 export const managers = [
   'select a manager',
   {

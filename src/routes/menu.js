@@ -13,66 +13,22 @@ const miniMenu = [
   {
     name: 'dashboard',
     icon: <RiDashboardLine />,
-    to: '/app/dashboard',
-    children: [
-      {
-        parent: 'dashboard',
-        name: 'dashboard',
-        icon: <RiDashboardLine />,
-        to: '/dashboard'
-      },
-      {
-        parent: 'dashboard',
-        name: 'Complete Profile',
-        icon: <RiDashboardLine />,
-        to: '/complete-registration'
-      },
-      {
-        parent: 'dashboard',
-        name: 'Send Invite',
-        icon: <RiDashboardLine />,
-        to: '/send-invite'
-      }
-    ]
+    to: '/app/dashboard'
   },
   {
     name: 'engagement',
     icon: <BsFolder />,
-    to: '/app/engagement',
-    children: [
-      {
-        parent: 'engagement',
-        name: 'New engagement',
-        icon: <BsFolder />,
-        to: '/new-engagement'
-      }
-    ]
+    to: '/app/engagement'
   },
   {
     name: 'team',
     icon: <MdPersonOutline />,
-    to: '/app/team',
-    children: [
-      {
-        parent: 'Team Members',
-        name: 'New engagement',
-        icon: <BsFolder />,
-        to: '/new-engagement'
-      }
-    ]
+    to: '/app/team'
   },
   {
     name: 'settings',
     icon: <RiSettings2Line />,
-    to: '/app/settings',
-    children: [
-      {
-        parent: 'Settings',
-        name: 'New engagement',
-        icon: <BsFolder />,
-        to: '/new-engagement'
-      }
-    ]
+    to: '/app/settings'
   },
   {
     name: 'clients',
@@ -82,15 +38,7 @@ const miniMenu = [
   {
     name: 'notifications',
     icon: <MdNotificationsNone />,
-    to: '/app/notifications',
-    children: [
-      {
-        parent: 'Notifications',
-        name: 'New engagement',
-        icon: <BsFolder />,
-        to: '/new-engagement'
-      }
-    ]
+    to: '/app/notifications'
   },
   {
     name: 'home',

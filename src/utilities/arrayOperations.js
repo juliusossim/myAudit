@@ -7,4 +7,7 @@ export const findItem = (arr, index, indexVal) => {
   });
 };
 
-export const item = '';
+export const available = (data, searchTerm, index) => data?.filter((option) => {
+  const temp = option.constructor === Object ? option[index] : option;
+  return temp?.toLowerCase()?.includes(searchTerm?.toLowerCase());
+});

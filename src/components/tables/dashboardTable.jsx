@@ -39,7 +39,6 @@ export default function DashboardTable({ data }) {
       name, date, client, members, status, action
     };
   }
-  console.log(data);
   const rows = data?.map((item) => createData(
     item?.name, item?.year, item?.client?.name, item?.staff_power, item?.status
   ));

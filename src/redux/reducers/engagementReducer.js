@@ -121,6 +121,40 @@ const engagementReducer = (state = initialState, { type, response, error }) => {
       }
     };
 
+  case constants.CREATE_ENGAGEMENT_PENDING:
+    return {
+      ...state,
+      newEngagement: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.CREATE_ENGAGEMENT_COMPLETE:
+    return {
+      ...state,
+      newEngagement: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.CREATE_ENGAGEMENT_SUCCESS:
+    return {
+      ...state,
+      newEngagement: {
+        ...state.newEngagement,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.CREATE_ENGAGEMENT_FAILURE:
+    return {
+      ...state,
+      newEngagement: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
   case constants.ENGAGEMENTS_PENDING:
     return {
       ...state,

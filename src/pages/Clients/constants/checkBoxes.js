@@ -12,6 +12,7 @@ const newClientProps2 = (
   {
     kind: 'custom',
     props: {
+      key: 'is_public_key',
       element: <CheckboxField
         label="It's a Public Company"
         name="is_public_entity"
@@ -24,6 +25,7 @@ const newClientProps2 = (
   {
     kind: 'custom',
     props: {
+      key: 'is_part_of_group_key',
       element: <CheckboxField
         label="It's part of a group"
         name="is_part_of_group"

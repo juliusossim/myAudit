@@ -181,13 +181,13 @@ export const index = () => {
   };
 };
 
-export const uploadMedia = ({ file, setProgress }) => {
+export const uploadMedia = ({ file, setProgress, name }) => {
   const request = (req) => ({ type: constants.UPLOAD_MEDIA_PENDING, request: req });
   const success = (response) => ({ type: constants.UPLOAD_MEDIA_SUCCESS, response });
   const failure = (error) => ({ type: constants.UPLOAD_MEDIA_FAILURE, error });
   const formData = new FormData();
   formData.append('document', file);
-  console.log(formData);
+  formData.append('name', name);
   return async (dispatch) => {
     const res = post({
       endpoint: 'PROJECT_MEDIA',

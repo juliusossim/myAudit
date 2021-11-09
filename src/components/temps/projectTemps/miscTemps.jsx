@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import uuid from 'react-uuid';
 import ProgressBar from '../../microComponents/circularProgress';
 import {
   dragHandler,
@@ -69,7 +70,7 @@ export const InfoBarTemp = ({ data }) => (
   <div className="row">
     {
       data.map((item) => (
-        <div className="col-md-3 mt-2 col-6">
+        <div className="col-md-3 mt-2 col-6" key={uuid()}>
           <div className=" bg-white p-2 border-radius-5">
             <p className="font-small theme-font text-theme-faint">{item.title}</p>
             <p className="theme-font pt-3 pl-1 pb-2 theme-font font-title text-theme-black">{item.val}</p>

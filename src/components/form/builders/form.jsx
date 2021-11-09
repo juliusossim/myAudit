@@ -11,7 +11,7 @@ import TagsInput from '../inputs/ArrayInput';
 import FileInputDrop from '../inputs/FileInputDrop';
 
 const FormBuilder = ({ formItems }) => formItems?.map(
-  ({ kind, props }, key) => {
+  ({ kind, props }, ind) => {
     if (typeof kind !== 'undefined' && typeof kind === 'string') {
       const {
         label,
@@ -56,7 +56,8 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         element,
         formData,
         uploads,
-        meta
+        meta,
+        key
       } = props;
       switch (kind) {
       case 'select':
@@ -86,7 +87,7 @@ const FormBuilder = ({ formItems }) => formItems?.map(
         );
       case 'custom':
         return (
-          <React.Fragment key={name}>
+          <React.Fragment key={key}>
             {
               element
             }
