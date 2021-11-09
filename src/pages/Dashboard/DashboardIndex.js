@@ -64,7 +64,7 @@ const DashboardIndex = () => {
           infoBarData={infoBarData}
           header="recent engagement"
           link={{ name: '+ new engagement', to: '/app/engagement/new-engagement' }}
-          parent="engagement"
+          parent="dashboard"
           table={<DashboardTable data={formData.engagements} />}
         />
       )}

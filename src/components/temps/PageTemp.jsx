@@ -55,15 +55,15 @@ const PageTemp = ({
         });
       }
     }
-    if (status === 'success') {
-      if (_.isEmpty(data)) {
-        notifier({
-          title: 'No content',
-          text: message || 'There is no data to display yet',
-          type: 'info'
-        });
-      }
-    }
+    // if (status === 'success') {
+    //   if (_.isEmpty(data)) {
+    //     notifier({
+    //       title: 'No content',
+    //       text: message || 'There is no data to display yet',
+    //       type: 'info'
+    //     });
+    //   }
+    // }
     return false;
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [status]);
