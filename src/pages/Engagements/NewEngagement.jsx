@@ -19,7 +19,7 @@ const NewEngagement = () => {
   const [errors, setErrors] = useState({});
   const [progress, setProgress] = useState(0);
   const [currentName, setCurrentName] = useState(0);
-  const [clients, setClients] = useState([]);
+  const [clients, setClients] = useState(['select a client']);
   const [uploads, setUploads] = useState({});
 
   /* redux */
@@ -38,7 +38,7 @@ const NewEngagement = () => {
     handleBlur, handleChange, status, handleChecked, create, data, backErrors, message
   } = useCreateBoilerPlate({
     setFormData,
-    formData,
+    formData: { ...formData, client: parseInt(formData.client, 10) },
     setErrors,
     errors,
     options,
@@ -127,7 +127,7 @@ const NewEngagement = () => {
         const clientsData = store2.data?.data?.clients.map(({ id, name }) => ({
           name, id
         }));
-        setClients(clientsData);
+        setClients([...clients, ...clientsData]);
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
