@@ -41,16 +41,16 @@ const newEngagementProps = (
     kind: 'select',
     props: {
       className: 'w-100 m-b-20 pr-3 col-4',
-      name: 'client',
+      name: 'client_id',
       label: 'Select Client',
       options: clients,
       optionIndex: 'name',
       valueIndex: 'id',
-      value: formData?.client || [],
+      value: formData?.client_id || [],
       validations: {
         required: false
       },
-      error: errors?.client,
+      error: errors?.client_id,
       onBlur: handleBlur,
       onChange: handleChange
     }

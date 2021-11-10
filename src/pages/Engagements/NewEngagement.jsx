@@ -38,14 +38,14 @@ const NewEngagement = () => {
     handleBlur, handleChange, status, handleChecked, create, data, backErrors, message
   } = useCreateBoilerPlate({
     setFormData,
-    formData: { ...formData, client: parseInt(formData.client, 10) },
+    formData,
     setErrors,
     errors,
     options,
     store: store.newEngagement,
     setProgress,
     setCurrentName,
-    action: 'CREATE_ENGAGEMENT',
+    action: 'CREATE_ENGAGEMENT_COMPLETE',
     redirect: '/app/engagements'
   });
   const uploadsStore = useStoreParams(store.uploads);
