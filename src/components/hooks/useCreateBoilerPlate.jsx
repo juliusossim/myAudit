@@ -22,6 +22,7 @@ const useCreateBoilerPlate = ({
   });
   React.useEffect(() => {
     if (status === 'success') {
+      // pushUpdates();
       notifier({
         type: 'success',
         text: 'Created successfully',

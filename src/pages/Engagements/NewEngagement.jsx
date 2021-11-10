@@ -45,7 +45,7 @@ const NewEngagement = () => {
     store: store.newEngagement,
     setProgress,
     setCurrentName,
-    action: 'CREATE_ENGAGEMENT_COMPLETE',
+    action: 'CREATE_ENGAGEMENT',
     redirect: '/app/engagements'
   });
   const uploadsStore = useStoreParams(store.uploads);
@@ -134,6 +134,18 @@ const NewEngagement = () => {
   }, [store2?.status]);
 
   React.useEffect(() => {
+    if (status === 'success') {
+      pushUpdates([
+        {
+          data: store?.engagements?.data?.data,
+          action: 'ENGAGEMENTS_COMPLETE'
+        },
+        {
+          data,
+          action: 'CREATE_ENGAGEMENT_COMPLETE'
+        }
+      ], dispatch);
+    }
     if (status === 'failed') {
       notifier({
         title: 'Failed',
@@ -142,7 +154,7 @@ const NewEngagement = () => {
       });
       setErrors(backErrors);
       pushUpdates([{
-        data: store2?.data,
+        data,
         action: 'CREATE_ENGAGEMENT_COMPLETE'
       }], dispatch);
     }
