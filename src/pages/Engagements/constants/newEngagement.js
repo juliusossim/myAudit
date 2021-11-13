@@ -61,7 +61,7 @@ const newEngagementProps = (
       key: 'year_key',
       element: (
         <div className="w-100 col-12 col-md-4 mt-2">
-          <p className="theme-font text-theme-black">Select Year</p>
+          <p className="theme-font text-theme-black">Select Audit Year</p>
           <DatePicker
             selected={formData.year}
             className="border-faint border-radius-5 theme-padding"
@@ -76,20 +76,20 @@ const newEngagementProps = (
       )
     }
   },
-  {
-    kind: 'input',
-    props: {
-      className: 'w-100 m-b-20 col-12 col-md-7',
-      name: 'staff_power',
-      type: 'number',
-      label: 'Staff Power',
-      placeholder: 'Enter Staff Power',
-      value: formData?.staff_power || '',
-      error: errors?.staff_power,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
+  // {
+  //   kind: 'input',
+  //   props: {
+  //     className: 'w-100 m-b-20 col-12 col-md-7',
+  //     name: 'staff_power',
+  //     type: 'number',
+  //     label: 'Staff Power',
+  //     placeholder: 'Enter Staff Power',
+  //     value: formData?.staff_power || '',
+  //     error: errors?.staff_power,
+  //     onBlur: handleBlur,
+  //     onChange: handleChange
+  //   }
+  // },
   {
     kind: 'select',
     props: {
@@ -126,52 +126,52 @@ const newEngagementProps = (
       onChange: handleChange
     }
   },
-  {
-    kind: 'text_area',
-    props: {
-      className: 'w-100 m-b-20 col-12',
-      name: 'members_dependence',
-      type: 'text',
-      label: 'Explain Member Dependence',
-      placeholder: 'Explain Team affiliation ',
-      value: formData?.members_dependence || '',
-      validations: {
-        required: true,
-        maxLength: 100
-      },
-      error: errors?.members_dependence,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
-    kind: 'input',
-    props: {
-      className: 'w-100 m-b-20 col-12 col-md-6',
-      name: 'external_expert',
-      type: 'text',
-      label: 'External Expert',
-      placeholder: 'Enter External Expert',
-      value: formData?.external_expert || '',
-      error: errors?.external_expert,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  },
-  {
-    kind: 'input',
-    props: {
-      className: 'w-100 m-b-20 col-12 col-md-6',
-      name: 'partner_skill',
-      type: 'text',
-      label: 'Partner Skill',
-      placeholder: 'Enter Partner Skill',
-      value: formData?.partner_skill || '',
-      error: errors?.partner_skill,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
-  }
+  // {
+  //   kind: 'text_area',
+  //   props: {
+  //     className: 'w-100 m-b-20 col-12',
+  //     name: 'members_dependence',
+  //     type: 'text',
+  //     label: 'Explain Member Dependence',
+  //     placeholder: 'Explain Team affiliation ',
+  //     value: formData?.members_dependence || '',
+  //     validations: {
+  //       required: true,
+  //       maxLength: 100
+  //     },
+  //     error: errors?.members_dependence,
+  //     onBlur: handleBlur,
+  //     onChange: handleChange
+  //   }
+  // },
+  // {
+  //   kind: 'input',
+  //   props: {
+  //     className: 'w-100 m-b-20 col-12 col-md-6',
+  //     name: 'external_expert',
+  //     type: 'text',
+  //     label: 'External Expert',
+  //     placeholder: 'Enter External Expert',
+  //     value: formData?.external_expert || '',
+  //     error: errors?.external_expert,
+  //     onBlur: handleBlur,
+  //     onChange: handleChange
+  //   }
+  // },
+  // {
+  //   kind: 'input',
+  //   props: {
+  //     className: 'w-100 m-b-20 col-12 col-md-6',
+  //     name: 'partner_skill',
+  //     type: 'text',
+  //     label: 'Partner Skill',
+  //     placeholder: 'Enter Partner Skill',
+  //     value: formData?.partner_skill || '',
+  //     error: errors?.partner_skill,
+  //     onBlur: handleBlur,
+  //     onChange: handleChange
+  //   }
+  // }
 
 ]);
 export default newEngagementProps;

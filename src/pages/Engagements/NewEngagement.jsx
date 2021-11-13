@@ -15,7 +15,7 @@ const NewEngagement = () => {
   const dispatch = useDispatch();
   const { push } = useHistory();
   /* state */
-  const [formData, setFormData] = useState({ first_time: 0, year: new Date() });
+  const [formData, setFormData] = useState({ is_public_entity: 0, year: new Date(), external_expert: 0 });
   const [errors, setErrors] = useState({});
   const [progress, setProgress] = useState(0);
   const [currentName, setCurrentName] = useState(0);
