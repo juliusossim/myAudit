@@ -125,7 +125,7 @@ const newEngagementProps = (
       onBlur: handleBlur,
       onChange: handleChange
     }
-  },
+  }
   // {
   //   kind: 'text_area',
   //   props: {
