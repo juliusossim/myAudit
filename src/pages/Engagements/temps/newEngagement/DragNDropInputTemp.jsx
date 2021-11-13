@@ -36,7 +36,12 @@ const DragNDropTemp = ({
     <div className="">
       <label htmlFor={name}>{label}</label>
       <div className={isFile ? '' : 'd-none'}>
-        <DragNDropFileInput name={name} handleData={handleData} label={label} />
+        <DragNDropFileInput
+          name={name}
+          handleData={handleData}
+          label={label}
+          uploaded={formData[data?.name]}
+        />
       </div>
       <div className={isFile ? 'd-none' : ''}>
         <QuillEditorBubble
