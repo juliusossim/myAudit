@@ -25,6 +25,7 @@ export const slugToString = (slug, dash = '_') => {
     i += 1;
   }
   const text = result.join(' ');
+  text.replace('alt', '');
   return text.replace('id', '');
 };
 /**
@@ -159,3 +160,44 @@ export const replacedName = (name, apiValue) => {
   }
   return {};
 };
+
+export const removeCommas = (str) => !stringDoesNotExist(str) && str.replace(/[^\d.]/g, '');
+
+/**
+ *removes comas (,) and converts to integers.
+ * especially used to convert currency amount to numbers
+ * @param {string}  amount: the string to convert to number.
+ * @returns {number}.
+ */
+export const formatDonation = (amount) => Number(removeCommas(amount));
+
+/**
+ *splits full name to first, middle, and last names.
+ * @param {string}  fullName: the string to spit.
+ * @returns {alert || object}.
+ */
+export const splitFullName = (fullName) => {
+  if (stringDoesNotExist(fullName)) {
+    return notifier({
+      type: 'error',
+      title: 'Empty Full Name',
+      text: 'Please Enter Your Full Name'
+    });
+  }
+  const arr = fullName.split(' ');
+  let result = {
+    firstName: _.head(arr),
+    lastName: _.last(arr)
+  };
+  if (arr.length > 2) {
+    result = { ...result, middleName: arr[1] };
+  }
+  return result;
+};
+
+/**
+ *gets full name from first, middle, and last names.
+ * @param {string}  names: array of names.
+ * @returns {alert || object}.
+ */
+export const makeFullName = (names) => names.join(' ');

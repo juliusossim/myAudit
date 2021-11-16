@@ -23,7 +23,7 @@ const newEngagementProps = (
   {
     kind: 'input',
     props: {
-      className: 'w-100 m-b-20 col-8',
+      className: 'w-100 m-b-20 col-12',
       name: 'name',
       type: 'text',
       label: 'Engagement Name',
@@ -38,9 +38,31 @@ const newEngagementProps = (
     }
   },
   {
+    kind: 'custom',
+    props: {
+      key: 'year_key',
+      element: (
+        <div className="w-100 col-12 col-md-6 mt-2">
+          <p className="theme-font text-theme-black">Select Audit Year</p>
+          <DatePicker
+            style={{ width: '100%' }}
+            selected={formData.year}
+            className="border-faint border-radius-5 theme-padding w-100"
+            name="year"
+            onChange={(date) => handleDateChange({ date, name: 'year' })}
+            showYearPicker
+            dateFormat="yyyy"
+            yearItemNumber={9}
+            dropdownMode="select"
+          />
+        </div>
+      )
+    }
+  },
+  {
     kind: 'select',
     props: {
-      className: 'w-100 m-b-20 pr-3 col-4',
+      className: 'w-100 m-b-20 pr-3 col-12 col-md-6',
       name: 'client_id',
       label: 'Select Client',
       options: clients,
@@ -53,27 +75,6 @@ const newEngagementProps = (
       error: errors?.client_id,
       onBlur: handleBlur,
       onChange: handleChange
-    }
-  },
-  {
-    kind: 'custom',
-    props: {
-      key: 'year_key',
-      element: (
-        <div className="w-100 col-12 col-md-4 mt-2">
-          <p className="theme-font text-theme-black">Select Audit Year</p>
-          <DatePicker
-            selected={formData.year}
-            className="border-faint border-radius-5 theme-padding"
-            name="year"
-            onChange={(date) => handleDateChange({ date, name: 'year' })}
-            showYearPicker
-            dateFormat="yyyy"
-            yearItemNumber={9}
-            dropdownMode="select"
-          />
-        </div>
-      )
     }
   },
   // {

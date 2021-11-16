@@ -24,7 +24,7 @@ import { apiOptions } from '../../../services/fetch';
 import FormBuilder from '../../../components/form/builders/form';
 import donationProps from './constants/donationProps';
 import {
-  camelToString, localStringToNumber, notifier, stringDoesNotExist
+  camelToString, formatDonation, localStringToNumber, notifier, splitFullName, stringDoesNotExist
 } from '../../../utilities/stringOperations';
 import { validateField } from '../../../utilities/validation';
 import Poster1 from '../../../components/temps/projectTemps/poster1';
@@ -129,32 +129,6 @@ const Donate = () => {
     }
   }, [store.paymentInitiate?.status]);
 
-  const formatDonation = (amount) => {
-    let formattedAmount = amount;
-    if (amount !== undefined && typeof amount === 'string') {
-      const targetAmount = () => amount.replace(/[^\d.]/g, '');
-      formattedAmount = Number(targetAmount());
-    }
-    return formattedAmount;
-  };
-  const splitFullName = (fullName) => {
-    if (stringDoesNotExist(fullName)) {
-      return notifier({
-        type: 'error',
-        title: 'Empty Full Name',
-        text: 'Please Enter Your Full Name'
-      });
-    }
-    const arr = fullName.split(' ');
-    let result = {
-      firstName: _.head(arr),
-      lastName: _.last(arr)
-    };
-    if (arr.length > 2) {
-      result = { ...result, middleName: arr[1] };
-    }
-    return result;
-  };
   const customerName = (fullName) => splitFullName(fullName);
   // eslint-disable-next-line no-undef
   const popup = () => window.Alatpay !== undefined && Alatpay?.setup({

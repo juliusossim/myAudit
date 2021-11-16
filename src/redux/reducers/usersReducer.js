@@ -20,6 +20,10 @@ const initialState = {
   editClient: {
     data: {},
     status: 'initial'
+  },
+  users: {
+    data: {},
+    status: 'initial'
   }
 };
 
@@ -54,6 +58,40 @@ const usersReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       clients: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.USERS_PENDING:
+    return {
+      ...state,
+      users: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.USERS_COMPLETE:
+    return {
+      ...state,
+      users: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.USERS_SUCCESS:
+    return {
+      ...state,
+      users: {
+        ...state.users,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.USERS_FAILURE:
+    return {
+      ...state,
+      users: {
         data: error || {},
         status: 'failed'
       }

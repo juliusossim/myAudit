@@ -42,7 +42,7 @@ export default function DashboardTable({ data }) {
   const rows = data?.map((item) => createData(
     item?.name, item?.year, item?.client?.name, item?.staff_power, item?.status
   ));
-  const handleRow = (row) => push({ pathname: `/app/view/${row.name}/${row.id}` });
+  const handleRow = (row) => push({ pathname: `/app/engagement/planning/${row.name}/${row.year}/${row.id}` });
 
   return (
     <TableContainer component={Box}>

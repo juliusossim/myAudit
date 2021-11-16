@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import Loader from '../../components/microComponents/loader';
 import useCreateBoilerPlate from '../../components/hooks/useCreateBoilerPlate';
 import NewEngagementTemp from './temps/newEngagement/NewEngagementTemp';
@@ -10,26 +10,30 @@ import useUpdateStore from '../../components/hooks/useUpdateStore';
 import useStoreParams from '../../components/hooks/useStoreParams';
 import { apiOptions } from '../../services/fetch';
 import { projectAction } from '../../redux/actions/projectActions';
+import PlanningTemp from './temps/planning/PlanningTemp';
 
 const NewEngagement = () => {
   const dispatch = useDispatch();
   const { push } = useHistory();
+  const { id, engagementName, year } = useParams();
   /* state */
-  const [formData, setFormData] = useState({ first_time: 0, year: new Date(), external_expert: 0 });
+  const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   const [progress, setProgress] = useState(0);
   const [currentName, setCurrentName] = useState(0);
-  const [clients, setClients] = useState(['select a client']);
+  const [users, setUsers] = useState(['select a client']);
   const [uploads, setUploads] = useState({});
 
   /* redux */
   const store = useSelector((state) => state.engagement);
-  const store2 = useSelector((state) => state.users.clients);
+  const store2 = useSelector((state) => state.users.users);
   const options = {
-    action: 'CREATE_ENGAGEMENT',
+    action: 'PLANNING',
     apiOpts: apiOptions({
       body: { ...formData, ...uploads, year: new Date(formData.year).getFullYear().toString() },
-      endpoint: 'CREATE_ENGAGEMENT',
+      endpoint: 'ENGAGEMENT',
+      param: id,
+      afterParam: 'plannings',
       auth: true,
       method: 'post'
     })
@@ -45,17 +49,17 @@ const NewEngagement = () => {
     store: store.newEngagement,
     setProgress,
     setCurrentName,
-    action: 'CREATE_ENGAGEMENT',
-    redirect: '/app/engagements'
+    action: 'PLANNING'
+    // redirect: '/app/engagements'
   });
   const uploadsStore = useStoreParams(store.uploads);
   const pushUpdates = useUpdateStore;
-  const pullClients = React.useCallback(() => {
+  const pullUsers = React.useCallback(() => {
     dispatch(projectAction(
       {
-        action: 'CLIENTS',
+        action: 'USERS',
         routeOptions: apiOptions({
-          endpoint: 'CLIENTS',
+          endpoint: 'USERS',
           auth: true,
           method: 'get'
         })
@@ -84,13 +88,6 @@ const NewEngagement = () => {
       ], dispatch);
     }
     if (uploadsStore.status === 'success') {
-      // if (!_.isEmpty(uploads[currentName])) {
-      //   // images?.pop();
-      //   setUploads({
-      //     ...uploads,
-      //     [currentName]: [...uploads[currentName], uploadsStore.data]
-      //   });
-      // } else {
       setUploads({
         ...uploads,
         [currentName]: uploadsStore.data.url
@@ -101,7 +98,7 @@ const NewEngagement = () => {
   }, [uploadsStore.status]);
   React.useEffect(() => {
     if (store2?.status === 'initial') {
-      pullClients();
+      pullUsers();
     }
     if (store2?.status === 'failed') {
       notifier({
@@ -116,19 +113,19 @@ const NewEngagement = () => {
       }], dispatch);
     }
     if (store2?.status === 'success') {
-      if (isEmpty(store2?.data?.data.clients)) {
-        notifier({
-          title: 'No Clients',
-          text: 'Please create a client for this engagement',
-          type: 'info'
-        });
-        push('/app/clients/new-client');
-      } else {
-        const clientsData = store2.data?.data?.clients.map(({ id, name }) => ({
-          name, id
-        }));
-        setClients([...clients, ...clientsData]);
-      }
+      // if (isEmpty(store2?.data?.data.users)) {
+      // notifier({
+      //   title: 'No Clients',
+      //   text: 'Please create a client for this engagement',
+      //   type: 'info'
+      // });
+      // push('/app/dashboard/invite-user');
+      // } else {
+      const usersData = store2.data?.data?.users.map((item) => ({
+        name: item
+      }));
+      setUsers([...users, ...usersData]);
+      // }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store2?.status]);
@@ -142,20 +139,20 @@ const NewEngagement = () => {
         },
         {
           data,
-          action: 'CREATE_ENGAGEMENT_COMPLETE'
+          action: 'PLANNING_COMPLETE'
         }
       ], dispatch);
     }
     if (status === 'failed') {
       notifier({
         title: 'Failed',
-        text: message || 'failed to create engagement',
+        text: message || 'failed to create planning',
         type: 'error'
       });
       setErrors(backErrors);
       pushUpdates([{
         data,
-        action: 'CREATE_ENGAGEMENT_COMPLETE'
+        action: 'PLANNING_COMPLETE'
       }], dispatch);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -168,12 +165,13 @@ const NewEngagement = () => {
   return (
     <div className="">
       <div className="d-flex ml-4 custom-top-bar justify-content-between">
-        <div className="text-theme-black bold">
-          ENGAGEMENT
+        <div className="">
+          <span className="theme-font-bold text-theme-black mr-1">{engagementName}</span>
+          <span className="theme-font-bold text-theme-black mr-1">{`- ${year}`}</span>
         </div>
         <div>
-          <Link to="/app/engagement/" className="text-theme-blue mr-1">Engagement</Link>
-          <span className="text-theme-black">/ New Engagement</span>
+          <Link to="/app/engagement/" className="text-theme-blue mr-1">Engagements</Link>
+          <span className="text-theme-black">/ Engagement</span>
         </div>
       </div>
       <div className="content">
@@ -181,7 +179,7 @@ const NewEngagement = () => {
           status === 'pending'
             ? <Loader />
             : (
-              <NewEngagementTemp
+              <PlanningTemp
                 formData={formData}
                 setFormData={setFormData}
                 errors={errors}
@@ -191,11 +189,9 @@ const NewEngagement = () => {
                 create={create}
                 uploads={uploads}
                 loadingMedia={uploadsStore.status}
-                // removeItem={removeItem}
                 progress={progress}
                 setProgress={setProgress}
-                clients={clients}
-                handleDateChange={handleDateChange}
+                users={users}
               />
             )
         }

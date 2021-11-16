@@ -4,7 +4,7 @@ import { HiOutlineArrowNarrowLeft, HiOutlineArrowNarrowRight } from 'react-icons
 import { Link } from 'react-router-dom';
 import localforage from 'localforage';
 import FormBuilder from '../../components/form/builders/form';
-import formBuilderIndividualProps from './constants/registration/registerIndividual';
+import registerUserProps from './constants/registration/registerUser';
 import formBuilderCorporateProps from './constants/registration/registerCorporate';
 import formBuilderProps from './constants/registration/register';
 import {
@@ -245,7 +245,7 @@ const RegisterPage = () => {
               && (
                 <FormBuilder
                   formItems={
-                    formBuilderIndividualProps(
+                    registerUserProps(
                       {
                         formData,
                         handleBlur,

@@ -58,22 +58,24 @@ const NewEngagementTemp = ({
                             label="Engagement Letter"
                             setProgress={setProgress}
                           />
-                          <CheckboxField
-                            key="have"
-                            label="Audit Requires External Expert"
-                            name="external_expert"
-                            handleChecked={handleChecked}
-                            className="w-100 neg-m-l-20 col-md-6 mt-3"
-                            checked={formData?.external_expert}
-                          />
-                          <CheckboxField
-                            key="have"
-                            label="Client Have Audit History"
-                            name="first_time"
-                            handleChecked={handleChecked}
-                            className="w-100 neg-m-l-20 col-md-6 mt-3"
-                            checked={formData?.is_public_entity}
-                          />
+                          <div className="d-flex ml-3">
+                            <CheckboxField
+                              key="have"
+                              label="Audit Requires External Expert"
+                              name="external_expert"
+                              handleChecked={handleChecked}
+                              className="w-100 neg-m-l-20 col-md-6 mt-3"
+                              checked={formData?.external_expert}
+                            />
+                            <CheckboxField
+                              key="have"
+                              label="Client Have Audit History"
+                              name="first_time"
+                              handleChecked={handleChecked}
+                              className="w-100 neg-m-l-20 col-md-6 mt-3"
+                              checked={formData?.is_public_entity}
+                            />
+                          </div>
                         </div>
                       </div>
                     )

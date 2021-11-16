@@ -1,5 +1,5 @@
 export const me = '/Profiles/me';
-export const projectByPublishStatus = '/Projects/byPublishStatus/';
+export const users = '/users/';
 export const getProfile = '/Profiles';
 export const personalAccounts = '/Verification/personal/accounts';
 export const editPersonalAccount = '/Verification/personal/account';

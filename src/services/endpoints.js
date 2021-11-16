@@ -42,6 +42,9 @@ const paths = {
   PAYMENT_COMPLETE: paymentEndpoints.paymentsComplete,
   USER_TRANSACTIONS: paymentEndpoints.userTransactions,
 
+  // users
+  USERS: profileEndpoints.users,
+
   // profile
   ME: profileEndpoints.me,
   PERSONAL_ACCOUNTS: profileEndpoints.personalAccounts,

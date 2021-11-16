@@ -28,8 +28,8 @@ const useCreateBoilerPlate = ({
         text: 'Created successfully',
         title: 'Success'
       });
-      !_.isEmpty(data)
-      && (goBack() || push(redirect));
+      // !_.isEmpty(data)
+      // && (goBack() || push(redirect));
     }
     if (status === 'failed') {
       notifier({

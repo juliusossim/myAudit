@@ -48,6 +48,10 @@ const initialState = {
   uploads: {
     data: {},
     status: 'initial'
+  },
+  planning: {
+    data: {},
+    status: 'initial'
   }
 };
 
@@ -422,6 +426,40 @@ const engagementReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       uploads: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.PLANNING_PENDING:
+    return {
+      ...state,
+      planning: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.PLANNING_COMPLETE:
+    return {
+      ...state,
+      planning: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.PLANNING_SUCCESS:
+    return {
+      ...state,
+      planning: {
+        ...state.planning,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.PLANNING_FAILURE:
+    return {
+      ...state,
+      planning: {
         data: error || {},
         status: 'failed'
       }

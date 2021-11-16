@@ -1,6 +1,7 @@
 import React from 'react';
 import { validationPatterns } from '../../../utilities/validation';
 import { CheckboxField } from '../../../components/form/inputs/Checkbox';
+import { designations } from '../../../utilities/dummyData';
 
 const newClientProps3 = (
   {
@@ -10,6 +11,22 @@ const newClientProps3 = (
     errors
   }
 ) => ([
+  // {
+  //   kind: 'select',
+  //   props: {
+  //     className: 'w-100 m-b-20 col-md-6 col-12',
+  //     name: '',
+  //     meta: { name: 'director_designation', kind: 'array' },
+  //     label: 'Directors Designation',
+  //     value: formData?.director_designation_alt || '',
+  //     options: designations,
+  //     error: errors?.director_designation_alt,
+  //     optionIndex: 'type',
+  //     valueIndex: 'value',
+  //     onBlur: handleBlur,
+  //     onChange: handleChange
+  //   }
+  // },
   {
     kind: 'input',
     props: {

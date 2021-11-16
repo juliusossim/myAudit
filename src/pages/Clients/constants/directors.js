@@ -48,7 +48,7 @@ const newClientProps1 = (
   {
     kind: 'select',
     props: {
-      className: 'w-100 m-b-20 col-md-6 col-6',
+      className: 'w-100 m-b-20 col-md-6 col-12',
       name: 'director_designation_alt',
       meta: { name: 'director_designation', kind: 'array' },
       label: 'Directors Designation',

@@ -5,6 +5,14 @@ const initialState = {
     data: {},
     status: 'initial'
   },
+  inviteUser: {
+    data: {},
+    status: 'initial'
+  },
+  invitedUser: {
+    data: {},
+    status: 'initial'
+  },
   verifyIndividual: {
     data: {},
     status: 'initial'
@@ -57,6 +65,14 @@ const authenticationReducer = (state = initialState, { type, response, error }) 
         status: 'pending'
       }
     };
+  case constants.REGISTER_COMPLETE:
+    return {
+      ...state,
+      register: {
+        data: {},
+        status: 'initial'
+      }
+    };
   case constants.REGISTER_SUCCESS:
     return {
       ...state,
@@ -70,6 +86,58 @@ const authenticationReducer = (state = initialState, { type, response, error }) 
     return {
       ...state,
       register: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.INVITE_USER_PENDING:
+    return {
+      ...state,
+      inviteUser: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.INVITE_USER_SUCCESS:
+    return {
+      ...state,
+      inviteUser: {
+        ...state.inviteUser,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.INVITE_USER_FAILURE:
+    return {
+      ...state,
+      inviteUser: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.REGISTER_INVITED_USER_PENDING:
+    return {
+      ...state,
+      invitedUser: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.REGISTER_INVITED_USER_SUCCESS:
+    return {
+      ...state,
+      invitedUser: {
+        ...state.invitedUser,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.REGISTER_INVITED_USER_FAILURE:
+    return {
+      ...state,
+      invitedUser: {
         data: error || {},
         status: 'failed'
       }

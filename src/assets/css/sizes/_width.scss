@@ -66,6 +66,21 @@
     max-width: 750px!important;
   }
 }
+.max-w-850 {
+  max-width: 475px!important;
+  @include sm {
+    max-width: 555px!important;
+  }
+  @include md {
+    max-width: 690px!important;
+  }
+  @include lg {
+    max-width: 790px!important;
+  }
+  @include xl {
+    max-width: 850px!important;
+  }
+}
 .max-w-300 {
 
   @include lg {

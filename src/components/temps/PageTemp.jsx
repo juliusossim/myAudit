@@ -2,11 +2,13 @@ import React, { useEffect } from 'react';
 import _ from 'lodash';
 import { useHistory } from 'react-router';
 import { useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
 import Loader from '../microComponents/loader';
 import { notifier, stringDoesNotExist } from '../../utilities/stringOperations';
 import { resetAction } from '../../redux/actions/projectActions';
 import NoData from '../../pages/authentication/NoData';
 import useRefresh from '../hooks/useRefresh';
+import { noDataSvg } from '../../utilities/dummyData';
 
 const PageTemp = ({
   status, data, message, errors, view, setErrors, action, initial, isPending, retry, redirect
@@ -33,21 +35,7 @@ const PageTemp = ({
       }
 
       /* conditionally render notifiers and page refresh */
-      switch (history.location.pathname) {
-      case '/home':
-        break;
-      case '/explore':
-        notifier({
-          title: 'Error Occurred',
-          text: message,
-          type: 'error'
-        });
-        break;
-
-      default:
-        // if (!path('/login') && !path('/app/')) {
-        //   refresh();
-        // }
+      if (history.location.pathname !== '/home') {
         return notifier({
           title: 'Error Occurred',
           text: message,
@@ -93,18 +81,26 @@ const PageTemp = ({
         }
         {
           status === 'failed' && retry && (
-            <div className="content">
-              <div className="theme-font mr-3">
-                <p className="font-title text-danger">
-                  Failed to load content.
-                </p>
-              </div>
-              <button className="btn" type="button" onClick={retry}>Try again</button>
-              <div className="row">
-                <small className="text-theme-sub wrap">
-                  The network resources failed to connect.
-                  Click on the Try Again button above to retry loading this content.
-                </small>
+            <div className="content center-vertical-2 text-center">
+              <div className="row justify-content-center">
+                <div className="">
+                  <div>
+                    {noDataSvg}
+                  </div>
+                  <div className="theme-font-bold font-title-small text-theme-black mr-3">
+                    Failed To Load Content
+                  </div>
+                  <div className="">
+                    <small className="text-theme-sub wrap">
+                      The network resources failed to connect.
+                      Click on the button below to retry loading this content.
+                    </small>
+                  </div>
+                  <div className="row justify-content-center">
+                    <button className="btn" type="button" onClick={retry}>Try again</button>
+                    <Link to="/" className="btn-plain border-bottom">Quit</Link>
+                  </div>
+                </div>
               </div>
             </div>
           )
