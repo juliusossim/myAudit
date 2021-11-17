@@ -5,7 +5,7 @@ import { Link, useHistory, useParams } from 'react-router-dom';
 import Loader from '../../components/microComponents/loader';
 import useCreateBoilerPlate from '../../components/hooks/useCreateBoilerPlate';
 import NewEngagementTemp from './temps/newEngagement/NewEngagementTemp';
-import { notifier } from '../../utilities/stringOperations';
+import { makeFullName, notifier, sentenceCaps } from '../../utilities/stringOperations';
 import useUpdateStore from '../../components/hooks/useUpdateStore';
 import useStoreParams from '../../components/hooks/useStoreParams';
 import { apiOptions } from '../../services/fetch';
@@ -38,8 +38,14 @@ const NewEngagement = () => {
       method: 'post'
     })
   };
+  const pushUpdatesArr = [
+    {
+      data: store?.engagements?.data?.data,
+      action: 'ENGAGEMENTS_COMPLETE'
+    }
+  ];
   const {
-    handleBlur, handleChange, status, handleChecked, create, data, backErrors, message
+    handleBlur, handleChange, status, handleChecked, create, data, message
   } = useCreateBoilerPlate({
     setFormData,
     formData,
@@ -49,10 +55,12 @@ const NewEngagement = () => {
     store: store.newEngagement,
     setProgress,
     setCurrentName,
-    action: 'PLANNING'
+    pushUpdatesArr,
+    action: 'PLANNING_COMPLETE'
     // redirect: '/app/engagements'
   });
   const uploadsStore = useStoreParams(store.uploads);
+  const userStore = useStoreParams(store2);
   const pushUpdates = useUpdateStore;
   const pullUsers = React.useCallback(() => {
     dispatch(projectAction(
@@ -72,7 +80,7 @@ const NewEngagement = () => {
     if (uploadsStore.status === 'failed') {
       notifier({
         title: 'Upload Failed',
-        text: message || 'failed to upload file',
+        text: uploadsStore.message || 'failed to upload file',
         type: 'error'
       });
       setErrors(uploadsStore.backErrors);
@@ -97,77 +105,38 @@ const NewEngagement = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [uploadsStore.status]);
   React.useEffect(() => {
-    if (store2?.status === 'initial') {
+    if (userStore?.status === 'initial') {
       pullUsers();
     }
-    if (store2?.status === 'failed') {
+    if (userStore?.status === 'failed') {
       notifier({
         title: 'Connection Failed',
         text: message || 'Failed to pull your Clients. Please retry',
         type: 'error'
       });
-      setErrors(store2?.backErrors);
+      setErrors(userStore?.backErrors);
       pushUpdates([{
-        data: store2?.data,
+        data: userStore?.data,
         action: 'CLIENTS_COMPLETE'
       }], dispatch);
     }
-    if (store2?.status === 'success') {
-      // if (isEmpty(store2?.data?.data.users)) {
-      // notifier({
-      //   title: 'No Clients',
-      //   text: 'Please create a client for this engagement',
-      //   type: 'info'
-      // });
-      // push('/app/dashboard/invite-user');
-      // } else {
-      const usersData = store2.data?.data?.users.map((item) => ({
-        name: item
+    if (userStore?.status === 'success') {
+      const usersData = userStore.data?.users.map((item) => ({
+        name: makeFullName([item.first_name, item.last_name]),
+        id: item.id
       }));
       setUsers([...users, ...usersData]);
       // }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [store2?.status]);
-
-  React.useEffect(() => {
-    if (status === 'success') {
-      pushUpdates([
-        {
-          data: store?.engagements?.data?.data,
-          action: 'ENGAGEMENTS_COMPLETE'
-        },
-        {
-          data,
-          action: 'PLANNING_COMPLETE'
-        }
-      ], dispatch);
-    }
-    if (status === 'failed') {
-      notifier({
-        title: 'Failed',
-        text: message || 'failed to create planning',
-        type: 'error'
-      });
-      setErrors(backErrors);
-      pushUpdates([{
-        data,
-        action: 'PLANNING_COMPLETE'
-      }], dispatch);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
-
-  const handleDateChange = ({ date, name }) => {
-    setFormData({ ...formData, [name]: date });
-  };
+  }, [userStore?.status]);
 
   return (
     <div className="">
       <div className="d-flex ml-4 custom-top-bar justify-content-between">
         <div className="">
-          <span className="theme-font-bold text-theme-black mr-1">{engagementName}</span>
-          <span className="theme-font-bold text-theme-black mr-1">{`- ${year}`}</span>
+          <span className="theme-font-bold font-title-small text-theme-black mr-1">{sentenceCaps(engagementName)}</span>
+          <span className="mr-1">{`- ${year}`}</span>
         </div>
         <div>
           <Link to="/app/engagement/" className="text-theme-blue mr-1">Engagements</Link>

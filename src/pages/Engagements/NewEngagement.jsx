@@ -34,6 +34,12 @@ const NewEngagement = () => {
       method: 'post'
     })
   };
+  const pushUpdatesArr = [
+    {
+      data: store?.engagements?.data?.data,
+      action: 'ENGAGEMENTS_COMPLETE'
+    }
+  ];
   const {
     handleBlur, handleChange, status, handleChecked, create, data, backErrors, message
   } = useCreateBoilerPlate({
@@ -45,7 +51,8 @@ const NewEngagement = () => {
     store: store.newEngagement,
     setProgress,
     setCurrentName,
-    action: 'CREATE_ENGAGEMENT',
+    pushUpdatesArr,
+    action: 'CREATE_ENGAGEMENT_COMPLETE',
     redirect: '/app/engagements'
   });
   const uploadsStore = useStoreParams(store.uploads);
@@ -132,34 +139,6 @@ const NewEngagement = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [store2?.status]);
-
-  React.useEffect(() => {
-    if (status === 'success') {
-      pushUpdates([
-        {
-          data: store?.engagements?.data?.data,
-          action: 'ENGAGEMENTS_COMPLETE'
-        },
-        {
-          data,
-          action: 'CREATE_ENGAGEMENT_COMPLETE'
-        }
-      ], dispatch);
-    }
-    if (status === 'failed') {
-      notifier({
-        title: 'Failed',
-        text: message || 'failed to create engagement',
-        type: 'error'
-      });
-      setErrors(backErrors);
-      pushUpdates([{
-        data,
-        action: 'CREATE_ENGAGEMENT_COMPLETE'
-      }], dispatch);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [status]);
 
   const handleDateChange = ({ date, name }) => {
     setFormData({ ...formData, [name]: date });

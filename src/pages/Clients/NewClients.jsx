@@ -9,6 +9,10 @@ import NewClientTemp from './temps/newClients/NewClientTemp';
 import { checkRequiredFields } from '../../utilities/validation';
 
 const NewClient = () => {
+  /* redux */
+  const store = useSelector((state) => state.users.newClient);
+  const store1 = useSelector((state) => state.users.clients?.data?.data);
+
   /* state */
   const [formData, setFormData] = useState({
     is_part_of_group: 0,
@@ -54,8 +58,6 @@ const NewClient = () => {
       ]));
     }
   }, [formData]);
-  /* redux */
-  const store = useSelector((state) => state.users.newClient);
 
   const options = () => {
     const opt = {};
@@ -76,6 +78,12 @@ const NewClient = () => {
       }
     );
   };
+  const pushUpdatesArr = [
+    {
+      store1,
+      action: 'CLIENTS_COMPLETE'
+    }
+  ];
   const {
     handleBlur, handleChange, status, handleChecked, create, data, backErrors, message
   } = useCreateBoilerPlate({
@@ -86,6 +94,7 @@ const NewClient = () => {
     options: options(),
     store,
     action: 'CREATE_CLIENT_COMPLETE',
+    pushUpdatesArr,
     redirect: '/app/clients'
   });
 

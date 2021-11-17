@@ -73,7 +73,7 @@ const PlanningClasses = ({
                   ))
 
                 }
-                <div className="d-flex wrap justify-content-between">
+                <div className="">
                   <FormBuilder
                     formItems={
                       planningProps(
@@ -86,14 +86,16 @@ const PlanningClasses = ({
                       )
                     }
                   />
-                  <DragNDropTemp
-                    formData={formData}
-                    setFormData={setFormData}
-                    seProgress={setProgress}
-                    progress={progress}
-                    name="process_flow_document"
-                    label="Process Flow Document"
-                  />
+                  <div className="px-2">
+                    <DragNDropTemp
+                      formData={formData}
+                      setFormData={setFormData}
+                      seProgress={setProgress}
+                      progress={progress}
+                      name="process_flow_document"
+                      label="Process Flow Document"
+                    />
+                  </div>
                 </div>
                 <div>
                   <button type="button" disabled={!submittable} onClick={addSub} className="simple-hover btn text-white">Add Class</button>

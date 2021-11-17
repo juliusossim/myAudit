@@ -7,7 +7,7 @@ const ModalTemplate = ({
   <div className={
     (status === 'failed')
       ? 'mt-5 p-5'
-      : 'mt-5 p-5 bg-wema'
+      : 'mt-5 p-5 bg-theme'
   }
   >
     <div className="text-white">
