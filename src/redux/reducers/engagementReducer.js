@@ -52,7 +52,20 @@ const initialState = {
   planning: {
     data: {},
     status: 'initial'
+  },
+  inviteUser: {
+    data: {},
+    status: 'initial'
+  },
+  acceptInvite: {
+    data: {},
+    status: 'initial'
+  },
+  declineInvite: {
+    data: {},
+    status: 'initial'
   }
+
 };
 
 const engagementReducer = (state = initialState, { type, response, error }) => {
@@ -460,6 +473,108 @@ const engagementReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       planning: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.INVITE_TO_ENGAGEMENT_PENDING:
+    return {
+      ...state,
+      inviteUser: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.INVITE_TO_ENGAGEMENT_COMPLETE:
+    return {
+      ...state,
+      inviteUser: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.INVITE_TO_ENGAGEMENT_SUCCESS:
+    return {
+      ...state,
+      inviteUser: {
+        ...state.inviteUser,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.INVITE_TO_ENGAGEMENT_FAILURE:
+    return {
+      ...state,
+      inviteUser: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.ACCEPT_INVITE_TO_ENGAGEMENT_PENDING:
+    return {
+      ...state,
+      acceptInvite: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.ACCEPT_INVITE_TO_ENGAGEMENT_COMPLETE:
+    return {
+      ...state,
+      acceptInvite: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.ACCEPT_INVITE_TO_ENGAGEMENT_SUCCESS:
+    return {
+      ...state,
+      acceptInvite: {
+        ...state.acceptInvite,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.ACCEPT_INVITE_TO_ENGAGEMENT_FAILURE:
+    return {
+      ...state,
+      acceptInvite: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.DECLINE_INVITE_TO_ENGAGEMENT_PENDING:
+    return {
+      ...state,
+      declineInvite: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.DECLINE_INVITE_TO_ENGAGEMENT_COMPLETE:
+    return {
+      ...state,
+      declineInvite: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.DECLINE_INVITE_TO_ENGAGEMENT_SUCCESS:
+    return {
+      ...state,
+      declineInvite: {
+        ...state.declineInvite,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.DECLINE_INVITE_TO_ENGAGEMENT_FAILURE:
+    return {
+      ...state,
+      declineInvite: {
         data: error || {},
         status: 'failed'
       }

@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Box from '@material-ui/core/Box';
 import FormBuilder from '../../../../components/form/builders/form';
-import newEngagementProps from '../../constants/newEngagement';
 import DragNDropTemp from '../newEngagement/DragNDropInputTemp';
-import CustomAccordion from '../../../../components/ui/customAccordion';
-import { CheckboxField } from '../../../../components/form/inputs/Checkbox';
-import planningProps from '../../constants/planningProps';
 import PlanningClasses from './PlanningClasses';
-import Modal from '../../../../components/microComponents/modal';
-import ModalTemplate from '../../../../components/temps/modalTemps/temp';
 import userProps from '../../constants/usersProps';
 
 const PlanningTemp = ({
-  formData, setFormData, handleChange, errors, handleBlur, users,
+  formData, setFormData, handleChange, errors, handleBlur,
   create, removeItem, loadingMedia, progress, uploads, engagement, handleDateChange, setProgress
 }) => {
   const [currentPanel, setCurrentPanel] = useState(0);
@@ -51,7 +46,7 @@ const PlanningTemp = ({
                   formItems={
                     userProps(
                       {
-                        formData: { user_id: formData?.user_id, users },
+                        formData,
                         handleBlur,
                         handleChange,
                         errors
@@ -62,28 +57,11 @@ const PlanningTemp = ({
               </div>
               <div className="row justify-content-between">
                 <div className="mt-md-1 font-small">
-                  <Link to="#" className="pt-3" type="button" onClick={() => setShow(!show)}>Invite user to engagement</Link>
+                  <Box className="pt-3 pointer" onClick={() => setShow(!show)}>Invite user to engagement</Box>
                 </div>
                 <div className="p-3">
                   <button className=" btn" type="button" onClick={create}>Continue</button>
                 </div>
-                <Modal
-                  className={show ? 'max-w-400 right top' : 'max-w-400 right top off'}
-                  content={(
-                    <FormBuilder
-                      formItems={
-                        userProps(
-                          {
-                            formData: { user_id: formData?.user_id, users },
-                            handleBlur,
-                            handleChange,
-                            errors
-                          }
-                        )
-                      }
-                    />
-                  )}
-                />
               </div>
             </div>
           </div>

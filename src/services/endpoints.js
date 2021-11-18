@@ -44,6 +44,7 @@ const paths = {
 
   // users
   USERS: profileEndpoints.users,
+  INVITATIONS: profileEndpoints.invitations,
 
   // profile
   ME: profileEndpoints.me,

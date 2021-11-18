@@ -4,15 +4,16 @@ import { isEmpty } from 'lodash';
 import { Link, useHistory, useParams } from 'react-router-dom';
 import Loader from '../../components/microComponents/loader';
 import useCreateBoilerPlate from '../../components/hooks/useCreateBoilerPlate';
-import NewEngagementTemp from './temps/newEngagement/NewEngagementTemp';
 import { makeFullName, notifier, sentenceCaps } from '../../utilities/stringOperations';
 import useUpdateStore from '../../components/hooks/useUpdateStore';
 import useStoreParams from '../../components/hooks/useStoreParams';
 import { apiOptions } from '../../services/fetch';
 import { projectAction } from '../../redux/actions/projectActions';
 import PlanningTemp from './temps/planning/PlanningTemp';
+import { user } from '../../utilities/auth';
+import Notes from '../authentication/Notes';
 
-const NewEngagement = () => {
+const Planning = () => {
   const dispatch = useDispatch();
   const { push } = useHistory();
   const { id, engagementName, year } = useParams();
@@ -26,7 +27,7 @@ const NewEngagement = () => {
 
   /* redux */
   const store = useSelector((state) => state.engagement);
-  const store2 = useSelector((state) => state.users.users);
+  const store2 = useSelector((state) => state.users);
   const options = {
     action: 'PLANNING',
     apiOpts: apiOptions({
@@ -60,8 +61,28 @@ const NewEngagement = () => {
     // redirect: '/app/engagements'
   });
   const uploadsStore = useStoreParams(store.uploads);
-  const userStore = useStoreParams(store2);
+  const userStore = useStoreParams(store2?.users);
+  const inviteStore = useStoreParams(store?.inviteUser);
   const pushUpdates = useUpdateStore;
+  const sendInvite = React.useCallback((userInvite) => {
+    dispatch(projectAction(
+      {
+        action: 'INVITE_TO_ENGAGEMENT',
+        routeOptions: apiOptions({
+          endpoint: 'ENGAGEMENT',
+          param: id,
+          afterParam: 'send-invite',
+          body: {
+            user_id: userInvite.user_id,
+            company_id: user?.company_id
+          },
+          auth: true,
+          method: 'post'
+        })
+      }
+    ));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   const pullUsers = React.useCallback(() => {
     dispatch(projectAction(
       {
@@ -111,62 +132,102 @@ const NewEngagement = () => {
     if (userStore?.status === 'failed') {
       notifier({
         title: 'Connection Failed',
-        text: message || 'Failed to pull your Clients. Please retry',
+        text: userStore?.message || 'Failed to pull your Partners. Please retry',
         type: 'error'
       });
       setErrors(userStore?.backErrors);
       pushUpdates([{
         data: userStore?.data,
-        action: 'CLIENTS_COMPLETE'
+        action: 'USERS_COMPLETE'
       }], dispatch);
     }
     if (userStore?.status === 'success') {
-      const usersData = userStore.data?.users.map((item) => ({
-        name: makeFullName([item.first_name, item.last_name]),
-        id: item.id
-      }));
-      setUsers([...users, ...usersData]);
+      if (!isEmpty(userStore.data.users)) {
+        const usersData = userStore.data?.users.map((item) => ({
+          name: makeFullName([item.first_name, item.last_name]),
+          id: item.id
+        }));
+        setFormData({
+          ...formData,
+          users: [...users, ...usersData]
+        });
+      }
       // }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userStore?.status]);
+  React.useEffect(() => {
+    if (formData?.user_id > 0) {
+      sendInvite(formData);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.user_id]);
+  React.useEffect(() => {
+    if (inviteStore?.status === 'success') {
+      notifier({
+        title: inviteStore.status,
+        text: inviteStore?.message || 'Invite sent',
+        type: inviteStore.status
+      });
+      pushUpdates([{
+        data: inviteStore?.data,
+        action: 'INVITE_TO_ENGAGEMENT_COMPLETE'
+      }], dispatch);
+    }
+    if (inviteStore?.status === 'failed') {
+      notifier({
+        title: inviteStore.status,
+        text: inviteStore?.message || 'Invite not sent',
+        type: 'error'
+      });
+      pushUpdates([{
+        data: inviteStore?.data,
+        action: 'INVITE_TO_ENGAGEMENT_COMPLETE'
+      }], dispatch);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inviteStore.status]);
 
   return (
-    <div className="">
-      <div className="d-flex ml-4 custom-top-bar justify-content-between">
-        <div className="">
-          <span className="theme-font-bold font-title-small text-theme-black mr-1">{sentenceCaps(engagementName)}</span>
-          <span className="mr-1">{`- ${year}`}</span>
+    <div className="row">
+      <div className="col-md-10">
+        <div className="d-flex ml-4 custom-top-bar justify-content-between">
+          <div className="">
+            <span className="theme-font-bold font-title-small text-theme-black mr-1">{sentenceCaps(engagementName)}</span>
+            <span className="mr-1">{`- ${year}`}</span>
+          </div>
+          <div>
+            <Link to="/app/engagement/" className="text-theme-blue mr-1">Engagements</Link>
+            <span className="text-theme-black">/ Engagement</span>
+          </div>
         </div>
-        <div>
-          <Link to="/app/engagement/" className="text-theme-blue mr-1">Engagements</Link>
-          <span className="text-theme-black">/ Engagement</span>
+        <div className="content">
+          {
+            status === 'pending' || userStore.status === 'pending'
+              ? <Loader />
+              : (
+                <PlanningTemp
+                  formData={formData}
+                  setFormData={setFormData}
+                  errors={errors}
+                  handleBlur={handleBlur}
+                  handleChange={handleChange}
+                  handleChecked={handleChecked}
+                  create={create}
+                  uploads={uploads}
+                  loadingMedia={uploadsStore.status}
+                  progress={progress}
+                  setProgress={setProgress}
+                />
+              )
+          }
         </div>
       </div>
-      <div className="content">
-        {
-          status === 'pending'
-            ? <Loader />
-            : (
-              <PlanningTemp
-                formData={formData}
-                setFormData={setFormData}
-                errors={errors}
-                handleBlur={handleBlur}
-                handleChange={handleChange}
-                handleChecked={handleChecked}
-                create={create}
-                uploads={uploads}
-                loadingMedia={uploadsStore.status}
-                progress={progress}
-                setProgress={setProgress}
-                users={users}
-              />
-            )
-        }
+      <div className="col-md-2">
+        <Notes />
       </div>
     </div>
   );
 };
 
-export default NewEngagement;
+export default Planning;

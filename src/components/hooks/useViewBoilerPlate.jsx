@@ -25,7 +25,7 @@ const useViewBoilerPlate = ({
     }
   }, [status]);
 
-  const view = () => callback({ options });
+  const view = () => callback({ options }, []);
 
   return ({
     handleChecked,

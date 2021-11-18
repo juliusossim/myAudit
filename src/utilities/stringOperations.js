@@ -197,7 +197,7 @@ export const splitFullName = (fullName) => {
 
 /**
  *gets full name from first, middle, and last names.
- * @param {string}  names: array of names.
+ * @param {array}  names: array of names.
  * @returns {alert || object}.
  */
 export const makeFullName = (names) => names.join(' ');

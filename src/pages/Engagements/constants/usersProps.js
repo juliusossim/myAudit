@@ -16,14 +16,32 @@ const userProps = (
     props: {
       className: 'w-100 m-b-20 col-12 col-md-6',
       name: 'user_id',
-      label: 'Select Auditing Standard',
+      label: 'Select Team Member',
       value: formData?.user_id || '',
       options: formData.users,
       validations: {
         required: true
       },
       error: errors?.user_id,
-      optionIndex: 'full_name',
+      optionIndex: 'name',
+      valueIndex: 'id',
+      onBlur: handleBlur,
+      onChange: handleChange
+    }
+  },
+  {
+    kind: 'select',
+    props: {
+      className: 'w-100 m-b-20 col-12 col-md-6',
+      name: 'engagement_team_role_id',
+      label: 'Assign Role',
+      value: formData?.engagement_team_role_id || '',
+      options: formData.users,
+      validations: {
+        required: true
+      },
+      error: errors?.engagement_team_role_id,
+      optionIndex: 'name',
       valueIndex: 'id',
       onBlur: handleBlur,
       onChange: handleChange

@@ -13,8 +13,8 @@ import { apiOptions } from '../../services/fetch';
 import { projectAction } from '../../redux/actions/projectActions';
 import FormBuilder from '../../components/form/builders/form';
 import newEngagementProps from '../Engagements/constants/newEngagement';
-import inviteUser from './constants/registration/inviteUser';
-import registerUserProps from './constants/registration/registerUser';
+import inviteUser from './constants/inviteUser';
+import registerUserProps from './constants/registerUser';
 
 const InvitedUser = () => {
   /* state */

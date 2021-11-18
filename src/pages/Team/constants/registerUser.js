@@ -1,5 +1,5 @@
-import { designations } from '../../../../utilities/dummyData';
-import { validationPatterns } from '../../../../utilities/validation';
+import { designations } from '../../../utilities/dummyData';
+import { validationPatterns } from '../../../utilities/validation';
 
 const registerUserProps = (
   {

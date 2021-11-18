@@ -13,7 +13,7 @@ import { apiOptions } from '../../services/fetch';
 import { projectAction } from '../../redux/actions/projectActions';
 import FormBuilder from '../../components/form/builders/form';
 import newEngagementProps from '../Engagements/constants/newEngagement';
-import inviteUser from './constants/registration/inviteUser';
+import inviteUser from './constants/inviteUser';
 
 const InviteUser = () => {
   /* state */
@@ -48,7 +48,11 @@ const InviteUser = () => {
     <div className="">
       <div className="d-flex ml-4 custom-top-bar justify-content-between">
         <div className="text-theme-black bold">
-          INVITE USER
+          TEAM
+        </div>
+        <div>
+          <Link to="/app/team/" className="text-theme-blue mr-1">Team</Link>
+          <span className="text-theme-black">/ Invite Team Member</span>
         </div>
       </div>
       <div className="content">
@@ -61,6 +65,12 @@ const InviteUser = () => {
                 : (
                   <div className="d-flex justify-content-between wrap">
                     <div className="col-md-6 mt-md-5">
+                      <div className="theme-font font-title-small font-black">
+                        Invite to Team
+                      </div>
+                      <div className="theme-font-2">
+                        Work is better with a team
+                      </div>
                       <div className="d-flex justify-content-between wrap">
                         <FormBuilder
                           formItems={

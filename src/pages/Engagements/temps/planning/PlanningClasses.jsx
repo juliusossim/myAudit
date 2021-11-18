@@ -43,7 +43,7 @@ const PlanningClasses = ({
       name: ''
     });
   };
-  const removeSub = (e, item) => {
+  const removeItem = (e, item) => {
     e.stopPropagation();
     const newArr = filter(engagementClasses, (sub) => sub !== item);
     setEngagementClasses(newArr);
@@ -59,15 +59,20 @@ const PlanningClasses = ({
                 {
                   engagementClasses.map((item, index) => (
                     <div className="px-5" key={uuid()}>
-                      <div className="text-theme-blue">{item.name}</div>
+                      <div className="justify-content-between d-flex wrap">
+                        <div className="text-theme-blue">
+                          {item.name}
+                        </div>
+                        <div className="">
+                          <button type="button" onClick={(e) => removeItem(e, item)} className="btn-del border-radius-5 text-white">
+                            <AiOutlineDelete />
+                          </button>
+                        </div>
+                      </div>
                       <div>
                         <p>Process Flow Document</p>
                         <p>{item.process_flow_document}</p>
                       </div>
-
-                      <button type="button" onClick={(e) => removeSub(e, item)} className="btn-del border-radius-5 text-white">
-                        <AiOutlineDelete />
-                      </button>
 
                     </div>
                   ))

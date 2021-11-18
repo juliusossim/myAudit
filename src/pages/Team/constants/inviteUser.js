@@ -1,5 +1,5 @@
-import { designations, profileType, userRoles } from '../../../../utilities/dummyData';
-import { validationPatterns } from '../../../../utilities/validation';
+import { designations, profileType, userRoles } from '../../../utilities/dummyData';
+import { validationPatterns } from '../../../utilities/validation';
 
 const inviteUser = (
   {

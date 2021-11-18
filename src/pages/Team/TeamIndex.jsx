@@ -5,15 +5,16 @@ import { apiOptions } from '../../services/fetch';
 import useViewBoilerPlate from '../../components/hooks/useViewBoilerPlate';
 import IndexTemp from '../Dashboard/temp/IndexTemp';
 import DashboardTable from '../../components/tables/dashboardTable';
+import TeamTable from '../../components/tables/teamTable';
 
-const EngagementIndex = () => {
-  const store = useSelector((state) => state.engagement.engagements);
+const TeamIndex = () => {
+  const store = useSelector((state) => state.users?.users);
   const [formData, setFormData] = React.useState({});
 
   const options = {
-    action: 'ENGAGEMENTS',
+    action: 'USERS',
     apiOpts: apiOptions({
-      endpoint: 'ENGAGEMENTS',
+      endpoint: 'USERS',
       auth: true,
       method: 'get'
     })
@@ -28,19 +29,19 @@ const EngagementIndex = () => {
   });
   const infoBarData = [
     {
-      title: 'Total Engagement',
-      val: formData?.engagement_count || '0'
+      title: 'Net Staff Power',
+      val: formData?.users?.length || '0'
     },
     {
-      title: 'Pending Conclusion',
-      val: formData?.pending_engagement || '0'
+      title: 'Potential Staffs',
+      val: formData?.pending_invitation || '0'
     },
     {
-      title: 'Concluded And Closed',
-      val: formData?.concluded_engagement || '0'
+      title: 'Team',
+      val: formData?.users?.length || '0'
     },
     {
-      title: 'Total Client',
+      title: 'Available Positions',
       val: formData?.clients_count || '0'
     }
   ];
@@ -48,29 +49,29 @@ const EngagementIndex = () => {
   return (
     <PageTemp
       status={status}
-      data={formData?.engagements}
+      data={formData?.users}
       view={(
         <IndexTemp
           formData={formData}
           infoBarData={infoBarData}
-          header="recent engagement"
-          link={{ name: '+ new engagement', to: '/app/engagement/new-engagement' }}
-          parent="engagement"
-          table={<DashboardTable data={formData.engagements} />}
+          header="registered staffs"
+          link={{ name: '+ invite', to: '/app/team/invite-user' }}
+          parent="team"
+          table={<TeamTable data={formData.users} />}
         />
       )}
-      action="ENGAGEMENTS_COMPLETE"
+      action="USERS_COMPLETE"
       retry={view}
       redirect={
         {
-          link: '/app/engagement/new-engagement',
-          name: 'engagements',
-          text: 'Create engagement to see activities',
-          title: 'No Data',
-          btnName: 'Create Engagement'
+          link: '/app/team/invite-user',
+          name: 'team',
+          text: 'Collaborate effectively with your team',
+          title: 'No Team Member',
+          btnName: 'Invite Colleague'
         }
       }
     />
   );
 };
-export default EngagementIndex;
+export default TeamIndex;

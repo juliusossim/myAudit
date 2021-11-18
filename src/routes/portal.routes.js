@@ -2,8 +2,6 @@ import { lazy } from 'react';
 
 const Login = lazy(() => import('../pages/authentication/Login'));
 const Register = lazy(() => import('../pages/authentication/Register'));
-const InviteUser = lazy(() => import('../pages/authentication/InviteUser'));
-const InvitedUser = lazy(() => import('../pages/authentication/RegisterInvitedUser'));
 const CompleteProfile1 = lazy(() => import('../pages/authentication/CompleteProfile-1'));
 const LandingPage = lazy(() => import('../pages/landingPage'));
 /* dashboard */
@@ -19,6 +17,11 @@ const Planning = lazy(() => import('../pages/Engagements/Planning'));
 /* clients */
 const Client = lazy(() => import('../pages/Clients/ClientsIndex'));
 const NewClient = lazy(() => import('../pages/Clients/NewClients'));
+
+/* team */
+const TeamIndex = lazy(() => import('../pages/Team/TeamIndex'));
+const InviteUser = lazy(() => import('../pages/Team/InviteUser'));
+const InvitedUser = lazy(() => import('../pages/Team/RegisterInvitedUser'));
 
 /* no data */
 const NoData = lazy(() => import('../pages/authentication/NoData'));
@@ -119,6 +122,21 @@ const routes = [
     exact: true,
     name: 'clients'
   },
+  {
+    path: '/app/team',
+    component: TeamIndex,
+    exact: true
+  },
+  {
+    path: '/app/team/invite-user',
+    component: InviteUser,
+    exact: true
+  },
+  {
+    path: '/invited-user-registration',
+    component: InvitedUser,
+    exact: true
+  },
 
   {
     path: '/me',
@@ -135,16 +153,6 @@ const routes = [
   {
     path: '/register',
     component: Register,
-    exact: true
-  },
-  {
-    path: '/app/dashboard/invite-user',
-    component: InviteUser,
-    exact: true
-  },
-  {
-    path: '/invited-user-registration',
-    component: InvitedUser,
     exact: true
   },
   {
