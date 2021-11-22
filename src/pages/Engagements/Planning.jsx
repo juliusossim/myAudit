@@ -11,7 +11,8 @@ import { apiOptions } from '../../services/fetch';
 import { projectAction } from '../../redux/actions/projectActions';
 import PlanningTemp from './temps/planning/PlanningTemp';
 import { user } from '../../utilities/auth';
-import Notes from '../authentication/Notes';
+import Notes from './Notes';
+import EngagementStep from './temps/engagementStep';
 
 const Planning = () => {
   const dispatch = useDispatch();
@@ -202,6 +203,12 @@ const Planning = () => {
           </div>
         </div>
         <div className="content">
+          <div className="mb-4 font-title-small">
+            Select engagement step to continue
+          </div>
+          <div className="my-4 row">
+            <EngagementStep />
+          </div>
           {
             status === 'pending' || userStore.status === 'pending'
               ? <Loader />
@@ -223,7 +230,7 @@ const Planning = () => {
           }
         </div>
       </div>
-      <div className="col-md-2">
+      <div className="col-md-2 bg-white min-h-100">
         <Notes />
       </div>
     </div>

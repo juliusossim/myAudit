@@ -83,10 +83,11 @@ export const InfoBarTemp = ({ data }) => (
   </div>
 );
 
-export const animatedCheck = (
+/* remember to add class 'path' to the icon element so you don't say ooooh God  !!! */
+export const animatedCheck = (icon) => (
   <div className="animated-check-wrapper">
     <svg className="animated-check" viewBox="0 0 24 24">
-      <path d="M4.1 12.7L9 17.6 20.3 6.3" fill="none" />
+      {icon}
     </svg>
   </div>
 );

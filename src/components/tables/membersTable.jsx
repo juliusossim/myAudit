@@ -1,4 +1,5 @@
 import * as React from 'react';
+import uuid from 'react-uuid';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,14 +9,14 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import { Box } from '@mui/material';
 import { useHistory } from 'react-router';
-import { CgArrowsExpandUpRight } from 'react-icons/all';
 import Button from '@mui/material/Button';
-import { sentenceCaps } from '../../utilities/stringOperations';
+import { CgArrowsExpandUpRight } from 'react-icons/all';
+import { makeFullName, sentenceCaps } from '../../utilities/stringOperations';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
     backgroundColor: 'rgb(249 249 249)',
-    color: '#828282',
+    color: '#202020',
     fontWeight: 600
   },
   [`&.${tableCellClasses.body}`]: {
@@ -24,28 +25,27 @@ const StyledTableCell = styled(TableCell)(({ theme }) => ({
 }));
 
 const StyledTableRow = styled(TableRow)(({ theme }) => ({
-  '&:nth-of-type(even)': {
-    backgroundColor: theme.palette.action.hover
-  },
+  // '&:nth-of-type(even)': {
+  //   backgroundColor: theme.palette.action.hover
+  // },
   // hide last border
   '&:last-child td, &:last-child th': {
     border: 0
   }
 }));
-export default function DashboardTable({ data }) {
+export default function MembersTable({ data }) {
   const { push } = useHistory();
-  function createData(name, date, client, members, status, action) {
+  function createData(name, position, date, type, action) {
     return {
-      name, date, client, members, status, action
+      name, position, date, type, action
     };
   }
+
   const rows = data?.map((item) => createData(
-    item?.name, item?.year, item?.client?.name, item?.staff_power, item?.status?.name
+    makeFullName([item.first_name, item.last_name]), item.position,
+    item.created_at, item.engagement_role
   ));
-  const handleRow = (row) => {
-    const theData = data.filter((item) => item.name === row.name);
-    push(`/app/engagement/engagement/${theData[0].id}`);
-  };
+  const handleRow = (row) => push({ pathname: `/app/view/${row.name}/${row.id}` });
 
   return (
     <TableContainer component={Box}>
@@ -53,23 +53,21 @@ export default function DashboardTable({ data }) {
         <TableHead>
           <TableRow>
             <StyledTableCell>Name</StyledTableCell>
-            <StyledTableCell align="right">Year</StyledTableCell>
-            <StyledTableCell align="right">Client</StyledTableCell>
-            <StyledTableCell align="right">No. of Member</StyledTableCell>
-            <StyledTableCell align="right">Status</StyledTableCell>
-            <StyledTableCell align="right">Action</StyledTableCell>
+            <StyledTableCell align="right">Position</StyledTableCell>
+            <StyledTableCell align="right">Date Added</StyledTableCell>
+            <StyledTableCell align="right">Type</StyledTableCell>
+            <StyledTableCell align="right">Actions</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows?.map((row) => (
-            <StyledTableRow key={sentenceCaps(row.name)}>
+            <StyledTableRow key={uuid()}>
               <StyledTableCell component="th" scope="row">
                 <div className="bold theme-font font-small">{sentenceCaps(row.name)}</div>
               </StyledTableCell>
+              <StyledTableCell align="right"><div className="theme-font-2">{row.position}</div></StyledTableCell>
               <StyledTableCell align="right"><div className="theme-font-2">{row.date}</div></StyledTableCell>
-              <StyledTableCell align="right"><div className="theme-font-2">{sentenceCaps(row.client)}</div></StyledTableCell>
-              <StyledTableCell align="right"><div className="theme-font-2">{sentenceCaps(row.members)}</div></StyledTableCell>
-              <StyledTableCell align="right"><div className="theme-font-2">{sentenceCaps(row.status)}</div></StyledTableCell>
+              <StyledTableCell align="right"><div className="theme-font-2">{row.type}</div></StyledTableCell>
               <StyledTableCell align="right">
                 <div className="theme-font-2">
                   <Button type="button" className="btn-small btn text-white" onClick={() => handleRow(row)}>

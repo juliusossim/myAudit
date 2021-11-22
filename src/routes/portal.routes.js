@@ -12,6 +12,7 @@ const CompleteProfile = lazy(() => import('../pages/authentication/CompleteProfi
 /* engagement */
 const Engagement = lazy(() => import('../pages/Engagements/EngagementIndex'));
 const NewEngagement = lazy(() => import('../pages/Engagements/NewEngagement'));
+const EngagementView = lazy(() => import('../pages/Engagements/Engagement'));
 const Planning = lazy(() => import('../pages/Engagements/Planning'));
 
 /* clients */
@@ -21,6 +22,7 @@ const NewClient = lazy(() => import('../pages/Clients/NewClients'));
 /* team */
 const TeamIndex = lazy(() => import('../pages/Team/TeamIndex'));
 const InviteUser = lazy(() => import('../pages/Team/InviteUser'));
+// const AcceptInvite = lazy(() => import('../pages/Team/InviteUser'));
 const InvitedUser = lazy(() => import('../pages/Team/RegisterInvitedUser'));
 
 /* no data */
@@ -74,7 +76,19 @@ const routes = [
     name: 'engagement'
   },
   {
-    path: '/app/engagement/planning/:engagementName/:year/:id',
+    path: '/app/engagement/engagement/:engagementId',
+    component: EngagementView,
+    exact: true,
+    name: 'engagement'
+  },
+  {
+    path: '/app/engagement/new-engagement/:engagementId',
+    component: NewEngagement,
+    exact: true,
+    name: 'engagement'
+  },
+  {
+    path: '/app/engagement/planning/:engagementId',
     component: Planning,
     exact: true,
     name: 'engagement'
@@ -133,7 +147,7 @@ const routes = [
     exact: true
   },
   {
-    path: '/invited-user-registration',
+    path: '/invited-user-registration/:token',
     component: InvitedUser,
     exact: true
   },

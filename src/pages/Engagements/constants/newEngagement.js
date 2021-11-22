@@ -16,8 +16,7 @@ const newEngagementProps = (
     loadingMedia,
     handleChecked,
     uploads,
-    handleDateChange,
-    clients
+    handleDateChange
   }
 ) => ([
   {
@@ -65,10 +64,10 @@ const newEngagementProps = (
       className: 'w-100 m-b-20 pr-3 col-12 col-md-6',
       name: 'client_id',
       label: 'Select Client',
-      options: clients,
+      options: formData.clients,
       optionIndex: 'name',
       valueIndex: 'id',
-      value: formData?.client_id || [],
+      value: formData?.client_id || '',
       validations: {
         required: false
       },

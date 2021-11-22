@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import uuid from 'react-uuid';
 import FormBuilder from '../../../../components/form/builders/form';
 import newEngagementProps from '../../constants/newEngagement';
 import DragNDropTemp from './DragNDropInputTemp';
@@ -6,8 +7,8 @@ import CustomAccordion from '../../../../components/ui/customAccordion';
 import { CheckboxField } from '../../../../components/form/inputs/Checkbox';
 
 const NewEngagementTemp = ({
-  formData, setFormData, handleChange, errors, handleBlur, handleChecked,
-  create, removeItem, loadingMedia, progress, uploads, clients, handleDateChange, setProgress
+  formData, setFormData, handleChange, errors, handleBlur, handleChecked, setErrors,
+  create, removeItem, loadingMedia, progress, uploads, handleDateChange, setProgress
 }) => {
   const [currentPanel, setCurrentPanel] = useState(0);
   return (
@@ -42,8 +43,7 @@ const NewEngagementTemp = ({
                                 loadingMedia,
                                 handleChecked,
                                 uploads,
-                                handleDateChange,
-                                clients
+                                handleDateChange
                               }
                             )
                           }
@@ -52,15 +52,12 @@ const NewEngagementTemp = ({
                           <DragNDropTemp
                             formData={formData}
                             setFormData={setFormData}
-                            seProgress={setProgress}
-                            progress={progress}
+                            setErrors={setErrors}
                             name="engagement_letter"
                             label="Engagement Letter"
-                            setProgress={setProgress}
                           />
                           <div className="d-flex ml-3">
                             <CheckboxField
-                              key="have"
                               label="Audit Requires External Expert"
                               name="external_expert"
                               handleChecked={handleChecked}
@@ -68,7 +65,6 @@ const NewEngagementTemp = ({
                               checked={formData?.external_expert}
                             />
                             <CheckboxField
-                              key="have"
                               label="Client Have Audit History"
                               name="first_time"
                               handleChecked={handleChecked}
@@ -97,24 +93,20 @@ const NewEngagementTemp = ({
                           <div className="" style={{ margin: 'auto' }}>
                             <div className="my-1">
                               <DragNDropTemp
+                                setErrors={setErrors}
                                 formData={formData}
                                 setFormData={setFormData}
-                                seProgress={setProgress}
-                                progress={progress}
                                 name="appointment_letter"
                                 label="Appointment Letter"
-                                setProgress={setProgress}
                               />
                             </div>
                             <div className="my-1">
                               <DragNDropTemp
+                                setErrors={setErrors}
                                 formData={formData}
                                 setFormData={setFormData}
-                                seProgress={setProgress}
-                                progress={progress}
                                 name="previous_year_management_letter"
                                 label="Previous Year Management Letter"
-                                setProgress={setProgress}
                               />
                             </div>
                           </div>
@@ -137,46 +129,38 @@ const NewEngagementTemp = ({
                           <div className="" style={{ margin: 'auto' }}>
                             <div className="my-1">
                               <DragNDropTemp
+                                setErrors={setErrors}
                                 formData={formData}
                                 setFormData={setFormData}
-                                seProgress={setProgress}
-                                progress={progress}
                                 name="contacted_previous_auditor"
                                 label="Previous Auditors"
-                                setProgress={setProgress}
                               />
                             </div>
                             <div className="my-1">
                               <DragNDropTemp
+                                setErrors={setErrors}
                                 formData={formData}
                                 setFormData={setFormData}
-                                seProgress={setProgress}
-                                progress={progress}
                                 name="previous_auditor_response"
                                 label="Previous Auditor Response"
-                                setProgress={setProgress}
                               />
                             </div>
                             <div className="my-1">
                               <DragNDropTemp
                                 formData={formData}
                                 setFormData={setFormData}
-                                seProgress={setProgress}
-                                progress={progress}
+                                setErrors={setErrors}
                                 name="other_audit_opinion"
                                 label="Other Audit Opinion"
-                                setProgress={setProgress}
                               />
                             </div>
                             <div className="my-1">
                               <DragNDropTemp
                                 formData={formData}
                                 setFormData={setFormData}
-                                seProgress={setProgress}
-                                progress={progress}
+                                setErrors={setErrors}
                                 name="previous_year_asf"
                                 label="Previous Year ASF"
-                                setProgress={setProgress}
                               />
                             </div>
 
@@ -202,22 +186,18 @@ const NewEngagementTemp = ({
                               <DragNDropTemp
                                 formData={formData}
                                 setFormData={setFormData}
-                                seProgress={setProgress}
-                                progress={progress}
+                                setErrors={setErrors}
                                 name="previous_audit_review"
                                 label="Previous Audit Review"
-                                setProgress={setProgress}
                               />
                             </div>
                             <div className="my-1">
                               <DragNDropTemp
                                 formData={formData}
                                 setFormData={setFormData}
-                                seProgress={setProgress}
-                                progress={progress}
+                                setErrors={setErrors}
                                 name="previous_audit_opinion"
                                 label="Previous Auditor Opinion"
-                                setProgress={setProgress}
                               />
                             </div>
 

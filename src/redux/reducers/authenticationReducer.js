@@ -99,6 +99,14 @@ const authenticationReducer = (state = initialState, { type, response, error }) 
         status: 'pending'
       }
     };
+  case constants.INVITE_USER_COMPLETE:
+    return {
+      ...state,
+      inviteUser: {
+        data: {},
+        status: 'initial'
+      }
+    };
   case constants.INVITE_USER_SUCCESS:
     return {
       ...state,

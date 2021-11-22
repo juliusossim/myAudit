@@ -7,14 +7,65 @@ import useStoreParams from '../../../../components/hooks/useStoreParams';
 import { uploadMedia } from '../../../../redux/actions/projectActions';
 import { QuillEditorBubble } from '../../../../components/ui/richText';
 import { notifier } from '../../../../utilities/stringOperations';
+import useCreateBoilerPlate from '../../../../components/hooks/useCreateBoilerPlate';
+import { apiOptions } from '../../../../services/fetch';
+import useUpdateStore from '../../../../components/hooks/useUpdateStore';
+import useFetchData from '../../../../components/hooks/useFetchData';
 
 const DragNDropTemp = ({
-  formData, setFormData, name, label, setProgress
+  formData, setFormData, name, label, setErrors
 }) => {
   const dispatch = useDispatch();
-  const store = useSelector((state) => state.engagement.uploads);
-  const { status, data, backErrors } = useStoreParams(store);
+  const store = useSelector((state) => state?.engagement?.uploads);
+
   const [isFile, setIsFile] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [uploaded, setUploaded] = useState(false);
+  const [fileUrl, setFileUrl] = useState({});
+
+  // const engagementStore = useSelector((state) => state.engagement.engagement);
+  const pushUpdates = useUpdateStore;
+  const fetchData = useFetchData;
+
+  const {
+    status, data, backErrors, message
+  } = useStoreParams(store);
+  const uploadMediaFail = () => {
+    setUploaded(false);
+    setErrors(backErrors);
+    // pushUpdates([
+    //   {
+    //     data,
+    //     action: 'UPLOAD_MEDIA_COMPLETE'
+    //   }
+    // ], dispatch);
+    // return notifier({
+    //   title: 'Download Failed',
+    //   text: message,
+    //   type: 'info'
+    // });
+  };
+
+  const uploadMediaSuccess = () => {
+    setUploaded(true);
+    setFileUrl({
+      [data.name]: data.url
+    });
+  };
+
+  useEffect(() => {
+    switch (status) {
+    case 'failed':
+      return uploadMediaFail();
+    case 'success':
+      return uploadMediaSuccess();
+    default:
+      setUploaded(false);
+    }
+    return status;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status]);
+
   const handleData = (files) => {
     files.map((file) => dispatch(
       uploadMedia(
@@ -24,14 +75,13 @@ const DragNDropTemp = ({
       )
     ));
   };
-  useEffect(() => {
-    if (status === 'success') {
-      setFormData({
-        ...formData,
-        [data.name]: data.url
-      });
-    }
-  }, [status]);
+
+  // fetchData({
+  //   successCallback: uploadMediaSuccess,
+  //   failCallback: uploadMediaFail,
+  //   store
+  // });
+
   return (
     <div className="">
       <label htmlFor={name}>{label}</label>
@@ -40,7 +90,7 @@ const DragNDropTemp = ({
           name={name}
           handleData={handleData}
           label={label}
-          uploaded={formData[data?.name]}
+          uploaded={status}
         />
       </div>
       <div className={isFile ? 'd-none' : ''}>
@@ -50,14 +100,14 @@ const DragNDropTemp = ({
           formData={formData}
         />
       </div>
-      <IconButton className="simple-hover" onClick={() => setIsFile(!isFile)}>
+      <button type="button" className="simple-hover button" onClick={() => setIsFile(!isFile)}>
         {isFile
           ? <FiEdit3 className="hover-icon" />
           : <AiOutlineFileAdd className="hover-icon" /> }
         <div className="hover-text">
           {isFile ? 'Compose' : 'Attach File'}
         </div>
-      </IconButton>
+      </button>
     </div>
   );
 };

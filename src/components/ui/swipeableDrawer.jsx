@@ -8,7 +8,6 @@ import MuiAppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import List from '@mui/material/List';
 import CssBaseline from '@mui/material/CssBaseline';
-import Typography from '@mui/material/Typography';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
@@ -20,7 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { doLogin, logout, user } from '../../utilities/auth';
 import { projectAction } from '../../redux/actions/projectActions';
 import { apiOptions } from '../../services/fetch';
-import { notifier, sentenceCaps, stringDoesNotExist } from '../../utilities/stringOperations';
+import { notifier, sentenceCaps } from '../../utilities/stringOperations';
 import useUpdateStore from '../hooks/useUpdateStore';
 
 /**

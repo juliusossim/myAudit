@@ -41,20 +41,6 @@ const PlanningTemp = ({
                 handleChange={handleChange}
                 errors={errors}
               />
-              <div className="my-3">
-                <FormBuilder
-                  formItems={
-                    userProps(
-                      {
-                        formData,
-                        handleBlur,
-                        handleChange,
-                        errors
-                      }
-                    )
-                  }
-                />
-              </div>
               <div className="row justify-content-between">
                 <div className="mt-md-1 font-small">
                   <Box className="pt-3 pointer" onClick={() => setShow(!show)}>Invite user to engagement</Box>

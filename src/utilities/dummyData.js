@@ -393,6 +393,27 @@ export const designations = [
     value: 3
   }
 ];
+export const auditPost = [
+  'select designation',
+  {
+    id: 1,
+    type: 'chief auditor',
+    desc: 'corporate project',
+    value: 1
+  },
+  {
+    id: 2,
+    type: 'auditor',
+    desc: 'organisational project',
+    value: 2
+  },
+  {
+    id: 3,
+    type: 'technical',
+    desc: 'organisational project',
+    value: 3
+  }
+];
 export const countries = [
   'select your country',
   {
@@ -493,7 +514,12 @@ export const profileType = [
   }
 ];
 export const userRoles = [
-  'select item...',
+  {
+    id: 0,
+    type: 'select item...',
+    desc: 'corporate project',
+    value: 0
+  },
   {
     id: 1,
     type: 'Admin',
@@ -511,7 +537,12 @@ export const userRoles = [
   }
 ];
 export const accountingStandards = [
-  'select item...',
+  {
+    id: 0,
+    type: 'select item...',
+    desc: 'corporate project',
+    value: 0
+  },
   {
     id: 1,
     type: 'standard',
@@ -526,7 +557,12 @@ export const accountingStandards = [
   }
 ];
 export const auditingStandards = [
-  'select item...',
+  {
+    id: 0,
+    type: 'select item...',
+    desc: 'corporate project',
+    value: 0
+  },
   {
     id: 1,
     type: 'routine',

@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { isEmpty } from 'lodash';
 import Dropzone from 'react-dropzone';
-import { AiOutlineCheck, AiOutlineFileAdd } from 'react-icons/all';
+import { AiOutlineCheck, AiOutlineFileAdd, MdErrorOutline } from 'react-icons/all';
 import IconButton from '@mui/material/IconButton';
 import { animatedCheck } from '../../../temps/projectTemps/miscTemps';
 
@@ -25,9 +25,9 @@ const DragNDropFileInput = ({ handleData, label, uploaded }) => {
                   ? (
                     <div className="font-regular">
                       <p>
-                        <IconButton>
+                        <button type="button" className="btn-plain">
                           <AiOutlineFileAdd className="font-black font-title-small" />
-                        </IconButton>
+                        </button>
                       </p>
                       <span>Drop or</span>
                       <button type="button" className="bold bg-transparent mx-1 font-black">browse</button>
@@ -42,7 +42,8 @@ const DragNDropFileInput = ({ handleData, label, uploaded }) => {
                       {fileNames.map((fileName) => (
                         <li key={fileName}>
                           <span>{fileName}</span>
-                          <span>{uploaded && animatedCheck}</span>
+                          <span>{uploaded === 'success' && animatedCheck(<path className="path" d="M4.1 12.7L9 17.6 20.3 6.3" fill="none" />)}</span>
+                          <span>{uploaded === 'failed' && animatedCheck(<MdErrorOutline />)}</span>
                         </li>
                       ))}
                     </ul>

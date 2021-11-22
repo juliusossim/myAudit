@@ -11,7 +11,8 @@ import useRefresh from '../hooks/useRefresh';
 import { noDataSvg } from '../../utilities/dummyData';
 
 const PageTemp = ({
-  status, data, message, errors, view, setErrors, action, initial, isPending, retry, redirect
+  status, data, message, errors, view, setErrors, action, initial, isPending,
+  retry, redirect, noDataTemp
 }) => {
   const dispatch = useDispatch();
   const history = useHistory();
@@ -65,17 +66,24 @@ const PageTemp = ({
         {
           (status === 'pending' || isPending) && <div className="min-w-300-w center-vertical-2"><Loader /></div>
         }
-        {
-          status === 'success' && (_.isEmpty(data)) && redirect && (
-            <NoData
-              link={redirect.link}
-              name={redirect.name}
-              title={redirect.title}
-              text={redirect.text}
-              btnName={redirect.btnName}
-            />
-          )
-        }
+        <div className={_.isUndefined(noDataTemp) ? '' : 'd-none'}>
+          {
+            status === 'success' && (_.isEmpty(data)) && redirect && (
+              <NoData
+                link={redirect.link}
+                name={redirect.name}
+                title={redirect.title}
+                text={redirect.text}
+                btnName={redirect.btnName}
+              />
+            )
+          }
+        </div>
+        <div className={_.isUndefined(noDataTemp) ? 'd-none' : ''}>
+          {
+            status === 'success' && (_.isEmpty(data)) && noDataTemp
+          }
+        </div>
         {
           status === 'success' && !_.isEmpty(data) && view
         }

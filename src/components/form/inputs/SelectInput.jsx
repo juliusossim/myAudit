@@ -116,6 +116,7 @@ const SelectInput = (
                       name={name}
                       id={name}
                       value={value}
+                      multiple={false}
                       onChange={((e) => {
                         typeof onBlur === 'function'
                         && onBlur(e, validations);

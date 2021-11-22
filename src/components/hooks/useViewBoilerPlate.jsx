@@ -1,6 +1,9 @@
 import React from 'react';
+import _, { isFunction } from 'lodash';
 import { useDispatch } from 'react-redux';
 import useBoilerPlate from './useBoilerPlate';
+import useUpdateStore from './useUpdateStore';
+import { stringDoesNotExist } from '../../utilities/stringOperations';
 
 const useViewBoilerPlate = ({
   store, formData, setFormData,
@@ -13,17 +16,18 @@ const useViewBoilerPlate = ({
   } = useBoilerPlate({
     store, formData, setFormData, dispatch
   });
+  const pushUpdates = useUpdateStore;
 
   React.useEffect(() => {
-    if (status === 'initial') {
-      view();
-    }
     if (status === 'success') {
       setFormData(data);
-      typeof successCallback === 'function'
-      && successCallback();
+      isFunction(successCallback) && successCallback();
     }
   }, [status]);
+
+  React.useEffect(() => {
+    view();
+  }, []);
 
   const view = () => callback({ options }, []);
 

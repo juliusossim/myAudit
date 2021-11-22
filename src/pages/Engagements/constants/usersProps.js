@@ -1,7 +1,7 @@
 import React from 'react';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { accountingStandards, auditingStandards } from '../../../utilities/dummyData';
+import { accountingStandards, auditingStandards, auditPost } from '../../../utilities/dummyData';
 
 const userProps = (
   {
@@ -36,12 +36,12 @@ const userProps = (
       name: 'engagement_team_role_id',
       label: 'Assign Role',
       value: formData?.engagement_team_role_id || '',
-      options: formData.users,
+      options: auditPost,
       validations: {
         required: true
       },
       error: errors?.engagement_team_role_id,
-      optionIndex: 'name',
+      optionIndex: 'type',
       valueIndex: 'id',
       onBlur: handleBlur,
       onChange: handleChange

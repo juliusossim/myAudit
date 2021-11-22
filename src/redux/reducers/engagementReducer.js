@@ -53,7 +53,7 @@ const initialState = {
     data: {},
     status: 'initial'
   },
-  inviteUser: {
+  inviteMember: {
     data: {},
     status: 'initial'
   },
@@ -62,6 +62,10 @@ const initialState = {
     status: 'initial'
   },
   declineInvite: {
+    data: {},
+    status: 'initial'
+  },
+  index: {
     data: {},
     status: 'initial'
   }
@@ -481,7 +485,7 @@ const engagementReducer = (state = initialState, { type, response, error }) => {
   case constants.INVITE_TO_ENGAGEMENT_PENDING:
     return {
       ...state,
-      inviteUser: {
+      inviteMember: {
         data: {},
         status: 'pending'
       }
@@ -489,7 +493,7 @@ const engagementReducer = (state = initialState, { type, response, error }) => {
   case constants.INVITE_TO_ENGAGEMENT_COMPLETE:
     return {
       ...state,
-      inviteUser: {
+      inviteMember: {
         data: {},
         status: 'initial'
       }
@@ -497,8 +501,8 @@ const engagementReducer = (state = initialState, { type, response, error }) => {
   case constants.INVITE_TO_ENGAGEMENT_SUCCESS:
     return {
       ...state,
-      inviteUser: {
-        ...state.inviteUser,
+      inviteMember: {
+        ...state.inviteMember,
         data: response,
         status: 'success'
       }
@@ -506,7 +510,7 @@ const engagementReducer = (state = initialState, { type, response, error }) => {
   case constants.INVITE_TO_ENGAGEMENT_FAILURE:
     return {
       ...state,
-      inviteUser: {
+      inviteMember: {
         data: error || {},
         status: 'failed'
       }
@@ -576,6 +580,40 @@ const engagementReducer = (state = initialState, { type, response, error }) => {
       ...state,
       declineInvite: {
         data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.INDEX_PENDING:
+    return {
+      ...state,
+      index: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.INDEX_COMPLETE:
+    return {
+      ...state,
+      index: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.INDEX_SUCCESS:
+    return {
+      ...state,
+      index: {
+        ...state.index,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.INDEX_FAILURE:
+    return {
+      ...state,
+      index: {
+        data: error || [],
         status: 'failed'
       }
     };

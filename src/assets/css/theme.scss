@@ -122,6 +122,18 @@ svg:not(:root) {
   //box-shadow: 0px 15px 45px -10px rgba(200, 203, 215, 0.499645);
 
 }
+.custom-top-bar-borderless {
+  position: relative !important;
+  top: -60px;
+  padding: 1.5rem 1.5rem .2rem;
+  z-index: 1000000001;
+  //box-shadow: 0px 15px 45px -10px rgba(200, 203, 215, 0.499645);
+
+}
+.left-14-neg {
+  left: -14px;
+}
+
 .border-faint {
   border: solid 1px $theme-color-faint;
 }

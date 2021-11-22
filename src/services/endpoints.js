@@ -54,7 +54,10 @@ const paths = {
   CHANGE_MANAGER: profileEndpoints.changeManager,
   NOTIFICATIONS: profileEndpoints.notifications,
   MY_PROJECTS: engagementEnpoints.myEngagements,
-  PROFILES: profileEndpoints.getProfile
+  PROFILES: profileEndpoints.getProfile,
+
+  // index
+  INDEX: authEndpoints.index
 };
 
 export default paths;

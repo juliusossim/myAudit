@@ -9,9 +9,9 @@ export const QuillEditorBubble = ({ setFormData, name, formData }) => {
     ...formData,
     [name]: value
   });
-  useEffect(() => {
-    handleData();
-  }, [value]);
+  // useEffect(() => {
+  //   handleData();
+  // }, [value]);
   return (
     <ReactQuill theme="snow" value={value} onChange={setValue} />
   );

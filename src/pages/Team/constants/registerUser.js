@@ -32,12 +32,12 @@ const registerUserProps = (
     kind: 'input',
     props: {
       className: 'w-100 m-b-20 col-12',
-      name: 'last_naame',
+      name: 'last_name',
       label: 'Last Name',
       type: 'text',
-      value: formData?.last_naame || '',
+      value: formData?.last_name || '',
       disabled: true,
-      error: errors?.last_naame,
+      error: errors?.last_name,
       onBlur: handleBlur,
       onChange: handleChange
     }
@@ -46,16 +46,16 @@ const registerUserProps = (
     kind: 'input',
     props: {
       className: 'w-100 m-b-20 col-12',
-      name: 'phone_number',
+      name: 'phone',
       label: 'Phone Number',
       type: 'tel',
-      value: formData?.phone_number || '',
+      value: formData?.phone || '',
       validations: {
         required: true,
         max: 14,
         min: 9
       },
-      error: errors?.phone_number,
+      error: errors?.phone,
       onBlur: handleBlur,
       onChange: handleChange
     }

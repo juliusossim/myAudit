@@ -1,34 +1,37 @@
 import React, { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { isEmpty } from 'lodash';
-import { Link, useHistory } from 'react-router-dom';
+import { Link, useHistory, useParams } from 'react-router-dom';
 import CardContent from '@mui/material/CardContent';
 import Card from '@mui/material/Card';
 import Loader from '../../components/microComponents/loader';
 import useCreateBoilerPlate from '../../components/hooks/useCreateBoilerPlate';
-import { notifier } from '../../utilities/stringOperations';
+import { makeFullName, notifier, splitFullName } from '../../utilities/stringOperations';
 import useUpdateStore from '../../components/hooks/useUpdateStore';
 import useStoreParams from '../../components/hooks/useStoreParams';
 import { apiOptions } from '../../services/fetch';
-import { projectAction } from '../../redux/actions/projectActions';
 import FormBuilder from '../../components/form/builders/form';
-import newEngagementProps from '../Engagements/constants/newEngagement';
-import inviteUser from './constants/inviteUser';
 import registerUserProps from './constants/registerUser';
+import useFetchData from '../../components/hooks/useFetchData';
+import { projectAction } from '../../redux/actions/projectActions';
 
 const InvitedUser = () => {
   /* state */
-  const [formData, setFormData] = useState({ first_time: 0, year: new Date(), external_expert: 0 });
+  const [formData, setFormData] = useState({ });
   const [errors, setErrors] = useState({});
 
+  /* router hooks */
+  const { token } = useParams();
   /* redux */
-  const store = useSelector((state) => state.engagement);
+  const store = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
   const options = {
     action: 'REGISTER_INVITED_USER',
     apiOpts: apiOptions({
       body: formData,
       endpoint: 'REGISTER_INVITED_USER',
-      auth: true,
+      param: token,
       method: 'post'
     })
   };
@@ -40,9 +43,52 @@ const InvitedUser = () => {
     setErrors,
     errors,
     options,
-    store: store.newEngagement,
+    store: store.invitedUser,
     action: 'REGISTER_INVITED_USER_COMPLETE',
     redirect: '/app/dashboard'
+  });
+
+  const updateStore = () => pushUpdates([{
+    data: data?.invitedUser,
+    action: 'REGISTER_INVITED_USER_COMPLETE'
+  }], dispatch);
+  const userInfoStore = useStoreParams(store.invitedUser);
+  const usersFail = () => {
+    setErrors(backErrors);
+    updateStore();
+  };
+  const usersSuccess = () => {
+    const names = splitFullName(userInfoStore?.data?.invitedUser.name);
+    setFormData({
+      ...userInfoStore?.data?.invitedUser, first_name: names.firstName, last_name: names.lastName
+    });
+    // updateStore();
+  };
+  const pullUsers = React.useCallback(() => {
+    dispatch(projectAction(
+      {
+        action: 'REGISTER_INVITED_USER',
+        routeOptions: apiOptions({
+          endpoint: 'INVITE_USER',
+          param: token,
+          method: 'get'
+        })
+      }
+    ));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  /* custom hooks */
+  const pushUpdates = useUpdateStore;
+  const fetchData = useFetchData;
+  fetchData({
+    initialCallback: pullUsers,
+    dataIndex: 'invitedUser',
+    successCallback: usersSuccess,
+    emptyRedirect: '/app/team/invite-user',
+    failCallback: usersFail,
+    emptyCallback: updateStore,
+    store: userInfoStore
   });
 
   return (
