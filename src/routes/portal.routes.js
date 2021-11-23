@@ -82,7 +82,13 @@ const routes = [
     name: 'engagement'
   },
   {
-    path: '/app/engagement/new-engagement/:engagementId',
+    path: '/app/engagement/new-engagement',
+    component: NewEngagement,
+    exact: true,
+    name: 'engagement'
+  },
+  {
+    path: '/app/engagement/:engagementName/:engagementId',
     component: NewEngagement,
     exact: true,
     name: 'engagement'

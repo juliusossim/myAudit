@@ -48,7 +48,8 @@ const DragNDropTemp = ({
 
   const uploadMediaSuccess = () => {
     setUploaded(true);
-    setFileUrl({
+    setFormData({
+      ...formData,
       [data.name]: data.url
     });
   };

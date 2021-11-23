@@ -2,8 +2,8 @@
 import React, { useState } from 'react';
 import { isEmpty } from 'lodash';
 import Dropzone from 'react-dropzone';
-import { AiOutlineCheck, AiOutlineFileAdd, MdErrorOutline } from 'react-icons/all';
-import IconButton from '@mui/material/IconButton';
+import { AiOutlineFileAdd, MdErrorOutline } from 'react-icons/all';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import { animatedCheck } from '../../../temps/projectTemps/miscTemps';
 
 const DragNDropFileInput = ({ handleData, label, uploaded }) => {
@@ -43,7 +43,8 @@ const DragNDropFileInput = ({ handleData, label, uploaded }) => {
                         <li key={fileName}>
                           <span>{fileName}</span>
                           <span>{uploaded === 'success' && animatedCheck(<path className="path" d="M4.1 12.7L9 17.6 20.3 6.3" fill="none" />)}</span>
-                          <span>{uploaded === 'failed' && animatedCheck(<MdErrorOutline />)}</span>
+                          <span>{uploaded === 'failed' && <MdErrorOutline className="text-danger" />}</span>
+                          <span>{uploaded === 'pending' && <CircularProgress />}</span>
                         </li>
                       ))}
                     </ul>

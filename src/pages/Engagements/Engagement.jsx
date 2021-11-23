@@ -63,7 +63,7 @@ const Engagement = () => {
             Select engagement step to continue
           </div>
           <div className="my-4 row">
-            <EngagementStep />
+            <EngagementStep engagementId={engagementId} />
           </div>
           {
             status === 'pending'
