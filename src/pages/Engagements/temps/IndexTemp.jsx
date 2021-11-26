@@ -1,7 +1,6 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
 import FancySearch from '../../../components/form/fancySearch';
-import DashboardTable from '../../../components/tables/dashboardTable';
 import EngagementTable from '../../../components/tables/engagementTable';
 
 const IndexTemp = ({ formData }) => (

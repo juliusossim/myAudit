@@ -18,7 +18,7 @@ const Engagement = () => {
   const store = useSelector((state) => state.engagement?.engagement);
 
   /* router hooks */
-  const { engagementId } = useParams();
+  const { engagementId, engagementName } = useParams();
 
   /* state */
   const [formData, setFormData] = useState({ });
@@ -63,7 +63,10 @@ const Engagement = () => {
             Select engagement step to continue
           </div>
           <div className="my-4 row">
-            <EngagementStep engagementId={engagementId} />
+            <EngagementStep
+              engagementId={engagementId}
+              engagementName={formData?.engagement?.name}
+            />
           </div>
           {
             status === 'pending'

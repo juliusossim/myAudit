@@ -4,7 +4,6 @@ import PageTemp from '../../components/temps/PageTemp';
 import { apiOptions } from '../../services/fetch';
 import useViewBoilerPlate from '../../components/hooks/useViewBoilerPlate';
 import IndexTemp from '../Dashboard/temp/IndexTemp';
-import DashboardTable from '../../components/tables/dashboardTable';
 import TeamTable from '../../components/tables/teamTable';
 
 const TeamIndex = () => {

@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 import React from 'react';
+import { slugify } from '../../../utilities/stringOperations';
 
 const EngagementStep = ({ engagementId, engagementName }) => (
   <div className="row">
-    <Link to={`app/engagement/${engagementName}/${engagementId}`} className="col-md-3">
+    <Link to={`/app/engagement/pre-planning/${slugify(engagementName, '-')}/${engagementId}`} className="col-md-3">
       <div className="custom-box mx-1 text-center text-theme-black bold">
         <div className="mb-3 mt-5">
           <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -23,7 +24,7 @@ const EngagementStep = ({ engagementId, engagementName }) => (
         </div>
       </div>
     </Link>
-    <Link to="/app/engagement/pre-planning" className="col-md-3">
+    <Link to={`/app/engagement/planning/${slugify(engagementName, '-')}/${engagementId}`} className="col-md-3">
       <div className="custom-box mx-1 text-center text-theme-black bold">
         <div className="mb-3 mt-5">
           <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">

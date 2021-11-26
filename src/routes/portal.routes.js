@@ -13,6 +13,7 @@ const CompleteProfile = lazy(() => import('../pages/authentication/CompleteProfi
 const Engagement = lazy(() => import('../pages/Engagements/EngagementIndex'));
 const NewEngagement = lazy(() => import('../pages/Engagements/NewEngagement'));
 const EngagementView = lazy(() => import('../pages/Engagements/Engagement'));
+const PrePlanning = lazy(() => import('../pages/Engagements/PrePlanning'));
 const Planning = lazy(() => import('../pages/Engagements/Planning'));
 
 /* clients */
@@ -88,13 +89,13 @@ const routes = [
     name: 'engagement'
   },
   {
-    path: '/app/engagement/:engagementName/:engagementId',
-    component: NewEngagement,
+    path: '/app/engagement/pre-planning/:engagementName/:engagementId',
+    component: PrePlanning,
     exact: true,
     name: 'engagement'
   },
   {
-    path: '/app/engagement/planning/:engagementId',
+    path: '/app/engagement/planning/:engagementName/:engagementId',
     component: Planning,
     exact: true,
     name: 'engagement'

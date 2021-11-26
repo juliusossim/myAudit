@@ -17,18 +17,21 @@ const NewEngagement = () => {
   /* redux hooks */
   const dispatch = useDispatch();
   const store = useSelector((state) => state.engagement);
-  const store2 = useSelector((state) => state.users);
+  const store2 = useSelector((state) => state.users?.clients);
 
   /* router hooks */
   const { push } = useHistory();
   const { engagementId } = useParams();
-
   /* state */
-  const [formData, setFormData] = useState({ first_time: 0, year: new Date(), external_expert: 0 });
+  const [formData, setFormData] = useState({
+    first_time: 0,
+    year: new Date(),
+    external_expert: 0,
+    clients: ['select a client']
+  });
   const [errors, setErrors] = useState({});
-  const [progress, setProgress] = useState(0);
+  // const [progress, setProgress] = useState(0);
   const [currentName, setCurrentName] = useState(0);
-  const [clients, setClients] = useState(['select a client']);
   const [uploads, setUploads] = useState({});
 
   /* boilerPlate hooks params */
@@ -57,16 +60,16 @@ const NewEngagement = () => {
     setErrors,
     errors,
     options,
-    store: store.newEngagement,
-    setProgress,
+    store: store?.newEngagement,
+    // setProgress,
     setCurrentName,
     pushUpdatesArr,
     action: 'CREATE_ENGAGEMENT_COMPLETE',
-    redirect: '/app/engagements'
+    redirect: '/app/engagement'
   });
-  const uploadsStore = useStoreParams(store.uploads);
+  // const uploadsStore = useStoreParams(store.uploads);
   const engagementStore = useStoreParams(store.engagement);
-  const clientsStore = useStoreParams(store2.clients);
+  const clientsStore = useStoreParams(store2);
 
   /* custom hooks params */
   const pullClients = React.useCallback(() => {
@@ -82,6 +85,7 @@ const NewEngagement = () => {
     ));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
   const pullEngagement = React.useCallback(() => {
     dispatch(projectAction(
       {
@@ -96,23 +100,7 @@ const NewEngagement = () => {
     ));
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  const uploadMediaFail = () => {
-    setErrors(uploadsStore.backErrors);
-    pushUpdates([
-      {
-        data: uploadsStore.data,
-        action: 'UPLOAD_MEDIA_COMPLETE'
-      },
-      {
-        data,
-        action: 'CREATE_ENGAGEMENT_COMPLETE'
-      }
-    ], dispatch);
-  };
-  const uploadMediaSuccess = () => setUploads({
-    ...uploads,
-    [currentName]: uploadsStore.data.url
-  });
+
   const clientsFail = () => {
     setErrors(store2?.backErrors);
     pushUpdates([{
@@ -124,7 +112,7 @@ const NewEngagement = () => {
     const clientsData = clientsStore?.data?.clients?.map(({ id, name }) => ({
       name, id
     }));
-    setClients(clientsData);
+    setFormData({ ...formData, clients: [...formData?.clients, ...clientsData] });
   };
   const engagementFail = () => {
     setErrors(engagementStore?.backErrors);
@@ -133,7 +121,9 @@ const NewEngagement = () => {
       action: 'ENGAGEMENT_COMPLETE'
     }], dispatch);
   };
-  const engagementSuccess = () => setFormData(engagementStore?.data?.engagement);
+  const engagementSuccess = () => setFormData({
+    ...formData, ...engagementStore?.data?.engagement
+  });
 
   /* custom hooks */
   const pushUpdates = useUpdateStore;
@@ -149,47 +139,34 @@ const NewEngagement = () => {
     store: clientsStore
   });
   fetchData({
+    initialCallback: pullEngagement,
     push,
-    successCallback: uploadMediaSuccess,
-    failCallback: uploadMediaFail,
-    store: uploadsStore
+    dataIndex: 'engagement',
+    successCallback: engagementSuccess,
+    failCallback: engagementFail,
+    store: engagementStore
   });
-
-  // /* react hooks */
-  useEffect(() => {
-    if (!stringDoesNotExist(engagementId)) {
-      fetchData({
-        initialCallback: pullEngagement,
-        push,
-        dataIndex: 'engagement',
-        successCallback: engagementSuccess,
-        emptyRedirect: '/app/engagement/new-engagement',
-        failCallback: engagementFail,
-        store: engagementStore
-      });
-    }
-  }, [engagementId]);
 
   /* component methods */
   const handleDateChange = ({ date, name }) => {
     setFormData({ ...formData, [name]: date });
   };
-  const updateEngagement = React.useCallback(() => {
-    dispatch(projectAction(
-      {
-        action: 'ENGAGEMENT',
-        routeOptions: apiOptions({
-          endpoint: 'ENGAGEMENT',
-          param: engagementId,
-          auth: true,
-          method: 'get'
-        })
-      }
-    ));
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  // const updateEngagement = React.useCallback(() => {
+  //   dispatch(projectAction(
+  //     {
+  //       action: 'ENGAGEMENT',
+  //       routeOptions: apiOptions({
+  //         endpoint: 'ENGAGEMENT',
+  //         param: engagementId,
+  //         auth: true,
+  //         method: 'get'
+  //       })
+  //     }
+  //   ));
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
 
-  const createUpdate = stringDoesNotExist(engagementId) ? create : updateEngagement;
+  // const createUpdate = stringDoesNotExist(engagementId) ? create : updateEngagement;
 
   /* jsx */
   return (
@@ -212,17 +189,14 @@ const NewEngagement = () => {
                 formData={formData}
                 setFormData={setFormData}
                 errors={errors}
+                setErrors={setErrors}
                 handleBlur={handleBlur}
                 handleChange={handleChange}
                 handleChecked={handleChecked}
-                create={createUpdate}
+                create={create}
                 uploads={uploads}
-                loadingMedia={uploadsStore.status}
-                // removeItem={removeItem}
-                progress={progress}
-                setProgress={setProgress}
-                clients={clients}
                 handleDateChange={handleDateChange}
+                link={`/app/engagement/engagement/${engagementId}`}
               />
             )
         }

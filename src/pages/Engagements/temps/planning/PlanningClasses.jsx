@@ -7,10 +7,11 @@ import CustomAccordion from '../../../../components/ui/customAccordion';
 import { checkRequiredFields } from '../../../../utilities/validation';
 import planningProps from '../../constants/planningProps';
 import DragNDropTemp from '../newEngagement/DragNDropInputTemp';
+import { notifier, stringCaps } from '../../../../utilities/stringOperations';
 
 const PlanningClasses = ({
-  formData, setFormData, handleChange, errors,
-  handleBlur, currentPanel, setCurrentPanel, progress, setProgress
+  formData, setFormData, handleChange, errors, setErrors,
+  handleBlur, currentPanel, setCurrentPanel, status, message
 }) => {
   const [engagementClasses, setEngagementClasses] = useState([]);
   const [submittable, setSubmittable] = useState(false);
@@ -21,6 +22,16 @@ const PlanningClasses = ({
       formData.name
     ]));
   }, [formData]);
+
+  useEffect(() => {
+    if (status === 'failed') {
+      notifier({
+        text: 'at least a class must be added and the trial balance field must be filled.',
+        title: stringCaps(status),
+        type: 'error'
+      });
+    }
+  }, [status]);
 
   useEffect(() => {
     setFormData({
@@ -95,8 +106,7 @@ const PlanningClasses = ({
                     <DragNDropTemp
                       formData={formData}
                       setFormData={setFormData}
-                      seProgress={setProgress}
-                      progress={progress}
+                      setErrors={setErrors}
                       name="process_flow_document"
                       label="Process Flow Document"
                     />

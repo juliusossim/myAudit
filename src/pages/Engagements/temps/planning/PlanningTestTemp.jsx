@@ -7,7 +7,7 @@ import PlanningClasses from './PlanningClasses';
 import userProps from '../../constants/usersProps';
 import NewEngagementTemp from '../newEngagement/NewEngagementTemp';
 
-const PlanningTemp = ({
+const PlanningTestTemp = ({
   formData, setFormData, handleChange, errors, handleBlur, setErrors,
   create, status, link, message
 }) => {
@@ -56,4 +56,4 @@ const PlanningTemp = ({
     </div>
   );
 };
-export default PlanningTemp;
+export default PlanningTestTemp;

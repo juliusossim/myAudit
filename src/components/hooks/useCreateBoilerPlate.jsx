@@ -9,7 +9,7 @@ import useUpdateStore from './useUpdateStore';
 
 const useCreateBoilerPlate = ({
   store, formData, setFormData, setErrors, options, errors, setProgress, setCurrentName, action,
-  pushUpdatesArr, redirect
+  pushUpdatesArr, redirect, noRedirect
 }) => {
   const { goBack, push } = useHistory();
   const dispatch = useDispatch();
@@ -47,7 +47,9 @@ const useCreateBoilerPlate = ({
         text: message,
         title: 'Success'
       });
-      setTimeout(stringDoesNotExist(redirect) ? goBack : push(redirect), 500);
+      if (!noRedirect) {
+        setTimeout(stringDoesNotExist(redirect) ? goBack : push(redirect), 500);
+      }
     }
     if (status === 'failed') {
       notifier({

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import uuid from 'react-uuid';
+import { Link } from 'react-router-dom';
 import FormBuilder from '../../../../components/form/builders/form';
 import newEngagementProps from '../../constants/newEngagement';
 import DragNDropTemp from './DragNDropInputTemp';
@@ -8,7 +8,7 @@ import { CheckboxField } from '../../../../components/form/inputs/Checkbox';
 
 const NewEngagementTemp = ({
   formData, setFormData, handleChange, errors, handleBlur, handleChecked, setErrors,
-  create, removeItem, loadingMedia, progress, uploads, handleDateChange, setProgress
+  create, removeItem, loadingMedia, progress, uploads, handleDateChange, link
 }) => {
   const [currentPanel, setCurrentPanel] = useState(0);
   return (
@@ -214,8 +214,8 @@ const NewEngagementTemp = ({
             </div>
 
             <div className="row justify-content-between">
-              <div className="mt-md-1 font-small">
-                &nbsp;
+              <div className="p-3 mt-2">
+                <Link className="btn-plain btn-large border-top border-bottom text-danger" to={link}>Back</Link>
               </div>
               <div className="p-3">
                 <button className=" btn" type="button" onClick={create}>Continue</button>
