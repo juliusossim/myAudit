@@ -10,9 +10,11 @@ import planningProps from '../../pages/Engagements/constants/planningProps';
 import sliderProps from './constants/sliderprops';
 
 export default function SliderSizes({
-  max, min, formData, setFormData, name, label, props
+  max, min, formData, setFormData, name, label, props, val
 }) {
-  const [value, setValue] = React.useState(30);
+  const [value, setValue] = React.useState(val || min || 0);
+  const [ma, setMa] = React.useState(max || 100);
+  const [mi, setMi] = React.useState(min || 0);
 
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);
@@ -34,6 +36,16 @@ export default function SliderSizes({
       ...formData, [name]: value
     });
   }, [value]);
+  const marks = [
+    {
+      value: min,
+      label: min
+    },
+    {
+      value: max,
+      label: max
+    }
+  ];
 
   return (
     <Box>
@@ -42,28 +54,30 @@ export default function SliderSizes({
         <div className="col-md-8 center-horizontal">
           <Slider
             aria-label="input-slider"
-            min={min || 0}
+            defaultValue={mi}
+            min={mi}
             onChange={handleSliderChange}
-            max={max || 100}
-            value={typeof value === 'number' ? value : 0}
+            max={ma}
+            marks={marks}
+            value={value}
             valueLabelDisplay="on"
           />
         </div>
-        <div className={isUndefined(props) ? 'd-none' : 'col-md-4'}>
-          <FormBuilder
-            formItems={
-              sliderProps(
-                {
-                  ...props,
-                  name,
-                  handleChange: handleInputChange,
-                  handleBlur,
-                  formData
-                }
-              )
-            }
-          />
-        </div>
+        {/* <div className={isUndefined(props) ? 'd-none' : 'col-md-4'}> */}
+        {/*  <FormBuilder */}
+        {/*    formItems={ */}
+        {/*      sliderProps( */}
+        {/*        { */}
+        {/*          ...props, */}
+        {/*          name, */}
+        {/*          handleChange: handleInputChange, */}
+        {/*          handleBlur, */}
+        {/*          formData */}
+        {/*        } */}
+        {/*      ) */}
+        {/*    } */}
+        {/*  /> */}
+        {/* </div> */}
       </div>
 
     </Box>

@@ -8,6 +8,10 @@ import userProps from '../../constants/usersProps';
 import NewEngagementTemp from '../newEngagement/NewEngagementTemp';
 import SliderSizes from '../../../../components/microComponents/slider';
 import CustomAccordion from '../../../../components/ui/customAccordion';
+import Creatable from '../../../../components/form/inputs/Creatable';
+import planningProps from '../../constants/planningProps';
+import { index } from '../../../../utilities/auth';
+import { slugToString } from '../../../../utilities/stringOperations';
 
 const MaterialityTemp = ({
   formData, setFormData, handleChange, errors, handleBlur, setErrors,
@@ -15,6 +19,9 @@ const MaterialityTemp = ({
 }) => {
   const [currentPanel, setCurrentPanel] = useState(0);
   const [show, setShow] = useState(false);
+
+  const reason = (name) => `${name}_reason`;
+
   return (
     <div className="w-750 ">
 
@@ -28,22 +35,17 @@ const MaterialityTemp = ({
                     name: 'Materiality Benchmark',
                     details: (
                       <div>
-                        <DragNDropTemp
-                          formData={formData}
-                          setFormData={setFormData}
-                          setErrors={setErrors}
-                          name="materiality_benchmark_reason"
-                          label="Benchmark Purpose"
-                        />
-                        <SliderSizes
-                          max={10000000}
-                          formData={formData}
-                          setFormData={setFormData}
-                          label="Benchmark Amount"
-                          name="materiality_benchmark_amount"
-                          props={{
-                            errors, setErrors, placeholder: 'Enter Amount'
-                          }}
+                        <FormBuilder
+                          formItems={
+                            planningProps(
+                              {
+                                formData,
+                                handleBlur,
+                                handleChange,
+                                errors
+                              }
+                            ).materiality
+                          }
                         />
                       </div>
                     )
@@ -52,49 +54,35 @@ const MaterialityTemp = ({
                   currentPanel={currentPanel}
                   panel={1}
                 />
-
                 <CustomAccordion
                   data={{
                     name: 'Overall Materiality',
                     details: (
                       <div>
-                        <DragNDropTemp
-                          formData={formData}
-                          setFormData={setFormData}
-                          setErrors={setErrors}
-                          name="overall_materiality_reason"
-                          label="Purpose"
-                        />
-                        <SliderSizes
-                          max={10000000}
-                          formData={formData}
-                          setFormData={setFormData}
-                          label="Amount"
-                          name="overall_materiality_amount"
-                          props={{
-                            errors, setErrors, placeholder: 'Enter Amount'
-                          }}
-                        />
-                        <SliderSizes
-                          max={10000000}
-                          formData={formData}
-                          setFormData={setFormData}
-                          label="Level"
-                          name="overall_materiality_level_id"
-                          props={{
-                            errors, setErrors, placeholder: 'Enter Amount'
-                          }}
-                        />
-                        <SliderSizes
-                          max={10000000}
-                          formData={formData}
-                          setFormData={setFormData}
-                          label="Limit"
-                          name="overall_materiality_limit"
-                          props={{
-                            errors, setErrors, placeholder: 'Enter Amount'
-                          }}
-                        />
+                        {
+                          index?.materialLevels?.map((item) => (
+                            <div key={item.name}>
+                              <SliderSizes
+                                max={item.upper_limit}
+                                min={item.lower_limit}
+                                formData={formData}
+                                setFormData={setFormData}
+                                label={slugToString(item.name)}
+                                name={item.name}
+                                props={{
+                                  errors, setErrors, placeholder: 'Enter Amount'
+                                }}
+                              />
+                              <DragNDropTemp
+                                formData={formData}
+                                setFormData={setFormData}
+                                setErrors={setErrors}
+                                name={reason(item.name)}
+                                label="Purpose"
+                              />
+                            </div>
+                          ))
+                        }
                       </div>
                     )
                   }}

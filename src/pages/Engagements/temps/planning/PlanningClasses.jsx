@@ -99,7 +99,7 @@ const PlanningClasses = ({
                           handleChange,
                           errors
                         }
-                      )
+                      ).planning
                     }
                   />
                   <div className="px-2">

@@ -74,14 +74,13 @@ const TextareaInput = (
               style={{ width: 'inherit' }}
               label={label}
               multiline
-              className={error?.length > 0 ? 'error-field' : ''}
+              // className={error?.length > 0 ? 'error-field' : ''}
               name={name}
               id={name}
               value={value}
               placeholder={placeholder}
-              rows={rows}
-              cols={20}
-              variant="outlined"
+              rows={rows || 3}
+              variant="filled"
               onChange={onChange}
               onBlur={((e) => typeof onBlur === 'function'
                 && onBlur(e, validations))}

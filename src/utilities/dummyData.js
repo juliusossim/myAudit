@@ -433,6 +433,38 @@ export const countries = [
     name: 'Other'
   }
 ];
+export const materiality = [
+  {
+    id: 1,
+    name: 'expenditure materiality',
+    value: '0'
+  },
+  {
+    id: 2,
+    name: 'purchase materiality',
+    value: 'less than 5'
+  },
+  {
+    id: 3,
+    name: 'income materiality',
+    value: 'less than 10'
+  },
+  {
+    id: 4,
+    name: '10 - 14',
+    value: 'less than 15'
+  },
+  {
+    id: 5,
+    name: '15 - 25',
+    value: 'less than 25'
+  },
+  {
+    id: 5,
+    name: '100 and above',
+    value: 'above 100'
+  }
+];
 export const partners = [
   {
     id: 1,

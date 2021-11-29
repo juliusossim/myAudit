@@ -60,13 +60,13 @@ const Selectable = ({
             </div>
           )}
 
-          {/* <Button */}
-          {/*  key={`it's ${index}`} */}
-          {/*  onClick={() => makeSelect(option)} */}
-          {/*  type="button" */}
-          {/* > */}
-          {/*  {option[prop.name]} */}
-          {/* </Button> */}
+          <Button
+            key={option[prop.name]}
+            onClick={() => makeSelect(option)}
+            type="button"
+          >
+            {option[prop.name]}
+          </Button>
         </div>
       ));
     // eslint-disable-next-line no-nested-ternary

@@ -395,6 +395,7 @@ a.gray:hover {
 
 .error-msg {
   color: #530606;
+  @extend .font-tinier;
   li {
     color: #f50606;
   }

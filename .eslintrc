@@ -1,19 +1,19 @@
 {
-	"parser": "babel-eslint",
-	"extends": ["airbnb", "react-app"],
-	"env": {
-		"browser": true,
-		"node": true
-	},
-	"settings": {
-		"react": { "verion": "detect" }
-	},
-	"rules": {
+  "parser": "babel-eslint",
+  "extends": ["airbnb", "react-app"],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "settings": {
+    "react": { "verion": "detect" }
+  },
+  "rules": {
     "indent": ["error", 2],
     "template-curly-spacing": ["error", "never"],
     "no-console":"off",
-		"comma-dangle": ["error", "never"],
-		"linebreak-style": ["error", "unix"], // support LF linebreak style for linux
+    "comma-dangle": ["error", "never"],
+    "linebreak-style": ["error", "unix"], // support LF linebreak style for linux
     "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
     "react/prop-types": 0,
     "react/destructuring-assignment": 1,

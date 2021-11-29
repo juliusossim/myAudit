@@ -41,14 +41,6 @@ const PlanningTemp = ({
                 errors={errors}
                 setErrors={setErrors}
               />
-              <div className="row justify-content-between">
-                <div className="mt-md-1 font-small">
-                  <Link to={link}>Back</Link>
-                </div>
-                <div className="p-3">
-                  <button className=" btn" type="button" onClick={create}>Next</button>
-                </div>
-              </div>
             </div>
           </div>
         </div>
