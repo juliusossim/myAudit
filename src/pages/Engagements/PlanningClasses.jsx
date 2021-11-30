@@ -13,10 +13,10 @@ import Notes from './Notes';
 import NewEngagementTemp from './temps/newEngagement/NewEngagementTemp';
 import HorizontalLinearStepper from '../../components/microComponents/stepper';
 
-const PlanningClasses = ({ setTempParams }) => {
+const PlanningClasses = ({ setTempParams, classes }) => {
   const { engagementId } = useParams();
   /* state */
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState(classes);
   const [errors, setErrors] = useState({});
   /* redux */
   const store = useSelector((state) => state.engagement?.planning);
@@ -56,7 +56,7 @@ const PlanningClasses = ({ setTempParams }) => {
   }, [formData, status]);
 
   return (
-    <div>
+    <div className="mt-4">
       {
         status === 'pending'
           ? <Loader />

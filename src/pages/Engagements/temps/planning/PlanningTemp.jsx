@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import Box from '@material-ui/core/Box';
+import FileViewer from 'react-file-viewer';
 import FormBuilder from '../../../../components/form/builders/form';
 import DragNDropTemp from '../newEngagement/DragNDropInputTemp';
 import PlanningClasses from './PlanningClasses';
@@ -21,6 +22,16 @@ const PlanningTemp = ({
           <div className="d-flex wrap justify-content-between">
             <div className="margin-auto w-100 px-5">
               <div className="px-3">
+                <FileViewer
+                  fileType="docx"
+                  filePath={formData?.trial_balance}
+                />
+                <FileViewer
+                  fileType="png"
+                  filePath={formData?.trial_balance}
+                  // errorComponent={CustomErrorComponent}
+                  // onError={this.onError}
+                />
                 <DragNDropTemp
                   formData={formData}
                   setFormData={setFormData}

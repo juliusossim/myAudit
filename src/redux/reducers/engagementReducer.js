@@ -53,6 +53,10 @@ const initialState = {
     data: {},
     status: 'initial'
   },
+  materiality: {
+    data: {},
+    status: 'initial'
+  },
   inviteMember: {
     data: {},
     status: 'initial'
@@ -477,6 +481,40 @@ const engagementReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       planning: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.MATERIALITY_PENDING:
+    return {
+      ...state,
+      materiality: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.MATERIALITY_COMPLETE:
+    return {
+      ...state,
+      materiality: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.MATERIALITY_SUCCESS:
+    return {
+      ...state,
+      materiality: {
+        ...state.materiality,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.MATERIALITY_FAILURE:
+    return {
+      ...state,
+      materiality: {
         data: error || {},
         status: 'failed'
       }

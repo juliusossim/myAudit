@@ -36,9 +36,7 @@ const Engagement = () => {
   };
 
   /* boilerPlate hooks */
-  const {
-    status
-  } = useViewBoilerPlate({
+  const { status } = useViewBoilerPlate({
     setFormData,
     formData,
     store,

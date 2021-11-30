@@ -9,11 +9,14 @@ export const QuillEditorBubble = ({ setFormData, name, formData }) => {
     ...formData,
     [name]: value
   });
-  // useEffect(() => {
-  //   handleData();
-  // }, [value]);
+  useEffect(() => {
+    handleData();
+  }, [value]);
   return (
-    <ReactQuill theme="snow" value={value} onChange={setValue} />
+    <div>
+      <div className="font-tinier text-theme-faint">Work here or click button below to attach file</div>
+      <ReactQuill theme="snow" value={value} onChange={setValue} />
+    </div>
   );
 };
 export const QuillEditorSnow = ({ value, handleSetValue }) => (

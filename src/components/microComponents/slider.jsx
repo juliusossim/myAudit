@@ -19,11 +19,13 @@ export default function SliderSizes({
   max, min, formData, setFormData, name, label, props, val
 }) {
   const [value, setValue] = React.useState(val || min || 0);
+  const [disableSlider, setDisableSlider] = React.useState(false);
   const ma = Number(max) || 100;
   const mi = Number(min) || 0;
 
   const handleSliderChange = (event, newValue) => {
     if (stringDoesNotExist(formData.materiality_amount)) {
+      setDisableSlider(true);
       return notifier({
         type: 'info',
         title: 'Amount is Empty',
@@ -51,11 +53,11 @@ export default function SliderSizes({
   const marks = [
     {
       value: mi,
-      label: mi
+      label: `${mi}%`
     },
     {
       value: ma,
-      label: ma
+      label: `${ma}%`
     }
   ];
 
@@ -65,6 +67,8 @@ export default function SliderSizes({
       <div className="row">
         <div className="col-md-8 center-horizontal">
           <Slider
+            color="secondary"
+            disabled={disableSlider && stringDoesNotExist(formData.materiality_amount)}
             // key={uuid()}
             aria-label="input-slider"
             min={mi}

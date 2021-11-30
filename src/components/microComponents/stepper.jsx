@@ -7,8 +7,11 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
 
-export default function HorizontalLinearStepper({ steps, active }) {
+export default function HorizontalLinearStepper({ steps, active, link }) {
+  const { goBack } = useHistory();
+
   const [activeStep, setActiveStep] = React.useState(active || 0);
   const [skipped, setSkipped] = React.useState(new Set());
   const currentItem = steps[activeStep];
@@ -95,12 +98,14 @@ export default function HorizontalLinearStepper({ steps, active }) {
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
               color="inherit"
+              className={activeStep === 0 ? 'd-none' : ''}
               disabled={activeStep === 0}
               onClick={handleBack}
               sx={{ mr: 1 }}
             >
               Back
             </Button>
+            <Button onClick={goBack}>Exit</Button>
             <Box sx={{ flex: '1 1 auto' }} />
             <Button className={isStepOptional(activeStep) ? '' : 'd-none'} color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
               Skip
