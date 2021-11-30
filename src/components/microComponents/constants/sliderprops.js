@@ -14,13 +14,16 @@ const sliderProps = (
   }
 ) => ([
   {
-    kind: 'input',
+    kind: 'currency',
     props: {
       className: 'w-100 m-b-20 col-12',
       name,
+      label: 'Amount',
       type: 'text',
-      placeholder,
       value: formData[name],
+      validations: {
+        required: true
+      },
       error: errors[name],
       onBlur: handleBlur,
       onChange: handleChange

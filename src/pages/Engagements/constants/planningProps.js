@@ -50,12 +50,12 @@ const planningProps = (
       }
     },
     {
-      kind: 'input',
+      kind: 'currency',
       props: {
         className: 'w-100 m-b-20 col-12 col-md-5',
         name: 'materiality_amount',
-        type: 'number',
         label: 'Amount',
+        type: 'text',
         value: formData?.materiality_amount || '',
         validations: {
           required: true

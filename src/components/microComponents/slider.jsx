@@ -6,7 +6,14 @@ import { isEmpty, isUndefined } from 'lodash';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { useEffect } from 'react';
-import { sentenceCaps } from '../../utilities/stringOperations';
+import {
+  formatDonation,
+  notifier,
+  sentenceCaps,
+  stringDoesNotExist
+} from '../../utilities/stringOperations';
+import FormBuilder from '../form/builders/form';
+import sliderProps from './constants/sliderprops';
 
 export default function SliderSizes({
   max, min, formData, setFormData, name, label, props, val
@@ -16,7 +23,15 @@ export default function SliderSizes({
   const mi = Number(min) || 0;
 
   const handleSliderChange = (event, newValue) => {
-    setValue(newValue);
+    if (stringDoesNotExist(formData.materiality_amount)) {
+      return notifier({
+        type: 'info',
+        title: 'Amount is Empty',
+        text: 'First fill out the materiality amount.'
+      });
+    }
+    const amount = parseInt(newValue, 10) * formatDonation(formData.materiality_amount) / 100;
+    return setValue(amount);
   };
 
   const handleInputChange = (event) => {
@@ -26,8 +41,6 @@ export default function SliderSizes({
   const handleBlur = () => {
     if (value < 0) {
       setValue(0);
-    } else if (value > 100) {
-      setValue(100);
     }
   };
   useEffect(() => {
@@ -62,12 +75,12 @@ export default function SliderSizes({
             valueLabelDisplay="on"
           />
         </div>
-         <div className={isUndefined(props) ? 'd-none' : 'col-md-4'}>
+        <div className={isUndefined(props) ? 'd-none' : 'col-md-4'}>
           <FormBuilder
             formItems={
               sliderProps(
                 {
-                  ...props, 
+                  ...props,
                   name,
                   handleChange: handleInputChange,
                   handleBlur,
@@ -76,7 +89,7 @@ export default function SliderSizes({
               )
             }
           />
-         </div>
+        </div>
       </div>
 
     </Box>
