@@ -1,20 +1,19 @@
 import * as React from 'react';
+import uuid from 'react-uuid';
 import { isEmpty, isUndefined } from 'lodash';
+// import Slider, { Range } from 'rc-slider';
+// import 'rc-slider/assets/index.css';
 import Box from '@mui/material/Box';
 import Slider from '@mui/material/Slider';
 import { useEffect } from 'react';
 import { sentenceCaps } from '../../utilities/stringOperations';
-import TextInput from '../form/inputs/TextInput';
-import FormBuilder from '../form/builders/form';
-import planningProps from '../../pages/Engagements/constants/planningProps';
-import sliderProps from './constants/sliderprops';
 
 export default function SliderSizes({
   max, min, formData, setFormData, name, label, props, val
 }) {
   const [value, setValue] = React.useState(val || min || 0);
-  const [ma, setMa] = React.useState(max || 100);
-  const [mi, setMi] = React.useState(min || 0);
+  const ma = Number(max) || 100;
+  const mi = Number(min) || 0;
 
   const handleSliderChange = (event, newValue) => {
     setValue(newValue);
@@ -38,12 +37,12 @@ export default function SliderSizes({
   }, [value]);
   const marks = [
     {
-      value: min,
-      label: min
+      value: mi,
+      label: mi
     },
     {
-      value: max,
-      label: max
+      value: ma,
+      label: ma
     }
   ];
 
@@ -53,31 +52,31 @@ export default function SliderSizes({
       <div className="row">
         <div className="col-md-8 center-horizontal">
           <Slider
+            // key={uuid()}
             aria-label="input-slider"
-            defaultValue={mi}
             min={mi}
             onChange={handleSliderChange}
             max={ma}
             marks={marks}
-            value={value}
+            // value={value}
             valueLabelDisplay="on"
           />
         </div>
-        {/* <div className={isUndefined(props) ? 'd-none' : 'col-md-4'}> */}
-        {/*  <FormBuilder */}
-        {/*    formItems={ */}
-        {/*      sliderProps( */}
-        {/*        { */}
-        {/*          ...props, */}
-        {/*          name, */}
-        {/*          handleChange: handleInputChange, */}
-        {/*          handleBlur, */}
-        {/*          formData */}
-        {/*        } */}
-        {/*      ) */}
-        {/*    } */}
-        {/*  /> */}
-        {/* </div> */}
+         <div className={isUndefined(props) ? 'd-none' : 'col-md-4'}>
+          <FormBuilder
+            formItems={
+              sliderProps(
+                {
+                  ...props, 
+                  name,
+                  handleChange: handleInputChange,
+                  handleBlur,
+                  formData
+                }
+              )
+            }
+          />
+         </div>
       </div>
 
     </Box>
