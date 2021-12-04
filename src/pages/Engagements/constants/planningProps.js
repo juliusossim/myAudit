@@ -30,6 +30,25 @@ const planningProps = (
       }
     }
   ],
+  test: [
+    {
+      kind: 'input',
+      props: {
+        className: 'w-100 m-b-20 col-12',
+        name: 'test_name',
+        type: 'text',
+        label: 'Test Name',
+        placeholder: 'Enter Test Name',
+        value: formData?.test_name || '',
+        validations: {
+          required: true
+        },
+        error: errors?.test_name,
+        onBlur: handleBlur,
+        onChange: handleChange
+      }
+    }
+  ],
   materiality: [
     {
       kind: 'select',
@@ -53,14 +72,14 @@ const planningProps = (
       kind: 'currency',
       props: {
         className: 'w-100 m-b-20 col-12 col-md-5',
-        name: 'materiality_amount',
+        name: 'materiality_benchmark_amount',
         label: 'Amount',
         type: 'text',
-        value: formData?.materiality_amount || '',
+        value: formData?.materiality_benchmark_amount || '',
         validations: {
           required: true
         },
-        error: errors?.materiality_amount,
+        error: errors?.materiality_benchmark_amount,
         onBlur: handleBlur,
         onChange: handleChange
       }
@@ -69,15 +88,15 @@ const planningProps = (
       kind: 'text_area',
       props: {
         className: 'w-100 m-b-20 col-12',
-        name: 'materiality_reason',
+        name: 'materiality_benchmark_reason',
         placeholder: 'Write reason here',
         label: 'Reason For Benchmark Chosen',
-        value: formData?.materiality_reason || '',
+        value: formData?.materiality_benchmark_reason || '',
         validations: {
           required: true,
           maxLength: 100
         },
-        error: errors?.materiality_reason,
+        error: errors?.materiality_benchmark_reason,
         onBlur: handleBlur,
         onChange: handleChange
       }

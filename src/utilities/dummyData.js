@@ -414,6 +414,51 @@ export const auditPost = [
     value: 3
   }
 ];
+export const assertions = [
+
+  {
+    id: 0,
+    name: 'apply_all_assertions',
+    desc: 'corporate project',
+    value: 0
+  },
+  {
+    id: 1,
+    name: 'completeness',
+    desc: 'corporate project',
+    value: 1
+  },
+  {
+    id: 2,
+    name: 'accuracy',
+    desc: 'organisational project',
+    value: 2
+  },
+  {
+    id: 3,
+    name: 'valuation',
+    desc: 'organisational project',
+    value: 3
+  },
+  {
+    id: 4,
+    name: 'obligation_right',
+    desc: 'organisational project',
+    value: 4
+  },
+  {
+    id: 5,
+    name: 'disclosure_presentation',
+    desc: 'organisational project',
+    value: 5
+  },
+  {
+    id: 6,
+    name: 'existence',
+    desc: 'organisational project',
+    value: 6
+  }
+];
 export const countries = [
   'select your country',
   {

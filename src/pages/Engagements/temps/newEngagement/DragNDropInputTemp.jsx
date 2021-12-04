@@ -13,7 +13,7 @@ import useUpdateStore from '../../../../components/hooks/useUpdateStore';
 import useFetchData from '../../../../components/hooks/useFetchData';
 
 const DragNDropTemp = ({
-  formData, setFormData, name, label, setErrors
+  formData, setFormData, name, label, setErrors, handleBlur
 }) => {
   const dispatch = useDispatch();
   const store = useSelector((state) => state?.engagement?.uploads);
@@ -52,6 +52,7 @@ const DragNDropTemp = ({
       ...formData,
       [data.name]: data.url
     });
+    handleBlur();
   };
 
   useEffect(() => {
@@ -99,6 +100,7 @@ const DragNDropTemp = ({
           setFormData={setFormData}
           name={name}
           formData={formData}
+          handleBlur={handleBlur}
         />
       </div>
       <button type="button" className="simple-hover button" onClick={() => setIsFile(!isFile)}>

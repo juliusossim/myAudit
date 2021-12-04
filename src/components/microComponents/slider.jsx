@@ -16,15 +16,27 @@ import FormBuilder from '../form/builders/form';
 import sliderProps from './constants/sliderprops';
 
 export default function SliderSizes({
-  max, min, formData, setFormData, name, label, props, val
+  max, min, formData, setFormData, name, label, props, val, levelId
 }) {
   const [value, setValue] = React.useState(val || min || 0);
   const [disableSlider, setDisableSlider] = React.useState(false);
   const ma = Number(max) || 100;
   const mi = Number(min) || 0;
 
+  useEffect(() => {
+    handleValue(value);
+  }, [value]);
+
+  const handleValue = (amt) => {
+    const amount = parseInt(amt, 10)
+      * formatDonation(formData.materiality_benchmark_amount)
+      / 100;
+    setFormData({
+      ...formData, [`${name}_level_id`]: levelId, [`${name}_amount`]: amount, [`${name}_limit`]: amt
+    });
+  };
   const handleSliderChange = (event, newValue) => {
-    if (stringDoesNotExist(formData.materiality_amount)) {
+    if (stringDoesNotExist(formData.materiality_benchmark_amount)) {
       setDisableSlider(true);
       return notifier({
         type: 'info',
@@ -32,12 +44,13 @@ export default function SliderSizes({
         text: 'First fill out the materiality amount.'
       });
     }
-    const amount = parseInt(newValue, 10) * formatDonation(formData.materiality_amount) / 100;
-    return setValue(amount);
+    return setValue(newValue);
   };
 
   const handleInputChange = (event) => {
-    setValue(event.target.value === '' ? '' : Number(event.target.value));
+    const amt = formatDonation(event.target.value);
+    const percent = 100 * amt / formatDonation(formData.materiality_benchmark_amount);
+    setValue(percent);
   };
 
   const handleBlur = () => {
@@ -45,11 +58,6 @@ export default function SliderSizes({
       setValue(0);
     }
   };
-  useEffect(() => {
-    setFormData({
-      ...formData, [name]: value
-    });
-  }, [value]);
   const marks = [
     {
       value: mi,
@@ -68,14 +76,14 @@ export default function SliderSizes({
         <div className="col-md-8 center-horizontal">
           <Slider
             color="secondary"
-            disabled={disableSlider && stringDoesNotExist(formData.materiality_amount)}
+            disabled={disableSlider && stringDoesNotExist(formData.materiality_benchmark_amount)}
             // key={uuid()}
             aria-label="input-slider"
             min={mi}
             onChange={handleSliderChange}
             max={ma}
             marks={marks}
-            // value={value}
+            value={value}
             valueLabelDisplay="on"
           />
         </div>
@@ -85,7 +93,7 @@ export default function SliderSizes({
               sliderProps(
                 {
                   ...props,
-                  name,
+                  name: `${name}_amount`,
                   handleChange: handleInputChange,
                   handleBlur,
                   formData

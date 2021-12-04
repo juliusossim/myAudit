@@ -5,6 +5,7 @@ import Loader from '../../components/microComponents/loader';
 import useCreateBoilerPlate from '../../components/hooks/useCreateBoilerPlate';
 import { apiOptions } from '../../services/fetch';
 import MaterialityTemp from './temps/planning/MaterialityTemp';
+import { formatDonation } from '../../utilities/stringOperations';
 
 const PlanningMateriality = ({ setTempParams }) => {
   const { engagementId } = useParams();
@@ -16,8 +17,11 @@ const PlanningMateriality = ({ setTempParams }) => {
   const options = {
     action: 'MATERIALITY',
     apiOpts: apiOptions({
-      body: { ...formData },
-      endpoint: 'ENGAGEMENT',
+      body: {
+        ...formData,
+        materiality_benchmark_amount: formatDonation(formData.materiality_benchmark_amount)
+      },
+      endpoint: 'MATERIALITY',
       param: engagementId,
       afterParam: 'materialities',
       auth: true,

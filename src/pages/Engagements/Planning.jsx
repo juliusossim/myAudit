@@ -10,6 +10,7 @@ import { apiOptions } from '../../services/fetch';
 import useViewBoilerPlate from '../../components/hooks/useViewBoilerPlate';
 import Loader from '../../components/microComponents/loader';
 import PageTemp from '../../components/temps/PageTemp';
+import PlanningTests from './PlanningTests';
 
 const Planning = () => {
   /* redux hooks */
@@ -88,7 +89,7 @@ const Planning = () => {
                           btnMethod: tempParams.create
                         },
                         {
-                          template: <PlanningMateriality setTempParams={setTempParams} />,
+                          template: <PlanningTests setTempParams={setTempParams} />,
                           optional: false,
                           label: 'Test',
                           btn: 'Next',
@@ -96,7 +97,7 @@ const Planning = () => {
                           btnMethod: tempParams.create
                         }
                       ]}
-                      active={0}
+                      active={2}
                     />
                   </div>
                 </div>
