@@ -17,18 +17,20 @@ export default function HorizontalLinearStepper({ steps, active, link }) {
   const currentItem = steps[activeStep];
 
   useEffect(() => {
-    console.log(currentItem.status);
-    if (currentItem.status === 'success') {
+    if (currentItem?.status === 'success') {
       let newSkipped = skipped;
       if (isStepSkipped(activeStep)) {
         newSkipped = new Set(newSkipped.values());
         newSkipped.delete(activeStep);
       }
+      if (activeStep === steps.length) {
+        goBack();
+      }
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);
     }
-  }, [currentItem.status]);
-  const isStepOptional = (optional) => optional;
+  }, [currentItem?.status]);
+  const isStepOptional = (optional) => optional?.optional;
 
   const isStepSkipped = (step) => skipped.has(step);
 

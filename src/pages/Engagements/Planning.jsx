@@ -106,7 +106,7 @@ const Planning = () => {
                           btnMethod: tempParams.create
                         }
                       ]}
-                      active={2}
+                      active={0}
                     />
                   </div>
                 </div>

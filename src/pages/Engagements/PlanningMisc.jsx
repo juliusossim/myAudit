@@ -21,7 +21,7 @@ const PlanningMisc = ({ setTempParams }) => {
     action: 'MISC',
     apiOpts: apiOptions({
       body: { ...formData },
-      endpoint: 'TESTS',
+      endpoint: 'MATERIALITY',
       param: engagementId,
       auth: true,
       method: 'patch'
