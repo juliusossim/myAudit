@@ -459,6 +459,14 @@ export const assertions = [
     value: 6
   }
 ];
+export const miscTests = [
+  'test_details',
+  'control_testing',
+  'journal_entries',
+  'material_misstatement',
+  'combine_risk_assessment',
+  'planning_analytics'
+];
 export const countries = [
   'select your country',
   {

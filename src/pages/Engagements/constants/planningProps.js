@@ -8,7 +8,8 @@ const planningProps = (
     formData,
     handleBlur,
     handleChange,
-    errors
+    errors,
+    val
   }
 ) => ({
   planning: [
@@ -97,6 +98,78 @@ const planningProps = (
           maxLength: 100
         },
         error: errors?.materiality_benchmark_reason,
+        onBlur: handleBlur,
+        onChange: handleChange
+      }
+    }
+  ],
+  misc: [
+    {
+      kind: 'input',
+      props: {
+        className: 'w-100 m-b-20 col-12',
+        name: 'IT_name',
+        type: 'text',
+        label: 'IT Item Name',
+        placeholder: 'Enter Item Name',
+        value: formData?.IT_name || '',
+        validations: {
+          required: true
+        },
+        error: errors?.IT_name,
+        onBlur: handleBlur,
+        onChange: handleChange
+      }
+    },
+    {
+      kind: 'text_area',
+      props: {
+        className: 'w-100 m-b-20 col-12',
+        name: 'function',
+        placeholder: 'Write IT item function here',
+        label: 'IT item function',
+        value: formData?.function || '',
+        validations: {
+          required: true,
+          maxLength: 100
+        },
+        error: errors?.function,
+        onBlur: handleBlur,
+        onChange: handleChange
+      }
+    }
+  ],
+  misc2: [
+    {
+      kind: 'input',
+      props: {
+        className: 'w-100 m-b-20 col-12',
+        name: 'IT_name',
+        type: 'text',
+        label: 'IT Item Name',
+        placeholder: 'Enter Item Name',
+        value: val?.name,
+        validations: {
+          required: true
+        },
+        error: errors?.IT_name,
+        onBlur: handleBlur,
+        onChange: handleChange
+      }
+    },
+    {
+      kind: 'text_area',
+      props: {
+        className: 'w-100 m-b-20 col-12',
+        name: 'function',
+        placeholder: 'Write IT item function here',
+        label: 'IT item function',
+        value: val?.function,
+        validations: {
+          required: true,
+          maxLength: 100
+        },
+        error: errors?.function,
         onBlur: handleBlur,
         onChange: handleChange
       }

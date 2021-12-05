@@ -61,6 +61,10 @@ const initialState = {
     data: {},
     status: 'initial'
   },
+  misc: {
+    data: {},
+    status: 'initial'
+  },
   inviteMember: {
     data: {},
     status: 'initial'
@@ -553,6 +557,40 @@ const engagementReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       tests: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.MISC_PENDING:
+    return {
+      ...state,
+      misc: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.MISC_COMPLETE:
+    return {
+      ...state,
+      misc: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.MISC_SUCCESS:
+    return {
+      ...state,
+      misc: {
+        ...state.misc,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.MISC_FAILURE:
+    return {
+      ...state,
+      misc: {
         data: error || {},
         status: 'failed'
       }

@@ -21,6 +21,6 @@ export const QuillEditorBubble = ({
     </div>
   );
 };
-export const QuillEditorSnow = ({ value, handleSetValue }) => (
-  <ReactQuill theme="snow" value={value} onChange={handleSetValue} />
+export const QuillEditor = ({ value, handleSetValue, theme }) => (
+  <ReactQuill theme={theme} value={value} onChange={handleSetValue} />
 );

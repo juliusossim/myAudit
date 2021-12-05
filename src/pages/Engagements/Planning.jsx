@@ -11,6 +11,7 @@ import useViewBoilerPlate from '../../components/hooks/useViewBoilerPlate';
 import Loader from '../../components/microComponents/loader';
 import PageTemp from '../../components/temps/PageTemp';
 import PlanningTests from './PlanningTests';
+import PlanningMisc from './PlanningMisc';
 
 const Planning = () => {
   /* redux hooks */
@@ -89,10 +90,18 @@ const Planning = () => {
                           btnMethod: tempParams.create
                         },
                         {
+                          template: <PlanningMisc setTempParams={setTempParams} />,
+                          optional: false,
+                          label: 'Misc',
+                          btn: 'Next',
+                          status: tempParams.status,
+                          btnMethod: tempParams.create
+                        },
+                        {
                           template: <PlanningTests setTempParams={setTempParams} />,
                           optional: false,
                           label: 'Test',
-                          btn: 'Next',
+                          btn: 'Done',
                           status: tempParams.status,
                           btnMethod: tempParams.create
                         }

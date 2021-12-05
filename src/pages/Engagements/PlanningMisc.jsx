@@ -1,37 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import { isNull } from 'lodash';
 import Loader from '../../components/microComponents/loader';
 import useCreateBoilerPlate from '../../components/hooks/useCreateBoilerPlate';
 import { apiOptions } from '../../services/fetch';
-import TestsTemp from './temps/planning/TestsTemp';
 import { stringDoesNotExist } from '../../utilities/stringOperations';
+import MiscTemp from './temps/planning/MiscTemp';
 
-const PlanningTests = ({ setTempParams }) => {
+const PlanningMisc = ({ setTempParams }) => {
   const { engagementId } = useParams();
   /* state */
-  const [formData, setFormData] = useState({
-    apply_all_assertions: 0,
-    accuracy: 0,
-    completeness: 0,
-    disclosure_presentation: 0,
-    obligation_right: 0,
-    existence: 0,
-    valuation: 0,
-    test_procedures: []
-  });
+  const [formData, setFormData] = useState({ risk_assessments: [] });
   const [errors, setErrors] = useState({});
+  const [curIndex, setCurIndex] = useState(null);
+  const [text, setText] = useState('');
   /* redux */
-  const store = useSelector((state) => state.engagement?.tests);
+  const store = useSelector((state) => state.engagement?.misc);
   const options = {
-    action: 'TESTS',
+    action: 'MISC',
     apiOpts: apiOptions({
       body: { ...formData },
       endpoint: 'TESTS',
       param: engagementId,
-      afterParam: 'tests',
       auth: true,
-      method: 'post'
+      method: 'patch'
     })
   };
 
@@ -44,7 +37,7 @@ const PlanningTests = ({ setTempParams }) => {
     errors,
     options,
     store,
-    action: 'TESTS_COMPLETE',
+    action: 'MISC_COMPLETE',
     noRedirect: true
     // redirect: '/app/engagements'
   });
@@ -52,37 +45,48 @@ const PlanningTests = ({ setTempParams }) => {
   useEffect(() => {
     setTempParams({ status, create: finish });
   }, [formData, status]);
-  useEffect(() => {
-    if (formData.apply_all_assertions === 1) {
-      setFormData({
-        ...formData,
-        accuracy: 1,
-        completeness: 1,
-        disclosure_presentation: 1,
-        obligation_right: 1,
-        existence: 1,
-        valuation: 1
-      });
-    }
-  }, [formData.apply_all_assertions]);
 
   /* component methods */
   const blurHandler = () => {
-    if (stringDoesNotExist(formData.description)) {
+    if (
+      stringDoesNotExist(formData.IT_name)
+      || stringDoesNotExist(formData.function) || stringDoesNotExist(formData.review_performed)) {
       return false;
     }
+    // isNull(curIndex) && !stringDoesNotExist(text) && handleText();
     return setFormData({
       ...formData,
-      test_procedures: [...formData.test_procedures, { description: formData.description }],
-      description: ''
+      risk_assessments: [...formData.risk_assessments, {
+        name: formData.IT_name,
+        function: formData.function,
+        review_performed: formData.review_performed
+      }],
+      IT_name: '',
+      function: '',
+      review_performed: ''
     });
   };
 
   const finish = () => {
     blurHandler();
-    if (stringDoesNotExist(formData.description)) {
+    if (
+      stringDoesNotExist(formData.IT_name)
+      && stringDoesNotExist(formData.function) && stringDoesNotExist(formData.review_performed)
+    ) {
       create();
     }
+  };
+
+  const handleText = () => {
+    const dat = formData.risk_assessments;
+    dat[curIndex] = text;
+    console.log(dat);
+    setFormData({
+      ...formData,
+      risk_assessments: dat
+    });
+    setText('');
+    setCurIndex(null);
   };
 
   return (
@@ -91,7 +95,7 @@ const PlanningTests = ({ setTempParams }) => {
         status === 'pending'
           ? <Loader />
           : (
-            <TestsTemp
+            <MiscTemp
               formData={formData}
               setFormData={setFormData}
               errors={errors}
@@ -102,6 +106,9 @@ const PlanningTests = ({ setTempParams }) => {
               blurHandler={blurHandler}
               status={status}
               message={message}
+              // setCurIndex={setCurIndex}
+              // setText={setText}
+              // text={text}
               link={`/app/engagement/engagement/${engagementId}`}
             />
           )
@@ -110,4 +117,4 @@ const PlanningTests = ({ setTempParams }) => {
   );
 };
 
-export default PlanningTests;
+export default PlanningMisc;
