@@ -51,7 +51,7 @@ const EngagementStep = ({ engagementId, engagementName }) => (
         </div>
       </div>
     </Link>
-    <Link to="/app/engagement/pre-planning" className="col-md-3">
+    <Link to={`/app/engagement/execution/${slugify(engagementName, '-')}/${engagementId}`} className="col-md-3">
       <div className="custom-box mx-1 text-center text-theme-black bold">
         <div className="mb-3 mt-5">
           <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -73,7 +73,7 @@ const EngagementStep = ({ engagementId, engagementName }) => (
         </div>
       </div>
     </Link>
-    <Link to="/app/engagement/pre-planning" className="col-md-3">
+    <Link to={`/app/engagement/conclusion/${slugify(engagementName, '-')}/${engagementId}`} className="col-md-3">
       <div className="custom-box mx-1 text-center text-theme-black bold">
         <div className="mb-3 mt-5">
           <svg width="50" height="56" viewBox="0 0 50 56" fill="none" xmlns="http://www.w3.org/2000/svg">

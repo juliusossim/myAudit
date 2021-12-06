@@ -8,6 +8,7 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useEffect } from 'react';
 import { Link, useHistory } from 'react-router-dom';
+import { animatedCheck } from '../temps/projectTemps/miscTemps';
 
 export default function HorizontalLinearStepper({ steps, active, link }) {
   const { goBack } = useHistory();
@@ -84,11 +85,21 @@ export default function HorizontalLinearStepper({ steps, active, link }) {
       </Stepper>
       {activeStep === steps.length ? (
         <>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
+          <Typography sx={{ mt: 2, mb: 1 }} className="text-center">
+            <div className="font-title">
+              <span> All steps completed</span>
+              {
+                animatedCheck(<path className="path text-theme" d="M4.1 12.7L9 17.6 20.3 6.3" fill="none" />)
+              }
+            </div>
+            <div> This&apos; done with</div>
           </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
+          <Box sx={{
+            display: 'flex', justifyContent: 'space-between', flexDirection: 'row', pt: 2
+          }}
+          >
+            <Button onClick={goBack}>Exit</Button>
+            <Link to={link}>Continue</Link>
             <Button onClick={handleReset}>Reset</Button>
           </Box>
         </>

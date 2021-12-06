@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import Loader from '../../components/microComponents/loader';
-import useCreateBoilerPlate from '../../components/hooks/useCreateBoilerPlate';
-import { apiOptions } from '../../services/fetch';
-import MaterialityTemp from './temps/planning/MaterialityTemp';
-import { formatDonation } from '../../utilities/stringOperations';
+import Loader from '../../../components/microComponents/loader';
+import useCreateBoilerPlate from '../../../components/hooks/useCreateBoilerPlate';
+import { apiOptions } from '../../../services/fetch';
+import MaterialityTemp from '../temps/planning/MaterialityTemp';
+import { formatDonation } from '../../../utilities/stringOperations';
 
 const PlanningMateriality = ({ setTempParams }) => {
   const { engagementId } = useParams();

@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import { sentenceCaps } from '../../utilities/stringOperations';
-import Notes from './Notes';
-import HorizontalLinearStepper from '../../components/microComponents/stepper';
+import { sentenceCaps, slugify } from '../../../utilities/stringOperations';
+import Notes from '../Notes';
+import HorizontalLinearStepper from '../../../components/microComponents/stepper';
 import PlanningClasses from './PlanningClasses';
 import PlanningMateriality from './PlanningMateriality';
-import { apiOptions } from '../../services/fetch';
-import useViewBoilerPlate from '../../components/hooks/useViewBoilerPlate';
-import Loader from '../../components/microComponents/loader';
-import PageTemp from '../../components/temps/PageTemp';
+import { apiOptions } from '../../../services/fetch';
+import useViewBoilerPlate from '../../../components/hooks/useViewBoilerPlate';
+import Loader from '../../../components/microComponents/loader';
+import PageTemp from '../../../components/temps/PageTemp';
 import PlanningTests from './PlanningTests';
 import PlanningMisc from './PlanningMisc';
 
@@ -107,6 +107,7 @@ const Planning = () => {
                         }
                       ]}
                       active={0}
+                      link={`/app/engagement/execution/${slugify(engagementName, '-')}/${engagementId}`}
                     />
                   </div>
                 </div>

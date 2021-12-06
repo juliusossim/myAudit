@@ -2,11 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { isNull } from 'lodash';
-import Loader from '../../components/microComponents/loader';
-import useCreateBoilerPlate from '../../components/hooks/useCreateBoilerPlate';
-import { apiOptions } from '../../services/fetch';
-import { stringDoesNotExist } from '../../utilities/stringOperations';
-import MiscTemp from './temps/planning/MiscTemp';
+import Loader from '../../../components/microComponents/loader';
+import useCreateBoilerPlate from '../../../components/hooks/useCreateBoilerPlate';
+import { apiOptions } from '../../../services/fetch';
+import { stringDoesNotExist } from '../../../utilities/stringOperations';
+import MiscTemp from '../temps/planning/MiscTemp';
 
 const PlanningMisc = ({ setTempParams }) => {
   const { engagementId } = useParams();

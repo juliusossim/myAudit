@@ -467,6 +467,14 @@ export const miscTests = [
   'combine_risk_assessment',
   'planning_analytics'
 ];
+export const executions = [
+  'legal_counsel_review',
+  'contract_agreement_review',
+  'contingent_liability_review',
+  'party_transaction_review',
+  'expert_work_review',
+  'other_estimate_review'
+];
 export const countries = [
   'select your country',
   {
