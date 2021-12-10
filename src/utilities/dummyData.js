@@ -475,6 +475,17 @@ export const executions = [
   'expert_work_review',
   'other_estimate_review'
 ];
+export const conclusions = [
+  'overall_analytical_review',
+  'going_concern_procedures',
+  'subsequent_procedures',
+  'management_representation_letter',
+  'management_letter',
+  'audit_summary_misstatement',
+  'audit_report',
+  'audited_financial_statement',
+  'other_financial_info'
+];
 export const countries = [
   'select your country',
   {

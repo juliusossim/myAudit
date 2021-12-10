@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { isFunction } from 'lodash';
 import { AiOutlineFileAdd, FiEdit3 } from 'react-icons/all';
 import IconButton from '@mui/material/IconButton';
 import DragNDropFileInput from '../../../../components/form/inputs/fileInput/DragNDropFileInput';
@@ -52,7 +53,7 @@ const DragNDropTemp = ({
       ...formData,
       [data.name]: data.url
     });
-    handleBlur();
+    isFunction(handleBlur) && handleBlur();
   };
 
   useEffect(() => {

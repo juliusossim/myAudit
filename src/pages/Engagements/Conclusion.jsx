@@ -7,24 +7,27 @@ import { sentenceCaps, slugify, stringDoesNotExist } from '../../utilities/strin
 import Loader from '../../components/microComponents/loader';
 import ExecutionTemp from './temps/ExecutionTemp';
 import Notes from './Notes';
+import ConclusionTemp from './temps/ConclusionTemp';
+import { headerTemp1 } from '../../components/temps/projectTemps/miscTemps';
 
 const Conclusion = () => {
   /* router hooks */
   const { push } = useHistory();
   const { engagementName, engagementId } = useParams();
   /* state */
-  const [formData, setFormData] = useState({ risk_assessments: [] });
+  const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   /* redux */
-  const store = useSelector((state) => state.engagement?.misc);
+  const store = useSelector((state) => state.engagement?.conclusion);
   const options = {
     action: 'CONCLUSION',
     apiOpts: apiOptions({
       body: { ...formData },
-      endpoint: 'MATERIALITY',
+      endpoint: 'ENGAGEMENT',
       param: engagementId,
+      afterParam: 'conclusions',
       auth: true,
-      method: 'patch'
+      method: 'post'
     })
   };
 
@@ -44,27 +47,22 @@ const Conclusion = () => {
 
   useEffect(() => {
     if (status === 'success') {
-      push(`/app/engagement/conclusion/${slugify(engagementName, '-')}/${engagementId}`);
+      push(`/app/engagement/engagement/${engagementId}`);
     }
   });
 
   return (
     <div className="row">
       <div className="col-md-10">
-        <div className="d-flex ml-4 custom-top-bar justify-content-between">
-          <div className="">
-            <span
-              className="theme-font-bold font-title-small text-theme-black mr-1"
-            >
-              {sentenceCaps(engagementName)}
-            </span>
-            <span className="mr-1">{`- ${formData?.engagement?.year}`}</span>
-          </div>
-          <div>
-            <Link to="/app/engagement/" className="text-theme-blue mr-1">Engagements</Link>
-            <span className="text-theme-black">/ Engagement</span>
-          </div>
-        </div>
+        {
+          headerTemp1({
+            text: 'Conclusion',
+            parent: 'Engagements',
+            name: sentenceCaps(engagementName),
+            link: '/app/engagement/',
+            link1: `/app/engagement/engagement/${engagementId}`
+          })
+        }
         <div className="content">
           <div className="">
             <div className="mb-4 font-title-small mb-4">
@@ -73,7 +71,7 @@ const Conclusion = () => {
                   ? <Loader />
                   : (
                     <div>
-                      <ExecutionTemp
+                      <ConclusionTemp
                         formData={formData}
                         setFormData={setFormData}
                         errors={errors}
@@ -90,7 +88,7 @@ const Conclusion = () => {
                       />
                       <div className="d-flex justify-content-between wrap">
                         <Link to={`/app/engagement/engagement/${engagementId}`} className="btn-delete">Back</Link>
-                        <button type="button" className="btn" onClick={create}>Continue</button>
+                        <button type="button" className="btn" onClick={create}>Save and close</button>
                       </div>
                     </div>
                   )

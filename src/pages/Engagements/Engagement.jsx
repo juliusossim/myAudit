@@ -12,6 +12,7 @@ import useViewBoilerPlate from '../../components/hooks/useViewBoilerPlate';
 import NoData from '../authentication/NoData';
 import BackdropModal from '../../components/microComponents/backdropModal';
 import InviteMember from './inviteMember';
+import { headerTemp1 } from '../../components/temps/projectTemps/miscTemps';
 
 const Engagement = () => {
   /* redux hooks */
@@ -46,16 +47,15 @@ const Engagement = () => {
   return (
     <div className="row">
       <div className="col-md-10">
-        <div className="d-flex ml-4 custom-top-bar justify-content-between">
-          <div className="">
-            <span className="theme-font-bold font-title-small text-theme-black mr-1">{sentenceCaps(formData?.engagement?.name)}</span>
-            <span className="mr-1">{`- ${formData?.engagement?.year}`}</span>
-          </div>
-          <div>
-            <Link to="/app/engagement/" className="text-theme-blue mr-1">Engagements</Link>
-            <span className="text-theme-black">/ Engagement</span>
-          </div>
-        </div>
+        {
+          headerTemp1({
+            text: sentenceCaps(formData?.engagement?.name),
+            parent: 'Engagements',
+            name: sentenceCaps(formData?.engagement?.name),
+            link: '/app/engagement/',
+            year: `-${formData?.engagement?.year}`
+          })
+        }
         <div className="content">
           <div className="mb-4 font-title-small">
             Select engagement step to continue

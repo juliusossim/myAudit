@@ -7,6 +7,7 @@ import { sentenceCaps, slugify, stringDoesNotExist } from '../../utilities/strin
 import Loader from '../../components/microComponents/loader';
 import ExecutionTemp from './temps/ExecutionTemp';
 import Notes from './Notes';
+import { headerTemp1 } from '../../components/temps/projectTemps/miscTemps';
 
 const Execution = () => {
   /* router hooks */
@@ -51,20 +52,15 @@ const Execution = () => {
   return (
     <div className="row">
       <div className="col-md-10">
-        <div className="d-flex ml-4 custom-top-bar justify-content-between">
-          <div className="">
-            <span
-              className="theme-font-bold font-title-small text-theme-black mr-1"
-            >
-              {sentenceCaps(engagementName)}
-            </span>
-            <span className="mr-1">{`- ${formData?.engagement?.year}`}</span>
-          </div>
-          <div>
-            <Link to="/app/engagement/" className="text-theme-blue mr-1">Engagements</Link>
-            <span className="text-theme-black">/ Engagement</span>
-          </div>
-        </div>
+        {
+          headerTemp1({
+            text: 'Execution',
+            parent: 'Engagements',
+            name: sentenceCaps(engagementName),
+            link: '/app/engagement/',
+            link1: `/app/engagement/engagement/${engagementId}`
+          })
+        }
         <div className="content">
           <div className="">
             <div className="mb-4 font-title-small mb-4">

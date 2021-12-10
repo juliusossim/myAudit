@@ -5,9 +5,10 @@ import { notifier, slugToString, stringDoesNotExist } from '../../../utilities/s
 import CustomAccordion from '../../../components/ui/customAccordion';
 import DragNDropTemp from './newEngagement/DragNDropInputTemp';
 import { QuillEditor } from '../../../components/ui/richText';
-import { executions } from '../../../utilities/dummyData';
+import { conclusions, executions } from '../../../utilities/dummyData';
+import FormBuilder from '../../../components/form/builders/form';
 
-const ExecutionTemp = ({
+const ConclusionTemp = ({
   formData, setFormData, handleChange, errors, handleBlur, setErrors, blurHandler
 }) => {
   const [currentPanel, setCurrentPanel] = useState(0);
@@ -38,10 +39,10 @@ const ExecutionTemp = ({
         <div className="pt-5">
           <div className="d-flex wrap justify-content-between">
             <div className="margin-auto w-100 px-5">
-              <div className="px-3">
+              <div className="">
                 <div>
                   {
-                    executions?.map((item, key) => (
+                    conclusions?.map((item, key) => (
                       <div key={item}>
                         <CustomAccordion
                           data={{
@@ -76,4 +77,4 @@ const ExecutionTemp = ({
     </div>
   );
 };
-export default ExecutionTemp;
+export default ConclusionTemp;
