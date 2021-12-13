@@ -64,6 +64,7 @@ const Engagement = () => {
             <EngagementStep
               engagementId={engagementId}
               engagementName={formData?.engagement?.name}
+              status={formData?.engagement?.status}
             />
           </div>
           {
