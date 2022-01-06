@@ -118,25 +118,6 @@ const newClientProps = (
       onBlur: handleBlur,
       onChange: handleChange
     }
-  },
-  {
-    kind: 'text_area',
-    props: {
-      className: 'w-100 m-b-20 col-12',
-      name: 'doubts',
-      type: 'text',
-      label: 'Doubts',
-      helperText: 'Are there doubts about the going concern of the entity?',
-      placeholder: 'State your doubts',
-      value: formData?.doubts || '',
-      validations: {
-        required: true,
-        maxLength: 100
-      },
-      error: errors?.doubts,
-      onBlur: handleBlur,
-      onChange: handleChange
-    }
   }
 ]);
 export default newClientProps;
