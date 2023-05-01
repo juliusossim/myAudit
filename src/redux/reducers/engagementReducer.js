@@ -53,6 +53,26 @@ const initialState = {
     data: {},
     status: 'initial'
   },
+  materiality: {
+    data: {},
+    status: 'initial'
+  },
+  tests: {
+    data: {},
+    status: 'initial'
+  },
+  misc: {
+    data: {},
+    status: 'initial'
+  },
+  execution: {
+    data: {},
+    status: 'initial'
+  },
+  conclusion: {
+    data: {},
+    status: 'initial'
+  },
   inviteMember: {
     data: {},
     status: 'initial'
@@ -477,6 +497,176 @@ const engagementReducer = (state = initialState, { type, response, error }) => {
     return {
       ...state,
       planning: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.MATERIALITY_PENDING:
+    return {
+      ...state,
+      materiality: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.MATERIALITY_COMPLETE:
+    return {
+      ...state,
+      materiality: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.MATERIALITY_SUCCESS:
+    return {
+      ...state,
+      materiality: {
+        ...state.materiality,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.MATERIALITY_FAILURE:
+    return {
+      ...state,
+      materiality: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.TESTS_PENDING:
+    return {
+      ...state,
+      tests: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.TESTS_COMPLETE:
+    return {
+      ...state,
+      tests: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.TESTS_SUCCESS:
+    return {
+      ...state,
+      tests: {
+        ...state.tests,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.TESTS_FAILURE:
+    return {
+      ...state,
+      tests: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.MISC_PENDING:
+    return {
+      ...state,
+      misc: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.MISC_COMPLETE:
+    return {
+      ...state,
+      misc: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.MISC_SUCCESS:
+    return {
+      ...state,
+      misc: {
+        ...state.misc,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.MISC_FAILURE:
+    return {
+      ...state,
+      misc: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.EXECUTION_PENDING:
+    return {
+      ...state,
+      execution: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.EXECUTION_COMPLETE:
+    return {
+      ...state,
+      execution: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.EXECUTION_SUCCESS:
+    return {
+      ...state,
+      execution: {
+        ...state.execution,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.EXECUTION_FAILURE:
+    return {
+      ...state,
+      execution: {
+        data: error || {},
+        status: 'failed'
+      }
+    };
+
+  case constants.CONCLUSION_PENDING:
+    return {
+      ...state,
+      conclusion: {
+        data: {},
+        status: 'pending'
+      }
+    };
+  case constants.CONCLUSION_COMPLETE:
+    return {
+      ...state,
+      conclusion: {
+        data: {},
+        status: 'initial'
+      }
+    };
+  case constants.CONCLUSION_SUCCESS:
+    return {
+      ...state,
+      conclusion: {
+        ...state.conclusion,
+        data: response,
+        status: 'success'
+      }
+    };
+  case constants.CONCLUSION_FAILURE:
+    return {
+      ...state,
+      conclusion: {
         data: error || {},
         status: 'failed'
       }

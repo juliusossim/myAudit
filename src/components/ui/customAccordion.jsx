@@ -19,7 +19,7 @@ const CustomAccordion = ({
             {removeAccordion}
           </div>
           <div className="">
-            <button type="button" onClick={handleClick} className="bg-theme-off-white border-radius-5">
+            <button type="button" onClick={handleClick} className="border-bottom btn-plain border-radius-5">
               {
                 panel === currentPanel
                   ? collapse || <FcCollapse />

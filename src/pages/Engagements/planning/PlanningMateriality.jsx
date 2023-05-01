@@ -1,18 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import { isFunction } from 'lodash';
-import { Link, useHistory, useParams } from 'react-router-dom';
-import Loader from '../../components/microComponents/loader';
-import useCreateBoilerPlate from '../../components/hooks/useCreateBoilerPlate';
-import { notifier, sentenceCaps } from '../../utilities/stringOperations';
-import useUpdateStore from '../../components/hooks/useUpdateStore';
-import useStoreParams from '../../components/hooks/useStoreParams';
-import { apiOptions } from '../../services/fetch';
-import PlanningTemp from './temps/planning/PlanningTemp';
-import Notes from './Notes';
-import NewEngagementTemp from './temps/newEngagement/NewEngagementTemp';
-import HorizontalLinearStepper from '../../components/microComponents/stepper';
-import MaterialityTemp from './temps/planning/MaterialityTemp';
+import { useSelector } from 'react-redux';
+import { useParams } from 'react-router-dom';
+import Loader from '../../../components/microComponents/loader';
+import useCreateBoilerPlate from '../../../components/hooks/useCreateBoilerPlate';
+import { apiOptions } from '../../../services/fetch';
+import MaterialityTemp from '../temps/planning/MaterialityTemp';
+import { formatDonation } from '../../../utilities/stringOperations';
 
 const PlanningMateriality = ({ setTempParams }) => {
   const { engagementId } = useParams();
@@ -20,12 +13,15 @@ const PlanningMateriality = ({ setTempParams }) => {
   const [formData, setFormData] = useState({});
   const [errors, setErrors] = useState({});
   /* redux */
-  const store = useSelector((state) => state.engagement?.planning);
+  const store = useSelector((state) => state.engagement?.materiality);
   const options = {
     action: 'MATERIALITY',
     apiOpts: apiOptions({
-      body: { ...formData },
-      endpoint: 'ENGAGEMENT',
+      body: {
+        ...formData,
+        materiality_benchmark_amount: formatDonation(formData.materiality_benchmark_amount)
+      },
+      endpoint: 'MATERIALITY',
       param: engagementId,
       afterParam: 'materialities',
       auth: true,
@@ -57,7 +53,7 @@ const PlanningMateriality = ({ setTempParams }) => {
   }, [formData, status]);
 
   return (
-    <div>
+    <div className="mt-4">
       {
         status === 'pending'
           ? <Loader />

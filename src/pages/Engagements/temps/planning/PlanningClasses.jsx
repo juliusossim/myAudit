@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { filter } from 'lodash';
 import uuid from 'react-uuid';
-import { AiOutlineDelete, AiOutlineExpandAlt, BsArrowsAngleContract } from 'react-icons/all';
+import { AiOutlineDelete } from 'react-icons/all';
 import FormBuilder from '../../../../components/form/builders/form';
 import CustomAccordion from '../../../../components/ui/customAccordion';
 import { checkRequiredFields } from '../../../../utilities/validation';
@@ -11,15 +11,15 @@ import { notifier, stringCaps } from '../../../../utilities/stringOperations';
 
 const PlanningClasses = ({
   formData, setFormData, handleChange, errors, setErrors,
-  handleBlur, currentPanel, setCurrentPanel, status, message
+  handleBlur, currentPanel, setCurrentPanel, status, message, link
 }) => {
   const [engagementClasses, setEngagementClasses] = useState([]);
   const [submittable, setSubmittable] = useState(false);
 
   useEffect(() => {
     setSubmittable(checkRequiredFields([
-      formData.process_flow_document,
-      formData.name
+      formData?.process_flow_document,
+      formData?.name
     ]));
   }, [formData]);
 

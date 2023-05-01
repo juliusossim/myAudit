@@ -7,25 +7,31 @@ import StepLabel from '@mui/material/StepLabel';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { useEffect } from 'react';
+import { Link, useHistory } from 'react-router-dom';
+import { animatedCheck } from '../temps/projectTemps/miscTemps';
 
-export default function HorizontalLinearStepper({ steps, active }) {
+export default function HorizontalLinearStepper({ steps, active, link }) {
+  const { goBack } = useHistory();
+
   const [activeStep, setActiveStep] = React.useState(active || 0);
   const [skipped, setSkipped] = React.useState(new Set());
   const currentItem = steps[activeStep];
 
   useEffect(() => {
-    console.log(currentItem.status);
-    if (currentItem.status === 'success') {
+    if (currentItem?.status === 'success') {
       let newSkipped = skipped;
       if (isStepSkipped(activeStep)) {
         newSkipped = new Set(newSkipped.values());
         newSkipped.delete(activeStep);
       }
+      if (activeStep === steps.length) {
+        goBack();
+      }
       setActiveStep((prevActiveStep) => prevActiveStep + 1);
       setSkipped(newSkipped);
     }
-  }, [currentItem.status]);
-  const isStepOptional = (optional) => optional;
+  }, [currentItem?.status]);
+  const isStepOptional = (optional) => optional?.optional;
 
   const isStepSkipped = (step) => skipped.has(step);
 
@@ -79,11 +85,21 @@ export default function HorizontalLinearStepper({ steps, active }) {
       </Stepper>
       {activeStep === steps.length ? (
         <>
-          <Typography sx={{ mt: 2, mb: 1 }}>
-            All steps completed - you&apos;re finished
+          <Typography sx={{ mt: 2, mb: 1 }} className="text-center">
+            <div className="font-title">
+              <span> All steps completed</span>
+              {
+                animatedCheck(<path className="path text-theme" d="M4.1 12.7L9 17.6 20.3 6.3" fill="none" />)
+              }
+            </div>
+            <div> This&apos; done with</div>
           </Typography>
-          <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-            <Box sx={{ flex: '1 1 auto' }} />
+          <Box sx={{
+            display: 'flex', justifyContent: 'space-between', flexDirection: 'row', pt: 2
+          }}
+          >
+            <Button onClick={goBack}>Exit</Button>
+            <Link to={link}>Continue</Link>
             <Button onClick={handleReset}>Reset</Button>
           </Box>
         </>
@@ -95,12 +111,14 @@ export default function HorizontalLinearStepper({ steps, active }) {
           <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
             <Button
               color="inherit"
+              className={activeStep === 0 ? 'd-none' : ''}
               disabled={activeStep === 0}
               onClick={handleBack}
               sx={{ mr: 1 }}
             >
               Back
             </Button>
+            <Button onClick={goBack}>Exit</Button>
             <Box sx={{ flex: '1 1 auto' }} />
             <Button className={isStepOptional(activeStep) ? '' : 'd-none'} color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
               Skip

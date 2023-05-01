@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { last } from 'lodash';
 import Box from '@material-ui/core/Box';
 import FormBuilder from '../../../../components/form/builders/form';
 import DragNDropTemp from '../newEngagement/DragNDropInputTemp';
@@ -11,16 +11,23 @@ import CustomAccordion from '../../../../components/ui/customAccordion';
 import Creatable from '../../../../components/form/inputs/Creatable';
 import planningProps from '../../constants/planningProps';
 import { index } from '../../../../utilities/auth';
-import { slugToString } from '../../../../utilities/stringOperations';
+import { slugToString, stringDoesNotExist } from '../../../../utilities/stringOperations';
+import { CheckboxField } from '../../../../components/form/inputs/Checkbox';
+import { assertions } from '../../../../utilities/dummyData';
+import CustomCheckbox from '../../../../components/form/inputs/CustomCheckbox';
+import CheckboxComp from '../../../../components/ui/CheckboxComp';
 
-const MaterialityTemp = ({
-  formData, setFormData, handleChange, errors, handleBlur, setErrors,
-  create, status, link, message
+const TestsTemp = ({
+  formData, setFormData, handleChange, errors, handleBlur, setErrors, handleChecked, blurHandler
 }) => {
   const [currentPanel, setCurrentPanel] = useState(0);
-  const [show, setShow] = useState(false);
+  const [procedures, setProcedures] = useState([1]);
 
-  const reason = (name) => `${name}_reason`;
+  const addProcess = () => {
+    const fun = () => setProcedures([...procedures, (last(procedures) + 1)]);
+    blurHandler();
+    setTimeout(fun(), 500);
+  };
 
   return (
     <div className="w-750 ">
@@ -32,7 +39,7 @@ const MaterialityTemp = ({
               <div className="px-3">
                 <CustomAccordion
                   data={{
-                    name: 'Materiality Benchmark',
+                    name: 'Test Name And Assertions',
                     details: (
                       <div>
                         <FormBuilder
@@ -44,9 +51,29 @@ const MaterialityTemp = ({
                                 handleChange,
                                 errors
                               }
-                            ).materiality
+                            ).test
                           }
                         />
+                        <div className="font-title-small text-theme">Assertions</div>
+                        <div className="d-flex wrap justify-content-between">
+                          {
+                            assertions?.map((item) => (
+                              <div className="col-md-6" key={item.name}>
+                                <div className="d-flex">
+                                  <CustomCheckbox
+                                    key={item.name}
+                                    label={slugToString(item.name)}
+                                    name={item.name}
+                                    handleChecked={handleChecked}
+                                    className="w-100 neg-m-l-20 mt-4"
+                                    checked={formData[item.name]}
+                                  />
+                                  <div className="neg-m-t-10">{slugToString(item.name)}</div>
+                                </div>
+                              </div>
+                            ))
+                          }
+                        </div>
                       </div>
                     )
                   }}
@@ -56,34 +83,24 @@ const MaterialityTemp = ({
                 />
                 <CustomAccordion
                   data={{
-                    name: 'Materiality',
+                    name: 'Test Procedures',
                     details: (
                       <div>
                         {
-                          index?.materialLevels?.map((item) => (
-                            <div key={item.name}>
-                              <SliderSizes
-                                max={item.upper_limit}
-                                min={item.lower_limit}
-                                formData={formData}
-                                levelId={item.id}
-                                setFormData={setFormData}
-                                label={slugToString(item.name)}
-                                name={item.name}
-                                props={{
-                                  errors, setErrors, placeholder: 'Enter Amount'
-                                }}
-                              />
+                          procedures?.map((item, key) => (
+                            <div key={item}>
                               <DragNDropTemp
                                 formData={formData}
                                 setFormData={setFormData}
                                 setErrors={setErrors}
-                                name={reason(item.name)}
-                                label="Purpose"
+                                name="description"
+                                label="Description"
+                                handleBlur={blurHandler}
                               />
                             </div>
                           ))
                         }
+                        <button type="button" className="btn" onClick={addProcess}>Add Procedure</button>
                       </div>
                     )
                   }}
@@ -99,4 +116,4 @@ const MaterialityTemp = ({
     </div>
   );
 };
-export default MaterialityTemp;
+export default TestsTemp;

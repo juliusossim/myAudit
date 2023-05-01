@@ -414,6 +414,78 @@ export const auditPost = [
     value: 3
   }
 ];
+export const assertions = [
+
+  {
+    id: 0,
+    name: 'apply_all_assertions',
+    desc: 'corporate project',
+    value: 0
+  },
+  {
+    id: 1,
+    name: 'completeness',
+    desc: 'corporate project',
+    value: 1
+  },
+  {
+    id: 2,
+    name: 'accuracy',
+    desc: 'organisational project',
+    value: 2
+  },
+  {
+    id: 3,
+    name: 'valuation',
+    desc: 'organisational project',
+    value: 3
+  },
+  {
+    id: 4,
+    name: 'obligation_right',
+    desc: 'organisational project',
+    value: 4
+  },
+  {
+    id: 5,
+    name: 'disclosure_presentation',
+    desc: 'organisational project',
+    value: 5
+  },
+  {
+    id: 6,
+    name: 'existence',
+    desc: 'organisational project',
+    value: 6
+  }
+];
+export const miscTests = [
+  'test_details',
+  'control_testing',
+  'journal_entries',
+  'material_misstatement',
+  'combine_risk_assessment',
+  'planning_analytics'
+];
+export const executions = [
+  'legal_counsel_review',
+  'contract_agreement_review',
+  'contingent_liability_review',
+  'party_transaction_review',
+  'expert_work_review',
+  'other_estimate_review'
+];
+export const conclusions = [
+  'overall_analytical_review',
+  'going_concern_procedures',
+  'subsequent_procedures',
+  'management_representation_letter',
+  'management_letter',
+  'audit_summary_misstatement',
+  'audit_report',
+  'audited_financial_statement',
+  'other_financial_info'
+];
 export const countries = [
   'select your country',
   {

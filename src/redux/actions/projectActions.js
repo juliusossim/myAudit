@@ -236,7 +236,7 @@ export const projectAction = ({
     const res = methods[routeOptions.method]();
     dispatch(request(res));
     return res.then((response) => {
-      if (response?.status === 200 || response?.status === 201) {
+      if (response?.status === 200 || response?.status === 201 || response?.status === 202) {
         dispatch(success(response?.data));
         // if (onSuccess !== undefined) {
         //   setTimeout(() => dispatch(constants[`${action}_${onSuccess}`]), 2000);

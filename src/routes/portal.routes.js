@@ -14,7 +14,9 @@ const Engagement = lazy(() => import('../pages/Engagements/EngagementIndex'));
 const NewEngagement = lazy(() => import('../pages/Engagements/NewEngagement'));
 const EngagementView = lazy(() => import('../pages/Engagements/Engagement'));
 const PrePlanning = lazy(() => import('../pages/Engagements/PrePlanning'));
-const Planning = lazy(() => import('../pages/Engagements/Planning'));
+const Planning = lazy(() => import('../pages/Engagements/planning/Planning'));
+const Execution = lazy(() => import('../pages/Engagements/Execution'));
+const Conclusion = lazy(() => import('../pages/Engagements/Conclusion'));
 
 /* clients */
 const Client = lazy(() => import('../pages/Clients/ClientsIndex'));
@@ -100,6 +102,19 @@ const routes = [
     exact: true,
     name: 'engagement'
   },
+  {
+    path: '/app/engagement/execution/:engagementName/:engagementId',
+    component: Execution,
+    exact: true,
+    name: 'engagement'
+  },
+  {
+    path: '/app/engagement/conclusion/:engagementName/:engagementId',
+    component: Conclusion,
+    exact: true,
+    name: 'engagement'
+  },
+
   {
     path: '/app/no-data/:name',
     component: NoData,

@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import React from 'react';
 import { slugify } from '../../../utilities/stringOperations';
 
-const EngagementStep = ({ engagementId, engagementName }) => (
+const EngagementStep = ({ engagementId, engagementName, status }) => (
   <div className="row">
     <Link to={`/app/engagement/pre-planning/${slugify(engagementName, '-')}/${engagementId}`} className="col-md-3">
       <div className="custom-box mx-1 text-center text-theme-black bold">
@@ -25,7 +25,7 @@ const EngagementStep = ({ engagementId, engagementName }) => (
       </div>
     </Link>
     <Link to={`/app/engagement/planning/${slugify(engagementName, '-')}/${engagementId}`} className="col-md-3">
-      <div className="custom-box mx-1 text-center text-theme-black bold">
+      <div className={status?.id === 1 ? 'custom-box mx-1 text-center text-theme-black bold border-wema text-theme' : 'custom-box mx-1 text-center text-theme-black bold'}>
         <div className="mb-3 mt-5">
           <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fillRule="evenodd" clipRule="evenodd" d="M23.4035 0H49.4003C50.8361 0 52 1.16406 52 2.6V39C52 40.4359 50.8361 41.6 49.4003 41.6H46.8006V44.2C46.8006 45.6359 45.6367 46.8 44.201 46.8H41.6013V49.4C41.6013 50.8359 40.4374 52 39.0016 52H13.0048C11.569 52 10.4051 50.8359 10.4051 49.4V46.7575C4.53576 46.3135 0 41.421 0 35.5342C0 29.6474 4.53576 24.7549 10.4051 24.3109V13C10.4051 11.5641 11.569 10.4 13.0048 10.4H15.6045V7.8C15.6045 6.36406 16.7684 5.2 18.2042 5.2H20.8038V2.6C20.8038 1.16406 21.9678 0 23.4035 0ZM11.2717 26C6.0072 26 1.73951 30.2682 1.73951 35.5333C1.74572 40.7959 6.00978 45.0605 11.2717 45.0667C16.5361 45.0667 20.8038 40.7984 20.8038 35.5333C20.8038 30.2682 16.5361 26 11.2717 26ZM39.8682 49.4C39.8682 49.8786 39.4802 50.2667 39.0016 50.2667H13.0048C12.5262 50.2667 12.1382 49.8786 12.1382 49.4V46.7558C18.0076 46.3117 22.5433 41.4193 22.5433 35.5325C22.5433 29.6456 18.0076 24.7532 12.1382 24.3091V13C12.1382 12.5214 12.5262 12.1333 13.0048 12.1333H31.2026V19.9333C31.2025 20.253 31.3784 20.5468 31.6603 20.6976C31.9422 20.8484 32.2841 20.8318 32.5501 20.6544L34.6688 19.24L36.7875 20.6527C37.0532 20.8299 37.3948 20.8467 37.6765 20.6963C37.9583 20.5459 38.1344 20.2527 38.135 19.9333V12.1333H39.0016C39.4802 12.1333 39.8682 12.5214 39.8682 13V49.4ZM36.4019 12.1333H32.9357V18.3135L34.1879 17.4789C34.4791 17.2846 34.8585 17.2846 35.1497 17.4789L36.4019 18.3135V12.1333ZM45.0675 44.2C45.0675 44.6786 44.6795 45.0667 44.201 45.0667H41.6013V13C41.6013 11.5641 40.4374 10.4 39.0016 10.4H17.3376V7.8C17.3376 7.32135 17.7256 6.93333 18.2042 6.93333H44.201C44.6795 6.93333 45.0675 7.32135 45.0675 7.8V44.2ZM49.4003 39.8667C49.8789 39.8667 50.2669 39.4786 50.2669 39V2.6C50.2669 2.12135 49.8789 1.73333 49.4003 1.73333H23.4035C22.9249 1.73333 22.537 2.12135 22.537 2.6V5.2H44.201C45.6367 5.2 46.8006 6.36406 46.8006 7.8V39.8667H49.4003Z" fill="#202020" />
@@ -51,8 +51,8 @@ const EngagementStep = ({ engagementId, engagementName }) => (
         </div>
       </div>
     </Link>
-    <Link to="/app/engagement/pre-planning" className="col-md-3">
-      <div className="custom-box mx-1 text-center text-theme-black bold">
+    <Link to={`/app/engagement/execution/${slugify(engagementName, '-')}/${engagementId}`} className="col-md-3">
+      <div className={status?.id === 2 ? 'custom-box mx-1 text-center text-theme-black bold border-wema text-theme' : 'custom-box mx-1 text-center text-theme-black bold'}>
         <div className="mb-3 mt-5">
           <svg width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path fillRule="evenodd" clipRule="evenodd" d="M39.8667 15.6H49.4C50.8359 15.6 52 16.7641 52 18.2V49.4C52 50.8359 50.8359 52 49.4 52H4.33333C1.94129 51.9971 0.0028653 50.0587 0 47.6667V4.33333C0.0028653 1.94129 1.94129 0.0028653 4.33333 0H35.5333C37.9254 0.0028653 39.8638 1.94129 39.8667 4.33333V15.6ZM32.9333 7.4412V1.73333H29.4667V7.4412L30.5873 6.3206C30.9257 5.98227 31.4743 5.98227 31.8127 6.3206L32.9333 7.4412ZM1.73333 47.6667V4.33333C1.73333 2.89739 2.89739 1.73333 4.33333 1.73333H27.7333V9.53333C27.7334 9.88381 27.9446 10.1997 28.2684 10.3339C28.5922 10.468 28.9649 10.3939 29.2127 10.1461L31.2 8.1588L33.1873 10.1461C33.3498 10.3086 33.5702 10.4 33.8 10.4C33.9139 10.4004 34.0268 10.378 34.1319 10.3341C34.4557 10.1999 34.6668 9.88384 34.6667 9.53333V1.73333H35.5333C36.9693 1.73333 38.1333 2.89739 38.1333 4.33333V15.6H26.8667C25.4307 15.6 24.2667 16.7641 24.2667 18.2V49.4C24.2695 49.6959 24.3235 49.9891 24.4261 50.2667H4.33333C2.89739 50.2667 1.73333 49.1026 1.73333 47.6667ZM49.4 50.2667C49.8786 50.2667 50.2667 49.8786 50.2667 49.4V18.2C50.2667 17.7214 49.8786 17.3333 49.4 17.3333H26.8667C26.388 17.3333 26 17.7214 26 18.2V49.4C26 49.8786 26.388 50.2667 26.8667 50.2667H49.4Z" fill="black" />
@@ -73,8 +73,8 @@ const EngagementStep = ({ engagementId, engagementName }) => (
         </div>
       </div>
     </Link>
-    <Link to="/app/engagement/pre-planning" className="col-md-3">
-      <div className="custom-box mx-1 text-center text-theme-black bold">
+    <Link to={`/app/engagement/conclusion/${slugify(engagementName, '-')}/${engagementId}`} className="col-md-3">
+      <div className={status?.id === 3 ? 'custom-box mx-1 text-center text-theme-black bold border-wema text-theme' : 'custom-box mx-1 text-center text-theme-black bold'}>
         <div className="mb-3 mt-5">
           <svg width="50" height="56" viewBox="0 0 50 56" fill="none" xmlns="http://www.w3.org/2000/svg">
             <ellipse cx="20.3704" cy="4.66672" rx="1.85185" ry="1.86667" fill="#FFA500" />

@@ -38,7 +38,7 @@
 
 /* When the checkbox is checked, add a blue background */
 .checkbox-container input:checked ~ .checkbox-checkmark {
-  background-color: #2196F3;
+  background-color: $theme-color !important;
 }
 
 /* Create the checkbox-checkmark/indicator (hidden when not checked) */
@@ -108,7 +108,7 @@
 
 /* When the radio button is checked, add a blue background */
 .radio-container input:checked ~ .radio-checkmark {
-  background-color: #2196F3;
+  background-color: $theme-color !important;
 }
 
 /* Create the indicator (the dot/circle - hidden when not checked) */

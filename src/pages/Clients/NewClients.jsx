@@ -38,8 +38,7 @@ const NewClient = () => {
         formData.phone,
         formData.email,
         formData.address,
-        formData.registered_address,
-        formData.doubts
+        formData.registered_address
       ]));
     } else {
       setSubmittable(checkRequiredFields([
@@ -51,7 +50,6 @@ const NewClient = () => {
         formData.email,
         formData.address,
         formData.registered_address,
-        formData.doubts,
         formData.subsidiary_nature_of_business,
         formData.subsidiary_nature,
         formData.subsidiary_percentage_holding

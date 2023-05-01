@@ -1,10 +1,12 @@
 import React, { useRef } from 'react';
 import uuid from 'react-uuid';
+import { Link } from 'react-router-dom';
 import ProgressBar from '../../microComponents/circularProgress';
 import {
   dragHandler,
   dragInHandler, dragOutHandler, dropHandler
 } from '../../../utilities/handlers';
+import { sentenceCaps, stringDoesNotExist } from '../../../utilities/stringOperations';
 
 export const ImageWrapper = ({ upload, removeItem }) => (
   <>
@@ -89,5 +91,30 @@ export const animatedCheck = (icon) => (
     <svg className="animated-check" viewBox="0 0 24 24">
       {icon}
     </svg>
+  </div>
+);
+
+export const headerTemp1 = ({
+  name, text, link, link1, parent, year
+}) => (
+  <div className="d-flex ml-4 custom-top-bar justify-content-between">
+    <div className="">
+      <span
+        className="theme-font-bold font-title-small text-theme-black mr-1"
+      >
+        {sentenceCaps(name)}
+      </span>
+      <span className={stringDoesNotExist(year) ? 'd-none' : 'mr-1'}>{year}</span>
+    </div>
+    <div>
+      <Link to={link} className="text-theme-blue mr-1">{parent}</Link>
+      <Link
+        to={link1}
+        className={stringDoesNotExist(link1) ? 'd-none' : 'text-theme-blue mr-1'}
+      >
+        {`/${sentenceCaps(name)}`}
+      </Link>
+      <span className="text-theme-black">{`/${text}`}</span>
+    </div>
   </div>
 );

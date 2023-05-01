@@ -8,7 +8,8 @@ const planningProps = (
     formData,
     handleBlur,
     handleChange,
-    errors
+    errors,
+    val
   }
 ) => ({
   planning: [
@@ -25,6 +26,25 @@ const planningProps = (
           required: true
         },
         error: errors?.name,
+        onBlur: handleBlur,
+        onChange: handleChange
+      }
+    }
+  ],
+  test: [
+    {
+      kind: 'input',
+      props: {
+        className: 'w-100 m-b-20 col-12',
+        name: 'test_name',
+        type: 'text',
+        label: 'Test Name',
+        placeholder: 'Enter Test Name',
+        value: formData?.test_name || '',
+        validations: {
+          required: true
+        },
+        error: errors?.test_name,
         onBlur: handleBlur,
         onChange: handleChange
       }
@@ -50,17 +70,17 @@ const planningProps = (
       }
     },
     {
-      kind: 'input',
+      kind: 'currency',
       props: {
         className: 'w-100 m-b-20 col-12 col-md-5',
-        name: 'materiality_amount',
-        type: 'number',
+        name: 'materiality_benchmark_amount',
         label: 'Amount',
-        value: formData?.materiality_amount || '',
+        type: 'text',
+        value: formData?.materiality_benchmark_amount || '',
         validations: {
           required: true
         },
-        error: errors?.materiality_amount,
+        error: errors?.materiality_benchmark_amount,
         onBlur: handleBlur,
         onChange: handleChange
       }
@@ -69,15 +89,87 @@ const planningProps = (
       kind: 'text_area',
       props: {
         className: 'w-100 m-b-20 col-12',
-        name: 'materiality_reason',
+        name: 'materiality_benchmark_reason',
         placeholder: 'Write reason here',
         label: 'Reason For Benchmark Chosen',
-        value: formData?.materiality_reason || '',
+        value: formData?.materiality_benchmark_reason || '',
         validations: {
           required: true,
           maxLength: 100
         },
-        error: errors?.materiality_reason,
+        error: errors?.materiality_benchmark_reason,
+        onBlur: handleBlur,
+        onChange: handleChange
+      }
+    }
+  ],
+  misc: [
+    {
+      kind: 'input',
+      props: {
+        className: 'w-100 m-b-20 col-12',
+        name: 'IT_name',
+        type: 'text',
+        label: 'IT Item Name',
+        placeholder: 'Enter Item Name',
+        value: formData?.IT_name || '',
+        validations: {
+          required: true
+        },
+        error: errors?.IT_name,
+        onBlur: handleBlur,
+        onChange: handleChange
+      }
+    },
+    {
+      kind: 'text_area',
+      props: {
+        className: 'w-100 m-b-20 col-12',
+        name: 'function',
+        placeholder: 'Write IT item function here',
+        label: 'IT item function',
+        value: formData?.function || '',
+        validations: {
+          required: true,
+          maxLength: 100
+        },
+        error: errors?.function,
+        onBlur: handleBlur,
+        onChange: handleChange
+      }
+    }
+  ],
+  misc2: [
+    {
+      kind: 'input',
+      props: {
+        className: 'w-100 m-b-20 col-12',
+        name: 'IT_name',
+        type: 'text',
+        label: 'IT Item Name',
+        placeholder: 'Enter Item Name',
+        value: val?.name,
+        validations: {
+          required: true
+        },
+        error: errors?.IT_name,
+        onBlur: handleBlur,
+        onChange: handleChange
+      }
+    },
+    {
+      kind: 'text_area',
+      props: {
+        className: 'w-100 m-b-20 col-12',
+        name: 'function',
+        placeholder: 'Write IT item function here',
+        label: 'IT item function',
+        value: val?.function,
+        validations: {
+          required: true,
+          maxLength: 100
+        },
+        error: errors?.function,
         onBlur: handleBlur,
         onChange: handleChange
       }
